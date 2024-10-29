@@ -70,7 +70,6 @@
             <input type="text" id="text" class="text-xl border-2">
         </div>
       </div>
-  
     </div>
 
     <script>
