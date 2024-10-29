@@ -7,13 +7,6 @@
     @viteReactRefresh
     @vite(['resources/js/app.jsx','resources/css/app.css'])
 </head>
-<body class="h-4 w-4 ">
-<nav id="navigation"></nav>
-    <button class="bg-sky-500 hover:bg-sky-700 text-red-500 ...">
-      Save changes
-    </button>
-  <button class="bg-sky-500 hover:bg-sky-700 ...">
-    Save changes
-  </button>
-</body>
+<body class="flex h-screen font-sans">
+  </body>
 </html>
