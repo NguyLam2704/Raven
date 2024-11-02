@@ -1,11 +1,14 @@
 import React from "react";
 
+import Router from "../router/index";
+
 const App = () => {
-    return (
+    return(
         <div>
-            <h2 className=" text-red-400">Hello App !</h2>
+            <Router/>
         </div>
     )
 }
 
-export default App
+export default App;
+
