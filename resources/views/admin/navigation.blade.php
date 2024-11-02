@@ -35,7 +35,7 @@
           </li>
           <li>
             <a href="#" class="text-black no-underline text-2xl p-2 flex rounded font-bold hover:bg-blue-600 hover:text-white active:bg-blue-600 active:text-white">
-              <img alt="icon" src="../admin/asset/icon/groups.svg" class="h-6 w-6 mt-1 mr-2 ">
+              <img alt="icon" src="{{asset('storage/asset/icon/groups.svg')}}" class="h-6 w-6 mt-1 mr-2 ">
               Khách hàng</a>
           </li>
         </ul>
