@@ -7,6 +7,7 @@
     @viteReactRefresh
     @vite(['resources/js/app.jsx','resources/css/app.css'])
 </head>
-<body class="flex h-screen font-sans">
-  </body>
+<body >
+    <div id="app"></div>
+</body>
 </html>

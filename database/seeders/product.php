@@ -15,7 +15,8 @@ class product extends Seeder
             'discount' => 10,
             'quantity_sold' => 100,
             'description' => 'Spider Graphic Tee description',
-            'category_type_id' => '1'
+            'category_type_id' => '1',
+            'dateposted' => '2024-10-15 04:05:06'
         ]);
     }
 }
