@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +8,7 @@
     @viteReactRefresh
     @vite(['resources/js/app.jsx','resources/css/app.css'])
 </head>
-<body class="flex h-screen font-sans">
-  </body>
-
-</html>
+<body >
+    <div id="app"></div>
+</body>
+</html> 

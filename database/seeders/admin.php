@@ -10,7 +10,6 @@ class admin extends Seeder
     public function run(): void
     {
         DB::table('admins')->insert([
-            'id' => 1,
             'account' => 'admin',
             'password' => '12345678',
         ]);
