@@ -1,39 +1,36 @@
 <?php
 
 namespace App\Http\Controllers\Api\V1;
-
-use App\Http\Requests\StoreSizeRequest;
-use App\Http\Requests\UpdateSizeRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\V1\SizeResource;
-use App\Http\Resources\V1\SizeCollection;
-use App\Filters\V1\SizesFilter;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Resources\V1\CategoryResource;
+use App\Models\Category;
+use App\Filters\V1\CategoriesFilter;
 use Illuminate\Http\Request;
-use App\Models\Size;
-
-class SizeController extends Controller
+use App\Http\Resources\V1\CategoryCollection;
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    //Fetching all data from server,HE
     public function index(Request $request)
     {
-        $filter = new SizesFilter();
+        $filter = new CategoriesFilter();
         $queryItems = $filter->transform($request); //[['column','operator','value']]
         if (count($queryItems) == 0)
         {
-            return new SizeCollection(Size::paginate());
+            return new CategoryCollection(Category::paginate());
         }
         else
         {
-            $size = Size::where($queryItems)->paginate();
-            return new SizeCollection($size->appends($request->query()));
+            $size = Category::where($queryItems)->paginate();
+            return new CategoryCollection($size->appends($request->query()));
         }
-        Size::where($queryItems);
+        Category::where($queryItems);
         // return new SizeCollection(Size::all());
         // $fillable = new CustomerQuery();
-        return new SizeCollection(Size::paginate());
+        return new CategoryCollection(Category::paginate());
     }
 
     /**
@@ -47,24 +44,23 @@ class SizeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    //POST
-    public function store(StoreSizeRequest $request)
+    public function store(StoreCategoryRequest $request)
     {
-        return response()->json();
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Size $size)
+    public function show(Category $category)
     {
-        return new SizeResource($size);
+        return new CategoryResource($category);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Size $size)
+    public function edit(Category $category)
     {
         //
     }
@@ -72,7 +68,7 @@ class SizeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSizeRequest $request, Size $size)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
         //
     }
@@ -80,7 +76,7 @@ class SizeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Size $size)
+    public function destroy(Category $category)
     {
         //
     }

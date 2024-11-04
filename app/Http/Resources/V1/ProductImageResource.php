@@ -5,7 +5,7 @@ namespace App\Http\Resources\V1;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SizeResource extends JsonResource
+class ProductImageResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,9 +14,11 @@ class SizeResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        //Map a new name for name of field in size table
         return [
-            'sizeCode' => $this->size_code
+            'prodImgId' => $this->prod_img_id,
+            'image' => $this->image,
+            'prodId' => $this->prod_id,
+            'isPrimary' => $this->is_primary
         ];
     }
 }
