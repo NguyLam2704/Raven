@@ -2,10 +2,11 @@
 
 namespace App\Http\Resources\V1;
 
+// use Database\Seeders\category_type;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-
-class SizeResource extends JsonResource
+use App\Http\Resources\V1\CategoryResource;
+class CategoryTypeResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,9 +15,10 @@ class SizeResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        //Map a new name for name of field in size table
         return [
-            'sizeCode' => $this->size_code
+            'categorytypeId' => $this->category_type_id,
+            'categorytypeName' => $this->category_type_name,
+            'categoryId' => $this->category_id,
         ];
     }
 }

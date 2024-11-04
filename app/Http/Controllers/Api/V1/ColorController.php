@@ -2,38 +2,36 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\StoreSizeRequest;
-use App\Http\Requests\UpdateSizeRequest;
+use App\Http\Requests\StoreColorRequest;
+use App\Http\Requests\UpdateColorRequest;
+use App\Models\Color;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\V1\SizeResource;
-use App\Http\Resources\V1\SizeCollection;
-use App\Filters\V1\SizesFilter;
+use App\Http\Resources\V1\ColorCollection;
+use App\Filters\V1\ColorsFilter;
+use App\Http\Resources\V1\ColorResource;
 use Illuminate\Http\Request;
-use App\Models\Size;
-
-class SizeController extends Controller
+class ColorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    //Fetching all data from server,HE
     public function index(Request $request)
     {
-        $filter = new SizesFilter();
+        $filter = new ColorsFilter();
         $queryItems = $filter->transform($request); //[['column','operator','value']]
         if (count($queryItems) == 0)
         {
-            return new SizeCollection(Size::paginate());
+            return new ColorCollection(Color::paginate());
         }
         else
         {
-            $size = Size::where($queryItems)->paginate();
-            return new SizeCollection($size->appends($request->query()));
+            $size = Color::where($queryItems)->paginate();
+            return new ColorCollection($size->appends($request->query()));
         }
-        Size::where($queryItems);
+        Color::where($queryItems);
         // return new SizeCollection(Size::all());
         // $fillable = new CustomerQuery();
-        return new SizeCollection(Size::paginate());
+        return new ColorCollection(Color::paginate());
     }
 
     /**
@@ -47,24 +45,23 @@ class SizeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    //POST
-    public function store(StoreSizeRequest $request)
+    public function store(StoreColorRequest $request)
     {
-        return response()->json();
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Size $size)
+    public function show(Color $color)
     {
-        return new SizeResource($size);
+        return new ColorResource($color);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Size $size)
+    public function edit(Color $color)
     {
         //
     }
@@ -72,7 +69,7 @@ class SizeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSizeRequest $request, Size $size)
+    public function update(UpdateColorRequest $request, Color $color)
     {
         //
     }
@@ -80,7 +77,7 @@ class SizeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Size $size)
+    public function destroy(Color $color)
     {
         //
     }
