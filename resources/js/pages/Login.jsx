@@ -13,7 +13,8 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        console.log('âss');
+        
         console.log(formData);
         const res = await fetch("/api/admin/auth/login", {
             method: "post",
