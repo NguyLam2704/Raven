@@ -6,4 +6,5 @@ Route::get('/', function () {
     return view('/admin/auth/login');
 });
 
+
 // Route::view('/', 'app');

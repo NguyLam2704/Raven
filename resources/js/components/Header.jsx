@@ -46,12 +46,12 @@ const Header = () => {
           <span className="role text-xs text-gray-600">Admin</span>
         </div>
         <ul className={`user-dropdown absolute top-20 bg-white shadow-md list-none p-2 w-44 z-10 rounded-2xl border-2 ${isDropdownOpen ? 'block' : 'hidden'}`}>
-            <li><Link to="/account_manage" class="p-2 text-sm text-gray-800 hover:bg-gray-200 block">
+            <li><Link to="/account_manage" className="p-2 text-sm text-gray-800 hover:bg-gray-200 block">
               <FontAwesomeIcon icon={faUserGear} style={{color: "#4e96ff",}} className='mr-2' />
                 Quản lý tài khoản</Link>
             </li>
 
-            <li><Link to="/change_password"  class="p-2 text-sm text-gray-800 hover:bg-gray-200 block">
+            <li><Link to="/change_password"  className="p-2 text-sm text-gray-800 hover:bg-gray-200 block">
               <FontAwesomeIcon icon={faKey} style={{color: "#f97fd9",}} className='mr-2'/>
                 Thay đổi mật khẩu</Link>
             </li>

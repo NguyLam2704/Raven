@@ -10,10 +10,10 @@ const Index = () => {
     return (
         <div>
             <Routes>
-                <Route path="/" element={<Login/>}> </Route>
-                <Route path="/home_admin" element={<Home/>}></Route>
-                <Route path="/account_manage" element={<AccountManage/>}></Route>
-                <Route path="/change_password" element={<ChangePassword/>}></Route>
+                <Route path="/" element={<Login/>}/>
+                <Route path="/home_admin" element={<Home/>}/>
+                <Route path="/account_manage" element={<AccountManage/>}/>
+                <Route path="/change_password" element={<ChangePassword/>}/>
             </Routes>
         </div>
     )
