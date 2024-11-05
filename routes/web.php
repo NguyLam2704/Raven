@@ -2,9 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('/admin/auth/login');
-});
+// Route::get('/', function () {
+//     return view('/admin/auth/login');
+// });
 
-
-// Route::view('/', 'app');
+Route::view('/{path?}', '/admin/auth/login');
