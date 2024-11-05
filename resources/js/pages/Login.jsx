@@ -16,7 +16,7 @@ const Login = () => {
     <div className="mt-5">
         <h1 className="text-[32px] font-bold text-white text-center mb-6">ADMIN DASHBOARD</h1>
     </div>
-    <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-[500px] h-3/4 border-2 border-red">
+    <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-[500px] h-[600px] border-2 border-red">
         <h2 className="text-2xl font-medium text-center mb-4 mt-9">Đăng nhập</h2>
         <p className="text-sm text-center mb-6 text-gray-600">Vui lòng nhập email và password Admin đã được cung cấp</p>
         
