@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Requests\StoreSizeRequest;
 use App\Http\Requests\UpdateSizeRequest;
-use App\Models\Size;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\SizeResource;
 use App\Http\Resources\V1\SizeCollection;
+use App\Filters\V1\SizesFilter;
 use Illuminate\Http\Request;
+use App\Models\Size;
+
 class SizeController extends Controller
 {
     /**
@@ -17,6 +19,18 @@ class SizeController extends Controller
     //Fetching all data from server,HE
     public function index(Request $request)
     {
+        $filter = new SizesFilter();
+        $queryItems = $filter->transform($request); //[['column','operator','value']]
+        if (count($queryItems) == 0)
+        {
+            return new SizeCollection(Size::paginate());
+        }
+        else
+        {
+            $size = Size::where($queryItems)->paginate();
+            return new SizeCollection($size->appends($request->query()));
+        }
+        Size::where($queryItems);
         // return new SizeCollection(Size::all());
         // $fillable = new CustomerQuery();
         return new SizeCollection(Size::paginate());

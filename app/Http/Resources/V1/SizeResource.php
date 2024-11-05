@@ -14,8 +14,9 @@ class SizeResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        //Map a new name for name of field in size table
         return [
-            'sizeCode'=> $this->size_code
+            'sizeCode' => $this->size_code
         ];
     }
 }
