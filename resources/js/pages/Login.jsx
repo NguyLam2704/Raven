@@ -1,21 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+    // Khởi tạo các biến
     const [formData, setFormData] = useState({
         account: "",
         password: "",
     });
-
     const [errors, setErrors] = useState({});
-
     const navigate = useNavigate();
 
+    useEffect( () => {
+        if (localStorage.getItem('token')) {
+            navigate('/home_admin');
+        }
+        
+    });
+
+    // Hàm login
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('âss');
-    
-
+        console.log('Đăng nhập thành công');
         console.log(formData);
         const res = await fetch("/api/admin/auth/login", {
             method: "post",
@@ -31,8 +36,11 @@ const Login = () => {
           setErrors(data.errors);
         } else {
           console.log(data);
+
+        // Lưu các giá trị trả về
+        const admin = data.admin;
+          localStorage.setItem('admin',JSON.stringify(admin));
           localStorage.setItem("token",data.token);
-          navigate('/home_admin');
         }
         
 
