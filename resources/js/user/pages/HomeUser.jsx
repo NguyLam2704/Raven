@@ -8,62 +8,63 @@ import img_product from '../assets/img_product.svg'
 import back from '../assets/Back.svg'
 import forward from '../assets/Forward.svg'
 import SliderHome from '../components/Home/SliderHome';
+import Title_More from '../components/Home/Title_More';
 
 const HomeUser = () => {
     const ListProduct = [
         {
           key: 1,
           name: "Cao Quốc Kiệt",
-          price: "1000000",
+          price: 1000000,
           img: img_product,
           sale: 0,
         },
         {
             key: 2,
             name: "Cao Quốc Kiệt",
-            price: "1000000",
+            price: 1000000,
             img: img_product,
             sale: 0,
           },
           {
             key: 3,
             name: "Cao Quốc Kiệt",
-            price: "1000000",
+            price: 1000000,
             img: img_product,
             sale: 0,
           },
           {
             key: 4,
             name: "Cao Quốc Kiệt",
-            price: "1000000",
+            price: 1000000,
             img: img_product,
             sale: 70,
           },
           {
             key: 5,
             name: "Cao Quốc Kiệt",
-            price: "1000000",
+            price: 1000000,
             img: img_product,
             sale: 0,
           },
           {
             key: 6,
             name: "Cao Quốc Kiệt",
-            price: "1000000",
+            price: 1000000,
             img: img_product,
             sale: 30,
           },
           {
             key: 7,
             name: "Cao Quốc Kiệt",
-            price: "1000000",
+            price: 1000000,
             img: img_product,
             sale: 40,
           },
           {
             key: 7,
             name: "Cao Quốc Kiệt",
-            price: "1000000",
+            price: 1000000,
             img: img_product,
             sale: 0,
           },
@@ -76,11 +77,11 @@ const HomeUser = () => {
                 <SliderHome/>
                 <div class=" relative w-full h-[900px]  justify-items-center ">
                     <div class="h-1/5 w-10/12 ">
-                        <Title type={"SẢN PHẨM MỚI"}/>
+                        <Title_More type={"SẢN PHẨM MỚI"}/>
                     </div>
                     <div class="h-4/5 w-10/12 grid grid-cols-4 gap-10 "  >
                         {ListProduct.map((product) => (
-                            <Product  price={product.price} img={product.img} name={product.name} />
+                            <Product  price={product.price} img={product.img} name={product.name} sale={product.sale} />
                         ))}
                     </div>
                     <div class=" absolute justify-center justify-items-center h-full w-full top-0 left-0">
@@ -98,11 +99,11 @@ const HomeUser = () => {
                 <Line></Line>
                 <div class=" relative w-full h-[900px]  justify-items-center ">
                     <div class="h-1/5 w-10/12 ">
-                        <Title type={"SẢN PHẨM NỔI BẬT"}/>
+                        <Title_More type={"SẢN PHẨM NỔI BẬT"}/>
                     </div>
                     <div class="h-4/5 w-10/12 grid grid-cols-4 gap-10 ">
                         {ListProduct.map((product) => (
-                            <Product  price={product.price} img={product.img} name={product.name} />
+                            <Product  price={product.price} img={product.img} name={product.name} sale={product.sale} />
                         ))}
                     </div>
                     <div class=" absolute justify-center justify-items-center h-full w-full top-0 left-0">
@@ -120,11 +121,11 @@ const HomeUser = () => {
                 <Line/>
                 <div class=" relative w-full h-[900px]  justify-items-center ">
                     <div class="h-1/5 w-10/12 ">
-                        <Title type={"SALE"}/>
+                        <Title_More type={"SALE"}/>
                     </div>
                     <div class="h-4/5 w-10/12 grid grid-cols-4 gap-10 ">
                         {ListProduct.map((product) => (
-                            <Product  price={product.price} img={product.img} name={product.name} />
+                            <Product  price={product.price} img={product.img} name={product.name} sale={product.sale} />
                         ))}
                     </div>
                     <div class=" absolute justify-center justify-items-center h-full w-full top-0 left-0">
