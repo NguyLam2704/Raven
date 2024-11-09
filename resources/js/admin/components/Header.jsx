@@ -31,12 +31,12 @@ const Header = () => {
                 Authorization: token,
             },
         });
-        const r = await res.json(); 
+        const r = await res.json();
         if (r.errors) {
             console.log(r.errors);
-          } else {
+        } else {
             console.log(r.message);
-          }
+        }
         localStorage.removeItem("token");
         localStorage.removeItem("admin");
         navigate("/");

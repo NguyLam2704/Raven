@@ -1,7 +1,7 @@
 import React from 'react';
 import Cart from "../../assets/more.svg"
 
-const Title = ({type}) => {
+const Title_More = ({type}) => {
     return(
         <div class="w-full h-full ">
             <div class="h-1/5"></div>
@@ -13,4 +13,4 @@ const Title = ({type}) => {
         </div>
     )
 }
-export default Title
+export default Title_More

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartSimple, faListCheck, faShapes, faUsers } from '@fortawesome/free-solid-svg-icons'
 
@@ -15,14 +16,14 @@ const Sidebar = () => {
       <h2 className="mb-7 text-2xl text-center text-black"><strong className="mb-7 text-2xl text-center text-blue-600">Raven</strong> Store</h2>
       <ul className="list-none p-0">
           <li className="mb-2">
-            <a href="#" className="text-black no-underline text-2xl p-2 block rounded font-bold hover:bg-blue-600 hover:text-white">
+            <Link to="/home_admin" className="text-black no-underline text-2xl p-2 block rounded font-bold hover:bg-blue-600 hover:text-white">
               <FontAwesomeIcon icon={faChartSimple} className='mr-2' />
-              Tổng quan</a>
+              Tổng quan</Link>
           </li>
           <li className="mb-2">
-            <a href="#" className="text-black no-underline text-2xl p-2 block rounded font-bold hover:bg-blue-600 hover:text-white">
+            <Link to="/order_admin" className="text-black no-underline text-2xl p-2 block rounded font-bold hover:bg-blue-600 hover:text-white">
             <FontAwesomeIcon icon={faListCheck} className='mr-2' />
-              Đơn hàng</a>
+              Đơn hàng</Link>
           </li>
           <li className="relative mb-2">
             <button onClick={toggleProductMenu} className=" text-black text-2xl text-left p-2 block w-full rounded font-bold hover:bg-blue-600 hover:text-white">
@@ -34,9 +35,9 @@ const Sidebar = () => {
             </ul>
           </li>
           <li>
-            <a href="#" className="text-black no-underline text-2xl p-2 flex rounded font-bold hover:bg-blue-600 hover:text-white active:bg-blue-600 active:text-white">
+            <Link to="/customer_admin" className="text-black no-underline text-2xl p-2 flex rounded font-bold hover:bg-blue-600 hover:text-white active:bg-blue-600 active:text-white">
             <FontAwesomeIcon icon={faUsers} size="sm" className='mr-2 pt-1' />
-              Khách hàng</a>
+              Khách hàng</Link>
           </li>
         </ul>
     </nav>

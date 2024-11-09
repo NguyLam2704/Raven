@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { Helmet } from "react-helmet";
 import NavigationAdmin from "../components/NavigationAdmin";
 
 const AccountManage = () => {
@@ -11,14 +12,13 @@ const AccountManage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let id = admin.id;
 
         const formData = {
             name: name,
             email: email,
             phoneNumber: phoneNum,
         };
-
+        let id = admin.id;
         const res = await fetch("/api/admin/" + id, {
             method: "put",
             body: JSON.stringify(formData),
@@ -29,16 +29,20 @@ const AccountManage = () => {
         });
 
         const data = await res.json();
-        
+
         if (data.errors) {
-          setErrors(data.errors);
+            setErrors(data.errors);
         } else {
-          console.log(data);
+            setErrors({});
+            console.log(data);
         }
     };
 
     return (
         <NavigationAdmin>
+            <Helmet>
+                <title>Quản lý tài khoản</title>
+            </Helmet>
             <div className="mt-2">
                 <h1 className="text-[32px] font-bold text-black text-left mb-6">
                     Quản lý tài khoản
@@ -74,7 +78,11 @@ const AccountManage = () => {
                             onChange={(e) => setName(e.target.value)}
                             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
-                        {errors.name && <p className=" text-[12px] text-red-500">Tên không được để trống!</p>}
+                        {errors.name && (
+                            <p className=" text-[12px] text-red-500">
+                                Tên không hợp lệ!
+                            </p>
+                        )}
                     </div>
                     <div className="mb-4">
                         <label
@@ -90,7 +98,11 @@ const AccountManage = () => {
                             onChange={(e) => setEmail(e.target.value)}
                             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
-                        {errors.email && <p className=" text-[12px] text-red-500">Email không được để trống!</p>}
+                        {errors.email && (
+                            <p className=" text-[12px] text-red-500">
+                                Email không hợp lệ!
+                            </p>
+                        )}
                     </div>
                     <div className="mb-4">
                         <label
@@ -106,7 +118,11 @@ const AccountManage = () => {
                             onChange={(e) => setPhoneNum(e.target.value)}
                             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
-                        {errors.phoneNumber && <p className=" text-[12px] text-red-500">Số điện thoại không được để trống!</p>}
+                        {errors.phoneNumber && (
+                            <p className=" text-[12px] text-red-500">
+                                Số điện thoại không hợp lệ!
+                            </p>
+                        )}
                     </div>
                     <button
                         type="submit"
