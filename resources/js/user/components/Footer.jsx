@@ -8,7 +8,7 @@ const Footer = () => {
     return(
         <div class=" mt-16 flex flex-row justify-items-center justify-between bg-[#151515] w-full h-[380px]  ">
             <div class=" basis-1/12"></div>
-            <div class=" basis-5/12 justify-items-center mt-9">
+            <div class=" basis-5/12 pl-4 mt-9">
                 <ul class=" ">
                     <li class=" text-white text-3xl font-bold font-['Public Sans'] my-2">RAVEN</li>
                     <li class=" text-white text-base font-light font-['Public Sans'] my-1">Công ty TNHH bốn thành viên UIT</li>

@@ -4,7 +4,7 @@ import NavigationAdmin from '../components/NavigationAdmin';
 const Home = () => {
   return (
     <NavigationAdmin>
-        <h1>Home Screen</h1>
+        <h1 className='bg-red-500'>Home Screen</h1>
     </NavigationAdmin>
   );
 };
