@@ -12,7 +12,6 @@ use App\Http\Controllers\Api\V1\ProColorSizeController;
 use App\Http\Controllers\Api\V1\ProductImageController;
 use App\Http\Controllers\Api\V1\ProductOrderController;
 use App\Http\Controllers\Api\V1\TestController;
-use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

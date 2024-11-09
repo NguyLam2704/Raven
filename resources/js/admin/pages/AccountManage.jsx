@@ -1,9 +1,13 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import NavigationAdmin from '../components/NavigationAdmin';
 
 const AccountManage = () => {
   return (
     <NavigationAdmin>
+        <Helmet>
+          <title>Quản lý tài khoản</title>
+        </Helmet>
     <div class="mt-2">
         <h1 class="text-[32px] font-bold text-black text-left mb-6">Quản lý tài khoản</h1>
     </div>

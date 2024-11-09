@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
+import bg_login from "../asset/bg_login.png"
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -10,6 +12,7 @@ const Login = () => {
     const [errors, setErrors] = useState({});
 
     const navigate = useNavigate();
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -34,19 +37,24 @@ const Login = () => {
           localStorage.setItem("token",data.token);
           navigate('/home_admin');
         }
-        
 
+        
         //
     };
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen bg-login">
-            <div className="mt-5">
-                <h1 className="text-[32px] font-bold text-white text-center mb-6">
+        <div className="flex flex-col items-center justify-center h-screen bg-login" 
+            style={{ backgroundImage: `url(${bg_login})` }}
+        >
+            <Helmet>
+                <title>Login</title>
+            </Helmet>
+            <div className="mt-2">
+                <h1 className="text-[32px] font-bold text-white text-center mb-3">
                     ADMIN DASHBOARD
                 </h1>
             </div>
-            <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-[500px] h-3/4 border-2 border-red">
+            <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-[500px] h-[550px] border-2 border-red">
                 <h2 className="text-2xl font-medium text-center mb-4 mt-9">
                     Đăng nhập
                 </h2>
@@ -66,7 +74,7 @@ const Login = () => {
                             type="text"
                             id="username"
                             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            placeholder="username"
+                            placeholder="Username"
                             onChange={(e) =>
                                 setFormData({
                                     ...formData,
@@ -88,7 +96,7 @@ const Login = () => {
                             type="password"
                             id="password"
                             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            placeholder="•••••••"
+                            placeholder="Password"
                             value={formData.password}
                             onChange={(e) =>
                                 setFormData({
@@ -101,16 +109,15 @@ const Login = () => {
                     </div>
                     <button
                         type="submit"
-                        className="w-full bg-blue-500 text-white py-2 mt-8 rounded-md hover:bg-blue-600 transition"
+                        className="w-full bg-blue-500 text-white py-2 mt-4 rounded-md hover:bg-blue-600 transition"
                     >
                         Đăng nhập
                     </button>
                 </form>
 
-                <p className="text-xs text-center text-gray-500 mt-12 w-[80%] mx-auto">
-                    *Lưu ý: Nếu quên mật khẩu vui lòng liên hệ email
-                    22520736@gm.uit.edu.vn để được hỗ trợ
-                </p>
+                <button onClick={() => navigate('/forgotpass')} className="text-[17px] font-bold underline text-center text-blue-800 mt-10 w-full mx-auto">
+                    Quên mật khẩu ?
+                </button>
             </div>
         </div>
     );
