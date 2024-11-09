@@ -1,9 +1,13 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import NavigationAdmin from '../components/NavigationAdmin';
 
 const ChangePassword = () => {
   return (
     <NavigationAdmin>
+        <Helmet>
+          <title>Thay đổi mật khẩu</title>
+        </Helmet>
     <div classNameName="mt-2">
         <h1 className="text-[32px] font-bold text-black text-left mb-6">Thay đổi mật khẩu</h1>
     </div>

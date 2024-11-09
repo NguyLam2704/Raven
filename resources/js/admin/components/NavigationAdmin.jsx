@@ -10,7 +10,7 @@ const NavigationAdmin = ({ children }) => {
 
         <Header />
         
-        <main className="main-content w-full mt-20 ml-60 p-5 overflow-y-auto h-full bg-gray-100">{children}</main>
+        <main className="main-content w-full mt-20 ml-60 p-5 overflow-y-auto h-[calc(100%-80px)] bg-[#F5F6FA]">{children}</main>
 
       </div>
     </div>
