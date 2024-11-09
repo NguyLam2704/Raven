@@ -13,7 +13,7 @@ const Index = () => {
     return (
         <div>
             <Routes>
-                <Route path="/" element={<Login/>}/>
+                <Route path="/login_admin" element={<Login/>}/>
                 <Route path="/forgotpass" element={<ForgotPass/>}/>
                 <Route path="/home_admin" element={<Home/>}/>
                 <Route path="/order_admin" element={<Order/>}/>
