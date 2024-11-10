@@ -89,8 +89,6 @@ const Home = () => {
           <OrderList data={ordersData}/>
         </div>
 
-
-
     </NavigationAdmin>
   );
 };
