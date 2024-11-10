@@ -1,24 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import bg_login from "../asset/bg_login.png"
+import bg_login from "../asset/bg_login.png";
 
 const Login = () => {
+    // Khởi tạo các biến
     const [formData, setFormData] = useState({
         account: "",
         password: "",
     });
-
     const [errors, setErrors] = useState({});
-
     const navigate = useNavigate();
 
+    // Nếu chưa đăng xuất thì tự động điền các thông tin
+    useEffect(() => {
+        const admin = JSON.parse(localStorage.getItem("admin"));
+        console.log(admin);
+        if (admin) {
+            setFormData({
+                account: admin.account,
+                password: admin.password,
+            });
+        }
+    }, []);
 
+    // Kiểm tra xác thực
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('âss');
-    
-
+        console.log("Đăng nhập thành công");
         console.log(formData);
         const res = await fetch("/api/admin/auth/login", {
             method: "post",
@@ -31,19 +40,23 @@ const Login = () => {
 
         const data = await res.json();
         if (data.errors) {
-          setErrors(data.errors);
+            setErrors(data.errors);
         } else {
-          console.log(data);
-          localStorage.setItem("token",data.token);
-          navigate('/home_admin');
-        }
+            const admin = data.admin;
+            admin.account = formData.account;
+            admin.password = formData.password;
+            console.log(admin);
 
-        
-        //
+            // Lưu các giá trị trả về
+            localStorage.setItem("admin", JSON.stringify(admin));
+            localStorage.setItem("token", data.token);
+            navigate("/home_admin");
+        }
     };
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen bg-login" 
+        <div
+            className="flex flex-col items-center justify-center h-screen bg-login"
             style={{ backgroundImage: `url(${bg_login})` }}
         >
             <Helmet>
@@ -83,7 +96,11 @@ const Login = () => {
                             }
                             value={formData.account}
                         />
-                        {errors.account && <p className=" text-[12px] text-red-500">{errors.account[0]}</p>}
+                        {errors.account && (
+                            <p className=" text-[12px] text-red-500">
+                                {errors.account[0]}
+                            </p>
+                        )}
                     </div>
                     <div className="mb-6">
                         <label
@@ -105,7 +122,11 @@ const Login = () => {
                                 })
                             }
                         />
-                        {errors.password && <p className=" text-[12px] text-red-500">{errors.password[0]}</p>}
+                        {errors.password && (
+                            <p className=" text-[12px] text-red-500">
+                                {errors.password[0]}
+                            </p>
+                        )}
                     </div>
                     <button
                         type="submit"
@@ -115,7 +136,10 @@ const Login = () => {
                     </button>
                 </form>
 
-                <button onClick={() => navigate('/forgotpass')} className="text-[17px] font-bold underline text-center text-blue-800 mt-10 w-full mx-auto">
+                <button
+                    onClick={() => navigate("/forgotpass")}
+                    className="text-[17px] font-bold underline text-center text-blue-800 mt-10 w-full mx-auto"
+                >
                     Quên mật khẩu ?
                 </button>
             </div>
