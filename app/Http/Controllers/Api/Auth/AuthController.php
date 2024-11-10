@@ -1,21 +1,24 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\Auth;
 
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
     // Register
-    public function register(Request $request){
-        
+    public function register(Request $request)
+    {
+
         $fields = $request->validate([
             'name' => 'required|max:100',
             'account' => 'required|max:40|unique:admins',
-            'phoneNumber' => 'numeric',
+            'phoneNumber' => 'digits:10',
             'email' => 'required|email',
+            'avtImg' => '',
             'password' => 'required|confirmed'
         ]);
 
@@ -30,7 +33,8 @@ class AuthController extends Controller
         ];
     }
 
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         $request->validate([
             'account' => 'required|max:40',
             'password' => 'required'
@@ -38,25 +42,31 @@ class AuthController extends Controller
 
         $admin = Admin::where('account', $request->account)->first();
 
-        if (!$admin || !Hash::check($request->password, $admin->password))
-        {
+        if (!$admin || !Hash::check($request->password, $admin->password)) {
             return [
                 'errors' => [
                     'password' => ['Tài khoản hoặc mật khẩu không chính xác!']
-                ] 
+                ]
             ];
         }
-    
+
         $token = $admin->createToken($request->account);
-        
+
         return [
+            'admin' => [
+                'id' => $admin->id,
+                'name' => $admin->name,
+                'email' => $admin->email,
+                'phoneNumber' => $admin->phoneNumber,
+            ],
+
             'token' => $token->plainTextToken
         ];
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         $request->user()->tokens()->delete();
-
         return [
             'message' => 'Logout'
         ];
