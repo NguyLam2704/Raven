@@ -7,14 +7,28 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Http\Resources\V1\ProductResource;
+use App\Filters\V1\ProductsFilter;
+use Illuminate\Http\Request;
+use App\Http\Resources\V1\ProductCollection;
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $filter = new ProductsFilter();
+        $filterItems = $filter->transform($request); //[['column','operator','value']]
+        /*if the query has 'includeImage', retrieve the product with productImage*/
+        /* The url: http://127.0.0.1:8000/api/v1/product?includeImage=true*/
+        $includePicture = $request->query('includeImage');
+        $product = Product::where($filterItems);
+        if($includePicture)
+        {
+            $product = $product->with('productImage');
+        }
+
+        return new ProductCollection($product->paginate()->appends($request->query()));
     }
 
     /**
@@ -38,6 +52,12 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        /*Url if you want to includeImage: http://127.0.0.1:8000/api/v1/product/1?includeImage=true */
+        $includePicture = request()->query('includeImage');
+        if($includePicture)
+        {
+            return new ProductResource($product->loadMissing('productImage'));
+        }
         return new ProductResource($product);
     }
 
