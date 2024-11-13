@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import backbtn from '../../assets/Back.svg';
 import forwardbtn from '../../assets/Forward.svg';
 import slider1 from '../../assets/img_slider_1.svg';
-import slider2 from '../../assets/Raven.svg';
-import slider3 from '../../assets/img_product.svg';
+import slider2 from '../../assets/img_slider2.svg';
 
 
 const SliderHome = () => {
-    const arr_slide = [slider1, slider2, slider3];
+    const arr_slide = [slider1,  slider2];
     const [index,setindex]=useState(0);
   const back = () => { 
     const isFirst = index === 0;

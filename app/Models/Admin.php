@@ -15,7 +15,8 @@ class Admin extends Model
         'account',
         'password',
         'email',
-        'phoneNumber'
+        'phoneNumber',
+        'avtImg'
     ];
 
 }

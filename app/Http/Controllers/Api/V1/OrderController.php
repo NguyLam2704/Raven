@@ -7,14 +7,31 @@ use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\OrderResource;
+use App\Http\Resources\V1\OrderCollection;
+use App\Filters\V1\OrdersFilter;
+use Illuminate\Http\Request;
 class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $filter = new OrdersFilter();
+        $queryItems = $filter->transform($request); //[['column','operator','value']]
+        if (count($queryItems) == 0)
+        {
+            return new OrderCollection(Order::paginate());
+        }
+        else
+        {
+            $size = Order::where($queryItems)->paginate();
+            return new OrderCollection($size->appends($request->query()));
+        }
+        Order::where($queryItems);
+        // return new SizeCollection(Size::all());
+        // $fillable = new CustomerQuery();
+        return new OrderCollection(Order::paginate());
     }
 
     /**

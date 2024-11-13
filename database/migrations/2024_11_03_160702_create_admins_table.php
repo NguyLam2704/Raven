@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('account')->unique();
             $table->string('email')->unique();
             $table->string('phoneNumber')->unique();
-            $table->string('password');
+            $table->string('password')->nullable(false);
+            $table->string('avtImg');
             $table->timestamps();
         });
     }

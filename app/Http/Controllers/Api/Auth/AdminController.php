@@ -1,66 +1,48 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\Auth;
 
 use App\Models\Admin;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
+use App\Models\User;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+
+    public function getAdmin(Request $request, $id){
+
+
+        dd($request);
+        
+        return [
+            'request' =>$request
+        ] ;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    public function updateAdmin(Request $request, $id){
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'phoneNumber' => 'required|digits:10',
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreAdminRequest $request)
-    {
-        //
-    }
+        $admin = Admin::find($id);
+        if (!$admin){
+            return [
+                'error' => 'Khong co ng dung'
+            ];
+        } else {
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Admin $admin)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Admin $admin)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateAdminRequest $request, Admin $admin)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Admin $admin)
-    {
-        //
+            $admin->name = $request->name;
+            $admin->email = $request->email;
+            $admin->phoneNumber = $request->phoneNumber;
+            $admin->save();
+            return [
+                'admin' =>$admin
+            ] ;
+        }
     }
 }
