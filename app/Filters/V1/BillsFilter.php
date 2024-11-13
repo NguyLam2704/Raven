@@ -6,21 +6,25 @@ use Illuminate\Http\Request;
 use App\Filters\ApiFilter;
 use function Laravel\Prompts\form;
 
-class CategoryTypesFilter extends ApiFilter{
+class BillsFilter extends ApiFilter{
     // can field sizeCode with =,!= operator
     protected $safeParms = [
-        'categoryId' => ['eq', 'ne'],
-        'categorytypeName' => ['eq', 'ne'],
+        'orderId' => ['eq', 'ne'],
+        'totalCost' => ['eq', 'ne', 'lt', 'gt', 'gte', 'lte'],
     ];
     // map column with field in color table
     protected $columnMap = [
-        'categoryId' => 'category_id',
-        'categorytypeName' => 'category_type_name'
+        'orderId' => 'order_id',
+        'totalCost' => 'total_cost'
     ];
 
     protected $operatorMap = [
         'eq' => '=',
-        'ne' => '!='
+        'ne' => '!=',
+        'gt' => '>',
+        'lt' => '<',
+        'lte' => '<=',
+        'gte' => '>='
     ];
 
 }

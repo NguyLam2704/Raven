@@ -10,12 +10,10 @@ class CategoriesFilter extends ApiFilter{
     // can field sizeCode with =,!= operator
     protected $safeParms = [
         'categoryName' => ['eq', 'ne'],
-        'categoryId' => ['eq', 'ne'],
     ];
     // map column with field in color table
     protected $columnMap = [
         'categoryName' => 'category_name',
-        'categoryId' => 'category_id'
     ];
 
     protected $operatorMap = [
