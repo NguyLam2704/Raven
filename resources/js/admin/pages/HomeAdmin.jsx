@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import NavigationAdmin from '../components/NavigationAdmin';
 import StatsCard from '../components/home/statscart';
@@ -14,13 +14,38 @@ import revenueIcon from '../asset/home/revenue.svg'
 import shipIcon from '../asset/home/ship.svg'
 import trendupIcon from '../asset/home/trending_up.svg'
 import trenddownIcon from '../asset/home/trending_down.svg'
+import axios from 'axios';
+import { Dots } from 'react-activity';
+import "react-activity/dist/Dots"
+
+
+const fetchThongke = async () => {
+  const response = await axios.get('/api/dashboard/thongke')
+  return response.data;
+}
 
 const Home = () => {
+  const [ThongKeData, setThongKeData] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+      const Loadthongke = async () => {
+        const thongkeData = await fetchThongke();
+        setThongKeData(thongkeData);
+        console.log(thongkeData);
+        setIsLoading(false)
+      }
+      Loadthongke();
+  } ,[])
+
+  if (isLoading) {
+    return <h1 className='w-full text-2xl font-semibold text-center mt-16'>Loading...</h1>;
+  } 
 
   const stats = [
     {
-      title: "Tổng số khách hàng",
-      value: "40,689",
+      title: "Tổng số lượt truy cập",
+      value: (ThongKeData.view.today).toLocaleString(),
       icon: userIcon, 
       icontrend: trendupIcon ,
       trend: "8.5%",
@@ -28,27 +53,27 @@ const Home = () => {
     },
     {
       title: "Tổng số đơn hàng",
-      value: "10,000",
+      value: ThongKeData.donhang.all,
       icon: orderIcon,
-      icontrend: trendupIcon,
-      trend: "1.2%",
-      trendColor: "text-green-500",
+      icontrend: (ThongKeData.donhang.today >= ThongKeData.donhang.yesterday ) ? trendupIcon : trenddownIcon ,
+      trend: ThongKeData.donhang.yesterday === 0 ? "0%" : ((ThongKeData.donhang.today / ThongKeData.donhang.yesterday ) * 100)+"%"  ,
+      trendColor: (ThongKeData.donhang.today >= ThongKeData.donhang.yesterday ) ?"text-green-500" : "text-red-500",
     },
     {
       title: "Tổng số doanh thu",
-      value: "2,000,000",
+      value: (ThongKeData.doanhthu.all).toLocaleString() + "đ",
       icon: revenueIcon,
-      icontrend: trenddownIcon,
-      trend: "4.3%",
-      trendColor: "text-red-500",
+      icontrend: (ThongKeData.doanhthu.today >= ThongKeData.doanhthu.yesterday ) ? trendupIcon : trenddownIcon ,
+      trend: ThongKeData.doanhthu.yesterday === 0 ? "0%" : ((ThongKeData.doanhthu.today / ThongKeData.doanhthu.yesterday ) * 100)+"%"  ,
+      trendColor: (ThongKeData.doanhthu.today >= ThongKeData.doanhthu.yesterday ) ?"text-green-500" : "text-red-500",
     },
     {
       title: "Đang giao hàng",
-      value: "10",
+      value: ThongKeData.onProgress,
       icon: shipIcon,
       icontrend: trenddownIcon ,
-      trend: "2%",
-      trendColor: "text-red-500",
+      trend: "",
+      trendColor: "",
     },
   ];
 
@@ -76,7 +101,7 @@ const Home = () => {
 
             
             <div className="mr-auto py-4 pr-4 w-[35%] h-[444px] p-4 bg-white rounded-[14px] shadow-md">
-              <h2 className="text-2xl font-bold mb-2">Sản phẩm</h2>
+              <h2 className="text-2xl font-bold mb-2">Top 5 sản phẩm bán chạy</h2>
               <ProductsList data={productslistData}/>
             </div>
         </div>
