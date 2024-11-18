@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Product from '../components/Product';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
@@ -38,6 +38,8 @@ const HomeUser = () => {
         fetchProducts();
     }, []); // [] đảm bảo chỉ gọi API một lần khi component mount
 
+    const navigate = useNavigate() ; 
+    
     // Hiển thị trạng thái loading hoặc lỗi
     if (loading) {
         return <div>Loading...</div>;
@@ -45,9 +47,7 @@ const HomeUser = () => {
     if (error) {
         return <div>Error: {error}</div>;
     }
-   
-    const navigate = useNavigate() ; 
-    
+
     return(
         <div className='w-full h-screen '>
             <Navigation /> 

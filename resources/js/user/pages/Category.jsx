@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Product from '../components/Product';
 import img_silder from '../assets/img_slider2.svg';
 import Navigation from '../components/Navigation';
@@ -6,6 +6,7 @@ import img_product from '../assets/img_product.svg';
 import Footer from '../components/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown} from '@fortawesome/free-solid-svg-icons'
+import TitleCategory from '../components/Category/TitleCategory';
 
 const mapCategory = new Map([
     ["Áo thun", 1],
@@ -56,7 +57,8 @@ const Category = ({ cate }) => {
                 name={productCategory.productName} 
                 sale={productCategory.discount} />
   )); 
-    //---------------------------------------------------
+
+    //Giá trị của bộ lọc sắp xếp
     const [sort, setSort] = useState('Giá giảm dần');
     // Ẩn/hiện các giá trị của bộ lọc tìm kiếm
     const [isOpen, setOpen] = useState(false);
@@ -69,11 +71,11 @@ const Category = ({ cate }) => {
 
     if (loading) {
       return <div>Loading...</div>;
-  }
+    }
   
-  if (error) {
+    if (error) {
       return <div>Error: {error}</div>;
-  }
+    }
 
     return (
         <div  className='w-full h-full'>
@@ -115,7 +117,7 @@ const Category = ({ cate }) => {
 
                             }
                         </div>            
-              
+                    {/* Danh sách các sản phẩm  */}
                     <div className="mt-10 grid grid-cols-4 gap-12 z-10">
                         {mapProductCategories}
                     </div>
