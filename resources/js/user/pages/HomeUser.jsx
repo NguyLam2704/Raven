@@ -82,7 +82,7 @@ const HomeUser = () => {
                         </button>
                     </div>                                       
                 </div>
-
+                </div>
                 <Line></Line>
 
                 {/* Các sản phẩm nổi bật */}
