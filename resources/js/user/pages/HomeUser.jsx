@@ -1,6 +1,5 @@
 import React from 'react';
 import Product from '../components/Product';
-import Title from '../components/Home/Title_More';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import Line from '../components/Home/Line';
@@ -8,9 +7,10 @@ import img_product from '../assets/img_product.svg'
 import back from '../assets/Back.svg'
 import forward from '../assets/Forward.svg'
 import SliderHome from '../components/Home/SliderHome';
-import Title_More from '../components/Home/Title_More';
-import { useState, useEffect } from 'react';
+import TitleMore from '../components/Home/TitleMore';
+import { useNavigate } from 'react-router-dom';
 
+// Trang chủ
 const HomeUser = () => {
     // State để lưu danh sách sản phẩm
     const [products, setProducts] = useState([]);
@@ -45,16 +45,21 @@ const HomeUser = () => {
     if (error) {
         return <div>Error: {error}</div>;
     }
+   
+    const navigate = useNavigate() ; 
+    
     return(
-        <div className='w-full h-screen'>
+        <div className='w-full h-screen '>
             <Navigation /> 
-            <div className=" mt-[90px] w-full">
+
+            <main className=" mt-[90px] w-full">
                 <SliderHome/>
 
-                {/* Display new product */}
-                <div className=" relative w-full h-[900px]  justify-items-center ">
-                    <div className="h-1/5 w-10/12 ">
-                        <Title_More type={"SẢN PHẨM MỚI"}/>
+                {/* Các sản phẩm mới */}
+                <div class=" relative w-full h-[900px]  justify-items-center "> 
+                    {/* Tiêu đề */}
+                    <div class="h-1/5 w-10/12 ">
+                        <TitleMore type={"SẢN PHẨM MỚI"}/>
                     </div>
                     <div className="h-4/5 w-10/12 grid grid-cols-4 gap-10 "  >
                         {products.sort((a, b) => new Date(b.datePosted) - new Date(a.datePosted)) // sort by day
@@ -74,16 +79,17 @@ const HomeUser = () => {
                             </button>
                             <button className=" p-1 pr-[6px] bg-white bg-opacity-30 rounded-full ">
                                 <img  src={forward} alt="none"/>
-                            </button>
-                        </div>
-                    </div>                    
+                        </button>
+                    </div>                                       
                 </div>
-                <Line/>
 
-                {/* Display new product */}
-                <div className=" relative w-full h-[900px]  justify-items-center ">
-                    <div className="h-1/5 w-10/12 ">
-                        <Title_More type={"SẢN PHẨM NỔI BẬT"}/>
+                <Line></Line>
+
+                {/* Các sản phẩm nổi bật */}
+                <div class=" relative w-full h-[900px]  justify-items-center "> 
+                    {/* Tiêu đề */}
+                    <div class="h-1/5 w-10/12 ">
+                        <TitleMore type={"SẢN PHẨM NỔI BẬT"}/>
                     </div>
                     <div className="h-4/5 w-10/12 grid grid-cols-4 gap-10 ">
                         {products.filter((product) => product.quantitySold > 10) //fiter product have more 10 quantitySold
@@ -109,10 +115,11 @@ const HomeUser = () => {
                 </div>
                 <Line/>
 
-                {/* Display sale product */}
-                <div className=" relative w-full h-[900px]  justify-items-center ">
-                    <div className="h-1/5 w-10/12 ">
-                        <Title_More type={"SALE"}/>
+                {/* Các sản phẩm sale */}
+                <div class=" relative w-full h-[900px]  justify-items-center "> 
+                    {/* Tiêu đề */}
+                    <div class="h-1/5 w-10/12 ">
+                        <TitleMore type={"SALE"}/>
                     </div>
                     <div className="h-4/5 w-10/12 grid grid-cols-4 gap-10 ">
                         {products.filter((product) => product.discount > 0) //filter product have discount
@@ -136,8 +143,9 @@ const HomeUser = () => {
                         </div>
                     </div>                    
                 </div>
-            </div>
+            </main>
             <Footer/>
+            
         </div>
     )
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 
+//Line sau mỗi loại sản phẩm
 const Line = () => {
     return(
         <div class="w-full h-full ">            

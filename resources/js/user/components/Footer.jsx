@@ -3,6 +3,7 @@ import Logo from "../assets/Logo.svg"
 import tiktok from "../assets/tiktok.svg"
 import fb from "../assets/facebook.svg"
 import ins from "../assets/instagram.svg"
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
     return(
@@ -22,7 +23,7 @@ const Footer = () => {
                 <div class="">
                     <ul class="w-[300]">
                         <li class=" w-[300] text-white text-3xl font-bold font-['Public Sans'] my-2">HỖ TRỢ</li>
-                        <li class=" w-[300] text-white text-base font-extralight font-['Public Sans'] my-1">Kiểm tra đơn hàng</li>
+                        <li class=" w-[300] text-white text-base font-extralight font-['Public Sans'] my-1"><Link to="/check_order">Kiểm tra đơn hàng</Link></li>
                         <li class=" w-[300] text-white text-base font-extralight font-['Public Sans'] my-1">Điều khoản và dịch vụ</li>
                         <li class=" w-[300] text-white text-base font-extralight font-['Public Sans'] my-1">Điều khoản và dịch vụ</li>
                     </ul>  
