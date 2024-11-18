@@ -1,6 +1,5 @@
 import React from 'react';
 import Product from '../components/Product';
-import Title from '../components/Home/Title_More';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import Line from '../components/Home/Line';
@@ -8,8 +7,10 @@ import img_product from '../assets/img_product.svg'
 import back from '../assets/Back.svg'
 import forward from '../assets/Forward.svg'
 import SliderHome from '../components/Home/SliderHome';
-import Title_More from '../components/Home/Title_More';
+import TitleMore from '../components/Home/TitleMore';
+import { useNavigate } from 'react-router-dom';
 
+// Trang chủ
 const HomeUser = () => {
     const ListProduct = [
         {
@@ -70,78 +71,94 @@ const HomeUser = () => {
           },
 
       ];
+   
+    const navigate = useNavigate() ; 
+    
     return(
-        <div className='w-full h-screen'>
+        <div className='w-full h-screen '>
             <Navigation />
-            <div class=" mt-[90px] w-full">
+
+            <main class=" mt-[90px] w-full">
                 <SliderHome/>
-                <div class=" relative w-full h-[900px]  justify-items-center ">
+
+                {/* Các sản phẩm mới */}
+                <div class=" relative w-full h-[900px]  justify-items-center "> 
+                    {/* Tiêu đề */}
                     <div class="h-1/5 w-10/12 ">
-                        <Title_More type={"SẢN PHẨM MỚI"}/>
+                        <TitleMore type={"SẢN PHẨM MỚI"}/>
                     </div>
-                    <div class="h-4/5 w-10/12 grid grid-cols-4 gap-10 "  >
-                        {ListProduct.map((product) => (
-                            <Product  price={product.price} img={product.img} name={product.name} sale={product.sale} />
-                        ))}
-                    </div>
-                    <div class=" absolute justify-center justify-items-center h-full w-full top-0 left-0">
-                        <div class="  w-full h-1/5"></div>
-                        <div class="  h-4/5 mx-10 w-11/12 flex justify-between">
-                            <button class=" p-1 pr-[6px] bg-opacity-30 rounded-full ">
-                                <img src={back} alt="none"/>
-                            </button>
-                            <button class=" p-1 pr-[6px] bg-white bg-opacity-30 rounded-full ">
-                                <img  src={forward} alt="none"/>
-                            </button>
+                    {/* Danh sách sản phẩm */}
+                    <div className='w-full flex flex-row justify-center'>                       
+                        <button class=" p-1 pr-2 bg-opacity-30 rounded-full ">
+                            <img src={back} alt="none"/>
+                        </button>                        
+                        <div class="h-4/5 w-10/12 grid grid-cols-4 gap-10 "  > 
+                            
+                            {ListProduct.map((product) => (
+                                <Product price={product.price} img={product.img} name={product.name} sale={product.sale} />                            
+                            ))}
+                            
                         </div>
-                    </div>                    
+                        <button class=" p-1 pr-2 bg-white bg-opacity-30 rounded-full ">
+                                <img  src={forward} alt="none"/>
+                        </button>
+                    </div>                                       
                 </div>
+
                 <Line></Line>
-                <div class=" relative w-full h-[900px]  justify-items-center ">
+
+                {/* Các sản phẩm nổi bật */}
+                <div class=" relative w-full h-[900px]  justify-items-center "> 
+                    {/* Tiêu đề */}
                     <div class="h-1/5 w-10/12 ">
-                        <Title_More type={"SẢN PHẨM NỔI BẬT"}/>
+                        <TitleMore type={"SẢN PHẨM NỔI BẬT"}/>
                     </div>
-                    <div class="h-4/5 w-10/12 grid grid-cols-4 gap-10 ">
-                        {ListProduct.map((product) => (
-                            <Product  price={product.price} img={product.img} name={product.name} sale={product.sale} />
-                        ))}
-                    </div>
-                    <div class=" absolute justify-center justify-items-center h-full w-full top-0 left-0">
-                        <div class="  w-full h-1/5"></div>
-                        <div class="  h-4/5 mx-10 w-11/12 flex justify-between">
-                            <button class=" p-1 pr-[6px] bg-opacity-30 rounded-full ">
-                                <img src={back} alt="none"/>
-                            </button>
-                            <button class=" p-1 pr-[6px] bg-white bg-opacity-30 rounded-full ">
-                                <img  src={forward} alt="none"/>
-                            </button>
+                    {/* Danh sách sản phẩm */}
+                    <div className='w-full flex flex-row justify-center'>                       
+                        <button class=" p-1 pr-2 bg-opacity-30 rounded-full ">
+                            <img src={back} alt="none"/>
+                        </button>                        
+                        <div class="h-4/5 w-10/12 grid grid-cols-4 gap-10 "  > 
+                            
+                            {ListProduct.map((product) => (
+                                <Product price={product.price} img={product.img} name={product.name} sale={product.sale} />                            
+                            ))}
+                            
                         </div>
-                    </div>                    
+                        <button class=" p-1 pr-2 bg-white bg-opacity-30 rounded-full ">
+                                <img  src={forward} alt="none"/>
+                        </button>
+                    </div>                                       
                 </div>
+                
                 <Line/>
-                <div class=" relative w-full h-[900px]  justify-items-center ">
+
+                {/* Các sản phẩm sale */}
+                <div class=" relative w-full h-[900px]  justify-items-center "> 
+                    {/* Tiêu đề */}
                     <div class="h-1/5 w-10/12 ">
-                        <Title_More type={"SALE"}/>
+                        <TitleMore type={"SALE"}/>
                     </div>
-                    <div class="h-4/5 w-10/12 grid grid-cols-4 gap-10 ">
-                        {ListProduct.map((product) => (
-                            <Product  price={product.price} img={product.img} name={product.name} sale={product.sale} />
-                        ))}
-                    </div>
-                    <div class=" absolute justify-center justify-items-center h-full w-full top-0 left-0">
-                        <div class="  w-full h-1/5"></div>
-                        <div class="  h-4/5 mx-10 w-11/12 flex justify-between">
-                            <button class=" p-1 pr-[6px] bg-opacity-30 rounded-full ">
-                                <img src={back} alt="none"/>
-                            </button>
-                            <button class=" p-1 pr-[6px] bg-white bg-opacity-30 rounded-full ">
-                                <img  src={forward} alt="none"/>
-                            </button>
+                    {/* Danh sách sản phẩm */}
+                    <div className='w-full flex flex-row justify-center'>                       
+                        <button class=" p-1 pr-2 bg-opacity-30 rounded-full ">
+                            <img src={back} alt="none"/>
+                        </button>                        
+                        <div class="h-4/5 w-10/12 grid grid-cols-4 gap-10 "  > 
+                            
+                            {ListProduct.map((product) => (
+                                <Product price={product.price} img={product.img} name={product.name} sale={product.sale} />                            
+                            ))}
+                            
                         </div>
-                    </div>                    
+                        <button class=" p-1 pr-2 bg-white bg-opacity-30 rounded-full ">
+                                <img  src={forward} alt="none"/>
+                        </button>
+                    </div>                                       
                 </div>
-            </div>
+            </main>
             <Footer/>
+            
         </div>
     )
 }

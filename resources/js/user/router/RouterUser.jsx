@@ -1,11 +1,16 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Router, Routes } from "react-router-dom";
 
 import Category from "../pages/Category";
 import HomeUser from "../pages/HomeUser";
 import AboutUs from "../pages/AboutUs";
+import CheckOrder from "../pages/CheckOrder";
+import Cart from "../pages/Cart";
+import Search from "../pages/Search";
+import DetailProduct from "../pages/DetailProduct";
 
-const Router_User = () => {
+
+const RouterUser = () => {
     return (
         <div>
             <Routes>
@@ -22,9 +27,13 @@ const Router_User = () => {
                 <Route path="/hat" element={<Category cate={"Nón"}/>}/>
                 <Route path="/wallet" element={<Category cate={"Ví"}/>}/>
                 <Route path="/about_us" element={<AboutUs/>}/>
+                <Route path="/cart" element={<Cart/>}/>
+                <Route path="/check_order" element={<CheckOrder/>}/>
+                <Route path="/search" element={<Search/>}/>
+                <Route path="/detail_product" element={<DetailProduct/>}/>
             </Routes>
         </div>
     )
 }
 
-export default Router_User;
+export default RouterUser;
