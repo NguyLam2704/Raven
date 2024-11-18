@@ -18,20 +18,16 @@ class BillController extends Controller
     public function index(Request $request)
     {
         $filter = new BillsFilter();
-        $queryItems = $filter->transform($request); //[['column','operator','value']]
-        if (count($queryItems) == 0)
+        $queryItems = $filter->transform($request); //chuyển đổi các tham số trong $request thành một mảng [['column','operator','value']]
+        if (count($queryItems) == 0) // Nếu không có điều kiện lọc
         {
-            return new BillCollection(Bill::paginate());
+            return new BillCollection(Bill::paginate()); //paginate chia nhỏ danh sách dữ liệu thành các trang giúp giảm tải 
         }
         else
         {
-            $size = Bill::where($queryItems)->paginate();
+            $size = Bill::where($queryItems)->paginate(); //truy vấn các bản ghi trong bills dựa trên $queryItems thông qua where()
             return new BillCollection($size->appends($request->query()));
         }
-        Bill::where($queryItems);
-        // return new SizeCollection(Size::all());
-        // $fillable = new CustomerQuery();
-        return new BillCollection(Bill::paginate());
     }
 
     /**
@@ -55,6 +51,7 @@ class BillController extends Controller
      */
     public function show(Bill $bill)
     {
+        //return bill dua tren id 
         return new BillResource($bill);
     }
 

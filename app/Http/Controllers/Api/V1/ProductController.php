@@ -27,7 +27,6 @@ class ProductController extends Controller
         {
             $product = $product->with('productImage');
         }
-
         return new ProductCollection($product->paginate()->appends($request->query()));
     }
 

@@ -18,20 +18,16 @@ class ProductImageController extends Controller
     public function index(Request $request)
     {
         $filter = new ProductImagesFilter();
-        $queryItems = $filter->transform($request); //[['column','operator','value']]
-        if (count($queryItems) == 0)
+        $queryItems = $filter->transform($request); //chuyển đổi các tham số  trong $request thành một mảng [['column','operator','value']]
+        if (count($queryItems) == 0)// Nếu không có điều kiện lọc
         {
-            return new ProductImageCollection(ProductImage::paginate());
+            return new ProductImageCollection(ProductImage::paginate());//paginate chia nhỏ danh sách dữ liệu
         }
         else
         {
-            $size = ProductImage::where($queryItems)->paginate();
+            $size = ProductImage::where($queryItems)->paginate();//paginate chia nhỏ danh sách dữ liệu
             return new ProductImageCollection($size->appends($request->query()));
         }
-        ProductImage::where($queryItems);
-        // return new SizeCollection(Size::all());
-        // $fillable = new CustomerQuery();
-        return new ProductImageCollection(ProductImage::paginate());
     }
 
     /**

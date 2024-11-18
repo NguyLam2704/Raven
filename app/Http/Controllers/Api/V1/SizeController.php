@@ -16,24 +16,19 @@ class SizeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    //Fetching all data from server,HE
     public function index(Request $request)
     {
         $filter = new SizesFilter();
-        $queryItems = $filter->transform($request); //[['column','operator','value']]
-        if (count($queryItems) == 0)
+        $queryItems = $filter->transform($request); //chuyển đổi các tham số  trong $request thành một mảng [['column','operator','value']]
+        if (count($queryItems) == 0)// Nếu không có điều kiện lọc
         {
-            return new SizeCollection(Size::paginate());
+            return new SizeCollection(Size::paginate());//paginate chia nhỏ danh sách dữ liệu
         }
         else
         {
-            $size = Size::where($queryItems)->paginate();
+            $size = Size::where($queryItems)->paginate();//truy vấn dựa trên $queryItems thông qua where()
             return new SizeCollection($size->appends($request->query()));
         }
-        Size::where($queryItems);
-        // return new SizeCollection(Size::all());
-        // $fillable = new CustomerQuery();
-        return new SizeCollection(Size::paginate());
     }
 
     /**
