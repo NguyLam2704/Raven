@@ -15,14 +15,16 @@ const Product = ({ img, name, price, sale }) => {
                 )}
                 <img className="w-[230px] h-[235px] my-2" src={img} alt={name} />
                 <div className="text-center text-base font-medium">{name}</div>
-                {sale === 0 ? (
-                    <div className="mt-3 mb-5 h-5 flex text-center text-xl font-medium text-[#a91d3a]">{price.toLocaleString()}đ</div>
-                ) : (
+                {sale > 0 ? 
+                (
                     <div className='mt-3 mb-5 h-5 flex text-center text-xl font-medium'>
                         <div className="text-[#a91d3a]">{discountedPrice.toLocaleString()}đ</div>
                         <div className="ml-4 text-[#9f9f9f] line-through">{(price).toLocaleString()}đ</div>               
                     </div>
-                )}
+                ) :
+                (
+                    <div className="mt-3 mb-5 h-5 flex text-center text-xl font-medium text-[#a91d3a]">{price.toLocaleString()}đ</div>
+                ) }
             </div>
         </div>
     );

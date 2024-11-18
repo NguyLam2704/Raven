@@ -18,20 +18,16 @@ class ProColorSizeController extends Controller
     public function index(Request $request)
     {
         $filter = new ProColorSizeFilter();
-        $queryItems = $filter->transform($request); //[['column','operator','value']]
-        if (count($queryItems) == 0)
+        $queryItems = $filter->transform($request); //chuyển đổi các tham số  trong $request thành một mảng [['column','operator','value']]
+        if (count($queryItems) == 0)// Nếu không có điều kiện lọc
         {
-            return new ProColorSizeCollection(ProColorSize::paginate());
+            return new ProColorSizeCollection(ProColorSize::paginate());//paginate chia nhỏ danh sách dữ liệu
         }
         else
         {
             $size = ProColorSize::where($queryItems)->paginate();
-            return new ProColorSizeCollection($size->appends($request->query()));
+            return new ProColorSizeCollection($size->appends($request->query()));//truy vấn dựa trên $queryItems thông qua where()
         }
-        ProColorSize::where($queryItems);
-        // return new SizeCollection(Size::all());
-        // $fillable = new CustomerQuery();
-        return new ProColorSizeCollection(ProColorSize::paginate());
     }
 
     /**
