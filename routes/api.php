@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\AdminController;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Dashboard\DashboardController;
 use App\Http\Controllers\Api\V1\BillController;
 use App\Http\Controllers\Api\V1\ColorController;
 use App\Http\Controllers\Api\V1\ProductController;
@@ -41,3 +43,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], f
 Route::post('/admin/auth/register', [AuthController::class, 'register']);
 Route::post('/admin/auth/login', [AuthController::class, 'login']);
 Route::post('/admin/auth/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::put('/admin/{id}', [AdminController::class, 'updateAdmin']);
+
+Route::get('/dashboard/thongke', [DashboardController::class, 'thongke']);
+Route::get('/dashboard/donhang', [DashboardController::class, 'donhang']);
+Route::post('/dashboard/chitiet/{id}', [DashboardController::class, 'chitiet']);
