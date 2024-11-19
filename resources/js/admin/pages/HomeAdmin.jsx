@@ -16,7 +16,6 @@ import trendupIcon from '../asset/home/trending_up.svg'
 import trenddownIcon from '../asset/home/trending_down.svg'
 import loading from '../asset/loading.svg'
 import axios from 'axios';
-import "react-activity/dist/Dots"
 
 // lấy dữ liệu từ api
 const fetchThongke = async () => {

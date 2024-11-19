@@ -29,7 +29,7 @@ const Login = () => {
     // Kiểm tra xác thực
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Đăng nhập thành công");
+        
         console.log(formData);
         const res = await fetch("/api/admin/auth/login", {
             method: "post",
@@ -44,6 +44,7 @@ const Login = () => {
         if (data.errors) {
             setErrors(data.errors);
         } else {
+            console.log("Đăng nhập thành công");
             const admin = data.admin;
             admin.account = formData.account;
             admin.password = formData.password;
@@ -52,9 +53,13 @@ const Login = () => {
             // Lưu các giá trị trả về
             localStorage.setItem("admin", JSON.stringify(admin));
             localStorage.setItem("token", data.token);
+
+            // Điều hướng về trang chủ admin
             navigate("/home_admin");
         }
     };
+
+  
 
     return (
         <div
@@ -96,11 +101,11 @@ const Login = () => {
                                     account: e.target.value,
                                 })
                             }
-                            value={formData.account}
+                            defaultValue={formData.account}
                         />
                         {errors.account && (
                             <p className=" text-[12px] text-red-500">
-                                {errors.account[0]}
+                                {errors.account}
                             </p>
                         )}
                     </div>
@@ -116,7 +121,7 @@ const Login = () => {
                             id="password"
                             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                             placeholder="Password"
-                            value={formData.password}
+                            defaultValue={formData.password}
                             minLength={3}
                             onChange={(e) =>
                                 setFormData({
@@ -134,8 +139,8 @@ const Login = () => {
                         />
 
                         {errors.password && (
-                            <p className=" text-[12px] text-red-500"> 
-                                {errors.password[0]}
+                            <p className=" text-[12px] text-red-500">
+                                {errors.password}
                             </p>
                         )}
                     </div>
