@@ -1,11 +1,11 @@
 import React from "react";
 
-import Router_User from "./router/router_user";
+import RouterUser from "./router/RouterUser";
 
 const App_User = () => {
     return(
         <div>
-           <Router_User/>
+           <RouterUser/>
         </div>
     )
 }

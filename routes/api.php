@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\V1\ProColorSizeController;
 use App\Http\Controllers\Api\V1\ProductImageController;
 use App\Http\Controllers\Api\V1\ProductOrderController;
 use App\Http\Controllers\Api\V1\TestController;
+use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +37,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], f
     Route::apiResource('productImage', ProductImageController::class);
     Route::apiResource('order', OrderController::class);
     Route::apiResource('bill', BillController::class);
+    Route::apiResource('user', UserController::class);
+    Route::apiResource('productOrder', ProductOrderController::class);
     // Route::get('productOrder/{field1}/{field2}', [ProductOrderController::class, 'show']);
 });
 

@@ -2,38 +2,49 @@ import React, { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 
+//Tạo các thành phần của biểu đồ
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const MonthlyRevenueChart = ({ data }) => {
+  //Tạo trạng thái tháng đang được chọn, giá trị mặc định là tháng đầu tiên
   const [selectedMonth, setSelectedMonth] = useState(Object.keys(data)[0]);
 
+  //Hàm này xử lý sự kiện khi người dùng thay đổi tháng được chọn 
+  // Nó cập nhật selectedMonth với giá trị được chọn.
   const handleMonthChange = (event) => {
     setSelectedMonth(event.target.value);
   };
 
+
+  //Cấu hình dữ liệu cho biểu đồ
   const chartData = {
-    labels: Object.keys(data[selectedMonth]),
+    labels: Object.keys(data[selectedMonth]), //Hiển thị nhãn trên trục X
     datasets: [
       {
-        label: 'Doanh thu',
-        data: Object.values(data[selectedMonth]),
+        label: 'Doanh thu', //Nhãn hiển thị của tập dữ liệu
+        data: Object.values(data[selectedMonth]), //dữ liệu của biểu đồ
+        //thiết lập màu sắc và hiển thị đường kẻ và các điểm trên biểu đồ
         borderColor: 'blue',
         backgroundColor: 'blue',
         fill: false,
-        pointRadius: 5,
-        pointHoverRadius: 7,
+        pointRadius: 3,
+        pointHoverRadius: 5,
+        borderWidth: 1,
         pointBackgroundColor: 'blue',
       },
     ],
   };
 
   const options = {
+    //cấu hình các trục
     scales: {
+      //trục y bắt đầu từ 0 - 10000000, bước nhảy 1000000
       y: {
         beginAtZero: true,
         min: 0,
         max: 10000000,
         stepSize: 1000000,
+        //tùy chỉnh các nhãn trên trục y để hiển thị dưới dạng số có dấu phân cách hàng nghìn.
         ticks: {
           callback: function(value) {
             return value.toLocaleString();
@@ -42,14 +53,15 @@ const MonthlyRevenueChart = ({ data }) => {
       },
       x: {
         ticks: {
-          autoSkip: false,
+          autoSkip: false, //đảm bảo tất cả các nhãn điều được hiển thị
         },
       },
     },
     plugins: {
       legend:{
-        display: false,
+        display: false, //ẩn chú thích
       },
+      //tùy chỉnh khi chuột di chuyển đến
       tooltip: {
         callbacks: {
           label: function(tooltipItem) {

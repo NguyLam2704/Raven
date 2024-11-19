@@ -17,20 +17,16 @@ class CategoryTypeController extends Controller
     public function index(Request $request)
     {
         $filter = new CategoryTypesFilter();
-        $queryItems = $filter->transform($request); //[['column','operator','value']]
-        if (count($queryItems) == 0)
+        $queryItems = $filter->transform($request); //chuyển đổi các tham số trong $request thành một mảng [['column','operator','value']]
+        if (count($queryItems) == 0)// Nếu không có điều kiện lọc
         {
-            return new CategoryTypeCollection(CategoryType::paginate());
+            return new CategoryTypeCollection(CategoryType::paginate());//paginate chia nhỏ danh sách dữ liệu
         }
         else
         {
-            $size = CategoryType::where($queryItems)->paginate();
+            $size = CategoryType::where($queryItems)->paginate();//truy vấn các bản ghi trong category dựa trên $queryItems thông qua where()
             return new CategoryTypeCollection($size->appends($request->query()));
         }
-        CategoryType::where($queryItems);
-        // return new SizeCollection(Size::all());
-        // $fillable = new CustomerQuery();
-        return new CategoryTypeCollection(CategoryType::paginate());
     }
 
     /**

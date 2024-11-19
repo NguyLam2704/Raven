@@ -14,9 +14,11 @@ const Header = () => {
     const navigate = useNavigate();
     const dropdownRef = useRef(null);
     const token = "Bearer " + localStorage.getItem("token");
+    const admin = JSON.parse(localStorage.getItem("admin"));
 
+    //Bật hoặc tắt popup quản lý tài khoản,...
     const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
+        setIsDropdownOpen(!isDropdownOpen); 
     };
 
     const handleLogout = async (e) => {
@@ -48,6 +50,8 @@ const Header = () => {
         navigate("/login_admin");
     };
 
+
+    //Click ra ngoài sẽ đóng popup quản lý tài khoản, thay đổi mật khẩu, đăng xuất
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (
@@ -59,6 +63,7 @@ const Header = () => {
         };
 
         document.addEventListener("mousedown", handleClickOutside);
+
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
@@ -69,18 +74,19 @@ const Header = () => {
             <h1 className="text-4xl text-blue-600 text-center font-bold w-full z-10">
                 ADMIN DASHBOARD
             </h1>
-            <div className="user-info flex items-center w-1/6 absolute h-full right-5 z-20">
+            <div className="user-info flex items-center w-[250px] absolute h-full right-5 z-20">
                 <img
                     src="https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg"
                     alt="User Avatar"
                     className="avatar w-16 h-16 rounded-full mr-2 border-2"
                 />
-                <div className="user-name flex flex-col items-start relative ">
-                    <span className="block text-lg">Luan dz</span>
-                    <span className="role text-xs text-gray-600">Admin</span>
+                <div className="user-name flex flex-col items-start relative w-[100px] ">
+                    <p className="block text-lg truncate w-[100px]">{admin.name}</p>
+                    <p className="role text-xs text-gray-600">Admin</p>
                 </div>
                 <ul
-                    className={`user-dropdown absolute top-20 bg-white shadow-md list-none p-2 w-44 z-10 rounded-2xl border-2 ${
+                    ref={dropdownRef}
+                    className={`user-dropdown absolute top-20 right-10 bg-white shadow-md list-none p-2 w-44 z-10 rounded-2xl border-2 ${
                         isDropdownOpen ? "block" : "hidden"
                     }`}
                 >
@@ -128,10 +134,10 @@ const Header = () => {
                 <div>
                     <button
                         type="button"
-                        className="dropdown-btn bg-none text-xs cursor-pointer ml-6 z-20 hover:text-blue-600"
+                        className="dropdown-btn bg-none text-xs cursor-pointer ml-4 hover:text-blue-600 focus:text-blue-600"
                         onClick={toggleDropdown}
                     >
-                        <FontAwesomeIcon icon={faCircleChevronDown} />
+                        <FontAwesomeIcon icon={faCircleChevronDown} size="xl" />
                     </button>
                 </div>
             </div>
