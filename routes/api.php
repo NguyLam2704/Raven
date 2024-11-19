@@ -26,7 +26,7 @@ Route::get('/user', function (Request $request) {
 //api/v1
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], function () {
     //add route here
-    Route::apiResource('size', SizeController::class);
+    Route::apiResource('size', SizeController::class); 
     Route::apiResource('color', ColorController::class);
     Route::apiResource('product', ProductController::class);
     Route::apiResource('category', CategoryController::class);
@@ -38,6 +38,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], f
     Route::apiResource('bill', BillController::class);
     Route::apiResource('user', UserController::class);
     Route::apiResource('productOrder', ProductOrderController::class);
+    Route::post('orderInfo', [OrderController::class, 'orderInfo']); //check order : api/v1/orderInfo
     // Route::get('productOrder/{field1}/{field2}', [ProductOrderController::class, 'show']);
 });
 

@@ -18,20 +18,16 @@ class ProductOrderController extends Controller
     public function index(Request $request)
     {
         $filter = new ProductOrderFilter();
-        $queryItems = $filter->transform($request); //[['column','operator','value']]
-        if (count($queryItems) == 0)
+        $queryItems = $filter->transform($request); //chuyển đổi các tham số  trong $request thành một mảng [['column','operator','value']]
+        if (count($queryItems) == 0)// Nếu không có điều kiện lọc
         {
-            return new ProductOrderCollection(ProductOrder::paginate());
+            return new ProductOrderCollection(ProductOrder::paginate());//paginate chia nhỏ danh sách dữ liệu
         }
         else
         {
-            $size = ProductOrder::where($queryItems)->paginate();
+            $size = ProductOrder::where($queryItems)->paginate();//truy vấn dựa trên $queryItems thông qua where()
             return new ProductOrderCollection($size->appends($request->query()));
         }
-        ProductOrder::where($queryItems);
-        // return new SizeCollection(Size::all());
-        // $fillable = new CustomerQuery();
-        return new ProductOrderCollection(ProductOrder::paginate());
     }
 
     /**

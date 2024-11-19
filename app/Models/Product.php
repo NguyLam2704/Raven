@@ -21,16 +21,11 @@ class Product extends Model
         'dateposted'
     ];
 
-    //Create relationship to ProductImage
+    //Create relationship to ProductImage : 1 product - hasMany productImage
     // first prod_id is foreigin key in product_image table
     // second prod_id is key in table product
     public function productImage(): HasMany
     {
       return $this->hasMany(ProductImage::class, 'prod_id', 'prod_id');
     } 
-
-    // public function proColorSize(): MorphMany
-    // {
-    //     return $this->morphMany(ProColorSize::class,'')
-    // }
 }

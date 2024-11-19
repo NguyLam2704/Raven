@@ -18,12 +18,10 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $filter = new ProductsFilter();
-        $filterItems = $filter->transform($request); //[['column','operator','value']]
-        /*if the query has 'includeImage', retrieve the product with productImage*/
-        /* The url: http://127.0.0.1:8000/api/v1/product?includeImage=true*/
-        $includePicture = $request->query('includeImage');
+        $filterItems = $filter->transform($request); //chuyển đổi các tham số  trong $request thành một mảng [['column','operator','value']]
+        $includePicture = $request->query('includeImage'); //if the query has 'includeImage', retrieve the product with productImage
         $product = Product::where($filterItems);
-        if($includePicture)
+        if($includePicture)//if the query has 'includeImage'
         {
             $product = $product->with('productImage');
         }

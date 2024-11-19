@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -13,6 +14,12 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
     protected $table = 'users';
     protected $primaryKey = 'user_id';
+
+    // define relationship of user and order
+    public function order():HasMany
+    {
+        return $this->hasMany(Order::class,'user_id','user_id');
+    }
     // /**
     //  * The attributes that are mass assignable.
     //  *

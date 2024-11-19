@@ -25,8 +25,8 @@ class ColorController extends Controller
         }
         else
         {
-            $size = Color::where($queryItems)->paginate();
-            return new ColorCollection($size->appends($request->query()));//truy vấn các bản ghi trong category dựa trên $queryItems thông qua where()
+            $size = Color::where($queryItems)->paginate();//truy vấn dựa trên $queryItems thông qua where()
+            return new ColorCollection($size->appends($request->query()));
         }
     }
 

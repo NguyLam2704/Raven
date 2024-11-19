@@ -7,9 +7,9 @@ use App\Filters\ApiFilter;
 use function Laravel\Prompts\form;
 
 class BillsFilter extends ApiFilter{
-    // can field sizeCode with =,!= operator
+    // operator apply for field
     protected $safeParms = [
-        'orderId' => ['eq', 'ne'],
+        'orderId' => ['eq', 'ne'],  
         'totalCost' => ['eq', 'ne', 'lt', 'gt', 'gte', 'lte'],
     ];
     // map column with field in color table

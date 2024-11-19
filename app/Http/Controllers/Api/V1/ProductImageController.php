@@ -25,7 +25,7 @@ class ProductImageController extends Controller
         }
         else
         {
-            $size = ProductImage::where($queryItems)->paginate();//paginate chia nhỏ danh sách dữ liệu
+            $size = ProductImage::where($queryItems)->paginate();//truy vấn dựa trên $queryItems thông qua where()
             return new ProductImageCollection($size->appends($request->query()));
         }
     }
