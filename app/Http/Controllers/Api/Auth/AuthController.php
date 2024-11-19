@@ -37,7 +37,11 @@ class AuthController extends Controller
         $request->validate([
             'account' => 'required|max:40',
             'password' => 'required'
-        ],['']);
+        ],[
+            'account.required' => 'Không được để trống tài khoản',
+            'password.required' => 'Không được để trống mật khẩu',
+            
+        ]);
 
         $admin = Admin::where('account', $request->account)->first();
 

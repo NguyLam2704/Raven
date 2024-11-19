@@ -5,7 +5,7 @@ import bg_login from "../asset/bg_login.png";
 const ResetPassword = () => {
     const [formData, setFormData] = useState({
         new_password: "",
-        new_password_confirmation:""
+        new_password_confirmation: "",
     });
     const [errors, setErrors] = useState({});
     const [isNotExists, setNotExists] = useState(true);
@@ -18,18 +18,18 @@ const ResetPassword = () => {
         const checkToken = async () => {
             const res = await fetch(url, {
                 method: "post",
-                body: JSON.stringify({token: token}),
+                body: JSON.stringify({ token: token }),
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json",
                 },
             });
 
-            if (res.status == 200 ) {
+            if (res.status == 200) {
                 setNotExists(false);
             }
             const data = await res.json();
-            setFormData({...formData,gmail: data.gmail})
+            setFormData({ ...formData, gmail: data.gmail });
             console.log(formData);
         };
 
@@ -57,10 +57,9 @@ const ResetPassword = () => {
             setErrors(data.errors);
         } else {
             console.log("Thay đổi mk thành công");
+            // Điều hướng về trang đăng nhập
+            navigate("/login_admin");
         }
-
-        // Điều hướng về trang đăng nhập
-        navigate("/login_admin");
     };
 
     return (
@@ -105,9 +104,9 @@ const ResetPassword = () => {
                                     id="password_new"
                                     className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                                 />
-                                {errors && (
+                                {errors.new_password && (
                                     <p className=" text-[12px] text-red-500">
-                                        {errors.message}
+                                        {errors.new_password}
                                     </p>
                                 )}
                             </div>
@@ -137,9 +136,9 @@ const ResetPassword = () => {
                                     id="confirm_password"
                                     className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                                 />
-                                {errors && (
+                                {errors.new_password_confirmation && (
                                     <p className=" text-[12px] text-red-500">
-                                        {errors.message}
+                                        {errors.new_password_confirmation}
                                     </p>
                                 )}
                             </div>

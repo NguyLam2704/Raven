@@ -84,7 +84,7 @@ const ForgotPass = () => {
                                         });
                                     }}
                                 />
-                                {errors.account && (
+                                {errors.email && (
                                     <p className=" text-[12px] text-red-500">
                                         {errors.email}
                                     </p>

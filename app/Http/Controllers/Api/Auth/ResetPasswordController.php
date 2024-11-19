@@ -17,7 +17,7 @@ class ResetPasswordController extends Controller
         $email = $request->validate([
             'email' => 'required|email'
         ], [
-            'email.required' => 'hahaha'
+            'email.required' => 'Không được để trống email'
         ]);
         $admin = Admin::where('email', $email)->first();
 
