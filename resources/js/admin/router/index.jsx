@@ -8,6 +8,8 @@ import ChangePassword from '../pages/ChangePassword'
 import Order from "../pages/OrderAdmin";
 import Customer from "../pages/CustomerAdmin";
 import ForgotPass from "../pages/ForgotPass";
+import Products from "../pages/ProductsAdmin";
+import AddProduct from "../pages/AddProduct";
 
 const Index = () => {
     return (
@@ -20,6 +22,8 @@ const Index = () => {
                 <Route path="/customer_admin" element={<Customer/>}/>
                 <Route path="/account_manage" element={<AccountManage/>}/>
                 <Route path="/change_password" element={<ChangePassword/>}/>
+                <Route path="/products_admin" element={<Products/>}/>
+                <Route path="/addproduct_admin" element={<AddProduct/>}/>
             </Routes>
         </div>
     )

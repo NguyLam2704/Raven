@@ -1,12 +1,24 @@
 import React from 'react';
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartSimple, faListCheck, faShapes, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { faChartSimple, faListCheck, faShapes, faUsers, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
 
 const Sidebar = () => {
+  //Khởi tạo các biến trạng thái
   const [isProductMenuOpen, setIsProductMenuOpen] = useState(false);
+  const [selectedMenu, setSelectedMenu] = useState('/home_admin');
+  const location = useLocation() //Lấy địa chỉ hiện tại đang trỏ đến
 
+  useEffect(() => {
+    setSelectedMenu(location.pathname); // Reload web khi URL thay đổi
+     //đang ở trang sản phẩm hoặc thêm sản phẩm thì mở dropdown
+    if (location.pathname === '/products_admin' || location.pathname === '/addproduct_admin') {
+      setIsProductMenuOpen(true);
+    }
+  }, [location]);
+
+  //Mở dropdown sản phẩm
   const toggleProductMenu = () => {
     setIsProductMenuOpen(!isProductMenuOpen);
   };
@@ -16,26 +28,62 @@ const Sidebar = () => {
       <h2 className="mb-7 text-2xl text-center text-black"><strong className="mb-7 text-2xl text-center text-blue-600">Raven</strong> Store</h2>
       <ul className="list-none p-0">
           <li className="mb-2">
-            <Link to="/home_admin" className="text-black no-underline text-2xl p-2 block rounded font-bold hover:bg-blue-600 hover:text-white">
+            <Link to="/home_admin" 
+             className={`text-black no-underline text-2xl p-2 block rounded font-bold
+             ${ selectedMenu === '/home_admin' ? "bg-blue-600 text-white": "text-black"} 
+              hover:bg-blue-900 hover:text-white`}
+              onClick={() => handleMenuClick('/home_admin')}  
+            >
               <FontAwesomeIcon icon={faChartSimple} className='mr-2' />
               Tổng quan</Link>
           </li>
           <li className="mb-2">
-            <Link to="/order_admin" className="text-black no-underline text-2xl p-2 block rounded font-bold hover:bg-blue-600 hover:text-white">
+            <Link to="/order_admin" 
+             className={`text-black no-underline text-2xl p-2 block rounded font-bold
+             ${ selectedMenu === '/order_admin' ? "bg-blue-600 text-white": "text-black"} 
+              hover:bg-blue-900 hover:text-white`}
+              onClick={() => handleMenuClick('/order_admin')}  
+            >
             <FontAwesomeIcon icon={faListCheck} className='mr-2' />
               Đơn hàng</Link>
           </li>
           <li className="relative mb-2">
-            <button onClick={toggleProductMenu} className=" text-black text-2xl text-left p-2 block w-full rounded font-bold hover:bg-blue-600 hover:text-white">
-            <FontAwesomeIcon icon={faShapes} className='mr-2' />
-              Sản phẩm</button>
+            <button onClick={toggleProductMenu} 
+              className={`text-black text-2xl text-left p-2 block w-full rounded font-bold hover:bg-blue-900 hover:text-white
+                ${isProductMenuOpen  ? "bg-blue-600 text-white": "text-black"}`}
+              >
+              <FontAwesomeIcon icon={faShapes} className='mr-2' />
+              Sản phẩm
+              {isProductMenuOpen ? <FontAwesomeIcon icon={faCaretUp} className='ml-2' size='xs'/> : <FontAwesomeIcon icon={faCaretDown} className='ml-2' size='xs'/>}
+              
+            </button>
             <ul className={`dropdown-menu list-none pl-5 ${isProductMenuOpen ? 'block' : 'hidden'}`}>
-              <li className="m-4"><a href="#" className="font-normal text-left block h-8 text-base text-black hover:bg-blue-600 hover:text-white">Sản phẩm hiện có</a></li>
-              <li className="m-4"><a href="#" className="font-normal text-left block h-8 text-base text-black hover:bg-blue-600 hover:text-white">Thêm sản phẩm mới</a></li>
+              <li className="m-4">
+                <Link to="/products_admin" 
+                  className={`font-normal text-left block h-6 text-base text-black
+                  ${ selectedMenu === '/products_admin' ? " text-blue-600": "text-black"} 
+                hover:bg-blue-900 hover:text-white`}
+                  onClick={() => handleMenuClick('/products_admin')}
+                >
+                  Sản phẩm hiện có</Link>
+              </li>
+              <li className="m-4">
+                <Link to="/addproduct_admin"  
+                  className={`font-normal text-left block h-6 text-base text-black
+                  ${ selectedMenu === '/addproduct_admin' ? " text-blue-600": "text-black"} 
+                hover:bg-blue-900 hover:text-white`}
+                  onClick={() => handleMenuClick('/addproduct_admin')}>
+                  Thêm sản phẩm mới</Link>
+                </li>
             </ul>
           </li>
           <li>
-            <Link to="/customer_admin" className="text-black no-underline text-2xl p-2 flex rounded font-bold hover:bg-blue-600 hover:text-white active:bg-blue-600 active:text-white">
+            <Link to="/customer_admin" 
+             className={`text-black no-underline text-2xl p-2 block rounded font-bold
+              ${ selectedMenu === '/customer_admin' ? "bg-blue-600 text-white": "text-black"} 
+               hover:bg-blue-900 hover:text-white`}
+               onClick={() => handleMenuClick('/customer_admin')}  
+             >
             <FontAwesomeIcon icon={faUsers} size="sm" className='mr-2 pt-1' />
               Khách hàng</Link>
           </li>

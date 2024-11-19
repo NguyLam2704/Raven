@@ -5,7 +5,7 @@ const ProductsList = ({data}) => {
 
     return(
         <div>
-            <div className="max-h-[370px] overflow-y-auto">
+            <div className="max-h-[370px]">
                 {data.map((product) => (
                     <div key={product.id} className="flex h-[70px] my-1 items-center rounded-[5px] border-[0.5px] border-[#A7E6FF]">
                         <div className="w-[20%]">
@@ -18,7 +18,7 @@ const ProductsList = ({data}) => {
                         </div>
 
                         <div className="w-[25%] mr-1">
-                            <p className="text-right text-[13px] font-semibold h-[35px] flex items-center justify-end">Đã bán: <span className="text-[#C73659]">{product.quantity_sold}</span></p>
+                            <p className="text-right text-[13px] font-semibold h-[35px] flex items-center justify-end">Đã bán:&nbsp;<span className="text-[#C73659]">{product.quantity_sold}</span></p>
                             <p className="text-right text-[13px] font-extrabold text-[#C73659]">{(product.price * product.quantity_sold).toLocaleString()}đ</p>
                         </div>
 

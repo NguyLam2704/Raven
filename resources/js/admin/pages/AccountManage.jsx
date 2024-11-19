@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
+import Swal from "sweetalert2";
 import NavigationAdmin from "../components/NavigationAdmin";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faFloppyDisk, faBan} from '@fortawesome/free-solid-svg-icons'
+
 
 const AccountManage = () => {
     // Lấy admin từ trong local storage
@@ -9,9 +13,31 @@ const AccountManage = () => {
     const [email, setEmail] = useState(admin.email);
     const [phoneNum, setPhoneNum] = useState(admin.phoneNumber);
     const [errors, setErrors] = useState({});
+    const [isEditing, setIsEditing] = useState(false);
+
+    //bật tắt edit
+    const handleEditing = () => {
+        if (!isEditing){
+            setIsEditing(true);
+            return;
+        }
+    }
+
+    //Khi bấm hủy chỉnh sửa thì set giá trị ban đàu
+    const setFalseEditing = () => {
+        setIsEditing(false);
+        setName(admin.name);
+        setEmail(admin.email);
+        setPhoneNum(admin.phoneNumber);
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        //Dữ liệu không thay đổi thì không thực hiện hàm dưới...
+        if (name == admin.name && email == admin.email && phoneNum == admin.phoneNumber){
+            return;
+        }
 
         const formData = {
             name: name,
@@ -32,9 +58,24 @@ const AccountManage = () => {
 
         if (data.errors) {
             setErrors(data.errors);
+            Swal.fire({
+                title: 'Cập nhật không thành công!',
+                text: 'Thông tin tài khoản cập nhật không thành công.',
+                icon: 'error',
+                showConfirmButton: false,
+                timer: 4000,
+            });
         } else {
             setErrors({});
+            setIsEditing(false);
             console.log(data);
+            Swal.fire({
+                title: 'Cập nhật thành công!',
+                text: 'Thông tin tài khoản đã được cập nhật thành công.',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 4000,
+            });
         }
     };
 
@@ -77,6 +118,7 @@ const AccountManage = () => {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            disabled={!isEditing}
                         />
                         {errors.name && (
                             <p className=" text-[12px] text-red-500">
@@ -97,6 +139,7 @@ const AccountManage = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            disabled={!isEditing}
                         />
                         {errors.email && (
                             <p className=" text-[12px] text-red-500">
@@ -112,11 +155,12 @@ const AccountManage = () => {
                             Số điện thoại
                         </label>
                         <input
-                            type="text"
+                            type="tel"
                             id="phone"
                             value={phoneNum}
                             onChange={(e) => setPhoneNum(e.target.value)}
                             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            disabled={!isEditing}
                         />
                         {errors.phoneNumber && (
                             <p className=" text-[12px] text-red-500">
@@ -124,12 +168,40 @@ const AccountManage = () => {
                             </p>
                         )}
                     </div>
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-500 text-white my-6 py-2 rounded-md hover:bg-blue-600 transition mx-auto"
-                    >
-                        Xác nhận
-                    </button>
+
+                    {isEditing 
+                    ? 
+                        <div className="w-full flex justify-end">
+                            <button
+                                type="button"
+                                onClick={setFalseEditing}
+                                className={`w-[10rem] text-white my-6 py-2 rounded-md mr-4 justify-items-end ${isEditing ? "bg-gray-600 hover:bg-gray-700" : "bg-gray-500 hover:bg-gray-700" }`}
+                            >
+                                <FontAwesomeIcon icon={faBan} className="mr-2"/>
+                                HỦY
+                            </button>
+
+                            <button
+                                type="submit"
+                                className={`w-[10rem] text-white my-6 py-2 rounded-md  justify-items-end ${isEditing ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-500 hover:bg-gray-700" }`}
+                            >
+                                <FontAwesomeIcon icon={faFloppyDisk} className="mr-2"/>
+                                LƯU
+                            </button>
+                        </div>
+                    : 
+                        <div className="w-full flex justify-end">
+                            <button
+                                type="button"
+                                onClick={handleEditing}
+                                className={`w-[10rem] text-white my-6 py-2 rounded-md  justify-items-end ${isEditing ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-500 hover:bg-gray-700" }`}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} className="mr-2"/>
+                                CHỈNH SỬA
+                            </button>
+                        </div>                   
+                    }
+
                 </form>
             </div>
         </NavigationAdmin>
