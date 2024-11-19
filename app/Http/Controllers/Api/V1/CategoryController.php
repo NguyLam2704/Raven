@@ -17,20 +17,16 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $filter = new CategoriesFilter();
-        $queryItems = $filter->transform($request); //[['column','operator','value']]
-        if (count($queryItems) == 0)
+        $queryItems = $filter->transform($request); //chuyển đổi các tham số trong $request thành một mảng [['column','operator','value']]
+        if (count($queryItems) == 0)// Nếu không có điều kiện lọc
         {
-            return new CategoryCollection(Category::paginate());
+            return new CategoryCollection(Category::paginate());//paginate chia nhỏ danh sách dữ liệu
         }
         else
         {
-            $size = Category::where($queryItems)->paginate();
+            $size = Category::where($queryItems)->paginate();//truy vấn các bản ghi trong category dựa trên $queryItems thông qua where()
             return new CategoryCollection($size->appends($request->query()));
         }
-        Category::where($queryItems);
-        // return new SizeCollection(Size::all());
-        // $fillable = new CustomerQuery();
-        return new CategoryCollection(Category::paginate());
     }
 
     /**
@@ -54,6 +50,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
+        //return category dua tren id
         return new CategoryResource($category);
     }
 

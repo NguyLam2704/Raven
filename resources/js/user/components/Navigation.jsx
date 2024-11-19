@@ -3,42 +3,61 @@ import Logo from "../assets/Raven.svg"
 import Search from "../assets/Search.svg"
 import Cart from "../assets/Cart.svg"
 import { Link } from 'react-router-dom';
-const Navigation = ({img, name, price}) => {
+import { useNavigate } from 'react-router-dom';
+
+const Navigation = () => {
+    //Giá trị để kiểm soát trạng thái ẩn/hiện của mục Áo
     const [isOpenAo, setOpenAo] = useState(false);
+    //Giá trị để kiểm soát trạng thái ẩn/hiện của mục Quần
     const [isOpenQuan, setOpenQuan] = useState(false);
+    //Giá trị để kiểm soát trạng thái ẩn/hiện của mục Phụ kiện
     const [isOpenPk, setOpenPk] = useState(false);
 
+    //Kiểm soát trạng thái hiện của mục Áo
     const handleHoverAo = () => {
         setOpenAo(true);
     };
+    //Kiểm soát trạng thái ẩn/hiện của mục Quần
     const handleHoverQuan = () => {
         setOpenQuan(true);
     };
+    //Kiểm soát trạng thái ẩn/hiện của mục Phụ kiện
     const handleHoverPk = () => {
         setOpenPk(true);
     };
-
+    //Kiểm soát trạng thái ẩn của mục Áo/Quần/Phụ kiện
     const handleMenuLeave = () => {
         setOpenAo(false);
         setOpenQuan(false);
         setOpenPk(false);
     };
 
+    //Nhận nội dung của Thanh tìm kiếm
+    const [text, setText] = useState('')
+
+    const navigate = useNavigate();
+    
+    //Hàm chuyển đến trang Tìm kiếm và truyền nội dung tìm kiếm
+    const navigateToAbout = () => { 
+        navigate('/search', { state: { message: text } }); 
+    };
 
     return(
-        <header class=" fixed left-0 z-40 top-0 w-full bg-white  ">
+        <header class=" fixed left-0 z-30 top-0 w-full bg-white  ">
         <nav   class="flex flex-row items-center justify-between h-24 border-b-[1px] border-b-slate-300 w-full">
+            {/* Logo  */}
             <div class=" items-center justify-items-center basis-2/12 ">
-                <img src={Logo} alt="Logo"/>
+                <img src={Logo} alt="Logo"/> 
             </div>
+            {/* Thanh điều hướng */}
             <ul   class=" h-full basis-6/12 items-center justify-between flex mt-10 mb-4 mr-10  ">
                 <li class=" h-full items-center justify-center justify-items-center mt-16">
                     <div className=' h-9  text-[#a91d3a] text-2xl font-bold hover:border-b-2 hover:border-b-[#a91d3a] '>
                     <Link to="/">HOME</Link></div>
                 </li>
                 <li class="h-full mt-16 "
-                    onMouseEnter={handleHoverAo}
-                    onMouseLeave={handleMenuLeave}
+                    onMouseEnter={handleHoverAo} //hiện mục Áo
+                    onMouseLeave={handleMenuLeave} //ẩn mục ÁO
                 >
                     <div className=' h-9 text-[#a91d3a] text-2xl font-bold hover:border-b-2 hover:border-b-[#a91d3a]  '><Link to="/T_shirt">ÁO</Link></div>
                     {isOpenAo && (<ul className=' absolute z-50 w-32 bg-[#C73659] text-base uppercase text-left text-white mt-4 '>
@@ -50,8 +69,8 @@ const Navigation = ({img, name, price}) => {
                     </ul>)}
                 </li>
                 <li class="h-full mt-16 "
-                    onMouseEnter={handleHoverQuan}
-                    onMouseLeave={handleMenuLeave}
+                    onMouseEnter={handleHoverQuan} //hiện mục Quần
+                    onMouseLeave={handleMenuLeave} //ẩn much Quần
                 >
                     <div className=' h-9  text-[#a91d3a] text-2xl font-bold hover:border-b-2 hover:border-b-[#a91d3a] '><Link to="/long_pants"> QUẦN</Link></div>
                     {isOpenQuan && (<ul className=' absolute z-50 w-36 bg-[#C73659] text-base uppercase text-left text-white mt-4 '>
@@ -60,8 +79,8 @@ const Navigation = ({img, name, price}) => {
                     </ul>)}
                 </li>
                 <li class="h-full mt-16 "
-                    onMouseEnter={handleHoverPk}
-                    onMouseLeave={handleMenuLeave}
+                    onMouseEnter={handleHoverPk} //hiện mục Phụ kiện
+                    onMouseLeave={handleMenuLeave} //ẩn mục Phụ kiện
                 >
                     <div className=' h-9 text-[#a91d3a] text-2xl font-bold hover:border-b-2 hover:border-b-[#a91d3a]'><Link to="/balo">PHỤ KIỆN</Link></div>
                     {isOpenPk && (<ul className=' absolute z-50 w-32 bg-[#C73659] text-base uppercase text-left text-white mt-4 '>
@@ -72,26 +91,31 @@ const Navigation = ({img, name, price}) => {
                     </ul>)}
                 </li>
 
-                <li class=" h-9 text-center text-[#a91d3a] text-2xl font-bold font-mont hover:border-b-2 hover:border-b-[#a91d3a]">
+                <li class=" h-9 mt-1 text-center text-[#a91d3a] text-2xl font-bold font-mont hover:border-b-2 hover:border-b-[#a91d3a]">
                     <Link to="/about_us">VỀ CHÚNG TÔI</Link></li>
             </ul>
-            
-            <div class=" basis-3/12 flex flex-row justify-items-center rounded-[8px] shadow border items-center w-fit mt-4 ">
-                
-                    <img class="inline-block m-2" src={Search} alt="search"/>
-                    <span >
-                        <input placeholder="Tìm kiếm" class="m-2 focus:outline-none"></input>
-                    </span>
-                    
+            {/* Thanh tiềm kiếm */}
+            <div  class=" basis-3/12 flex flex-row justify-items-center rounded-lg shadow border items-center w-fit mt-4  "  >
+                <form onSubmit={navigateToAbout} className='w-full flex' >                    
+                    <img class="inline-block m-2" src={Search} alt="search"/>                    
+                        <input class="w-full my-2 pr-2 focus:outline-none"
+                            placeholder="Tìm kiếm"
+                            value={text}
+                            onChange={(e) => setText(e.target.value)}
+                        />      
+                </form>
             </div>
-            <div class=" basis-1/12 flex flex-row mt-6 ml-10 ">
+            {/* Nút giỏ hàng */}
+            <div class=" basis-1/12 mt-6 ml-10 ">                    
+                <Link class="flex flex-row"  to="/cart">
                     <img class="inline-block" src={Cart} alt="cart"/>
                     <span>
+                        {/* Số lượng sản phẩm trong giỏ hàng */}
                         <div class="ml-1 focus:outline-none">3</div>
                     </span>
+                </Link>
             </div>
-        </nav>
-        
+        </nav>        
     </header>
     )
 }

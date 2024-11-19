@@ -18,20 +18,16 @@ class ColorController extends Controller
     public function index(Request $request)
     {
         $filter = new ColorsFilter();
-        $queryItems = $filter->transform($request); //[['column','operator','value']]
-        if (count($queryItems) == 0)
+        $queryItems = $filter->transform($request); //chuyển đổi các tham số  trong $request thành một mảng [['column','operator','value']]
+        if (count($queryItems) == 0)// Nếu không có điều kiện lọc
         {
-            return new ColorCollection(Color::paginate());
+            return new ColorCollection(Color::paginate());//paginate chia nhỏ danh sách dữ liệu
         }
         else
         {
             $size = Color::where($queryItems)->paginate();
-            return new ColorCollection($size->appends($request->query()));
+            return new ColorCollection($size->appends($request->query()));//truy vấn các bản ghi trong category dựa trên $queryItems thông qua where()
         }
-        Color::where($queryItems);
-        // return new SizeCollection(Size::all());
-        // $fillable = new CustomerQuery();
-        return new ColorCollection(Color::paginate());
     }
 
     /**
