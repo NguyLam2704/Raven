@@ -5,17 +5,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartSimple, faListCheck, faShapes, faUsers, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
 
 const Sidebar = () => {
+  //Khởi tạo các biến trạng thái
   const [isProductMenuOpen, setIsProductMenuOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState('/home_admin');
-  const location = useLocation()
+  const location = useLocation() //Lấy địa chỉ hiện tại đang trỏ đến
 
   useEffect(() => {
-    setSelectedMenu(location.pathname); // Cập nhật khi URL thay đổi
+    setSelectedMenu(location.pathname); // Reload web khi URL thay đổi
+     //đang ở trang sản phẩm hoặc thêm sản phẩm thì mở dropdown
     if (location.pathname === '/products_admin' || location.pathname === '/addproduct_admin') {
       setIsProductMenuOpen(true);
     }
   }, [location]);
 
+  //Mở dropdown sản phẩm
   const toggleProductMenu = () => {
     setIsProductMenuOpen(!isProductMenuOpen);
   };

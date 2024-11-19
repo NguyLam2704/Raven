@@ -15,6 +15,7 @@ const AccountManage = () => {
     const [errors, setErrors] = useState({});
     const [isEditing, setIsEditing] = useState(false);
 
+    //bật tắt edit
     const handleEditing = () => {
         if (!isEditing){
             setIsEditing(true);
@@ -22,6 +23,7 @@ const AccountManage = () => {
         }
     }
 
+    //Khi bấm hủy chỉnh sửa thì set giá trị ban đàu
     const setFalseEditing = () => {
         setIsEditing(false);
         setName(admin.name);
@@ -199,8 +201,6 @@ const AccountManage = () => {
                             </button>
                         </div>                   
                     }
-
-
 
                 </form>
             </div>

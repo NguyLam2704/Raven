@@ -6,7 +6,6 @@ import App_User from './user/App_User';
 import App from './admin/components/App';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-
 ReactDom.createRoot(document.getElementById('app')).render(
   <BrowserRouter>
     <App/>

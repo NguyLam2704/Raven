@@ -7,41 +7,58 @@ import ProductsList from '../components/home/productsList';
 import OrderList from '../components/home/ordersList';
 import revenueData from '../data/revenueData';
 import { productslistData } from '../data/productsData';
-import ordersData from '../data/ordersData';
+// import ordersData from '../data/ordersData';
 import userIcon from '../asset/home/user.svg'
 import orderIcon from '../asset/home/order.svg'
 import revenueIcon from '../asset/home/revenue.svg'
 import shipIcon from '../asset/home/ship.svg'
 import trendupIcon from '../asset/home/trending_up.svg'
 import trenddownIcon from '../asset/home/trending_down.svg'
+import loading from '../asset/loading.svg'
 import axios from 'axios';
-import { Dots } from 'react-activity';
 import "react-activity/dist/Dots"
 
-
+// lấy dữ liệu từ api
 const fetchThongke = async () => {
   const response = await axios.get('/api/dashboard/thongke')
   return response.data;
 }
 
+const fetchOrder = async () => {
+  const response = await axios.get('/api/v1/order');
+  return response.data;
+}
+
 const Home = () => {
+  //Khai báo các biến trạng thái
   const [ThongKeData, setThongKeData] = useState();
+  const [OrdersData, setOrderData] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
+  //Tiến hành lấy dữ liệu
   useEffect(() => {
-      const Loadthongke = async () => {
+      const LoadData = async () => {
         const thongkeData = await fetchThongke();
+        const orderData = await fetchOrder();
         setThongKeData(thongkeData);
+        setOrderData(orderData.data)
         console.log(thongkeData);
+        console.log(orderData.data);
         setIsLoading(false)
       }
-      Loadthongke();
+      LoadData();
   } ,[])
 
+  //loading khi chưa lấy dữ liệu xong
   if (isLoading) {
-    return <h1 className='w-full text-2xl font-semibold text-center mt-16'>Loading...</h1>;
-  } 
+    return (
+        <div className="w-full h-[700px] flex justify-center items-center">
+            <img src={loading}/>
+        </div>
+    )
+}
 
+//Tạo 4 mục thống kê
   const stats = [
     {
       title: "Tổng số lượt truy cập",
@@ -111,7 +128,7 @@ const Home = () => {
         </h1>
 
         <div className='w-full'>
-          <OrderList data={ordersData}/>
+          <OrderList data={OrdersData}/>
         </div>
 
     </NavigationAdmin>
