@@ -13,6 +13,7 @@ const AccountManage = () => {
     const [email, setEmail] = useState(admin.email);
     const [phoneNum, setPhoneNum] = useState(admin.phoneNumber);
     const [errors, setErrors] = useState({});
+    const token = "Bearer " + localStorage.getItem("token");
     const [isEditing, setIsEditing] = useState(false);
 
     //bật tắt edit
@@ -39,6 +40,7 @@ const AccountManage = () => {
             return;
         }
 
+        // Tạo form đẩy dữ liệu lên DB
         const formData = {
             name: name,
             email: email,
@@ -51,11 +53,12 @@ const AccountManage = () => {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
+                Authorization: token,
             },
         });
 
+        // Handle lỗi
         const data = await res.json();
-
         if (data.errors) {
             setErrors(data.errors);
             Swal.fire({
@@ -66,6 +69,11 @@ const AccountManage = () => {
                 timer: 4000,
             });
         } else {
+            // Lưu dữ liệu đã chỉnh sửa vào localstorage
+            admin.name = name;
+            admin.email = email;
+            admin.phoneNumber = phoneNum;
+            localStorage.setItem("admin", JSON.stringify(admin));
             setErrors({});
             setIsEditing(false);
             console.log(data);
