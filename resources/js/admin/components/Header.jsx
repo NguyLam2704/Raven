@@ -23,6 +23,7 @@ const Header = () => {
         e.preventDefault();
         console.log("Logout pressed");
 
+        // Xoá các token trên database
         const res = await fetch("/api/admin/auth/logout", {
             method: "post",
             headers: {
@@ -31,15 +32,20 @@ const Header = () => {
                 Authorization: token,
             },
         });
+
         const r = await res.json();
         if (r.errors) {
             console.log(r.errors);
         } else {
             console.log(r.message);
         }
+
+        // Xoá token và admin lưu trong localstorage
         localStorage.removeItem("token");
         localStorage.removeItem("admin");
-        navigate("/");
+
+        // Điều hướng về trang login
+        navigate("/login_admin");
     };
 
     useEffect(() => {

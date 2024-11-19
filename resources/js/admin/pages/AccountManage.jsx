@@ -9,10 +9,12 @@ const AccountManage = () => {
     const [email, setEmail] = useState(admin.email);
     const [phoneNum, setPhoneNum] = useState(admin.phoneNumber);
     const [errors, setErrors] = useState({});
+    const token = "Bearer " + localStorage.getItem("token");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // Tạo form đẩy dữ liệu lên DB
         const formData = {
             name: name,
             email: email,
@@ -25,15 +27,20 @@ const AccountManage = () => {
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
+                Authorization: token,
             },
         });
 
+        // Handle lỗi
         const data = await res.json();
-
         if (data.errors) {
             setErrors(data.errors);
         } else {
-            setErrors({});
+            // Lưu dữ liệu đã chỉnh sửa vào localstorage
+            admin.name = name;
+            admin.email = email;
+            admin.phoneNumber = phoneNum;
+            localStorage.setItem("admin", JSON.stringify(admin));
             console.log(data);
         }
     };

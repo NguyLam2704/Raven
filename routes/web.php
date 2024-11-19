@@ -6,4 +6,4 @@ use Illuminate\Support\Facades\Route;
 //     return view('/admin/auth/login');
 // });
 
-Route::view('/{path?}', '/admin/auth/login');
+Route::view('/{path?}', '/admin/auth/login')->where('path', '.*');

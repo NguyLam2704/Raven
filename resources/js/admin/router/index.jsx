@@ -8,6 +8,7 @@ import ChangePassword from '../pages/ChangePassword'
 import Order from "../pages/OrderAdmin";
 import Customer from "../pages/CustomerAdmin";
 import ForgotPass from "../pages/ForgotPass";
+import ResetPassword from "../pages/ResetPassword";
 
 const Index = () => {
     return (
@@ -20,6 +21,7 @@ const Index = () => {
                 <Route path="/customer_admin" element={<Customer/>}/>
                 <Route path="/account_manage" element={<AccountManage/>}/>
                 <Route path="/change_password" element={<ChangePassword/>}/>
+                <Route path="/reset_password/*" element={<ResetPassword/>}/>
             </Routes>
         </div>
     )
