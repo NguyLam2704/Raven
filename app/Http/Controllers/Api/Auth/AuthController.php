@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 
+
 class AuthController extends Controller
 {
     // Register
@@ -23,10 +24,7 @@ class AuthController extends Controller
         ]);
 
         $fields['password'] = Hash::make($fields['password']);
-
         $admin = Admin::create($fields);
-        // $admin->password = Hash::make($request->password);
-        // $admin->save();
 
         return [
             'user' => $admin->name
@@ -35,9 +33,14 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        
         $request->validate([
             'account' => 'required|max:40',
             'password' => 'required'
+        ],[
+            'account.required' => 'Không được để trống tài khoản',
+            'password.required' => 'Không được để trống mật khẩu',
+            
         ]);
 
         $admin = Admin::where('account', $request->account)->first();
@@ -71,4 +74,40 @@ class AuthController extends Controller
             'message' => 'Logout'
         ];
     }
+
+    public function changePass(Request $request, $id)
+    {
+        $request->validate([
+            'old_password' => 'required|min:6',
+            'new_password' => 'required|min:6',
+        ],[
+            'required' => 'Không được để trống mật khẩu',
+            'min' => 'Mật khẩu phải dài hơn hoặc bằng 6 kí tự'
+        ]);
+
+        if ($request->new_password != $request->new_password_confirmation){
+            return[
+                'errors' => [
+                    'new_password_confirmation' => 'Nhập lại mật khẩu không chính xác'
+                ]
+            ];
+        }
+
+        $admin = Admin::where('id', $id)->first();
+        if (!$admin || !Hash::check($request->old_password, $admin->password)) {
+            return [
+                'errors' => [
+                    'old_password' => ['Mật khẩu không chính xác!']
+                ]
+            ];
+        } else {
+            $admin->password = Hash::make($request->new_password);
+            $admin->save();
+            return [
+                'ok' => 'ok'
+            ];
+        }
+    }
+
+    
 }

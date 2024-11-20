@@ -8,10 +8,13 @@ const StatsCard = ({ title, value, icontrend, icon, trend, trendColor }) => {
           <img src={icon} alt="Icon" className="w-14 h-14" />
         </div>
         <h2 className="text-3xl font-bold w-full -mt-[10px]">{value}</h2>
-        <div className={`mt-4 mb-2 flex text-[16px] font-semibold w-full `}>
-          <img src={icontrend} alt="Icon" className="mr-2"/>
-          <span className={`${trendColor} `}>{trend}</span>&nbsp; so với hôm qua
-        </div>
+        {title === 'Đang giao hàng' ? <div className={`mt-4 mb-8 flex text-[16px] font-semibold w-full `}></div> : 
+          <div className={`mt-4 mb-2 flex text-[16px] font-semibold w-full `}>
+            <img src={icontrend} alt="Icon" className="mr-2"/>
+            <span className={`${trendColor} `}>{trend}</span>&nbsp;so với hôm qua
+         </div>
+        }
+
       </div>
     );
   };

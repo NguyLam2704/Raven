@@ -22,7 +22,7 @@ class ProductResource extends JsonResource
             'quantitySold' => $this->quantity_sold,
             'description' => $this->description,
             'datePosted' => $this->dateposted,
-            'categorytypeId' => $this->category_type_id,
+            'categoryTypeId' => $this->category_type_id,
             // load relationship named productImage in model
             'productImage' => ProductImageResource::collection($this->whenLoaded('productImage'))
         ];

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Product from '../components/Product';
 import img_silder from '../assets/img_slider2.svg';
 import Navigation from '../components/Navigation';
@@ -8,67 +8,56 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown} from '@fortawesome/free-solid-svg-icons'
 import TitleCategory from '../components/Category/TitleCategory';
 
-const ListProduct = [
-    {
-      key: 1,
-      name: "Cao Quốc Kiệt",
-      price: 1000000,
-      img: img_product,
-      sale: 0,
-    },
-    {
-        key: 2,
-        name: "Cao Quốc Kiệt",
-        price: 1000000,
-        img: img_product,
-        sale: 0,
-      },
-      {
-        key: 3,
-        name: "Cao Quốc Kiệt",
-        price: 1000000,
-        img: img_product,
-        sale: 0,
-      },
-      {
-        key: 4,
-        name: "Cao Quốc Kiệt",
-        price: 1000000,
-        img: img_product,
-        sale: 70,
-      },
-      {
-        key: 5,
-        name: "Cao Quốc Kiệt",
-        price: 1000000,
-        img: img_product,
-        sale: 0,
-      },
-      {
-        key: 6,
-        name: "Cao Quốc Kiệt",
-        price: 1000000,
-        img: img_product,
-        sale: 30,
-      },
-      {
-        key: 7,
-        name: "Cao Quốc Kiệt",
-        price: 1000000,
-        img: img_product,
-        sale: 40,
-      },
-      {
-        key: 7,
-        name: "Cao Quốc Kiệt",
-        price: 1000000,
-        img: img_product,
-        sale: 0,
-      },
+const mapCategory = new Map([
+    ["Áo thun", 1],
+    ["Áo polo", 2],
+    ["Áo khoác", 3],
+    ["Áo sweater", 4],
+    ["Áo sơ mi", 5],
+    ["Quần dài", 6],
+    ["Quần ngắn", 7],
+    ["Cặp", 8],
+    ["Túi xách", 9],
+    ["Ví", 10],
+    ["Nón", 11,]
+]
+)
 
-  ];
-//Loại sản phẩm
 const Category = ({ cate }) => {
+  // State để lưu danh sách sản phẩm
+  const [productCategories, setProductCategories] = useState([]);
+  const [loading, setLoading] = useState(true); // Trạng thái tải dữ liệu
+  const [error, setError] = useState(null); // Trạng thái lỗi
+  let id = mapCategory.get(cate); // map category with category_id
+// Hàm fetch API
+  const fetchProductCategories = async () => {
+      try {
+          const response = await fetch(`/api/v1/product?categoryTypeId[eq]=${id}&includeImage=true`);
+          if (!response.ok) {
+              throw new Error('Failed to fetch products');
+          }
+          const data = await response.json(); // Giả định API trả về JSON
+          setProductCategories(data.data || []); // Lưu dữ liệu vào state
+      } catch (err) {
+          setError(err.message); // Lưu thông báo lỗi nếu xảy ra
+      } finally {
+          setLoading(false); // Kết thúc trạng thái tải
+      }
+  };
+
+//   useEffect để gọi fetchProducts khi component được render
+  useEffect(() => {
+      setLoading(true);
+      fetchProductCategories();}, [cate]); // [] call API when cate change
+      console.log(productCategories);
+
+  const mapProductCategories = productCategories.map((productCategory) => (
+      <Product  price={productCategory.cost} 
+                img={productCategory.productImage.find(img => img.isPrimary)?.image}  //choose the primary image to display
+                name={productCategory.productName} 
+                sale={productCategory.discount} />
+  )); 
+
     //Giá trị của bộ lọc sắp xếp
     const [sort, setSort] = useState('Giá giảm dần');
     // Ẩn/hiện các giá trị của bộ lọc tìm kiếm
@@ -79,6 +68,14 @@ const Category = ({ cate }) => {
         setSort(value);
         setOpen(false);
     };
+
+    if (loading) {
+      return <div>Loading...</div>;
+    }
+  
+    if (error) {
+      return <div>Error: {error}</div>;
+    }
 
     return (
         <div  className='w-full h-full'>
@@ -119,15 +116,12 @@ const Category = ({ cate }) => {
                                         </ul>)
 
                             }
-                 </div> 
-
-                {/* Danh sách các sản phẩm  */}
-                <div className="mt-10 grid grid-cols-4 gap-12 z-10">
-                        {ListProduct.map((product) => (
-                            <Product price={product.price} img={product.img} name={product.name} sale={product.sale} />
-                        ))}
+                        </div>            
+                    {/* Danh sách các sản phẩm  */}
+                    <div className="mt-10 grid grid-cols-4 gap-12 z-10">
+                        {mapProductCategories}
+                    </div>
                 </div>
-              </div>
             </div>
             <Footer />
         </div>

@@ -9,5 +9,5 @@ class ProductOrder extends Model
 {
     use HasFactory;
     protected $table = 'product_order';
-    protected $primaryKey = ['pro_color_size_id','order_id'];
+    protected $primaryKey = 'product_order_id';
 }

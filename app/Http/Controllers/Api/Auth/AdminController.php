@@ -3,9 +3,6 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Models\Admin;
-use App\Http\Requests\StoreAdminRequest;
-use App\Http\Requests\UpdateAdminRequest;
-use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 

@@ -7,14 +7,31 @@ use App\Http\Requests\UpdateProductOrderRequest;
 use App\Models\ProductOrder;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\ProductOrderResource;
+use App\Filters\V1\ProductOrderFilter;
+use App\Http\Resources\V1\ProductOrderCollection;
+use Illuminate\Http\Request;
 class ProductOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $filter = new ProductOrderFilter();
+        $queryItems = $filter->transform($request); //[['column','operator','value']]
+        if (count($queryItems) == 0)
+        {
+            return new ProductOrderCollection(ProductOrder::paginate());
+        }
+        else
+        {
+            $size = ProductOrder::where($queryItems)->paginate();
+            return new ProductOrderCollection($size->appends($request->query()));
+        }
+        ProductOrder::where($queryItems);
+        // return new SizeCollection(Size::all());
+        // $fillable = new CustomerQuery();
+        return new ProductOrderCollection(ProductOrder::paginate());
     }
 
     /**
@@ -36,12 +53,13 @@ class ProductOrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($field1, $field2)
+    public function show(ProductOrder $productOrder)
     {
+        return new ProductOrderResource($productOrder);
         // $productOrder = ProductOrder::where('field1', $field1)
         //                          ->where('field2', $field2)
         //                          ->first();
-
+        
         // if (!$productOrder) {
         // return response()->json(['message' => 'Resource not found'], 404);
         // }

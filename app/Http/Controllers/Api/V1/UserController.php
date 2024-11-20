@@ -2,31 +2,29 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\StoreOrderRequest;
-use App\Http\Requests\UpdateOrderRequest;
-use App\Models\Order;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\V1\OrderResource;
-use App\Http\Resources\V1\OrderCollection;
-use App\Filters\V1\OrdersFilter;
 use Illuminate\Http\Request;
-class OrderController extends Controller
+use App\Filters\V1\UsersFilter;
+use App\Http\Resources\V1\UserCollection;
+use App\Http\Resources\V1\UserResource;
+use App\Models\User;
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $filter = new OrdersFilter();
+        $filter = new UsersFilter();
         $queryItems = $filter->transform($request); //chuyển đổi các tham số  trong $request thành một mảng [['column','operator','value']]
         if (count($queryItems) == 0)// Nếu không có điều kiện lọc
         {
-            return new OrderCollection(Order::paginate());//paginate chia nhỏ danh sách dữ liệu
+            return new UserCollection(User::paginate());//paginate chia nhỏ danh sách dữ liệu
         }
         else
         {
-            $size = Order::where($queryItems)->paginate();//truy vấn dựa trên $queryItems thông qua where()
-            return new OrderCollection($size->appends($request->query()));
+            $user = User::where($queryItems)->paginate();//truy vấn dựa trên $queryItems thông qua where()
+            return new UserCollection($user->appends($request->query()));
         }
     }
 
@@ -41,7 +39,7 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreOrderRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -49,15 +47,15 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
+    public function show(User $user)
     {
-        return new OrderResource($order);
+        return new UserResource($user);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Order $order)
+    public function edit(User $user)
     {
         //
     }
@@ -65,7 +63,7 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateOrderRequest $request, Order $order)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -73,7 +71,7 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Order $order)
+    public function destroy(string $id)
     {
         //
     }

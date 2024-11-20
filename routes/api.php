@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Auth\AdminController;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Dashboard\DashboardController;
 use App\Http\Controllers\Api\V1\BillController;
 use App\Http\Controllers\Api\V1\ColorController;
@@ -14,7 +15,7 @@ use App\Http\Controllers\Api\V1\ProColorSizeController;
 use App\Http\Controllers\Api\V1\ProductImageController;
 use App\Http\Controllers\Api\V1\ProductOrderController;
 use App\Http\Controllers\Api\V1\TestController;
-
+use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -36,15 +37,28 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], f
     Route::apiResource('productImage', ProductImageController::class);
     Route::apiResource('order', OrderController::class);
     Route::apiResource('bill', BillController::class);
+    Route::apiResource('user', UserController::class);
+    Route::apiResource('productOrder', ProductOrderController::class);
     // Route::get('productOrder/{field1}/{field2}', [ProductOrderController::class, 'show']);
 });
 
 //auth
 Route::post('/admin/auth/register', [AuthController::class, 'register']);
 Route::post('/admin/auth/login', [AuthController::class, 'login']);
-Route::post('/admin/auth/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-Route::put('/admin/{id}', [AdminController::class, 'updateAdmin']);
+Route::post('/admin/auth/sendemail', [ResetPasswordController::class, 'sendEmail']);
+Route::post('/admin/reset-password', [ResetPasswordController::class, 'resetpassword'])->name('resetpassword');
+Route::post('/admin/changepass', [ResetPasswordController::class, 'changepass']);
 
-Route::get('/dashboard/thongke', [DashboardController::class, 'thongke']);
-Route::get('/dashboard/donhang', [DashboardController::class, 'donhang']);
-Route::post('/dashboard/chitiet/{id}', [DashboardController::class, 'chitiet']);
+
+Route::prefix('admin')->middleware('auth:sanctum')->group(function () { 
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
+    Route::put('/{id}', [AdminController::class, 'updateAdmin']);
+    Route::post('/{id}/changepassword', [AuthController::class, 'changePass']);
+});
+
+Route::prefix('dashboard')->group(function () { 
+    Route::get('/thongke', [DashboardController::class, 'thongke']);
+    Route::get('/chitietdonhang/{order_id}', [DashboardController::class, 'chitietdonhang']);
+    Route::put('/chitietdonhang/{order_id}', [DashboardController::class, 'ChangeStatus']);
+    Route::get('/chitiet/{id}', [DashboardController::class, 'chitiet']);
+});
