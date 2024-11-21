@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import bg_login from "../asset/bg_login.png";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 const Login = () => {
     // Khởi tạo các biến
     const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const Login = () => {
     });
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
 
     // Nếu chưa đăng xuất thì tự động điền các thông tin
     useEffect(() => {
@@ -27,7 +29,7 @@ const Login = () => {
     // Kiểm tra xác thực
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Đăng nhập thành công");
+        
         console.log(formData);
         const res = await fetch("/api/admin/auth/login", {
             method: "post",
@@ -42,6 +44,7 @@ const Login = () => {
         if (data.errors) {
             setErrors(data.errors);
         } else {
+            console.log("Đăng nhập thành công");
             const admin = data.admin;
             admin.account = formData.account;
             admin.password = formData.password;
@@ -50,9 +53,13 @@ const Login = () => {
             // Lưu các giá trị trả về
             localStorage.setItem("admin", JSON.stringify(admin));
             localStorage.setItem("token", data.token);
+
+            // Điều hướng về trang chủ admin
             navigate("/home_admin");
         }
     };
+
+  
 
     return (
         <div
@@ -94,15 +101,15 @@ const Login = () => {
                                     account: e.target.value,
                                 })
                             }
-                            value={formData.account}
+                            defaultValue={formData.account}
                         />
                         {errors.account && (
                             <p className=" text-[12px] text-red-500">
-                                {errors.account[0]}
+                                {errors.account}
                             </p>
                         )}
                     </div>
-                    <div className="mb-6">
+                    <div className="mb-6 relative">
                         <label
                             className="block text-gray-700 mb-2"
                             htmlFor="password"
@@ -110,11 +117,12 @@ const Login = () => {
                             Mật khẩu:
                         </label>
                         <input
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             id="password"
                             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                             placeholder="Password"
-                            value={formData.password}
+                            defaultValue={formData.password}
+                            minLength={3}
                             onChange={(e) =>
                                 setFormData({
                                     ...formData,
@@ -122,12 +130,25 @@ const Login = () => {
                                 })
                             }
                         />
+                        
+                        <FontAwesomeIcon
+                            icon={showPassword ? faEye : faEyeSlash}
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3 bottom-1 transform -translate-y-1/2 cursor-pointer"
+                            color={showPassword ? "#3b82f6 " : "#c3c6d1"}
+                        />
+
                         {errors.password && (
                             <p className=" text-[12px] text-red-500">
-                                {errors.password[0]}
+                                {errors.password}
                             </p>
                         )}
                     </div>
+                    <div className="flex items-center">
+                        <input type="checkbox" />
+                        <p className="text-left ml-2 text-gray-600">Remember me</p>
+                    </div>
+
                     <button
                         type="submit"
                         className="w-full bg-blue-500 text-white py-2 mt-4 rounded-md hover:bg-blue-600 transition"

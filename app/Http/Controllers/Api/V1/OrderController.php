@@ -20,12 +20,14 @@ class OrderController extends Controller
         $filter = new OrdersFilter();
         $queryItems = $filter->transform($request); //chuyển đổi các tham số  trong $request thành một mảng [['column','operator','value']]
         if (count($queryItems) == 0)// Nếu không có điều kiện lọc
+        $queryItems = $filter->transform($request); //chuyển đổi các tham số  trong $request thành một mảng [['column','operator','value']]
+        if (count($queryItems) == 0)// Nếu không có điều kiện lọc
         {
-            return new OrderCollection(Order::with('user')->paginate());//paginate chia nhỏ danh sách dữ liệu
+            return new OrderCollection(Order::with(['user', 'bill'])->paginate());//return them quan he user va bill, paginate chia nhỏ danh sách dữ liệu
         }
         else
         {
-            $order = Order::where($queryItems)->with('user')->paginate();//truy vấn dựa trên $queryItems thông qua where()
+            $order = Order::where($queryItems)->with(['user', 'bill'])->paginate();//return them quan he user va bill,truy vấn dựa trên $queryItems thông qua where()
             return new OrderCollection($order->appends($request->query()));
         }
     }
@@ -81,7 +83,7 @@ class OrderController extends Controller
     //Write api for order (have user and product_order)
     public function orderInfo(Request $request)
     {
-        $input = $request->input('input');// Lấy phoneNumber từ query parameter
+        $input = $request->input('input');// Lấy parameter từ query parameter
         // Kiểm tra nếu không có phoneNumber trong request
         if (!$input) {
             return response()->json([
@@ -104,12 +106,5 @@ class OrderController extends Controller
             'status' => 'error',
             'message' => 'Vui lòng nhập email hoặc số điện thoại hợp lệ.'
         ], 400);
-        //query user have $phoneNumber 
-        // phonenumber is field's name in database 
-        // user is name of relationship in order model
-        // ->with(['user', 'bill'] to get user and bill data
-        // $orders = Order::whereRelation('user','phonenumber','=',$input)->with(['user', 'bill'])->get();
-        // return response()->json($orders);
-        // return new OrderCollection($orders);
     }
 }

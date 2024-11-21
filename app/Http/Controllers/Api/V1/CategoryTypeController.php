@@ -24,8 +24,8 @@ class CategoryTypeController extends Controller
         }
         else
         {
-            $size = CategoryType::where($queryItems)->paginate();//truy vấn dựa trên $queryItems thông qua where()
-            return new CategoryTypeCollection($size->appends($request->query()));
+            $categoryType = CategoryType::where($queryItems)->paginate();//truy vấn dựa trên $queryItems thông qua where()
+            return new CategoryTypeCollection($categoryType->appends($request->query()));
         }
     }
 

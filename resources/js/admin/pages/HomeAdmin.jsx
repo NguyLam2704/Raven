@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import NavigationAdmin from '../components/NavigationAdmin';
 import StatsCard from '../components/home/statscart';
@@ -6,21 +6,72 @@ import MonthlyRevenueChart from '../components/home/revenueChart';
 import ProductsList from '../components/home/productsList';
 import OrderList from '../components/home/ordersList';
 import revenueData from '../data/revenueData';
-import { productslistData } from '../data/productsData';
-import ordersData from '../data/ordersData';
+// import { productslistData } from '../data/productsData';
+// import ordersData from '../data/ordersData';
 import userIcon from '../asset/home/user.svg'
 import orderIcon from '../asset/home/order.svg'
 import revenueIcon from '../asset/home/revenue.svg'
 import shipIcon from '../asset/home/ship.svg'
 import trendupIcon from '../asset/home/trending_up.svg'
 import trenddownIcon from '../asset/home/trending_down.svg'
+import loading from '../asset/loading.svg'
+import axios from 'axios';
+
+// lấy dữ liệu từ api
+const fetchThongke = async () => {
+  const response = await axios.get('/api/dashboard/thongke')
+  return response.data;
+}
+
+const fetchOrder = async () => {
+  const response = await axios.get('/api/v1/order');
+  return response.data;
+}
+
+const fetchTop5Product = async () => {
+  const response = await axios.get('/api/v1/product?includeImage=true');
+  return response.data;
+}
+
 
 const Home = () => {
+  //Khai báo các biến trạng thái
+  const [ThongKeData, setThongKeData] = useState();
+  const [OrdersData, setOrderData] = useState();
+  const  [ProductsListData, setProductListData] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
+  //Tiến hành lấy dữ liệu
+  useEffect(() => {
+      const LoadData = async () => {
+        const thongkeData = await fetchThongke();
+        const orderData = await fetchOrder();
+        const productsListData = await fetchTop5Product();
+        setThongKeData(thongkeData);
+        setOrderData(orderData.data);
+        setProductListData(productsListData.data);
+        console.log(thongkeData);
+        console.log(orderData.data);
+        console.log(productsListData.data)
+        setIsLoading(false)
+      }
+      LoadData();
+  } ,[])
+
+  //loading khi chưa lấy dữ liệu xong
+  if (isLoading) {
+    return (
+        <div className="w-full h-[700px] flex justify-center items-center">
+            <img src={loading}/>
+        </div>
+    )
+}
+
+//Tạo 4 mục thống kê
   const stats = [
     {
-      title: "Tổng số khách hàng",
-      value: "40,689",
+      title: "Tổng số lượt truy cập",
+      value: (ThongKeData.view.today).toLocaleString(),
       icon: userIcon, 
       icontrend: trendupIcon ,
       trend: "8.5%",
@@ -28,27 +79,27 @@ const Home = () => {
     },
     {
       title: "Tổng số đơn hàng",
-      value: "10,000",
+      value: ThongKeData.donhang.all,
       icon: orderIcon,
-      icontrend: trendupIcon,
-      trend: "1.2%",
-      trendColor: "text-green-500",
+      icontrend: (ThongKeData.donhang.today >= ThongKeData.donhang.yesterday ) ? trendupIcon : trenddownIcon ,
+      trend: ThongKeData.donhang.yesterday === 0 ? "0%" : ((ThongKeData.donhang.today / ThongKeData.donhang.yesterday ) * 100)+"%"  ,
+      trendColor: (ThongKeData.donhang.today >= ThongKeData.donhang.yesterday ) ?"text-green-500" : "text-red-500",
     },
     {
       title: "Tổng số doanh thu",
-      value: "2,000,000",
+      value: (ThongKeData.doanhthu.all).toLocaleString() + "đ",
       icon: revenueIcon,
-      icontrend: trenddownIcon,
-      trend: "4.3%",
-      trendColor: "text-red-500",
+      icontrend: (ThongKeData.doanhthu.today >= ThongKeData.doanhthu.yesterday ) ? trendupIcon : trenddownIcon ,
+      trend: ThongKeData.doanhthu.yesterday === 0 ? "0%" : ((ThongKeData.doanhthu.today / ThongKeData.doanhthu.yesterday ) * 100)+"%"  ,
+      trendColor: (ThongKeData.doanhthu.today >= ThongKeData.doanhthu.yesterday ) ?"text-green-500" : "text-red-500",
     },
     {
       title: "Đang giao hàng",
-      value: "10",
+      value: ThongKeData.onProgress,
       icon: shipIcon,
       icontrend: trenddownIcon ,
-      trend: "2%",
-      trendColor: "text-red-500",
+      trend: "",
+      trendColor: "",
     },
   ];
 
@@ -76,8 +127,8 @@ const Home = () => {
 
             
             <div className="mr-auto py-4 pr-4 w-[35%] h-[444px] p-4 bg-white rounded-[14px] shadow-md">
-              <h2 className="text-2xl font-bold mb-2">Sản phẩm</h2>
-              <ProductsList data={productslistData}/>
+              <h2 className="text-2xl font-bold mb-2">Top 5 sản phẩm bán chạy</h2>
+              <ProductsList data={ProductsListData}/>
             </div>
         </div>
 
@@ -86,7 +137,7 @@ const Home = () => {
         </h1>
 
         <div className='w-full'>
-          <OrderList data={ordersData}/>
+          <OrderList data={OrdersData}/>
         </div>
 
     </NavigationAdmin>

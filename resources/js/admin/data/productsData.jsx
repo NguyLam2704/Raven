@@ -34,20 +34,5 @@ export const productslistData = [
         img: "https://bizweb.dktcdn.net/100/415/697/products/img-7825-1.jpg?v=1721183882410", 
         price: 195000, 
         quantity_sold: 400,
-    }, 
-    { 
-        id: 6, 
-        prod_name: "Áo Polo Raven Local Brand Unisex Flame", 
-        img: "https://bizweb.dktcdn.net/100/415/697/products/img-7825-1.jpg?v=1721183882410", 
-        price: 195000, 
-        quantity_sold: 400,
-    }, 
-    
-    { 
-        id: 7, 
-        prod_name: "Áo Polo Raven Local Brand Unisex Flame", 
-        img: "https://bizweb.dktcdn.net/100/415/697/products/img-7825-1.jpg?v=1721183882410", 
-        price: 195000, 
-        quantity_sold: 400,
-    }, 
+    }
 ]

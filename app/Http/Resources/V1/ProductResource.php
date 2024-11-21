@@ -23,8 +23,9 @@ class ProductResource extends JsonResource
             'description' => $this->description,
             'datePosted' => $this->dateposted,
             'categoryTypeId' => $this->category_type_id,
-            // load relationship named productImage in model
-            'productImage' => ProductImageResource::collection($this->whenLoaded('productImage'))
+            // load relationship productImage and proColorSize in model
+            'productImage' => ProductImageResource::collection($this->whenLoaded('productImage')),
+            'proColorSize' => ProColorSizeResource::collection($this->whenLoaded('proColorSize'))
         ];
     }
 }

@@ -20,8 +20,8 @@ class OrderResource extends JsonResource
             'orderId' => $this->order_id,
             'dateCreated' => $this->datecreated,
             'status' => $this->status,
-            'user' => new UserResource($this->whenLoaded('user')),
-            'bill' => new BillResource($this->whenLoaded('bill')),
+            'user' => new UserResource($this->whenLoaded('user')), //load relationship user
+            'bill' => new BillResource($this->whenLoaded('bill')), //load relationship bill
             'datePaid' => $this->datepaid,
             'payingMethod' => $this->payingmethod,
             'address' => $this->address,

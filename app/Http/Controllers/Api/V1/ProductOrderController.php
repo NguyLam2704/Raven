@@ -25,8 +25,8 @@ class ProductOrderController extends Controller
         }
         else
         {
-            $size = ProductOrder::where($queryItems)->paginate();//truy vấn dựa trên $queryItems thông qua where()
-            return new ProductOrderCollection($size->appends($request->query()));
+            $productOrder = ProductOrder::where($queryItems)->paginate();//truy vấn dựa trên $queryItems thông qua where()
+            return new ProductOrderCollection($productOrder->appends($request->query()));
         }
     }
 
@@ -52,15 +52,6 @@ class ProductOrderController extends Controller
     public function show(ProductOrder $productOrder)
     {
         return new ProductOrderResource($productOrder);
-        // $productOrder = ProductOrder::where('field1', $field1)
-        //                          ->where('field2', $field2)
-        //                          ->first();
-        
-        // if (!$productOrder) {
-        // return response()->json(['message' => 'Resource not found'], 404);
-        // }
-
-        // return new ProductOrderResource($productOrder);
     }
 
     /**

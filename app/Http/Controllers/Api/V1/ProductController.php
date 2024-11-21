@@ -20,10 +20,15 @@ class ProductController extends Controller
         $filter = new ProductsFilter();
         $filterItems = $filter->transform($request); //chuyển đổi các tham số  trong $request thành một mảng [['column','operator','value']]
         $includePicture = $request->query('includeImage'); //if the query has 'includeImage', retrieve the product with productImage
+        $includeProColorSize = $request->query('includeProColorSize');//if the query has 'includeProColorSize', retrieve the product with ProColorSize
         $product = Product::where($filterItems);
         if($includePicture)//if the query has 'includeImage'
         {
             $product = $product->with('productImage');
+        }
+        if($includeProColorSize)//if the query has 'includeProColorSize', return proColorSize
+        {
+            $product = $product->with('proColorSize');
         }
         return new ProductCollection($product->paginate()->appends($request->query()));
     }
