@@ -20,13 +20,15 @@ class OrderController extends Controller
         $filter = new OrdersFilter();
         $queryItems = $filter->transform($request); //chuyển đổi các tham số  trong $request thành một mảng [['column','operator','value']]
         if (count($queryItems) == 0)// Nếu không có điều kiện lọc
+        $queryItems = $filter->transform($request); //chuyển đổi các tham số  trong $request thành một mảng [['column','operator','value']]
+        if (count($queryItems) == 0)// Nếu không có điều kiện lọc
         {
-            return new OrderCollection(Order::paginate());//paginate chia nhỏ danh sách dữ liệu
+            return new OrderCollection(Order::with(['user', 'bill'])->paginate());//return them quan he user va bill, paginate chia nhỏ danh sách dữ liệu
         }
         else
         {
-            $size = Order::where($queryItems)->paginate();//truy vấn dựa trên $queryItems thông qua where()
-            return new OrderCollection($size->appends($request->query()));
+            $order = Order::where($queryItems)->with(['user', 'bill'])->paginate();//return them quan he user va bill,truy vấn dựa trên $queryItems thông qua where()
+            return new OrderCollection($order->appends($request->query()));
         }
     }
 
@@ -76,5 +78,33 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         //
+    }
+
+    //Write api for order (have user and product_order)
+    public function orderInfo(Request $request)
+    {
+        $input = $request->input('input');// Lấy parameter từ query parameter
+        // Kiểm tra nếu không có phoneNumber trong request
+        if (!$input) {
+            return response()->json([
+                'message' => 'Input is required',
+            ], 400);
+        }
+        // Kiểm tra định dạng email
+        elseif (filter_var($input, FILTER_VALIDATE_EMAIL)) {
+            $orders = Order::whereRelation('user','email','=',$input)->with(['user', 'bill'])->get();
+            return new OrderCollection($orders);
+        }
+
+        // Kiểm tra định dạng số điện thoại (10 chữ số, bắt đầu bằng 0)
+        elseif (preg_match('/^0\d{9}$/', $input)) {
+            $orders = Order::whereRelation('user','phonenumber','=',$input)->with(['user', 'bill'])->get();
+            return new OrderCollection($orders);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Vui lòng nhập email hoặc số điện thoại hợp lệ.'
+        ], 400);
     }
 }

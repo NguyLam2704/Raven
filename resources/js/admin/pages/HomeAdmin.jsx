@@ -6,7 +6,7 @@ import MonthlyRevenueChart from '../components/home/revenueChart';
 import ProductsList from '../components/home/productsList';
 import OrderList from '../components/home/ordersList';
 import revenueData from '../data/revenueData';
-import { productslistData } from '../data/productsData';
+// import { productslistData } from '../data/productsData';
 // import ordersData from '../data/ordersData';
 import userIcon from '../asset/home/user.svg'
 import orderIcon from '../asset/home/order.svg'
@@ -28,10 +28,17 @@ const fetchOrder = async () => {
   return response.data;
 }
 
+const fetchTop5Product = async () => {
+  const response = await axios.get('/api/v1/product?includeImage=true');
+  return response.data;
+}
+
+
 const Home = () => {
   //Khai báo các biến trạng thái
   const [ThongKeData, setThongKeData] = useState();
   const [OrdersData, setOrderData] = useState();
+  const  [ProductsListData, setProductListData] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
   //Tiến hành lấy dữ liệu
@@ -39,10 +46,13 @@ const Home = () => {
       const LoadData = async () => {
         const thongkeData = await fetchThongke();
         const orderData = await fetchOrder();
+        const productsListData = await fetchTop5Product();
         setThongKeData(thongkeData);
-        setOrderData(orderData.data)
+        setOrderData(orderData.data);
+        setProductListData(productsListData.data);
         console.log(thongkeData);
         console.log(orderData.data);
+        console.log(productsListData.data)
         setIsLoading(false)
       }
       LoadData();
@@ -118,7 +128,7 @@ const Home = () => {
             
             <div className="mr-auto py-4 pr-4 w-[35%] h-[444px] p-4 bg-white rounded-[14px] shadow-md">
               <h2 className="text-2xl font-bold mb-2">Top 5 sản phẩm bán chạy</h2>
-              <ProductsList data={productslistData}/>
+              <ProductsList data={ProductsListData}/>
             </div>
         </div>
 

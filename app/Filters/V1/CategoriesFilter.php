@@ -11,7 +11,7 @@ class CategoriesFilter extends ApiFilter{
     protected $safeParms = [
         'categoryName' => ['eq', 'ne'],
     ];
-    // map column with field in color table
+    // map column with field in category table
     protected $columnMap = [
         'categoryName' => 'category_name',
     ];
