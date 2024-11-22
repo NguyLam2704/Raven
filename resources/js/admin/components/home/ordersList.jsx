@@ -6,13 +6,13 @@ const OrderList = ({data}) => {
     //Lấy background tùy vào trạng thái
     const getStatusClass = (status) => {
         switch (status){
-            case "3":
+            case 3:
                 return "bg-[#00B69B]/20 text-[#00B69B]";
-            case "1":
+            case 1:
                 return "bg-[#6226EF]/20  text-[#6226EF]";
-            case "0":
+            case 0:
                 return "bg-[#EF3826]/20 text-[#EF3826]";    
-            case "2":
+            case 2:
                 return "bg-[#7C990A]/20  text-[#7C990A]";      
             default:
                 return "bg-gray-200 text-gray-600"     
@@ -22,13 +22,13 @@ const OrderList = ({data}) => {
     //Lấy ra chuỗi tùy vào trạng thái là số
     const getOrderStatus = (status) => {
         switch (status) {
-          case "3":
+          case 3:
             return "Đã hoàn thành";
-          case "1":
+          case 1:
             return "Đang xử lý";
-          case "0":
+          case 0:
             return "Đã hủy";
-          case "2":
+          case 2:
             return "Đang giao hàng";
           default:
             return "Trạng thái không xác định";

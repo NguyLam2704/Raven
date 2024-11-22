@@ -34,13 +34,13 @@ const Order = () => {
 
     const getOrderStatus = (status) => {
         switch (status) {
-          case "3":
+          case 3:
             return "Đã hoàn thành";
-          case "1":
+          case 1:
             return "Đang xử lý";
-          case "0":
+          case 0:
             return "Đã hủy";
-          case "2":
+          case 2:
             return "Đang giao hàng";
           default:
             return "Trạng thái không xác định";
