@@ -25,8 +25,8 @@ class BillController extends Controller
         }
         else
         {
-            $size = Bill::where($queryItems)->paginate(); //truy vấn các bản ghi trong bills dựa trên $queryItems thông qua where()
-            return new BillCollection($size->appends($request->query()));
+            $bill = Bill::where($queryItems)->paginate(); //truy vấn các bản ghi trong bills dựa trên $queryItems thông qua where()
+            return new BillCollection($bill->appends($request->query()));
         }
     }
 

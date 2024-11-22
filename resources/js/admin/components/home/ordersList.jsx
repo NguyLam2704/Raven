@@ -67,7 +67,7 @@ const OrderList = ({data}) => {
                         {data.map(order => (
                             <tr key={order.orderId}>
                                 <td className="py-5 px-2 border-b text-sm font-semibold text-center">{order.orderId}</td>
-                                <td className="py-5 px-2 border-b text-sm font-semibold text-left">{order.userId}</td>
+                                <td className="py-5 px-2 border-b text-sm font-semibold text-left">{order.user.name}</td>
                                 <td className="py-5 px-2 border-b text-sm font-semibold text-left">{order.address}</td>
                                 <td className="py-5 px-2 border-b text-sm font-semibold text-left">
                                     {formatDate(order.dateCreated)}
