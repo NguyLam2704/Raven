@@ -46,6 +46,7 @@ const Header = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("admin");
 
+
         // Điều hướng về trang login
         navigate("/login_admin");
     };

@@ -117,8 +117,8 @@ const Search = () => {
                     </div>
                     {/* Danh sách các sản phẩm */}
                     <div className="mt-10 grid grid-cols-4 gap-12 z-10">
-                        {ListProduct.map((product) => (
-                            <Product  price={product.price} img={product.img} name={product.name} sale={product.sale} />
+                        {ListProduct.map((product, index) => (
+                            <Product key={index} price={product.price} img={product.img} name={product.name} sale={product.sale} />
                         ))}
                     </div>
               </div>

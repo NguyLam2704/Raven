@@ -66,9 +66,10 @@ const CheckOrder = () => {
                             <li className="w-1/3 h-11 content-center border border-black  bg-[#eeeeee] text-center text-[#a91d3a] text-lg font-bold">Trạng thái đơn hàng</li>
                         </ul>
                         {/* Danh sách các đơn hàng */}
-                        {orderInfo.map((order)=>{
+                        {orderInfo.map((order, index)=>{
+
                             return(
-                                <ItemOrder order={order} />
+                                <ItemOrder key={index} order={order} />
                             )
                         })}
                     </div>

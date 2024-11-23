@@ -13,6 +13,7 @@ const AccountManage = () => {
     const [email, setEmail] = useState(admin.email);
     const [phoneNum, setPhoneNum] = useState(admin.phoneNumber);
     const [errors, setErrors] = useState({});
+
     const token = "Bearer " + localStorage.getItem("token");
     const [isEditing, setIsEditing] = useState(false);
 
@@ -39,6 +40,7 @@ const AccountManage = () => {
         if (name == admin.name && email == admin.email && phoneNum == admin.phoneNumber){
             return;
         }
+
 
         // Tạo form đẩy dữ liệu lên DB
         const formData = {

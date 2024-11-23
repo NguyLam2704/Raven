@@ -45,7 +45,7 @@ const CartMini = ({handleCart}) => {
                     </div>
                     <button 
                         className="w-11/12 flex justify-center bg-[#c73659] rounded-[5px] border border-[#151515] py-1 my-7"
-                        onClick={()=>naviagte('/cart')} // Chuyển đến trang thanh toán
+                        onClick={()=>naviagte('/')} // Chuyển đến trang thanh toán
                     >
                         <div className=" text-white text-lg font-bold">THANH TOÁN</div>
                     </button>
