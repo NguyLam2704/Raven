@@ -21,6 +21,7 @@ const Order = () => {
     ]); // Mặc định tất cả trạng thái được chọn
     const [isLoading, setIsLoading] = useState(true);
 
+
     //Lấy dữ liệu từ db
     useEffect(() => {
         const LoadData = async () => {
@@ -51,8 +52,6 @@ const Order = () => {
             <div className="w-full h-[700px] flex justify-center items-center">
                 <img src={loading}/>
             </div>
-
-            // <h1 className='w-full text-2xl font-semibold text-center mt-16'>Loading...</h1>
         )
     } 
     // Hàm lọc đơn hàng
