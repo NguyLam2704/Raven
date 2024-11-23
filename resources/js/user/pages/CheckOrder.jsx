@@ -56,7 +56,7 @@ const CheckOrder = () => {
                     <button className="bg-[#C73659] rounded-md border border-black text-[#eeeeee] text-base font-bold  mt-6 px-5 py-1">Kiểm tra</button>
                 </form>
                
-                { ListOrder.length !=0 //Kiểm tra độ dài của mảng
+                { orderInfo.length !=0 //Kiểm tra độ dài của mảng
                     && (<div className="w-4/6 mt-24 ">
                         {/* Các cột thông tin của đơn hàng */}
                         <ul className="flex flex-row ">
