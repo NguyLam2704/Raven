@@ -56,7 +56,7 @@ const CheckOrder = () => {
                     <button className="bg-[#C73659] rounded-md border border-black text-[#eeeeee] text-base font-bold  mt-6 px-5 py-1">Kiểm tra</button>
                 </form>
                
-                { ListOrder.length !=0 //Kiểm tra độ dài của mảng
+                { orderInfo.length !=0 //Kiểm tra độ dài của mảng
                     && (<div className="w-4/6 mt-24 ">
                         {/* Các cột thông tin của đơn hàng */}
                         <ul className="flex flex-row ">
@@ -66,9 +66,10 @@ const CheckOrder = () => {
                             <li className="w-1/3 h-11 content-center border border-black  bg-[#eeeeee] text-center text-[#a91d3a] text-lg font-bold">Trạng thái đơn hàng</li>
                         </ul>
                         {/* Danh sách các đơn hàng */}
-                        {orderInfo.map((order)=>{
+                        {orderInfo.map((order, index)=>{
+
                             return(
-                                <ItemOrder order={order} />
+                                <ItemOrder key={index} order={order} />
                             )
                         })}
                     </div>

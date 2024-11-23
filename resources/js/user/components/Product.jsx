@@ -17,8 +17,9 @@ const Product = ({ img, name, price, sale}) => {
                     </div>
                 )}
                 {/* Ảnh sản phẩm */}
-                <img className="w-[230px] h-[235px] my-2" src={img} alt={name} />
-                <div className="text-center text-base font-medium">{name}</div>
+                <img className="w-[230px] h-[235px] rounded-md my-2" src={img} alt={name} />
+                {/* Tên sản phẩm */}
+                <div className="h-10 content-center text-center text-base font-medium">{name}</div>
                 
                 {sale === 0 ? (
                     // Hiển thị giá sản phẩm khi không có discount

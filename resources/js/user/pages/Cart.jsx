@@ -3,9 +3,11 @@ import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import ItemProduct from "../components/Cart/ItemProduct";
 import img_product from '../assets/img_product.svg'
+import { useNavigate } from "react-router-dom";
 
 //Giỏ hàng
 const Cart = () => {
+    const navigate = useNavigate()
     const [ListProduct, setList] = useState([
         {
           key: 1,
@@ -50,8 +52,8 @@ const Cart = () => {
                     <div className="w-2/12 text-center text-black text-lg font-bold">Giá tiền</div>
                 </div>
                 {/* Danh sách các sản phẩm */}
-                {ListProduct.map((product) => (
-                    <ItemProduct product={product} />                            
+                {ListProduct.map((product, index) => (
+                    <ItemProduct key={index} product={product} />                            
                 ))}
                 {/* Tổng giá các sản phẩm trong giỏ được check */}
                 <div className="w-10/12 flex flex-row py-2 mt-5">
@@ -60,8 +62,8 @@ const Cart = () => {
                     <div className="w-2/12 text-center text-[#a91d3a] text-xl font-bold">10000000đ</div>
                 </div>
                 {/* Nút thanh toán */}
-                <div className="w-10/12 flex flex-row justify-end mt-16 pr-8">
-                    <button className="w-36 h-10 bg-[#c73659] rounded-[5px] border border-[#151515] text-center text-[#eeeeee] text-[17px] font-bold">Thanh toán</button>
+                <div className="w-10/12 flex flex-row justify-end mt-16 pr-8 ease-in duration-300">
+                    <button onClick={( ) => navigate("/check_out")} className="w-36 h-10 bg-[#c73659] rounded-[5px] border border-[#151515] text-center text-[#eeeeee] text-[17px] font-bold ">Thanh toán</button>
                 </div>
             </div>
             <Footer/>
