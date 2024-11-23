@@ -1,18 +1,34 @@
-import React from 'react';
+import React, {useState} from 'react';
+import axios from 'axios';
+import OrderDetail from '../order/OrderDetail';
+import Loading from '../../asset/loading.svg'
 
+
+const fetchOrderDetail = async (id) => {
+    const response = await axios.get(`/api/dashboard/chitietdonhang/${id}`);
+    return response.data;
+  };
+
+const fetchOrderBill = async (id) => {
+    const response = await axios.get(`/api/v1/bill/${id}`);
+    return response.data;
+};
 
 const OrderList = ({data}) => {
+    const [selectedOrder, setSelectedOrder] = useState(null);
+    const [costBill, setCostBill] = useState(0);
+    const [isLoading, setIsLoading] = useState();
 
     //Lấy background tùy vào trạng thái
     const getStatusClass = (status) => {
         switch (status){
-            case "3":
+            case 3:
                 return "bg-[#00B69B]/20 text-[#00B69B]";
-            case "1":
+            case 1:
                 return "bg-[#6226EF]/20  text-[#6226EF]";
-            case "0":
+            case 0:
                 return "bg-[#EF3826]/20 text-[#EF3826]";    
-            case "2":
+            case 2:
                 return "bg-[#7C990A]/20  text-[#7C990A]";      
             default:
                 return "bg-gray-200 text-gray-600"     
@@ -22,13 +38,13 @@ const OrderList = ({data}) => {
     //Lấy ra chuỗi tùy vào trạng thái là số
     const getOrderStatus = (status) => {
         switch (status) {
-          case "3":
+          case 3:
             return "Đã hoàn thành";
-          case "1":
+          case 1:
             return "Đang xử lý";
-          case "0":
+          case 0:
             return "Đã hủy";
-          case "2":
+          case 2:
             return "Đang giao hàng";
           default:
             return "Trạng thái không xác định";
@@ -47,6 +63,23 @@ const OrderList = ({data}) => {
         const year = date.getFullYear();
         return `${day}/${month}/${year}`; //trả về chuỗi ngày tháng dạng dd/mm/yyyy
       };
+
+      const handleRowClick = async (orderId) => {
+        setIsLoading(true);
+        try {
+            const orderDetail = await fetchOrderDetail(orderId);
+            const orderBill = await fetchOrderBill(orderId);
+            console.log(orderBill.data.totalCost)
+            setSelectedOrder(orderDetail);
+            setCostBill(orderBill.data.totalCost);
+        } catch (error) {
+            console.error('Error fetching order details:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const closeDetail = () => setSelectedOrder(null);
     
     return (
          <div className="container mx-auto px-4">
@@ -65,9 +98,12 @@ const OrderList = ({data}) => {
 
                     <tbody>
                         {data.map(order => (
-                            <tr key={order.orderId}>
+                            <tr key={order.orderId} 
+                                onClick={() => handleRowClick(order.orderId)}
+                                className="cursor-pointer hover:bg-gray-100"
+                            >
                                 <td className="py-5 px-2 border-b text-sm font-semibold text-center">{order.orderId}</td>
-                                <td className="py-5 px-2 border-b text-sm font-semibold text-left">{order.userId}</td>
+                                <td className="py-5 px-2 border-b text-sm font-semibold text-left">{order.user.name}</td>
                                 <td className="py-5 px-2 border-b text-sm font-semibold text-left">{order.address}</td>
                                 <td className="py-5 px-2 border-b text-sm font-semibold text-left">
                                     {formatDate(order.dateCreated)}
@@ -84,6 +120,21 @@ const OrderList = ({data}) => {
                 </table>
             </div>
 
+            {isLoading && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                    <img src={Loading} alt="Loading..." className="w-12 h-12" />
+                </div>
+            )}
+
+            {/* Hiển thị chi tiết đơn hàng khi đã có dữ liệu */}
+            {selectedOrder && !isLoading && (
+                <OrderDetail
+                    orderDetail={selectedOrder}
+                    costBill={costBill}
+                    formatDate={formatDate}
+                    onClose={closeDetail}
+                />
+            )}
          </div>   
     )
 }

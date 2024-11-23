@@ -30,11 +30,13 @@ const ProductsList = ({data}) => {
                                     {(product.cost).toLocaleString()}
                                 </td>
                                 <td className="py-5 px-2 h-20 border-b text-sm font-semibold text-center">
+                                    {/* Tinh doanh thu */}
                                     {(product.cost * product.quantitySold).toLocaleString()}
                                 </td>
                                 <td className="py-5 px-2 h-20 border-b text-sm font-semibold text-center">
                                     <span className={`px-2 py-1 rounded inline-block w-[120px] text-center`}> 
-                                        {product.categorytypeId}
+                                        {/* Tinh so luong san pham con lai */}
+                                        {product.proColorSize.reduce((sum,item) => sum + item.quantityAvailable,0)}
                                     </span>
                                 </td>
                                 <td className="py-5 px-2 h-20 border-b flex justify-center items-center">
