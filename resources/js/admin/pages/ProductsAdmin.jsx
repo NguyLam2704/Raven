@@ -6,7 +6,7 @@ import ProductsList from "../components/products/ProductsList";
 import loading from '../asset/loading.svg'
 
 const fetchProducts = async () => {
-    const response = await axios.get('/api/v1/product');
+    const response = await axios.get('/api/v1/product?includeProColorSize=true');
     return response.data;
 } 
 

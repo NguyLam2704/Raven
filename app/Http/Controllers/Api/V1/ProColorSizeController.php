@@ -25,8 +25,8 @@ class ProColorSizeController extends Controller
         }
         else
         {
-            $size = ProColorSize::where($queryItems)->paginate();
-            return new ProColorSizeCollection($size->appends($request->query()));//truy vấn dựa trên $queryItems thông qua where()
+            $proColorSize = ProColorSize::where($queryItems)->paginate();//truy vấn dựa trên $queryItems thông qua where()
+            return new ProColorSizeCollection($proColorSize->appends($request->query()));
         }
     }
 

@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Auth\AdminController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Dashboard\DashboardController;
+use App\Http\Controllers\Api\Dashboard\UserDetailsController;
 use App\Http\Controllers\Api\V1\BillController;
 use App\Http\Controllers\Api\V1\ColorController;
 use App\Http\Controllers\Api\V1\ProductController;
@@ -27,7 +28,7 @@ Route::get('/user', function (Request $request) {
 //api/v1
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], function () {
     //add route here
-    Route::apiResource('size', SizeController::class);
+    Route::apiResource('size', SizeController::class); 
     Route::apiResource('color', ColorController::class);
     Route::apiResource('product', ProductController::class);
     Route::apiResource('category', CategoryController::class);
@@ -39,7 +40,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], f
     Route::apiResource('bill', BillController::class);
     Route::apiResource('user', UserController::class);
     Route::apiResource('productOrder', ProductOrderController::class);
-    // Route::get('productOrder/{field1}/{field2}', [ProductOrderController::class, 'show']);
+    Route::post('orderInfo', [OrderController::class, 'orderInfo']); //check order : api/v1/orderInfo
 });
 
 //auth
@@ -61,4 +62,5 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/chitietdonhang/{order_id}', [DashboardController::class, 'chitietdonhang']);
     Route::put('/chitietdonhang/{order_id}', [DashboardController::class, 'ChangeStatus']);
     Route::get('/chitiet/{id}', [DashboardController::class, 'chitiet']);
+    Route::get('/user/{id}', [UserDetailsController::class, 'UserDetails']);
 });

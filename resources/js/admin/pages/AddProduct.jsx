@@ -152,29 +152,29 @@ const AddProduct = () => {
                             </div>
                         </div>
 
-                        <table className="min-w-full my-6 border-collapse border-2 border-black">
+                        <table className="min-w-full my-6 border-collapse border border-black">
                             <thead>
                             <tr>
-                                <th className="border-2 border-black p-2">Màu sắc</th>
-                                <th className="border-2 border-black p-2">Size</th>
-                                <th className="border-2 border-black p-2">Số lượng</th>
-                                <th className="border-2 border-black p-2">Hành động</th>
+                                <th className="border border-black p-2 w-1/4 text-2xl font-semibold">Màu sắc</th>
+                                <th className="border border-black p-2 w-1/4 text-2xl font-semibold">Size</th>
+                                <th className="border border-black p-2 w-1/4 text-2xl font-semibold">Số lượng</th>
+                                <th className="border border-black p-2 w-1/4 text-2xl font-semibold">Hành động</th>
                             </tr>
                             </thead>
                             <tbody>
                             {items.map((item, index) => (
-                                <tr key={index} className="border-2 border-black">
-                                <td className="border-2 border-black p-2">
+                                <tr key={index} className="border border-black">
+                                <td className="p-2 text-center flex justify-center items-center mt-1">
                                     <div
-                                    style={{ backgroundColor: item.color, width: '20px', height: '20px' }}
+                                    style={{ backgroundColor: item.color, width: '24px', height: '24px' }}
                                     ></div>
                                 </td>
-                                <td className=" border-2 border-black p-2">{item.size}</td>
-                                <td className=" border-2 border-black p-2">{item.quantity}</td>
-                                <td className="border-2 border-black p-2">
+                                <td className=" border border-black p-2 text-center text-2xl font-normal">{item.size}</td>
+                                <td className=" border border-black p-2 text-center text-2xl font-normal">{item.quantity}</td>
+                                <td className="border border-black p-2 items-center justify-center text-center">
                                     <button
                                     onClick={() => handleDeleteItem(index)}
-                                    className="bg-red-500 text-white px-2 py-1 rounded"
+                                    className="bg-red-500 text-white px-2 py-1 border-2 rounded"
                                     >
                                     Xóa
                                     </button>
@@ -184,16 +184,18 @@ const AddProduct = () => {
                             </tbody>
                         </table>
 
-                        <div className="mb-4 mt-6 flex items-center gap-4 border-2">
-                            <div>
-                                <label className="block text-sm font-medium">Color</label>
+
+                        <div className="text-2xl font-semibold">Nhập màu, size và số lượng<span className="text-red-600">*</span></div>
+                        <div className="mb-4 mt-2 flex items-center px-4 py-1 gap-20 border border-black">
+                            <div className="relative">
+                                <label className="block text-2xl font-normal">Color</label>
                                 <div
-                                    className="w-8 h-8 border rounded cursor-pointer"
+                                    className="w-8 h-8 border border-black rounded cursor-pointer"
                                     style={{ backgroundColor: newItem.color }}
                                     onClick={() => setShowColorPicker(!showColorPicker)}
                                 ></div>
                                 {showColorPicker && (
-                                    <div className=" z-10 mt-2">
+                                    <div className="absolute top-full left-0 mt-2 p-2 border bg-[#245ee0] border-gray-300 rounded shadow-lg z-10">
                                         <SketchPicker
                                             color={newItem.color}
                                             onChangeComplete={(color) =>
@@ -210,11 +212,11 @@ const AddProduct = () => {
                                 )}
                             </div>
                             <div>
-                                <label className="block text-sm font-medium">Size</label>
+                                <label className="block text-2xl font-normal">Size</label>
                                 <select
                                     value={newItem.size}
                                     onChange={(e) => setNewItem({ ...newItem, size: e.target.value })}
-                                    className="border rounded px-2 py-1"
+                                    className="border border-black rounded px-2 py-1"
                                 >
                                     <option value="">Select Size</option>
                                     <option value="S">S</option>
@@ -224,23 +226,23 @@ const AddProduct = () => {
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium">Quantity</label>
+                                <label className="block text-2xl font-normal">Quantity</label>
                                 <input
                                     type="number"
                                     value={newItem.quantity}
                                     onChange={(e) =>
                                     setNewItem({ ...newItem, quantity: e.target.value })
                                     }
-                                    className="border rounded px-2 py-1"
+                                    className="border border-black rounded px-2 py-1"
                                     placeholder="Enter quantity"
                                 />
                             </div>
-                            <div className="border-2 h-full">
+                            <div className="mt-8">
                                 <button
                                     onClick={handleAddItem}
-                                    className="bg-blue-500 text-white px-4 border-2 rounded"
+                                    className="bg-blue-500 w-32 text-white text-xl px-4 rounded"
                                 >
-                                Add
+                                Thêm
                                 </button>
                             </div>
 
