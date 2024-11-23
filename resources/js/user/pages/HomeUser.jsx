@@ -39,111 +39,118 @@ const HomeUser = () => {
     }, []); // [] đảm bảo chỉ gọi API một lần khi component mount
 
     const navigate = useNavigate() ; 
-    
-    // Hiển thị trạng thái loading hoặc lỗi
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
 
     return(
         <div className='w-full h-screen '>
-            <Navigation /> 
-
+             { loading ? ( <div></div>) : (<Navigation/>) }
             <main className=" mt-[90px] w-full">
-                <SliderHome/>
-
+                { loading ? ( <div></div>) : (<SliderHome/>) }
                 {/* Các sản phẩm mới */}
-                <div class=" relative w-full h-[900px]  justify-items-center "> 
+                <div className=" w-full  justify-items-center mt-20 "> 
                     {/* Tiêu đề */}
-                    <div class="h-1/5 w-10/12 ">
-                        <TitleMore type={"SẢN PHẨM MỚI"}/>
+                    <div className="h-1/5 w-10/12 ">
+                        <TitleMore type={"SẢN PHẨM MỚI"} load={loading}/>
                     </div>
-                    <div className='w-full flex flex-row justify-center'>                       
-                        <button class=" p-1 pr-2 bg-opacity-30 rounded-full ">
-                            <img src={back} alt="none"/>
-                        </button>                        
-                        <div class="h-4/5 w-10/12 grid grid-cols-4 gap-10 "  > 
-                            
-                            {products.sort((a, b) => new Date(b.datePosted) - new Date(a.datePosted)) // sort by day
-                                    .slice(0, 8) // choose 8 product
-                                    .map((product) => (
-                                        <Product  price={product.cost} 
-                                                img={product.productImage.find(img => img.isPrimary)?.image} //choose the primary image to display
-                                                name={product.productName} 
-                                                sale={product.discount} />
-                                    ))}                       
+                    { loading ? (
+                        <div></div>
+                    ) : (
+                        <div className='w-full flex flex-row justify-center'>                       
+                            <button onClick={()=>hanlderNumber(number)} className=" p-1 pr-2 bg-opacity-30 rounded-full "
+                            >
+                                <img src={back} alt="none"/>
+                            </button>                        
+                            <div className="h-4/5 w-10/12 grid grid-cols-4 gap-10 "  >                             
+                                {products.sort((a, b) => new Date(b.datePosted) - new Date(a.datePosted)) // sort by day
+                                        .slice(0, 8) // choose 8 product
+                                        .map((product, index) => (
+                                            <Product key={index} 
+                                                    price={product.cost} 
+                                                    img={product.productImage.find(img => img.isPrimary)?.image} //choose the primary image to display
+                                                    name={product.productName} 
+                                                    sale={product.discount} />
+                                        ))}                       
+                            </div>
+                            <button className=" p-1 pr-2 bg-white bg-opacity-30 rounded-full ">
+                                    <img  src={forward} alt="none"/>
+                            </button>
                         </div>
-                        <button class=" p-1 pr-2 bg-white bg-opacity-30 rounded-full ">
-                                <img  src={forward} alt="none"/>
-                        </button>
-                    </div>     
+                    )}     
                 </div>
 
-                <Line></Line>
+                { loading ? ( <div></div>) : (<Line/>) }                
 
                 {/* Các sản phẩm nổi bật */}
-                <div class=" relative w-full h-[900px]  justify-items-center "> 
+                <div className="  w-full  justify-items-center mt-20"> 
                     {/* Tiêu đề */}
-                    <div class="h-1/5 w-10/12 ">
-                        <TitleMore type={"SẢN PHẨM NỔI BẬT"}/>
+                    <div className="h-1/5 w-10/12 ">
+                        <TitleMore type={"SẢN PHẨM NỔI BẬT"}  load={loading}/>
                     </div>
 
                     {/* Danh sách sản phẩm */}
-                    <div className='w-full flex flex-row justify-center'>                       
-                        <button class=" p-1 pr-2 bg-opacity-30 rounded-full ">
-                            <img src={back} alt="none"/>
-                        </button>                        
-                        <div class="h-4/5 w-10/12 grid grid-cols-4 gap-10 "  > 
-                            
-                            {products.filter((product) => product.quantitySold > 10) //fiter product have more 10 quantitySold
-                                    .slice(0, 8) //choose 8 product
-                                    .map((product) => (
-                                        <Product  price={product.cost} 
-                                                img={product.productImage.find(img => img.isPrimary)?.image} //choose the primary image to display
+                    { loading ? (
+                        <div></div>
+                    ) : (
+                        <div className='w-full flex flex-row justify-center'>                       
+                            <button className=" p-1 pr-2 bg-opacity-30 rounded-full ">
+                                <img src={back} alt="none"/>
+                            </button>                        
+                            <div className="h-4/5 w-10/12 grid grid-cols-4 gap-10 "  > 
+                                
+                                {products.filter((product) => product.quantitySold > 10) //fiter product have more 10 quantitySold
+                                        .slice(0, 8) //choose 8 product
+                                        .map((product, index) => (
+                                            <Product key={index}
+                                                    price={product.cost} 
+                                                    img={product.productImage.find(img => img.isPrimary)?.image} //choose the primary image to display
+                                                    name={product.productName} 
+                                                    sale={product.discount} />
+                                        ))}
+                                
+                            </div>
+                            <button className=" p-1 pr-2 bg-white bg-opacity-30 rounded-full ">
+                                    <img  src={forward} alt="none"/>
+                            </button>
+                        </div>   
+                    )} 
+                                                     
+                </div>   
+
+                { loading ? ( <div></div>) : (<Line/>) }
+
+                {/* Các sản phẩm sale */}
+                <div className=" w-full  justify-items-center mt-20"> 
+                    {/* Tiêu đề */}
+                    <div className="h-1/5 w-10/12 ">
+                        <TitleMore type={"SALE"}  load={loading}/>
+                    </div>
+
+                    {/* Danh sách sản phẩm */}
+                    { loading ? (
+                        <div></div>
+                    ) : (
+                        <div className='w-full flex flex-row justify-center'>                       
+                            <button className=" p-1 pr-2 bg-opacity-30 rounded-full ">
+                                <img src={back} alt="none"/>
+                            </button>                        
+                            <div className="h-4/5 w-10/12 grid grid-cols-4 gap-10 "  > 
+                                
+                                {products.filter((product) => product.discount > 0) //filter product have discount
+                                    .slice(0, 8)
+                                    .map((product, index) => (
+                                        <Product  key={index}
+                                                price={product.cost} 
+                                                img={product.productImage.find(img => img.isPrimary)?.image} 
                                                 name={product.productName} 
                                                 sale={product.discount} />
                                     ))}
-                            
-                        </div>
-                        <button class=" p-1 pr-2 bg-white bg-opacity-30 rounded-full ">
-                                <img  src={forward} alt="none"/>
-                        </button>
-                    </div>                                    
-                </div>   
-
-                <Line/>
-
-                {/* Các sản phẩm sale */}
-                <div class=" relative w-full h-[900px]  justify-items-center "> 
-                    {/* Tiêu đề */}
-                    <div class="h-1/5 w-10/12 ">
-                        <TitleMore type={"SALE"}/>
-                    </div>
-
-                    {/* Danh sách sản phẩm */}
-                    <div className='w-full flex flex-row justify-center'>                       
-                        <button class=" p-1 pr-2 bg-opacity-30 rounded-full ">
-                            <img src={back} alt="none"/>
-                        </button>                        
-                        <div class="h-4/5 w-10/12 grid grid-cols-4 gap-10 "  > 
-                            
-                            {products.filter((product) => product.discount > 0) //filter product have discount
-                                 .slice(0, 8)
-                                 .map((product) => (
-                                    <Product  price={product.cost} 
-                                            img={product.productImage.find(img => img.isPrimary)?.image} 
-                                            name={product.productName} 
-                                            sale={product.discount} />
-                                ))}
-                            
-                        </div>
-                        <button class=" p-1 pr-2 bg-white bg-opacity-30 rounded-full ">
-                                <img  src={forward} alt="none"/>
-                        </button>
-                    </div>                                       
+                                
+                            </div>
+                            <button className=" p-1 pr-2 bg-white bg-opacity-30 rounded-full ">
+                                    <img  src={forward} alt="none"/>
+                            </button>
+                        </div> 
+                    )} 
+                                                          
                 </div>                    
             </main>
             <Footer/>

@@ -51,8 +51,9 @@ const Category = ({ cate }) => {
       fetchProductCategories();}, [cate]); // [] call API when cate change
       console.log(productCategories);
 
-  const mapProductCategories = productCategories.map((productCategory) => (
-      <Product  price={productCategory.cost} 
+  const mapProductCategories = productCategories.map((productCategory, index) => (
+      <Product  key={index}
+                price={productCategory.cost} 
                 img={productCategory.productImage.find(img => img.isPrimary)?.image}  //choose the primary image to display
                 name={productCategory.productName} 
                 sale={productCategory.discount} />
