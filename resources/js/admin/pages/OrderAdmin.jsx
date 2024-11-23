@@ -21,6 +21,7 @@ const Order = () => {
     ]); // Mặc định tất cả trạng thái được chọn
     const [isLoading, setIsLoading] = useState(true);
 
+
     //Lấy dữ liệu từ db
     useEffect(() => {
         const LoadData = async () => {
@@ -34,13 +35,13 @@ const Order = () => {
 
     const getOrderStatus = (status) => {
         switch (status) {
-          case "3":
+          case 3:
             return "Đã hoàn thành";
-          case "1":
+          case 1:
             return "Đang xử lý";
-          case "0":
+          case 0:
             return "Đã hủy";
-          case "2":
+          case 2:
             return "Đang giao hàng";
           default:
             return "Trạng thái không xác định";
@@ -51,8 +52,6 @@ const Order = () => {
             <div className="w-full h-[700px] flex justify-center items-center">
                 <img src={loading}/>
             </div>
-
-            // <h1 className='w-full text-2xl font-semibold text-center mt-16'>Loading...</h1>
         )
     } 
     // Hàm lọc đơn hàng
