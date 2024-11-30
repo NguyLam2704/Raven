@@ -1,12 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Product = ({ img, name, price, sale}) => {
+const Product = ({ key, proId, img, name, price, sale}) => {
     //Tính giá tiền được giảm giá
     const discountedPrice = price - (price * sale / 100);
-    const naviagte = useNavigate()    
+    const navigate = useNavigate()    
     return (
-        <button onClick={()=>naviagte('/detail_product')}  className="w-full justify-items-center items-center">
+        
+        <button onClick={()=>navigate(`/detail_product/${proId}`,)}  className="w-full justify-items-center items-center">
             <div  className="w-[250px] justify-items-center items-center rounded-[20px] border border-[#d9d9d9] relative">
                 {/* Hiển thị thẻ discount khi có discount */}
                 {sale > 0 && (

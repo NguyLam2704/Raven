@@ -28,7 +28,7 @@ class ProductController extends Controller
         }
         if($includeProColorSize)//if the query has 'includeProColorSize', return proColorSize
         {
-            $product = $product->with('proColorSize');
+            $product = $product->with(['proColorSize.color','proColorSize.size']); //return relationship proColorSize and relationship color of it
         }
         return new ProductCollection($product->paginate()->appends($request->query()));
     }
