@@ -65,14 +65,36 @@ const OrderDetail = ({orderDetail, formatDate, getOrderStatus , costBill, onClos
         }
         LoadData();
     },[orderDetail]); 
+
+    const handleStatus = async(e) => {
+        console.log(e.target.value);
+        const url = 'api/dashboard/chitietdonhang/' + orderDetail.order.order_id;
+        
+        await axios.patch(url,
+            {
+                // Đây là body của yêu cầu
+                status: e.target.value
+            }, 
+            {
+                // Đây là header của yêu cầu
+                headers: {
+                    'Content-Type': 'application/json',
+                    // 'Authorization': 'Bearer YOUR_ACCESS_TOKEN'
+                }
+            }
+        );
+    }
  
     if (isLoading) {
         return (
-            <div className="w-full h-[700px] flex justify-center items-center">
-                <img src={loading}/>
+            <div className="fixed inset-0 bg-black  bg-opacity-50 flex justify-center items-center">
+                <img src={loading} alt="Loading..." className="w-12 h-12"/>
             </div>
         )
     }
+
+
+
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
             <div className="bg-white w-[70rem] max-h-[90vh] overflow-y-auto p-6 rounded shadow-lg">
@@ -152,6 +174,7 @@ const OrderDetail = ({orderDetail, formatDate, getOrderStatus , costBill, onClos
                                 <div className='h-8 text-base font-bold text-black pl-4'>Trạng thái đơn hàng</div>
                                 <div className='h-8 flex rounded-lg ml-5 items-start justify-center'>
                                     <select
+                                        onChange={handleStatus}
                                         defaultValue={orderDetail.order.status}
                                         className="p-2 border rounded-md text-sm"
                                     >
@@ -166,7 +189,7 @@ const OrderDetail = ({orderDetail, formatDate, getOrderStatus , costBill, onClos
                         </div>
                     </div>
 
-                    <div className="items-center flex w-full justify-center mt-4">
+                    <div className="items-center flex w-full justify-center my-4">
                         <button 
                             className="bg-blue-500 text-white px-12 py-1 font-extrabold rounded border border-[#050c9c]"
                             onClick={onClose}

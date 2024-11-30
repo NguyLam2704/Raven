@@ -10,6 +10,7 @@ import Product from '../components/Product';
 import back from '../assets/Back.svg'
 import forward from '../assets/Forward.svg'
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import BangSize from '../assets/bang_size.svg'
 
 //Chi tiết sản phẩm
 const DetailProduct = () =>{
@@ -69,6 +70,9 @@ const DetailProduct = () =>{
             setLoading(false); // Kết thúc trạng thái tải
         }
     }
+
+    //Kiểm soát hiển thị bảng size
+    const [isBangSise, setBangSize] = useState(false)
     const ListProduct = [
         {
           key: 1,
@@ -87,8 +91,9 @@ const DetailProduct = () =>{
           {
             key: 3,
             name: "Cao Quốc Kiệt",
-            price: 1000000,
+            price: 100000,
             img: img_product,
+            sale: 0,
           },
           {
             key: 2,
@@ -111,7 +116,7 @@ const DetailProduct = () =>{
         return <div>Loading...</div>;
     }
     return(        
-        <div className={`w-full  ${isCartMini ? 'overflow-hidden h-screen' : 'overflow-auto'}`}>
+        <div className={`w-full  ${(isCartMini || isBangSise) ? 'overflow-hidden h-screen' : 'overflow-auto'}`}>
             <Navigation/>
             <div className='w-full mt-[90px] justify-items-center'>
                 <div className='w-10/12 flex flex-row mt-40'>
@@ -184,8 +189,16 @@ const DetailProduct = () =>{
                         <div>
                             <div className='h-10 flex flex-row'>
                                 <div className='content-center text-black text-base font-normal '>Size</div>
-                                <button className='content-center text-black text-sm font-extralight underline-offset-4 underline ml-20'>Bảng size</button>
+                                <button  onClick={()=>setBangSize(true)} className='content-center hover:text-[15px] text-black text-sm font-extralight underline-offset-4 underline ml-20'>Bảng size</button>
                             </div>
+                            {/* Ẩn/Hiện bảng size */}
+                            {
+                                isBangSise && (
+                                    <div onClick={()=>setBangSize(false)} className='h-screen w-full bg-opacity-30 bg-black right-0 absolute top-0 z-50 content-center justify-items-center'>                          
+                                        <img  src={BangSize} alt="bangsize" />                                
+                                    </div>
+                                )
+                            }
                             <div className='flex flex-row'>
                                 {DetailProduct.proColorSize
                                     .filter((value, index, self) => {
@@ -217,7 +230,7 @@ const DetailProduct = () =>{
                                 >
                                     <FontAwesomeIcon className='h-3' icon={faMinus} />
                                 </button>                
-                                <div className="h-8 w-8 content-center text-black text-base font-normal border border-[#c4c4c4] bg-[#d9d9d9] px-2 mx-[1px] ">1</div>
+                                <div className="h-8 w-8 content-center text-center text-black text-base font-normal border border-[#c4c4c4] bg-[#d9d9d9] px-2 mx-[1px] ">1</div>
                                 {/* Tăng số lượng */}
                                 <button className=" h-8 w-9 border border-[#c4c4c4] bg-[#d9d9d9] "
                                     

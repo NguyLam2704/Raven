@@ -1,8 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
+import Loading from '../../asset/loading.svg'
+import ProductDetail from './ProductDetail';
+
+const fetchProductById = async (id) => {
+    const response = await axios.get(`/api/v1/product/${id}`);
+    return response.data;
+};
 
 const ProductsList = ({data}) => {
+    const [selectedProduct, setSelectedProduct] = useState(null); //Lưu sản phẩm được chọn 
+    const [isLoading, setIsLoading] = useState();
+
+    //Hàm lưu sản phẩm khi được click vào
+    const handleRowClick = async (orderId) => {
+        setIsLoading(true);
+        try {
+            const productDetail = await fetchProductById(orderId);
+            console.log(productDetail.data)
+            setSelectedProduct(productDetail.data);
+        } catch (error) {
+            console.error('Error fetching order details:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const closeDetail = () => setSelectedProduct(null);//Đóng popup chi tiết sản phẩm
     
     return (
          <div className="container mx-auto px-4">
@@ -22,7 +48,10 @@ const ProductsList = ({data}) => {
 
                     <tbody>
                         {data.map(product => (
-                            <tr key={product.proId}>
+                            <tr key={product.proId}
+                                onClick={() => handleRowClick(product.proId)} //Sự kiện click vào sản phẩm
+                                className="cursor-pointer hover:bg-gray-100"
+                            >
                                 <td className="py-5 px-2 h-20 border-b text-sm font-semibold text-center">{product.proId}</td>
                                 <td className="py-5 px-2 h-20 border-b text-sm font-semibold text-left">{product.productName}</td>
                                 <td className="py-5 pl-12 h-20 border-b text-sm font-semibold text-left">{product.quantitySold}</td>
@@ -56,6 +85,20 @@ const ProductsList = ({data}) => {
                     </tbody>
                 </table>
             </div>
+
+            {isLoading && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                    <img src={Loading} alt="Loading..." className="w-12 h-12" />
+                    <div> Product List</div>
+                </div>
+            )}
+            {/* Hiển thị chi tiết đơn hàng khi đã có dữ liệu */}
+            {selectedProduct && !isLoading && (
+                <ProductDetail
+                    ProductDetail={selectedProduct}
+                    onClose={closeDetail}
+                />
+            )}
 
          </div>   
     )

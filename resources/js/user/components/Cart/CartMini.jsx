@@ -21,7 +21,7 @@ const CartMini = ({handleCart}) => {
     const naviagte = useNavigate();
     return(
         <div>
-            <div className='h-screen w-full opacity-40 bg-black right-0 absolute top-0 z-50'
+            <div className='h-screen w-full opacity-30 bg-black right-0 absolute top-0 z-50'
                 onClick={handleCart} // hàm hiển thị thanh giỏ hàng khi thêm sản phẩm
             >
             </div>
