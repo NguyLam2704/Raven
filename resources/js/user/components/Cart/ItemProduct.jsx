@@ -10,10 +10,10 @@ const ItemProduct = ({product}) => {
             <div className="w-6/12">
                 <div className=" flex flex-row pt-3 pb-7 ml-2">
                     {/* ảnh sản phẩm */}
-                    <img className="w-36 h-40 rounded-lg" src={product.img} alt="img" />
+                    <img className="w-36 h-40 rounded-lg" src={product.productImage} alt="img" />
                     {/* Thông tin sản phẩm */}
                     <div className="h-40 ml-3">
-                        <div className="h-1/3 text-black text-xl font-medium pt-5 pr-10">{product.name}</div>
+                        <div className="h-1/3 text-black text-xl font-medium pt-5 pr-10">{product.productName}</div>
                         <div className="h-1/3 text-black text-base font-medium pt-6">{product.color} / {product.size}</div>
                         {/* Xóa sản phẩm */}
                         <img className="h-1/3 pt-1 pb-6" src={remove} alt="remove" />
@@ -27,7 +27,7 @@ const ItemProduct = ({product}) => {
                 >
                     <FontAwesomeIcon  icon={faMinus} />
                 </button>                
-                <div className="h-7 text-black text-base font-normal border border-[#c4c4c4] bg-[#d9d9d9] px-2 pt-[2px] mx-[1px] ">{product.quality}</div>
+                <div className="h-7 text-black text-base font-normal border border-[#c4c4c4] bg-[#d9d9d9] px-2 pt-[2px] mx-[1px] ">{product.quantity}</div>
                 <button className=" h-7 border border-[#c4c4c4] bg-[#d9d9d9] px-2"
                     
                 >
@@ -36,7 +36,8 @@ const ItemProduct = ({product}) => {
                 
             </div>
             {/* Tổng giá sản phẩm */}
-            <div className="w-2/12 text-center text-[#a91d3a] text-xl font-bold pt-14">{Number((product.price - (product.price * product.sale / 100))*product.quality).toLocaleString()}đ</div>
+            {/* cost and discount in product table  */}
+            <div className="w-2/12 text-center text-[#a91d3a] text-xl font-bold pt-14">{Number((product.cost - (product.cost * product.discount / 100))*product.quantity).toLocaleString()}đ</div>
             {/* Checkbox chọn sản phẩm */}
             <div className=" w-2/12 text-center ">
                 <input className="h-5 w-5 mt-[59px] rounded accent-black" 

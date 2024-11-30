@@ -20,6 +20,10 @@ const Cart = () => {
             console.error("Dữ liệu không phải là mảng:", savedProduct);
           }
       }, []);
+
+    const totalCost = storeProduct.reduce((total, item) => {
+        return total + (item.cost - (item.cost * item.discount / 100))*item.quantity;
+    },0);
     // const [ListProduct, setList] = useState([
     //     {
     //       key: 1,
@@ -52,7 +56,7 @@ const Cart = () => {
     //         size: "L"
     //       }
     // ]);
-    
+    const navigate = useNavigate()
     return(
         <div className="w-full">
             <Navigation/>
@@ -64,7 +68,7 @@ const Cart = () => {
                     <div className="w-2/12 text-center text-black text-lg font-bold">Giá tiền</div>
                 </div>
                 {/* Danh sách các sản phẩm */}
-                {ListProduct.map((product, index) => (
+                {storeProduct.map((product, index) => (
                     <ItemProduct key={index} product={product} />                            
                 ))}
                 {/* {
@@ -74,11 +78,11 @@ const Cart = () => {
                 <div className="w-10/12 flex flex-row py-2 mt-5">
                     <div className="w-6/12"></div>
                     <div className="w-2/12 text-end text-black text-lg font-bold">Tổng tiền:</div>
-                    <div className="w-2/12 text-center text-[#a91d3a] text-xl font-bold">10000000đ</div>
+                    <div className="w-2/12 text-center text-[#a91d3a] text-xl font-bold">{totalCost.toLocaleString()}đ</div>
                 </div>
                 {/* Nút thanh toán */}
                 <div className="w-10/12 flex flex-row justify-end mt-16 pr-8 ease-in duration-300">
-                    <button onClick={( ) => navigate("/check_out")} className="w-36 h-10 bg-[#c73659] rounded-[5px] border border-[#151515] text-center text-[#eeeeee] text-[17px] font-bold ">Thanh toán</button>
+                    <button onClick={() => navigate("/check_out")} className="w-36 h-10 bg-[#c73659] rounded-[5px] border border-[#151515] text-center text-[#eeeeee] text-[17px] font-bold ">Thanh toán</button>
                 </div>
             </div>
             <Footer/>

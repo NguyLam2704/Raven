@@ -60,7 +60,7 @@ const DetailProduct = () =>{
                 productName: data.data[0].productName,
                 cost: data.data[0].cost,
                 discount: data.data[0].discount,
-                // quantity: "1",
+                quantity: 1,
                 productImage: data.data[0].productImage.find(img => img.isPrimary)?.image,
             }
             setcartProduct(newcartProduct);}
@@ -249,8 +249,7 @@ const DetailProduct = () =>{
                             </button>
                             {/* Mua ngay sp */}
                             <button className="w-full h-11 flex flow-row items-center text-white text-xl font-extrabold justify-center bg-[#c73659] rounded-md mt-3"
-                                onClick={()=>navigate("/check_out")}
-                            >
+                                onClick={()=>navigate("/check_out", { state: { product: cartProduct } })}>
                                 MUA NGAY
                             </button>
                         </div>
