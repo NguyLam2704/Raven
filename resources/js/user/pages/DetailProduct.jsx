@@ -11,6 +11,7 @@ import back from '../assets/Back.svg'
 import forward from '../assets/Forward.svg'
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import BangSize from '../assets/bang_size.svg'
+import img_loading from '../assets/loading.gif'
 
 //Chi tiết sản phẩm
 const DetailProduct = () =>{
@@ -109,16 +110,23 @@ const DetailProduct = () =>{
     }, [proId])
     console.log(DetailProduct);
     const navigate = useNavigate()
-    if (!DetailProduct) {
-        return <p>Đang tải dữ liệu...</p>; // Hiển thị trạng thái chờ
-      }
-    if (loading){
-        return <div>Loading...</div>;
-    }
+
+    //Nhận giá trị số lượng sản phẩm
+    const [quality, setQuality] = useState(1)
+    //Nhận giá trị màu sắc
+    const [selectedColor, setSelectedColor] = useState(null);   
+    //nhận giá trị size 
+    const [selectedSize, setSelectedSize] = useState(null);
     return(        
         <div className={`w-full  ${(isCartMini || isBangSise) ? 'overflow-hidden h-screen' : 'overflow-auto'}`}>
             <Navigation/>
-            <div className='w-full mt-[90px] justify-items-center'>
+            { (!DetailProduct || loading) ? (
+                    <div className='w-full h-screen flex justify-center items-center'>
+                        <img className='w-1/12' src={img_loading} alt="loading" />
+                    </div> 
+            ) :(
+            <div className='w-full mt-[90px] justify-items-center '>
+                
                 <div className='w-10/12 flex flex-row mt-40'>
                     {/* Các hình ảnh sản phẩm */}
                     <div className='w-3/5 flex flex-row'>
@@ -150,7 +158,7 @@ const DetailProduct = () =>{
                     {/* Thông tin sản phẩm */}
                     <div className='w-2/5 flex flex-col justify-between '>
                         {/* Tên sản phẩm */}
-                        <div className='h-16 w-full content-center text-black text-3xl font-bold '>{DetailProduct.productName} </div>
+                        <div className='w-full content-center text-black text-3xl font-bold '>{DetailProduct.productName} </div>
                         {/* Giá sản phẩm */}
                         <div className='h-10 w-full flex flex-row border-b-2'>
                             <div className='h-10 content-center text-[#a91d3a] text-3xl font-bold '>{(DetailProduct.cost - (DetailProduct.cost* DetailProduct.discount / 100)).toLocaleString()}</div>
@@ -171,18 +179,18 @@ const DetailProduct = () =>{
                                             ));
                                         })
                                     .map((element,index) => {
-                                    console.log(element.color.colorCode);
-                                    return (
-                                    <button 
-                                        key = {index}
-                                        // className={`h-8 w-8 bg-[${element.color.colorCode}] rounded-md mr-5`}/> //Tailwind css not support dynamic value --> fix
-                                        className={`h-8 w-8 rounded-md mr-5`}
-                                        style={{backgroundColor: element.color.colorCode}}/>
+                                    
+                                        return (
+                                                <button 
+                                                    key={index} 
+                                                    onClick={() => setSelectedColor(element.color.colorCode)} 
+                                                    className={`h-8 w-8 rounded-md mr-5 ${selectedColor === element.color.colorCode ? 'ring-[#c73659] ring-2' : 'ring-[#EEEEEE] ring-1'} `} 
+                                                    style={{ backgroundColor: element.color.colorCode }} 
+                                                />
+                                           
+                                
                                     )
                                 })}
-                                {/* <button className='h-8 w-8 bg-red-500 rounded-md mr-5'/>
-                                <button className='h-8 w-8 bg-red-500 rounded-md mr-5'/>
-                                <button className='h-8 w-8 bg-red-500 rounded-md mr-5'/> */}
                             </div>
                         </div>
                         {/* Size */}
@@ -195,7 +203,7 @@ const DetailProduct = () =>{
                             {
                                 isBangSise && (
                                     <div onClick={()=>setBangSize(false)} className='h-screen w-full bg-opacity-30 bg-black right-0 absolute top-0 z-50 content-center justify-items-center'>                          
-                                        <img  src={BangSize} alt="bangsize" />                                
+                                        <img className='h-3/4' src={BangSize} alt="bangsize" />                                
                                     </div>
                                 )
                             }
@@ -210,15 +218,14 @@ const DetailProduct = () =>{
                                         console.log(element.size.sizeCode);
                                         return (
                                         <button 
-                                            key = {index}
-                                            // className={`h-8 w-8 bg-[${element.color.colorCode}] rounded-md mr-5`}/>
-                                            className='h-8 w-8 content-center text-center text-black text-xl font-medium border border-black mr-5'>{element.size.sizeCode}</button>
+                                            key = {index} 
+                                            onClick={()=>setSelectedSize(element.size.sizeCode)}                                           
+                                            className={`h-8 w-8 content-center text-center text-xl  mr-5 ${selectedSize === element.size.sizeCode ? 'text-[#c73659] border-[#c73659] border-2 font-bold' : 'text-black border border-black font-medium'} `}>
+                                            {element.size.sizeCode}
+                                        </button>
                                         )
                                     })}
-                                {/* <button className='h-8 w-8 content-center text-center text-black text-xl font-medium border border-black mr-5'>M</button>
-                                <button className='h-8 w-8 content-center text-center text-black text-xl font-medium border border-black mr-5'>L</button>
-                                <button className='h-8 w-8 content-center text-center text-black text-xl font-medium border border-black mr-5'>XL</button> */}
-                            </div>
+                                </div>
                         </div>
                         {/* Số lượng */}
                         <div className='h-8 flex flex-row'>
@@ -226,14 +233,17 @@ const DetailProduct = () =>{
                             <div className="flex flex-row ml-20">
                                 {/* Giảm số lượng */}
                                 <button className="h-8 w-9 border border-[#c4c4c4] bg-[#d9d9d9] "
-                                    
+                                    onClick={()=>{
+                                        if(quality > 1)
+                                            setQuality(quality-1)
+                                    }}
                                 >
                                     <FontAwesomeIcon className='h-3' icon={faMinus} />
                                 </button>                
-                                <div className="h-8 w-8 content-center text-center text-black text-base font-normal border border-[#c4c4c4] bg-[#d9d9d9] px-2 mx-[1px] ">1</div>
+                                <div className="h-8 w-8 content-center text-center text-black text-base font-normal border border-[#c4c4c4] bg-[#d9d9d9] mx-[1px] ">{quality}</div>
                                 {/* Tăng số lượng */}
                                 <button className=" h-8 w-9 border border-[#c4c4c4] bg-[#d9d9d9] "
-                                    
+                                    onClick={()=>setQuality(quality+1)}
                                 >
                                     <FontAwesomeIcon className='h-3' icon={faPlus} />
                                 </button>
@@ -258,13 +268,13 @@ const DetailProduct = () =>{
                     </div>
                 </div>
                 {/* Thông tin mô tả */}
-                <div className='w-10/12 mt-14'>
+                <div className='w-9/12 mt-14'>
                     {DetailProduct.description.split('\n').map((line, index) => (
-    <React.Fragment key={index}>
-      {line}
-      <br />
-    </React.Fragment>
-  ))}
+                        <React.Fragment key={index}>
+                        {line}
+                        <br />
+                        </React.Fragment>
+                    ))}
                 </div>
 
                 {/* Sản phẩm tương tự */}
@@ -273,7 +283,7 @@ const DetailProduct = () =>{
                 </div>
                 {/* Danh sách các sản phẩm tương tự */}
                 <div className='w-full flex flex-row justify-center'>                       
-                        <button class=" p-1 pr-2 bg-opacity-30 rounded-full ">
+                        <button className=" p-1 pr-2 bg-opacity-30 rounded-full ">
                             <img src={back} alt="none"/>
                         </button>                        
                         <div className='w-10/12 mt-6'>
@@ -283,14 +293,14 @@ const DetailProduct = () =>{
                                 ))}                      
                             </div>
                         </div>
-                        <button  class=" p-1 pr-2 bg-white bg-opacity-30 rounded-full ">
+                        <button  className=" p-1 pr-2 bg-white bg-opacity-30 rounded-full ">
                                 <img  src={forward} alt="none"/>
                         </button>
                     </div>  
             </div>
+
+        )}
             {/* Ẩn/Hiện thanh giỏ hàng */}
-            { isCartMini && <CartMini handleCart={handleCart}/>}
-            
             { isCartMini && <CartMini handleCart={()=>setCart(!isCartMini)}/>}
             <Footer/>
         </div>
