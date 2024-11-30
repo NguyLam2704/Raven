@@ -3,7 +3,7 @@ import Product from '../components/Product';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import Line from '../components/Home/Line';
-import img_product from '../assets/img_product.svg'
+import img_loading from '../assets/loading.gif'
 import back from '../assets/Back.svg'
 import forward from '../assets/Forward.svg'
 import SliderHome from '../components/Home/SliderHome';
@@ -15,7 +15,52 @@ const HomeUser = () => {
     // State để lưu danh sách sản phẩm
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true); // Trạng thái tải dữ liệu
-    const [error, setError] = useState(null); // Trạng thái lỗi
+
+    //Kiểm soát mũi tên sản phẩm mới
+    const [NumberBackNew, setBackNew] = useState(0)
+    const [NumberForwardNew, setForwardNew] = useState(8)
+    const hanlderBackNew = () =>{
+        if( NumberBackNew > 1 ){            
+            setBackNew( NumberBackNew - 8 )
+            setForwardNew( NumberForwardNew - 8 )
+        }
+    }
+    const hanlderForwardNew = () =>{
+        if( NumberForwardNew < products.length ){
+            setBackNew( NumberBackNew + 8 )
+            setForwardNew( NumberForwardNew + 8 )
+        }
+    }
+    //Kiểm soát mũi tên sản phẩm nổi bật
+    const [NumberBackHighlight, setBackHighlight] = useState(0)
+    const [NumberForwardHighlight, setForwardHighlight] = useState(8)
+    const hanlderBackHight = () =>{
+        if( NumberBackHighlight > 1 ){            
+            setBackHighlight( NumberBackHighlight - 8 )
+            setForwardHighlight( NumberForwardHighlight - 8 )
+        }
+    }
+    const hanlderForwardHighlight = () =>{
+        if( NumberForwardHighlight < products.filter((product) => product.quantitySold > 10).length ){
+            setBackHighlight( NumberBackHighlight + 8 )
+            setForwardHighlight( NumberForwardHighlight + 8 )
+        }
+    }
+    //Kiểm soát mũi tên sản phẩm sale
+    const [NumberBackSale, setBackSale] = useState(0)
+    const [NumberForwardSale, setForwardSale] = useState(8)
+    const hanlderBackSale = () =>{
+        if( NumberBackSale > 1 ){            
+            setBackSale( NumberBackSale - 8 )
+            setForwardSale( NumberForwardSale - 8 )
+        }
+    }
+    const hanlderForwardSale = () =>{
+        if( NumberForwardSale < products.filter((product) => product.discount > 0).length ){
+            setBackSale( NumberBackSale + 8 )
+            setForwardSale( NumberForwardSale + 8 )
+        }
+    }
 
     // Hàm fetch API
     const fetchProducts = async () => {
@@ -40,6 +85,7 @@ const HomeUser = () => {
 
     const navigate = useNavigate() ; 
 
+
     return(
         <div className='w-full h-screen '>
              { loading ? ( <div></div>) : (<Navigation/>) }
@@ -49,19 +95,20 @@ const HomeUser = () => {
                 <div className=" w-full  justify-items-center mt-20 "> 
                     {/* Tiêu đề */}
                     <div className="h-1/5 w-10/12 ">
-                        <TitleMore type={"SẢN PHẨM MỚI"} load={loading}/>
+                        <TitleMore type={"SẢN PHẨM MỚI"} load={loading} />
                     </div>
                     { loading ? (
-                        <div></div>
+                        <div>
+                            <img className='w-10 h-10 mt-10' src={img_loading} alt="loading" />
+                        </div>
                     ) : (
                         <div className='w-full flex flex-row justify-center'>                       
-                            <button onClick={()=>hanlderNumber(number)} className=" p-1 pr-2 bg-opacity-30 rounded-full "
-                            >
+                            <button onClick={hanlderBackNew} className=" p-1 pr-2 bg-opacity-30 rounded-full " >
                                 <img src={back} alt="none"/>
                             </button>                        
                             <div className="h-4/5 w-10/12 grid grid-cols-4 gap-10 "  >                             
                                 {products.sort((a, b) => new Date(b.datePosted) - new Date(a.datePosted)) // sort by day
-                                        .slice(0, 8) // choose 8 product
+                                        .slice(NumberBackNew, NumberForwardNew) // choose 8 product
                                         .map((product, index) => (
                                             <Product key={index} 
                                                     price={product.cost} 
@@ -70,7 +117,7 @@ const HomeUser = () => {
                                                     sale={product.discount} />
                                         ))}                       
                             </div>
-                            <button className=" p-1 pr-2 bg-white bg-opacity-30 rounded-full ">
+                            <button onClick={hanlderForwardNew} className=" p-1 pr-2 bg-white bg-opacity-30 rounded-full ">
                                     <img  src={forward} alt="none"/>
                             </button>
                         </div>
@@ -88,16 +135,20 @@ const HomeUser = () => {
 
                     {/* Danh sách sản phẩm */}
                     { loading ? (
-                        <div></div>
+                        <div>
+                            <img className='w-10 h-10 mt-10' src={img_loading} alt="loading" />
+                        </div>
                     ) : (
                         <div className='w-full flex flex-row justify-center'>                       
-                            <button className=" p-1 pr-2 bg-opacity-30 rounded-full ">
+                            <button className=" p-1 pr-2 bg-opacity-30 rounded-full "
+                                onClick={hanlderBackHight}
+                            >
                                 <img src={back} alt="none"/>
                             </button>                        
                             <div className="h-4/5 w-10/12 grid grid-cols-4 gap-10 "  > 
                                 
                                 {products.filter((product) => product.quantitySold > 10) //fiter product have more 10 quantitySold
-                                        .slice(0, 8) //choose 8 product
+                                        .slice(NumberBackHighlight, NumberForwardHighlight) //choose 8 product
                                         .map((product, index) => (
                                             <Product key={index}
                                                     price={product.cost} 
@@ -107,7 +158,9 @@ const HomeUser = () => {
                                         ))}
                                 
                             </div>
-                            <button className=" p-1 pr-2 bg-white bg-opacity-30 rounded-full ">
+                            <button className=" p-1 pr-2 bg-white bg-opacity-30 rounded-full "
+                                onClick={hanlderForwardHighlight}
+                            >
                                     <img  src={forward} alt="none"/>
                             </button>
                         </div>   
@@ -126,16 +179,20 @@ const HomeUser = () => {
 
                     {/* Danh sách sản phẩm */}
                     { loading ? (
-                        <div></div>
+                        <div>
+                            <img className='w-10 h-10 mt-10'  src={img_loading} alt="loading" />
+                        </div>
                     ) : (
                         <div className='w-full flex flex-row justify-center'>                       
-                            <button className=" p-1 pr-2 bg-opacity-30 rounded-full ">
+                            <button className=" p-1 pr-2 bg-opacity-30 rounded-full "
+                                onClick={hanlderBackSale}
+                            >
                                 <img src={back} alt="none"/>
                             </button>                        
                             <div className="h-4/5 w-10/12 grid grid-cols-4 gap-10 "  > 
                                 
                                 {products.filter((product) => product.discount > 0) //filter product have discount
-                                    .slice(0, 8)
+                                    .slice(NumberBackSale, NumberForwardSale)
                                     .map((product, index) => (
                                         <Product  key={index}
                                                 price={product.cost} 
@@ -145,7 +202,9 @@ const HomeUser = () => {
                                     ))}
                                 
                             </div>
-                            <button className=" p-1 pr-2 bg-white bg-opacity-30 rounded-full ">
+                            <button className=" p-1 pr-2 bg-white bg-opacity-30 rounded-full "
+                                onClick={hanlderForwardSale}
+                            >
                                     <img  src={forward} alt="none"/>
                             </button>
                         </div> 
