@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import CartMini from '../components/Cart/CartMini';
@@ -9,15 +9,66 @@ import cart from '../assets/cart_red.svg'
 import Product from '../components/Product';
 import back from '../assets/Back.svg'
 import forward from '../assets/Forward.svg'
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import BangSize from '../assets/bang_size.svg'
 
 //Chi tiết sản phẩm
 const DetailProduct = () =>{
+    // get proid from url
+    const {proId} = useParams();
+    const [cartProduct, setcartProduct] = useState(null);
+   
     //Kiểm soát hiển thị thnah giỏ hàng
     const [isCartMini, setCart] =useState(false)
     const handleCart = () => {
+        // Lấy danh sách sản phẩm từ localStorage (nếu chưa có thì trả về mảng rỗng)
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+        const existingProductIndex = cart.findIndex((item) => item.proId === cartProduct.proId);
+
+        if (existingProductIndex !== -1) {
+            // Nếu sản phẩm đã có, tăng số lượng
+            cart[existingProductIndex].quantity += 1;
+        } else {
+            // Nếu sản phẩm chưa có, thêm sản phẩm với số lượng ban đầu là 1
+            cart.push({ ...cartProduct, quantity: 1 });
+        }
+        // Cập nhật lại localStorage
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        // Thông báo (tuỳ chọn)
+        //  alert('Sản phẩm đã được thêm vào giỏ hàng!');
         setCart(!isCartMini)
+    }
+  
+    // const[ListProduct, setLi]
+    const [DetailProduct, setDetailProduct] = useState(null);
+    const [loading, setLoading] = useState(false); // Trạng thái tải dữ liệu
+    const [error, setError] = useState(null); // Trạng thái lỗi
+    const fetchDetail = async() => {
+        try {
+            const response = await fetch(`/api/v1/product?proId[eq]=${proId}&includeProColorSize=true&includeImage=true`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch products');
+            }
+            const data = await response.json(); // Giả định API trả về JSON
+            setDetailProduct(data.data[0]); // Lưu dữ liệu vào state
+            if (data?.data?.[0]){
+            const newcartProduct = {
+                proId: data.data[0].proId,
+                productName: data.data[0].productName,
+                cost: data.data[0].cost,
+                discount: data.data[0].discount,
+                // quantity: "1",
+                productImage: data.data[0].productImage.find(img => img.isPrimary)?.image,
+            }
+            setcartProduct(newcartProduct);}
+        } catch (err) {
+            setError(err.message); // Lưu thông báo lỗi nếu xảy ra
+        } finally {
+            setLoading(false); // Kết thúc trạng thái tải
+        }
     }
 
     //Kiểm soát hiển thị bảng size
@@ -52,9 +103,18 @@ const DetailProduct = () =>{
             sale: 0,
           },
     ];
-
+    useEffect(() => {
+        setLoading(true);
+        fetchDetail();
+    }, [proId])
+    console.log(DetailProduct);
     const navigate = useNavigate()
-
+    if (!DetailProduct) {
+        return <p>Đang tải dữ liệu...</p>; // Hiển thị trạng thái chờ
+      }
+    if (loading){
+        return <div>Loading...</div>;
+    }
     return(        
         <div className={`w-full  ${(isCartMini || isBangSise) ? 'overflow-hidden h-screen' : 'overflow-auto'}`}>
             <Navigation/>
@@ -67,9 +127,16 @@ const DetailProduct = () =>{
                             <button >
                                 <FontAwesomeIcon icon={faChevronUp} />
                             </button>
+                            {DetailProduct.productImage.filter(image => !image.isPrimary).map((element,index) => {
+                                return (
+                                    <img 
+                                        key = {index}
+                                        className='h-[110px] w-[100px] rounded-md' src={element.image} alt="anh" />
+                                )
+                            })}
+                            {/* <img className='h-[110px] w-[100px] rounded-md' src={img_product} alt="anh" />
                             <img className='h-[110px] w-[100px] rounded-md' src={img_product} alt="anh" />
-                            <img className='h-[110px] w-[100px] rounded-md' src={img_product} alt="anh" />
-                            <img className='h-[110px] w-[100px] rounded-md' src={img_product} alt="anh" />
+                            <img className='h-[110px] w-[100px] rounded-md' src={img_product} alt="anh" /> */}
                             
                             <button>
                                 <FontAwesomeIcon icon={faChevronDown} />
@@ -77,25 +144,45 @@ const DetailProduct = () =>{
                         </div>
                         {/* Hình ảnh chính */}
                         <div className='w-3/4 '>
-                            <img className='h-[470px] ' src={img_product} alt="anh" />
+                            <img className='h-[470px] ' src={DetailProduct.productImage.find(img => img.isPrimary)?.image} alt="anh" />
                         </div>
                     </div>
                     {/* Thông tin sản phẩm */}
                     <div className='w-2/5 flex flex-col justify-between '>
                         {/* Tên sản phẩm */}
-                        <div className='h-16 w-full content-center text-black text-3xl font-bold '>Áo Polo Raven Local Brand Unisex Flame </div>
+                        <div className='h-16 w-full content-center text-black text-3xl font-bold '>{DetailProduct.productName} </div>
                         {/* Giá sản phẩm */}
                         <div className='h-10 w-full flex flex-row border-b-2'>
-                            <div className='h-10 content-center text-[#a91d3a] text-3xl font-bold '>195000đ</div>
-                            <div className='h-10 content-center text-[#9f9f9f] text-xl font-medium line-through ml-20'>350000đ</div>
+                            <div className='h-10 content-center text-[#a91d3a] text-3xl font-bold '>{(DetailProduct.cost - (DetailProduct.cost* DetailProduct.discount / 100)).toLocaleString()}</div>
+                            <div className='h-10 content-center text-[#9f9f9f] text-xl font-medium line-through ml-20'>{DetailProduct.cost.toLocaleString()}</div>
                         </div>
                         {/* Màu sắc */}
                         <div>
                             <div className='content-center text-black text-base font-normal'> Màu sắc</div>
                             <div className='flex flex-row'>
-                                <button className='h-8 w-8 hover:shadow-md bg-white border rounded-md mr-5'/>
-                                <button className='h-8 w-8 hover:shadow-md bg-red-400 border rounded-md mr-5'/>
-                                <button className='h-8 w-8 hover:shadow-md bg-white border rounded-md mr-5'/>
+                                {DetailProduct.proColorSize
+                                    .filter((value, index, self) => {
+                                        // Loại bỏ các màu trùng lặp (kiểm tra bằng colorCode)
+                                        return index === self.findIndex((t) => (
+                                            // findIndex tìm chỉ số của phần tử đầu tiên có colorCode trùng với phần tử hiện tại. 
+                                            // Nếu index của phần tử hiện tại bằng chỉ số của phần tử đầu tiên có colorCode trùng 
+                                            // thì phần tử đó sẽ được giữ lại.
+                                                t.color.colorCode === value.color.colorCode 
+                                            ));
+                                        })
+                                    .map((element,index) => {
+                                    console.log(element.color.colorCode);
+                                    return (
+                                    <button 
+                                        key = {index}
+                                        // className={`h-8 w-8 bg-[${element.color.colorCode}] rounded-md mr-5`}/> //Tailwind css not support dynamic value --> fix
+                                        className={`h-8 w-8 rounded-md mr-5`}
+                                        style={{backgroundColor: element.color.colorCode}}/>
+                                    )
+                                })}
+                                {/* <button className='h-8 w-8 bg-red-500 rounded-md mr-5'/>
+                                <button className='h-8 w-8 bg-red-500 rounded-md mr-5'/>
+                                <button className='h-8 w-8 bg-red-500 rounded-md mr-5'/> */}
                             </div>
                         </div>
                         {/* Size */}
@@ -113,9 +200,24 @@ const DetailProduct = () =>{
                                 )
                             }
                             <div className='flex flex-row'>
-                                <button className='h-8 w-8 hover:text-[22px] content-center text-center text-black text-xl font-medium border border-black mr-5'>M</button>
-                                <button className='h-8 w-8 hover:text-[22px] content-center text-center text-black text-xl font-medium border border-black mr-5'>L</button>
-                                <button className='h-8 w-8 hover:text-[22px] content-center text-center text-black text-xl font-medium border border-black mr-5'>XL</button>
+                                {DetailProduct.proColorSize
+                                    .filter((value, index, self) => {
+                                        return index == self.findIndex((t) => (
+                                            t.size.sizeCode === value.size.sizeCode
+                                        ));
+                                    })
+                                    .map((element,index) => {
+                                        console.log(element.size.sizeCode);
+                                        return (
+                                        <button 
+                                            key = {index}
+                                            // className={`h-8 w-8 bg-[${element.color.colorCode}] rounded-md mr-5`}/>
+                                            className='h-8 w-8 content-center text-center text-black text-xl font-medium border border-black mr-5'>{element.size.sizeCode}</button>
+                                        )
+                                    })}
+                                {/* <button className='h-8 w-8 content-center text-center text-black text-xl font-medium border border-black mr-5'>M</button>
+                                <button className='h-8 w-8 content-center text-center text-black text-xl font-medium border border-black mr-5'>L</button>
+                                <button className='h-8 w-8 content-center text-center text-black text-xl font-medium border border-black mr-5'>XL</button> */}
                             </div>
                         </div>
                         {/* Số lượng */}
@@ -157,7 +259,12 @@ const DetailProduct = () =>{
                 </div>
                 {/* Thông tin mô tả */}
                 <div className='w-10/12 mt-14'>
-                Hướng dẫn sử dụng sản phẩm Raven:- Ngâm áo vào NƯỚC LẠNH có pha giấm hoặc phèn chua từ trong 2 tiếng đồng hồ- Giặt ở nhiệt độ bình thường, với đồ có màu tương tự.- Không dùng hóa chất tẩy.- Hạn chế sử dụng máy sấy và ủi (nếu có) thì ở nhiệt độ thích hợp.Chính sách bảo hành:- Miễn phí đổi hàng cho khách mua ở Raven trong trường hợp bị lỗi từ nhà sản xuất, giao nhầm hàng, bị hư hỏng trong quá trình vận chuyển hàng.- Sản phẩm đổi trong thời gian 3 ngày kể từ ngày nhận hàng- Sản phẩm còn mới nguyên tem, tags và mang theo hoá đơn mua hàng, sản phẩm chưa giặt và không dơ bẩn, hư hỏng bởi những tác nhân bên ngoài cửa hàng sau khi mua hàng.
+                    {DetailProduct.description.split('\n').map((line, index) => (
+    <React.Fragment key={index}>
+      {line}
+      <br />
+    </React.Fragment>
+  ))}
                 </div>
 
                 {/* Sản phẩm tương tự */}
@@ -184,6 +291,7 @@ const DetailProduct = () =>{
             {/* Ẩn/Hiện thanh giỏ hàng */}
             { isCartMini && <CartMini handleCart={handleCart}/>}
             
+            { isCartMini && <CartMini handleCart={()=>setCart(!isCartMini)}/>}
             <Footer/>
         </div>
     )

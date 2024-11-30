@@ -13,4 +13,5 @@ class Size extends Model
     protected $fillable = [
         'size_code'
     ];
+    
 }
