@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 const HomeUser = () => {
     // State để lưu danh sách sản phẩm
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true); // Trạng thái tải dữ liệu
+    const [loading, setLoading] = useState(false); // Trạng thái tải dữ liệu
     const [error, setError] = useState(null); // Trạng thái lỗi
 
     // Hàm fetch API
@@ -35,11 +35,14 @@ const HomeUser = () => {
 
     // useEffect để gọi fetchProducts khi component được render
     useEffect(() => {
+        setLoading(true);
         fetchProducts();
     }, []); // [] đảm bảo chỉ gọi API một lần khi component mount
 
     const navigate = useNavigate() ; 
-
+    if (loading) {
+        return <div>Loading...</div>;
+      }
     return(
         <div className='w-full h-screen '>
              { loading ? ( <div></div>) : (<Navigation/>) }
@@ -64,6 +67,7 @@ const HomeUser = () => {
                                         .slice(0, 8) // choose 8 product
                                         .map((product, index) => (
                                             <Product key={index} 
+                                                    proId={product.proId}
                                                     price={product.cost} 
                                                     img={product.productImage.find(img => img.isPrimary)?.image} //choose the primary image to display
                                                     name={product.productName} 
@@ -100,6 +104,7 @@ const HomeUser = () => {
                                         .slice(0, 8) //choose 8 product
                                         .map((product, index) => (
                                             <Product key={index}
+                                                    proId={product.proId}
                                                     price={product.cost} 
                                                     img={product.productImage.find(img => img.isPrimary)?.image} //choose the primary image to display
                                                     name={product.productName} 
@@ -138,6 +143,7 @@ const HomeUser = () => {
                                     .slice(0, 8)
                                     .map((product, index) => (
                                         <Product  key={index}
+                                                proId={product.proId}
                                                 price={product.cost} 
                                                 img={product.productImage.find(img => img.isPrimary)?.image} 
                                                 name={product.productName} 

@@ -20,7 +20,9 @@ class ProColorSizeResource extends JsonResource
             'prodId' => $this->prod_id,
             'sizeId' => $this->size_id,
             'colorId' => $this->color_id,
-            'quantityAvailable' => $this->quantity_available
+            'quantityAvailable' => $this->quantity_available,
+            'color' => new ColorResource($this->whenLoaded('color')),
+            'size' => new SizeResource($this->whenLoaded('size')),
         ];
     }
 }

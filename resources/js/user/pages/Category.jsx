@@ -53,6 +53,7 @@ const Category = ({ cate }) => {
 
   const mapProductCategories = productCategories.map((productCategory, index) => (
       <Product  key={index}
+                proId={productCategory.proId}
                 price={productCategory.cost} 
                 img={productCategory.productImage.find(img => img.isPrimary)?.image}  //choose the primary image to display
                 name={productCategory.productName} 
