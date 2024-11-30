@@ -9,6 +9,7 @@ import forward from '../assets/Forward.svg'
 import SliderHome from '../components/Home/SliderHome';
 import TitleMore from '../components/Home/TitleMore';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 // Trang chủ
 const HomeUser = () => {
@@ -33,9 +34,17 @@ const HomeUser = () => {
         }
     };
 
+    //API gọi tăng lượt view
+    const fetchAddView = async () => {
+        await axios.get('/api/dashboard/views');
+    }
+
+
+
     // useEffect để gọi fetchProducts khi component được render
     useEffect(() => {
         fetchProducts();
+        fetchAddView();
     }, []); // [] đảm bảo chỉ gọi API một lần khi component mount
 
     const navigate = useNavigate() ; 

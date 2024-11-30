@@ -106,6 +106,8 @@ const AddProduct = () => {
             reader.onload = () => setMainImage(reader.result); // Khi hoàn tất đọc, lưu dữ liệu dưới dạng URL vào state `mainImage`.
             reader.readAsDataURL(file); // Đọc nội dung của tệp dưới dạng Data URL (chuỗi mã hóa Base64).
         }
+        
+        
     };
 
     //Mở thư mục trên máy và chọn ảnh
