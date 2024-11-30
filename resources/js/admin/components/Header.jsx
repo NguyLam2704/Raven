@@ -8,6 +8,7 @@ import {
     faKey,
     faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
+import ConQua from "../asset/ConQua.png"
 
 const Header = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -72,6 +73,14 @@ const Header = () => {
 
     return (
         <header className="header bg-white fixed top-0 right-0 left-60 h-20 flex justify-between items-center p-5 border-b border-gray-300">
+            <div className="fixed top-0 z-0 animate-fly">
+                    <img
+                    src={ConQua}
+                    alt="Flying Crow"
+                    className="w-20 h-20"
+                    />
+            </div>
+            
             <h1 className="text-4xl text-blue-600 text-center font-bold w-full z-10">
                 ADMIN DASHBOARD
             </h1>

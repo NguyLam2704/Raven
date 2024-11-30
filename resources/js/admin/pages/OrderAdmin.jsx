@@ -49,8 +49,7 @@ const Order = () => {
     }
     if (isLoading) {
         return (
-            <div className="w-full h-[700px] flex justify-center items-center">
-                <img src={loading}/>
+            <div className="w-full h-[800px] flex justify-center items-center">
             </div>
         )
     } 
@@ -72,6 +71,8 @@ const Order = () => {
         console.log("Date: "+ orderDate)
         console.log("datafiler: "+ dateFilter)
         console.log("Status: "+ matchesStatus)
+
+        console.log("fillter: " + matchesDate)
         return matchesDate && matchesStatus;
     });
 
@@ -99,7 +100,11 @@ const Order = () => {
 
             {/* Order List */}
             <div className='w-full'>
-                <OrderList data={filteredOrders} />
+                {filteredOrders.length > 0 
+                    ? <OrderList data={filteredOrders}/> 
+                    : <div className="text-[#ff3333] ml-4 font-bold text-2xl mt-4">Không có dữ liệu</div>
+                }
+
             </div>
         </NavigationAdmin>
     );

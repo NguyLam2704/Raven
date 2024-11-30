@@ -28,7 +28,7 @@ Route::get('/user', function (Request $request) {
 //api/v1
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], function () {
     //add route here
-    Route::apiResource('size', SizeController::class); 
+    Route::apiResource('size', SizeController::class);
     Route::apiResource('color', ColorController::class);
     Route::apiResource('product', ProductController::class);
     Route::apiResource('category', CategoryController::class);
@@ -51,16 +51,18 @@ Route::post('/admin/reset-password', [ResetPasswordController::class, 'resetpass
 Route::post('/admin/changepass', [ResetPasswordController::class, 'changepass']);
 
 
-Route::prefix('admin')->middleware('auth:sanctum')->group(function () { 
+Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::put('/{id}', [AdminController::class, 'updateAdmin']);
     Route::post('/{id}/changepassword', [AuthController::class, 'changePass']);
 });
 
-Route::prefix('dashboard')->group(function () { 
+Route::prefix('dashboard')->group(function () {
     Route::get('/thongke', [DashboardController::class, 'thongke']);
     Route::get('/chitietdonhang/{order_id}', [DashboardController::class, 'chitietdonhang']);
     Route::put('/chitietdonhang/{order_id}', [DashboardController::class, 'ChangeStatus']);
     Route::get('/chitiet/{id}', [DashboardController::class, 'chitiet']);
     Route::get('/user/{id}', [UserDetailsController::class, 'UserDetails']);
+    Route::get('/getSizeColorById/{id}', [DashboardController::class, 'getSizeColorById']);
+    Route::get('/getUserByPhone/{phone}', [DashboardController::class, 'getUserByPhone']);
 });

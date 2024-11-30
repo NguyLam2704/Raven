@@ -26,10 +26,10 @@ const Customer = () => {
     } ,[]) 
 
     if (isLoading) {
-        return (
-            <div className="w-full h-[700px] flex justify-center items-center">
-                <img src={loading}/>
-            </div>
+        return ( null
+            // <div className="w-full h-[700px] flex justify-center items-center">
+            //     <img src={loading}/>
+            // </div>
         )
     } 
     return (
@@ -41,7 +41,7 @@ const Customer = () => {
                 Khách hàng
             </h1>
 
-            <div className="w-full mt-2 drop-shadow-2xl">
+            <div className="w-full">
                 <UserList data={UsersData}/>
             </div>
 
