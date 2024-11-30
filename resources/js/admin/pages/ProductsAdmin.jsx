@@ -6,6 +6,7 @@ import ProductsList from "../components/products/ProductsList";
 import loading from '../asset/loading.svg'
 
 const fetchProducts = async () => {
+    // fetch api get product include procolorsize
     const response = await axios.get('/api/v1/product?includeProColorSize=true');
     return response.data;
 } 
@@ -28,7 +29,7 @@ const Products = () => {
     if (isLoading) {
         return (
             <div className="w-full h-[700px] flex justify-center items-center">
-                <img src={loading}/>
+                {/* <img src={loading}/> */}
             </div>
 
             // <h1 className='w-full text-2xl font-semibold text-center mt-16'>Loading...</h1>

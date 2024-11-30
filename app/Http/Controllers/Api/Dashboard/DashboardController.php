@@ -205,4 +205,22 @@ class DashboardController extends Controller
         
         return $order;
     }
+
+    public function getSizeColorById(Request $request, $product_id)
+    {
+        $SizeColor = DB::table('pro_color_size')->where('prod_id', $product_id)->get();
+        return $SizeColor;
+    }
+
+    public function getUserByPhone(Request $request, $phone_num)
+    {
+        $user = DB::table('users')->where('phonenumber', $phone_num)->get();
+        return $user;
+    }
+
+    public function getOrderByPhone(Request $request, $phone_num)
+    {
+        $user = DB::table('users')->where('phonenumber', $phone_num)->get();
+        return $user;
+    }
 }

@@ -43,19 +43,19 @@ const Navigation = () => {
     };
 
     return(
-        <header class=" fixed left-0 z-30 top-0 w-full bg-white  ">
-        <nav   class="flex flex-row items-center justify-between h-24 border-b-[1px] border-b-slate-300 w-full">
+        <header className=" fixed left-0 z-30 top-0 w-full bg-white  ">
+        <nav   className="flex flex-row items-center justify-between h-24 border-b-[1px] border-b-slate-300 w-full">
             {/* Logo  */}
-            <div class=" items-center justify-items-center basis-2/12 ">
+            <div className=" items-center justify-items-center basis-2/12 ">
                 <img src={Logo} alt="Logo"/> 
             </div>
             {/* Thanh điều hướng */}
-            <ul   class=" h-full basis-6/12 items-center justify-between flex mt-10 mb-4 mr-10  ">
-                <li class=" h-full items-center justify-center justify-items-center mt-16">
+            <ul   className=" h-full basis-6/12 items-center justify-between flex mt-10 mb-4 mr-10  ">
+                <li className=" h-full items-center justify-center justify-items-center mt-16">
                     <div className=' h-9  text-[#a91d3a] text-2xl font-bold hover:border-b-2 hover:border-b-[#a91d3a] '>
                     <Link to="/">HOME</Link></div>
                 </li>
-                <li class="h-full mt-16 "
+                <li className="h-full mt-16 "
                     onMouseEnter={handleHoverAo} //hiện mục Áo
                     onMouseLeave={handleMenuLeave} //ẩn mục ÁO
                 >
@@ -68,7 +68,7 @@ const Navigation = () => {
                         <li className='py-2 pl-3 hover:font-bold hover:pl-3 '><Link to="/shirt">Áo sơ mi</Link></li>
                     </ul>)}
                 </li>
-                <li class="h-full mt-16 "
+                <li className="h-full mt-16 "
                     onMouseEnter={handleHoverQuan} //hiện mục Quần
                     onMouseLeave={handleMenuLeave} //ẩn much Quần
                 >
@@ -78,7 +78,7 @@ const Navigation = () => {
                         <li className='py-2 pl-3 hover:font-bold hover:pl-3'><Link to="/short_pants">QUẦN SHORT</Link></li>
                     </ul>)}
                 </li>
-                <li class="h-full mt-16 "
+                <li className="h-full mt-16 "
                     onMouseEnter={handleHoverPk} //hiện mục Phụ kiện
                     onMouseLeave={handleMenuLeave} //ẩn mục Phụ kiện
                 >
@@ -91,14 +91,14 @@ const Navigation = () => {
                     </ul>)}
                 </li>
 
-                <li class=" h-9 mt-1 text-center text-[#a91d3a] text-2xl font-bold font-mont hover:border-b-2 hover:border-b-[#a91d3a]">
+                <li className=" h-9 mt-1 text-center text-[#a91d3a] text-2xl font-bold font-mont hover:border-b-2 hover:border-b-[#a91d3a]">
                     <Link to="/about_us">VỀ CHÚNG TÔI</Link></li>
             </ul>
             {/* Thanh tiềm kiếm */}
-            <div  class=" basis-3/12 flex flex-row justify-items-center rounded-lg shadow border items-center w-fit mt-4  "  >
+            <div  className=" basis-3/12 flex flex-row justify-items-center rounded-lg shadow border items-center w-fit mt-4  "  >
                 <form onSubmit={navigateToAbout} className='w-full flex' >                    
-                    <img class="inline-block m-2" src={Search} alt="search"/>                    
-                        <input class="w-full my-2 pr-2 focus:outline-none"
+                    <img className="inline-block m-2" src={Search} alt="search"/>                    
+                        <input className="w-full my-2 pr-2 focus:outline-none"
                             placeholder="Tìm kiếm"
                             value={text}
                             onChange={(e) => setText(e.target.value)}
@@ -106,12 +106,12 @@ const Navigation = () => {
                 </form>
             </div>
             {/* Nút giỏ hàng */}
-            <div class=" basis-1/12 mt-6 ml-10 ">                    
-                <Link class="flex flex-row"  to="/cart">
-                    <img class="inline-block" src={Cart} alt="cart"/>
+            <div className=" basis-1/12 mt-6 ml-10 ">                    
+                <Link className="flex flex-row"  to="/cart">
+                    <img className="inline-block" src={Cart} alt="cart"/>
                     <span>
                         {/* Số lượng sản phẩm trong giỏ hàng */}
-                        <div class="ml-1 focus:outline-none">3</div>
+                        <div className="ml-1 focus:outline-none">3</div>
                     </span>
                 </Link>
             </div>

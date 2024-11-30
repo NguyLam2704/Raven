@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ItemMini from "./ItemMini";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark} from '@fortawesome/free-solid-svg-icons'
@@ -6,7 +6,19 @@ import { useNavigate } from "react-router-dom";
 
 //Thanh giỏ hàng 
 const CartMini = ({handleCart}) => {
-    const naviagte = useNavigate()
+    const [ListProduct, setList] = useState([]);
+    const [storeProduct, setStoreProduct] = useState([]);
+
+    useEffect(() => {
+        const savedProduct = localStorage.getItem('cart'); // Lấy product từ localStorage
+        if (savedProduct) {
+          setStoreProduct(JSON.parse(savedProduct)); // Cập nhật vào state nếu tồn tại
+        }
+        else {
+            console.error("Dữ liệu không phải là mảng:", savedProduct);
+          }
+      }, []);
+    const naviagte = useNavigate();
     return(
         <div>
             <div className='h-screen w-full opacity-40 bg-black right-0 absolute top-0 z-50'
@@ -22,7 +34,9 @@ const CartMini = ({handleCart}) => {
                         <FontAwesomeIcon icon={faXmark} />
                     </button>
                 </div>                
-                <ItemMini/>
+                {storeProduct.map((product) => (
+                    <ItemMini product={product} />                            
+                ))}
                 <div className="w-full absolute bottom-0 justify-items-center ">
                     {/* Tổng giá tiền các sp trong giỏ hàng */}
                     <div className="w-11/12 flex flex-row justify-between"> 
@@ -31,7 +45,7 @@ const CartMini = ({handleCart}) => {
                     </div>
                     <button 
                         className="w-11/12 flex justify-center bg-[#c73659] rounded-[5px] border border-[#151515] py-1 my-7"
-                        onClick={()=>naviagte('/cart')} // Chuyển đến trang thanh toán
+                        onClick={()=>naviagte('/')} // Chuyển đến trang thanh toán
                     >
                         <div className=" text-white text-lg font-bold">THANH TOÁN</div>
                     </button>

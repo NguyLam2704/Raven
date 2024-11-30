@@ -8,6 +8,7 @@ import CheckOrder from "../pages/CheckOrder";
 import Cart from "../pages/Cart";
 import Search from "../pages/Search";
 import DetailProduct from "../pages/DetailProduct";
+import CheckOut from "../pages/CheckOut";
 
 
 const RouterUser = () => {
@@ -31,6 +32,7 @@ const RouterUser = () => {
                 <Route path="/check_order" element={<CheckOrder/>}/>
                 <Route path="/search" element={<Search/>}/>
                 <Route path="/detail_product" element={<DetailProduct/>}/>
+                <Route path="/check_out" element={<CheckOut/>}/>
             </Routes>
         </div>
     )

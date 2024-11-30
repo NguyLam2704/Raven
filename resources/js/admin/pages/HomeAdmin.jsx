@@ -14,7 +14,7 @@ import revenueIcon from "../asset/home/revenue.svg";
 import shipIcon from "../asset/home/ship.svg";
 import trendupIcon from "../asset/home/trending_up.svg";
 import trenddownIcon from "../asset/home/trending_down.svg";
-import loading from "../asset/loading.svg";
+import loadingVideo from "../asset/Loading_Video.mp4";
 import axios from "axios";
 
 // lấy dữ liệu từ api
@@ -61,7 +61,9 @@ const Home = () => {
     if (isLoading) {
         return (
             <div className="w-full h-[700px] flex justify-center items-center">
-                <img src={loading} />
+                <video autoPlay muted loop>
+                    <source src={loadingVideo} type="video/mp4" />
+                </video>
             </div>
         );
     }
@@ -79,7 +81,8 @@ const Home = () => {
             trend:
                 ThongKeData.view.yesterday === 0
                     ? "0%"
-                    : ((ThongKeData.view.today - ThongKeData.view.yesterday) / ThongKeData.view.yesterday) *
+                    : ((ThongKeData.view.today - ThongKeData.view.yesterday) /
+                          ThongKeData.view.yesterday) *
                           100 +
                       "%",
             trendColor:
@@ -150,12 +153,12 @@ const Home = () => {
                 ))}
             </div>
 
-            <div className="flex w-full h-[444px] mt-4">
+            <div className="flex w-full h-auto mt-4">
                 <div className="mr-auto pr-4 w-[65%]">
                     <MonthlyRevenueChart />
                 </div>
 
-                <div className="mr-auto py-4 pr-4 w-[35%] h-[444px] p-4 bg-white rounded-[14px] shadow-md">
+                <div className="mr-auto py-4 pr-4 w-[35%] h-[460px] p-4 bg-white rounded-[14px] shadow-md">
                     <h2 className="text-2xl font-bold mb-2">
                         Top 5 sản phẩm bán chạy
                     </h2>

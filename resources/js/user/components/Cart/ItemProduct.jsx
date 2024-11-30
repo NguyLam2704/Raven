@@ -38,8 +38,8 @@ const ItemProduct = ({product}) => {
             {/* Tổng giá sản phẩm */}
             <div className="w-2/12 text-center text-[#a91d3a] text-xl font-bold pt-14">{Number((product.price - (product.price * product.sale / 100))*product.quality).toLocaleString()}đ</div>
             {/* Checkbox chọn sản phẩm */}
-            <div className=" w-2/12 text-center">
-                <input className="h-5 w-5 mt-[59px] text-black bg-white border-red-700 rounded focus:ring-black" 
+            <div className=" w-2/12 text-center ">
+                <input className="h-5 w-5 mt-[59px] rounded accent-black" 
                     type="checkbox"                     
                 />
             </div>

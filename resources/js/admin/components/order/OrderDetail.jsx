@@ -87,8 +87,8 @@ const OrderDetail = ({orderDetail, formatDate, getOrderStatus , costBill, onClos
  
     if (isLoading) {
         return (
-            <div className="w-full h-[700px] flex justify-center items-center">
-                <img src={loading}/>
+            <div className="fixed inset-0 bg-black  bg-opacity-50 flex justify-center items-center">
+                <img src={loading} alt="Loading..." className="w-12 h-12"/>
             </div>
         )
     }
@@ -189,7 +189,7 @@ const OrderDetail = ({orderDetail, formatDate, getOrderStatus , costBill, onClos
                         </div>
                     </div>
 
-                    <div className="items-center flex w-full justify-center mt-4">
+                    <div className="items-center flex w-full justify-center my-4">
                         <button 
                             className="bg-blue-500 text-white px-12 py-1 font-extrabold rounded border border-[#050c9c]"
                             onClick={onClose}
