@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import backbtn from '../../assets/Back.svg';
 import forwardbtn from '../../assets/Forward.svg';
 import slider1 from '../../assets/img_slider_1.svg';
-import slider2 from '../../assets/img_slider2.svg';
+import slider2 from '../../assets/slider2.svg';
 
 //Slider trong trang chủ
 const SliderHome = () => {

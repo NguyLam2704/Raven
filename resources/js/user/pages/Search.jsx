@@ -83,7 +83,8 @@ const Search = () => {
     //Nhận giá trị từ thanh tìm kiếm
     const location = useLocation(); 
     const { message } = location.state || { message: 'No message' };
-
+    
+  console.log({message})
     return(
         <div className='w-full h-full '> 
             <Navigation/>

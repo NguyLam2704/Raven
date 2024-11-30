@@ -7,6 +7,7 @@ import Footer from '../components/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown} from '@fortawesome/free-solid-svg-icons'
 import TitleCategory from '../components/Category/TitleCategory';
+import img_loading from '../assets/loading.gif'
 
 const mapCategory = new Map([
     ["Áo thun", 1],
@@ -27,7 +28,7 @@ const Category = ({ cate }) => {
   // State để lưu danh sách sản phẩm
   const [productCategories, setProductCategories] = useState([]);
   const [loading, setLoading] = useState(true); // Trạng thái tải dữ liệu
-  const [error, setError] = useState(null); // Trạng thái lỗi
+
   let id = mapCategory.get(cate); // map category with category_id
 // Hàm fetch API
   const fetchProductCategories = async () => {
@@ -70,13 +71,6 @@ const Category = ({ cate }) => {
         setOpen(false);
     };
 
-    if (loading) {
-      return <div>Loading...</div>;
-    }
-  
-    if (error) {
-      return <div>Error: {error}</div>;
-    }
 
     return (
         <div  className='w-full h-full'>
@@ -84,13 +78,25 @@ const Category = ({ cate }) => {
             <div  className='mt-[90px] justify-items-center'>
 
                 {/* Slide */}
-                <img className='w-full' src={img_silder} alt="none" />
+                {
+                  loading ? (
+                    <div className='h-5'></div>
+                  ): (
+                    <img className='w-full' src={img_silder} alt="none" />
+                  )
+                }
 
                 {/* Tiêu đề */}
                 <TitleCategory cate={cate}/>
-
+                
                 {/*Bộ lọc */}
-                <div className='w-10/12 h-full mt-16'>                    
+                {
+                  loading ? (
+                    <div>
+                      <img className='w-10 h-10 mt-10' src={img_loading} alt="loading" />
+                    </div>
+                  ) : (
+                    <div className='w-10/12 h-full mt-16'>                    
                         <div className='w-full h-8 justify-items-end '
                             onMouseLeave={()=>setOpen(false)} //ẩn các gái trị của bộ lọc 
                         >
@@ -118,11 +124,13 @@ const Category = ({ cate }) => {
 
                             }
                         </div>            
-                    {/* Danh sách các sản phẩm  */}
-                    <div className="mt-10 grid grid-cols-4 gap-12 z-10">
-                        {mapProductCategories}
+                        {/* Danh sách các sản phẩm  */}
+                        <div className="mt-10 grid grid-cols-4 gap-12 z-10">
+                            {mapProductCategories}
+                        </div>
                     </div>
-                </div>
+                  )
+                }
             </div>
             <Footer />
         </div>
