@@ -7,6 +7,21 @@ import { SketchPicker } from "react-color";
 import { Colors } from "chart.js";
 
 const AddProduct = () => {
+    const [product, setProduct] = useState({
+        prod_name: "",
+        cost: null,
+        discount: 0,
+        description: "",
+        color_size_quantity: [],
+        images: [
+          { img: null, is_primary: true },
+          { img: null, is_primary: false },
+          { img: null, is_primary: false },
+          { img: null, is_primary: false },
+        ],
+      });
+
+
     const [items, setItems] = useState([]); // mảng màu, size, số lượng
     const [newItem, setNewItem] = useState({
       color: '#FFFFFF', // Default color is white
@@ -121,6 +136,32 @@ const AddProduct = () => {
         setOtherImages(newImages);
     };
 
+    const handleSaveProduct = () => {
+        if (!product.prod_name || !product.cost || !items.length || !mainImage) {
+          alert("Vui lòng điền đầy đủ thông tin cần thiết!");
+          return;
+        }
+      
+        const updatedProduct = {
+          ...product,
+          color_size_quantity: items.map((item) => ({
+            color_code: item.color,
+            size_code: item.size,
+            quantity: parseInt(item.quantity, 10),
+          })),
+          images: [
+            { img: mainImage, is_primary: true },
+            ...otherImages.map((img) => ({ img, is_primary: false })),
+          ],
+        };
+      
+        setProduct(updatedProduct);
+      
+        // Hiển thị thông tin sản phẩm trong console để kiểm tra
+        console.log("Product saved:", updatedProduct);
+        alert("Sản phẩm đã được lưu!");
+      };
+      
 
     return (
         <NavigationAdmin>
@@ -134,21 +175,35 @@ const AddProduct = () => {
                     <div className="w-[70%] mr-12">
                         <div className="mb-4">
                             <label className="block font-semibold mb-1 text-2xl">Tên sản phẩm<span className="text-red-600">*</span></label>
-                            <input type="text" placeholder="Nhập tên sản phẩm" className="w-full h-[50px] border rounded border-black px-3 py-2" />
+                            <input 
+                                type="text" 
+                                placeholder="Nhập tên sản phẩm" 
+                                value={product.prod_name}
+                                onChange={(e) => setProduct({ ...product, prod_name: e.target.value })}
+                                className="w-full h-[50px] border rounded border-black px-3 py-2" 
+                            />
                         </div>
 
                         <div className="mb-4 grid grid-cols-2 gap-4">
                             <div>
                                 <label className="block font-semibold mb-1 text-2xl">Giá<span className="text-red-600">*</span></label>
-                                <input type="number" placeholder="Nhập giá cho sản phẩm" className="w-full h-[50px] border border-black rounded px-3 py-2" />
+                                <input 
+                                    type="number" 
+                                    placeholder="Nhập giá cho sản phẩm" 
+                                    value={product.cost || ""}
+                                    onChange={(e) => setProduct({ ...product, cost: parseFloat(e.target.value) })}
+                                    className="w-full h-[50px] border border-black rounded px-3 py-2" 
+                                />
                             </div>
                             <div>
                                 <label className="block font-semibold mb-1 text-2xl">Sale</label>
-                                <select className="w-full h-[50px] border-black border rounded px-3 py-2">
-                                <option>Không có</option>
-                                <option>10%</option>
-                                <option>15%</option>
-                                </select>
+                                <input 
+                                    type="number" 
+                                    placeholder="Nhập sale" 
+                                    value={product.discount || ""}
+                                    onChange={(e) => setProduct({ ...product, discount: parseFloat(e.target.value) })}
+                                    className="w-full h-[50px] border border-black rounded px-3 py-2" 
+                                />
                             </div>
                         </div>
 
@@ -255,10 +310,6 @@ const AddProduct = () => {
 
                         <div className="mb-4 grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block font-semibold mb-1 text-2xl">Số lượng trong kho<span className="text-red-600">*</span></label>
-                            <input type="number" placeholder="Nhập số lượng trong kho" className="w-full h-[50px] border border-black rounded px-3 py-2" />
-                        </div>
-                        <div>
                             <label className="block font-semibold mb-1 text-2xl">Phân loại<span className="text-red-600">*</span></label>
                             <select className="w-full h-[50px] border border-black rounded px-3 py-2">
                             <option>Áo thun</option>
@@ -270,7 +321,12 @@ const AddProduct = () => {
 
                         <div >
                             <label className="block font-semibold mb-1 text-2xl">Mô tả sản phẩm<span className="text-red-600">*</span></label>
-                            <textarea type="text" placeholder="Nhập mô tả sản phẩm" className="w-full h-[280px] resize-none border border-black rounded px-2 py-2"></textarea>
+                            <textarea 
+                                type="text" 
+                                placeholder="Nhập mô tả sản phẩm" 
+                                value={product.description}
+                                onChange={(e) => setProduct({ ...product, description: e.target.value })}
+                                className="w-full h-[280px] resize-none border border-black rounded px-2 py-2"></textarea>
                         </div>
 
                     </div>
@@ -352,7 +408,12 @@ const AddProduct = () => {
                 </div>
 
                 <div className="items-center flex w-full justify-center mt-4">
-                    <button className="bg-blue-500 text-white px-12 py-1 font-extrabold rounded border border-[#050c9c]">THÊM</button>  
+                    <button     
+                        onClick={handleSaveProduct}
+                        className="bg-blue-500 text-white px-12 py-1 font-extrabold rounded border border-[#050c9c]"
+                    >
+                        THÊM
+                    </button>  
                 </div>
           
             </div>

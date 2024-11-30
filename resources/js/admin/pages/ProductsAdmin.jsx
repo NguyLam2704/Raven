@@ -29,7 +29,7 @@ const Products = () => {
     if (isLoading) {
         return (
             <div className="w-full h-[700px] flex justify-center items-center">
-                <img src={loading}/>
+                {/* <img src={loading}/> */}
             </div>
 
             // <h1 className='w-full text-2xl font-semibold text-center mt-16'>Loading...</h1>

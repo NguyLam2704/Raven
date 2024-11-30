@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Modal from 'react-modal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faChevronDown, faRotateRight, faFilter} from '@fortawesome/free-solid-svg-icons'
 
 // Custom styles for modal
 const modalStyles = {
@@ -27,7 +29,9 @@ const OrderFilter = ({ onFilterChange }) => {
     //Quản lý trạng thái mở/đóng của modal.
     const [isModalOpen, setIsModalOpen] = useState(false);
     // Quản lý các trạng thái đơn hàng được chọn.
-    const [selectedStatuses, setSelectedStatuses] = useState(statusOptions);
+    const [selectedStatuses, setSelectedStatuses] = useState([]);
+     // Quản lý trạng thái mở/đóng của DatePicker.
+    const [calendarOpen, setCalendarOpen] = useState(false);
 
     //Mở hoặc đóng modal
     const toggleModal = () => {
@@ -51,10 +55,11 @@ const OrderFilter = ({ onFilterChange }) => {
     };
 
     return (
-        <div className="flex w-[30rem] items-center gap-4 p-4 bg-white rounded-lg shadow">
+        <div className="flex w-[45%] items-center gap-2 p-4 mx-4 bg-white rounded-2xl border shadow">
+            <FontAwesomeIcon icon={faFilter} size="xl" style={{color: "#3572ef",}} className='mx-2'/>
+
             {/* Date Picker */}
-            <div className="flex items-center gap-2 border-x-2">
-                <span className="icon-filter"></span>
+            <div className="flex items-center px-2 border-l border-black">
                 <DatePicker
                     selected={selectedDate}
                     onChange={(date) => {
@@ -64,30 +69,34 @@ const OrderFilter = ({ onFilterChange }) => {
                     dateFormat="dd/MM/yyyy"
                     placeholderText={selectedDate ? selectedDate.toLocaleDateString('vi-VN') : "Chọn ngày"}
                     maxDate={new Date()}
-                    className="px-2"
+                    open={calendarOpen} 
+                    onClickOutside={() => setCalendarOpen(false)} // tắt bảng chọn ngày khi click ra ngoài
                 />
+                <FontAwesomeIcon icon={faChevronDown} className="mx-1 cursor-pointer" onClick={() => setCalendarOpen(!calendarOpen)} />
             </div>
 
             {/* Status Dropdown */}
-            <div className="relative">
+            <div className="flex items-center px-2 border-black border-x ">
                 <button
                     onClick={toggleModal}
-                    className="px-4 border-x-2  bg-white"
+                    className="px-4items-center bg-white"
                 >
-                    Trạng thái <span className="icon-dropdown"></span>
+                    Trạng thái                 
                 </button>
+                <FontAwesomeIcon icon={faChevronDown} onClick={toggleModal} className="ml-2 mr-1 cursor-pointer"/>
             </div>
 
             {/* Reset Filters */}
             <button
                 onClick={() => {
                     setSelectedDate(null);
-                    setSelectedStatuses(statusOptions); // Đặt lại tất cả trạng thái
-                    onFilterChange({ date: null, statuses: statusOptions });
+                    setSelectedStatuses([]); // Đặt lại tất cả trạng thái
+                    onFilterChange({ date: null, statuses: [] });
                 }}
-                className="text-red-500 px-4"
+                className="text-red-500 font-bold"
             >
-                Đặt lại <span className="icon-reset"></span>
+                <FontAwesomeIcon icon={faRotateRight} style={{color: "#fe0b0b",}} className='mx-2'/>
+                Đặt lại 
             </button>
 
             {/* Status Modal */}

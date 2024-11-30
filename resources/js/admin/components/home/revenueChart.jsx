@@ -77,7 +77,7 @@ const MonthlyRevenueChart = ({ data }) => {
   };
 
   return (
-    <div className="px-4 bg-white rounded-[14px] shadow-md h-[444px]">
+    <div className="px-4 bg-white rounded-[14px] shadow-md h-[460px]">
         <div className="flex items-center justify-between mb-1">
             <h2 className="text-2xl font-bold my-4">Doanh thu bán hàng theo tháng</h2>
             <select value={selectedMonth} onChange={handleMonthChange} className="pl-2 mr-4 border rounded">
@@ -87,7 +87,7 @@ const MonthlyRevenueChart = ({ data }) => {
             </select>
         </div>
 
-        <div className="relative h-96">
+        <div className="relative h-96 w-full">
           <Line data={chartData} options={options} />
         </div>
     </div>
