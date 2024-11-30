@@ -13,24 +13,25 @@ class DashboardController extends Controller
 {
     public function thongke(Request $request)
     {
-        $today = now();
-        $yesterday = now()->subDay();
-
+        $today = now()->toDateString();
+        $yesterday = now()->subDay()->toDateString();
 
         // Lấy số người xem web
-        $viewsAll = DB::table('webviews')->max('views');
-        $viewsMaxToday = DB::table('webviews')
-            ->whereDate('created_at', now())
+        $viewsAll = DB::table('webviews')->sum('views');
+
+        $viewsToday = DB::table('webviews')
+            ->whereDate('created_at', $today)
             ->max('views');
-        $viewsMinToday = DB::table('webviews')
-            ->whereDate('created_at', now())
-            ->min('views');
-        $viewsMaxYesterday = DB::table('webviews')
-            ->whereDate('created_at', now()->subDay())
+        if (!$viewsToday){
+            $viewsToday = 0;
+        }
+
+        $viewsYesterday = DB::table('webviews')
+            ->whereDate('created_at', $yesterday)
             ->max('views');
-        $viewsMinYesterday = DB::table('webviews')
-            ->whereDate('created_at', now()->subDay())
-            ->min('views');
+        if (!$viewsYesterday){
+            $viewsYesterday = 0;
+        }
 
         // Lấy số lượng đơn hàng(bills)
         $donhang = DB::table('bills')->count();
@@ -40,7 +41,8 @@ class DashboardController extends Controller
 
 
         // Doanh thu
-        $doanhthu = DB::table('bills')->sum('total_cost');
+        $doanhthu = Order::join('bills', 'bills.order_id', '=', 'orders.order_id')
+        ->where('status', '3')->sum('total_cost');
 
         $doanhthuToday = Order::join('bills', 'bills.order_id', '=', 'orders.order_id')
             ->whereDate('datepaid', $today)
@@ -51,14 +53,66 @@ class DashboardController extends Controller
             ->where('status', '3')->sum('total_cost');
 
 
+
         // Lấy trạng thái 0 = huỷ, 1 = đang xử lý, 2 = đang giao, 3 đã hoàn thành
         $onProgress = Order::where('status', 2)->count();
+
+
+        $date = Carbon::now();
+        $m = $date->month;
+        $data = array();
+        // for ($i = 1; $i <= $date->day; $i++) {
+        //     $x = Carbon::create(2024, $m, $i);
+        //     $doanhthu = Order::join('bills', 'bills.order_id', '=', 'orders.order_id')
+        //         ->whereDate('datepaid', $x)
+        //         ->where('status', '3')->sum('total_cost');
+        //     $data[$i] = $doanhthu;
+        // }
+        $month = '';
+        switch ($m) {
+            case 1:
+                $month = 'Tháng 1';
+                break;
+            case 2:
+                $month = 'Tháng 2';
+                break;
+            case 3:
+                $month = 'Tháng 3';
+                break;
+            case 4:
+                $month = 'Tháng 4';
+                break;
+            case 5:
+                $month = 'Tháng 5';
+                break;
+            case 6:
+                $month = 'Tháng 6';
+                break;
+            case 7:
+                $month = 'Tháng 7';
+                break;
+            case 8:
+                $month = 'Tháng 8';
+                break;
+            case 9:
+                $month = 'Tháng 9';
+                break;
+            case 10:
+                $month = 'Tháng 10';
+                break;
+            case 11:
+                $month = 'Tháng 11';
+                break;
+            default:
+                $month = 'Tháng 12';
+                break;
+        }
 
         return [
             'view' => [
                 'all' => $viewsAll,
-                'today' => $viewsMaxToday - $viewsMinToday,
-                'yesterday' => $viewsMaxYesterday - $viewsMinYesterday,
+                'today' => $viewsToday,
+                'yesterday' => $viewsYesterday,
             ],
             'donhang' => [
                 'all' => $donhang,
@@ -71,49 +125,84 @@ class DashboardController extends Controller
                 'yesterday' => $doanhthuYesterday
             ],
             'onProgress' => $onProgress,
+            'chart' => [$month => $data]
         ];
     }
 
     public function chitiet($id)
     {
-        $date = Carbon::create(2024, $id);
-        $data = array();
-        for ($i = 1; $i <= $date->daysInMonth(); $i++) {
-            $x = Carbon::create(2024, $id, $i);
-            $doanhthu = Order::join('bills', 'bills.order_id', '=', 'orders.order_id')
-                ->whereDate('datepaid', $x)
-                ->where('status', '3')->sum('total_cost');
-            array_push($data, $doanhthu);
+        if ($id > 12 || $id <= 0) {
+            return ['error' => 'Không tồn tại tháng ' + $id];
         }
+
+            $date = Carbon::create(2024, $id);
+            $data = array();
+            for ($i = 1; $i <= $date->daysInMonth(); $i++) {
+                $x = Carbon::create(2024, $id, $i);
+                $doanhthu = Order::join('bills', 'bills.order_id', '=', 'orders.order_id')
+                    ->whereDate('datepaid', $x)
+                    ->where('status', '3')->sum('total_cost');
+                $data[$i] = $doanhthu;
+
+        }
+    
         return [
-            'doanhthu' => $data
+            'chartdata'=> $data
         ];
     }
 
     public function chitietdonhang(Request $request, $order_id)
     {
-       $products = DB::table('product_order')->where('order_id', $order_id)
-       ->join('pro_color_size','product_order.pro_color_size_id','pro_color_size.pro_color_size_id')
-       ->get(['prod_id','quantity','size_id','color_id']);
-       
-       $order = DB::table('orders')->where('order_id', $order_id)->first();
-       $user = DB::table('users')->where('user_id', $order->user_id)->get();
-    //    $products[0]->product_id = 1;
+        // Lấy prod_color_size
+        $prod_color_size = DB::table('product_order')->where('order_id', $order_id)
+            ->join('pro_color_size', 'product_order.pro_color_size_id', 'pro_color_size.pro_color_size_id')
+            ->get(['prod_id', 'quantity', 'size_id', 'color_id']);
+        
+        // Lấy prod_id
+        $prod_id = [];
+        foreach ($prod_color_size as $element ) {
+            $prod_id[] = $element->prod_id;
+        }
+        $prod_id = array_unique($prod_id);
+
+        // Lấy thông tin products từ mảng prod_id
+        $products = [];
+        foreach ($prod_id as $element) {
+            $item = DB::table('products')->where('prod_id',$element)->first();
+            $img = DB::table('product_images')->where('prod_id',$element)->where('is_primary',true)->first();
+            $item->image = $img->image;
+            $products[] = $item;
+        }
+
+        // Lấy thông tin đơn hàng
+        $order = DB::table('orders')->where('order_id', $order_id)->first();
+    
+        // Lấy thông tin user
+        $user = DB::table('users')->where('user_id', $order->user_id)->first();
+
         return [
-            'products' => $products,
+            'pro_color_size' => $prod_color_size,
             'user' => $user,
-            'order' => $order
+            'order' => $order,
+            'products' => $products
         ];
     }
 
-    public function ChangeStatus(Request $request, $order_id){
+    public function ChangeStatus(Request $request, $order_id)
+    {
+        // Lấy trạng thái cần thay đổi
         $status = $request->status;
+
+        // Tìm đơn hàng
         $order = Order::find($order_id);
-        if ( !$order){
+        // Nếu không có trả về 404
+        if (!$order) {
             abort(404);
         }
+        // Chuyển trạng thái
         $order->status = $status;
         $order->save();
+        
         return $order;
     }
 }

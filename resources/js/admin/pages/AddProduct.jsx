@@ -91,6 +91,8 @@ const AddProduct = () => {
             reader.onload = () => setMainImage(reader.result); // Khi hoàn tất đọc, lưu dữ liệu dưới dạng URL vào state `mainImage`.
             reader.readAsDataURL(file); // Đọc nội dung của tệp dưới dạng Data URL (chuỗi mã hóa Base64).
         }
+        
+        
     };
 
     //Mở thư mục trên máy và chọn ảnh
@@ -120,6 +122,12 @@ const AddProduct = () => {
         newImages[index] = null;
         setOtherImages(newImages);
     };
+
+    const handleAddProduct = async () =>{
+        console.log(mainImage);
+        
+        // await axios.post(`/api/dashboard/addproduct`,{'hello': 'ok'});
+    }
 
 
     return (
@@ -352,7 +360,7 @@ const AddProduct = () => {
                 </div>
 
                 <div className="items-center flex w-full justify-center mt-4">
-                    <button className="bg-blue-500 text-white px-12 py-1 font-extrabold rounded border border-[#050c9c]">THÊM</button>  
+                    <button className="bg-blue-500 text-white px-12 py-1 font-extrabold rounded border border-[#050c9c]" onClick={handleAddProduct} >THÊM</button>  
                 </div>
           
             </div>

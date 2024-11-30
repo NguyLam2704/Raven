@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Dashboard\DashboardController;
 use App\Http\Controllers\Api\Dashboard\UserDetailsController;
+use App\Http\Controllers\Api\Dashboard\ViewsController;
 use App\Http\Controllers\Api\V1\BillController;
 use App\Http\Controllers\Api\V1\ColorController;
 use App\Http\Controllers\Api\V1\ProductController;
@@ -60,7 +61,9 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
 Route::prefix('dashboard')->group(function () { 
     Route::get('/thongke', [DashboardController::class, 'thongke']);
     Route::get('/chitietdonhang/{order_id}', [DashboardController::class, 'chitietdonhang']);
-    Route::put('/chitietdonhang/{order_id}', [DashboardController::class, 'ChangeStatus']);
+    Route::patch('/chitietdonhang/{order_id}', [DashboardController::class, 'ChangeStatus']);
     Route::get('/chitiet/{id}', [DashboardController::class, 'chitiet']);
     Route::get('/user/{id}', [UserDetailsController::class, 'UserDetails']);
+    Route::get('/views', [ViewsController::class, 'addView']);
+    Route::post('/addproduct', [ViewsController::class, 'addProduct']);
 });
