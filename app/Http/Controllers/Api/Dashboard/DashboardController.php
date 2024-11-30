@@ -92,13 +92,13 @@ class DashboardController extends Controller
 
     public function chitietdonhang(Request $request, $order_id)
     {
-       $products = DB::table('product_order')->where('order_id', $order_id)
-       ->join('pro_color_size','product_order.pro_color_size_id','pro_color_size.pro_color_size_id')
-       ->get(['prod_id','quantity','size_id','color_id']);
-       
-       $order = DB::table('orders')->where('order_id', $order_id)->first();
-       $user = DB::table('users')->where('user_id', $order->user_id)->get();
-    //    $products[0]->product_id = 1;
+        $products = DB::table('product_order')->where('order_id', $order_id)
+            ->join('pro_color_size', 'product_order.pro_color_size_id', 'pro_color_size.pro_color_size_id')
+            ->get(['prod_id', 'quantity', 'size_id', 'color_id']);
+
+        $order = DB::table('orders')->where('order_id', $order_id)->first();
+        $user = DB::table('users')->where('user_id', $order->user_id)->get();
+        //    $products[0]->product_id = 1;
         return [
             'products' => $products,
             'user' => $user,
@@ -106,14 +106,33 @@ class DashboardController extends Controller
         ];
     }
 
-    public function ChangeStatus(Request $request, $order_id){
+    public function ChangeStatus(Request $request, $order_id)
+    {
         $status = $request->status;
         $order = Order::find($order_id);
-        if ( !$order){
+        if (!$order) {
             abort(404);
         }
         $order->status = $status;
         $order->save();
         return $order;
+    }
+
+    public function getSizeColorById(Request $request, $product_id)
+    {
+        $SizeColor = DB::table('pro_color_size')->where('prod_id', $product_id)->get();
+        return $SizeColor;
+    }
+
+    public function getUserByPhone(Request $request, $phone_num)
+    {
+        $user = DB::table('users')->where('phonenumber', $phone_num)->get();
+        return $user;
+    }
+
+    public function getOrderByPhone(Request $request, $phone_num)
+    {
+        $user = DB::table('users')->where('phonenumber', $phone_num)->get();
+        return $user;
     }
 }

@@ -24,7 +24,7 @@ const Sidebar = () => {
   };
 
   return (
-    <nav className="sidebar w-60 bg-white text-white flex flex-col p-5 fixed left-0 top-0 bottom-0 border-r border-gray-300">
+    <nav className="w-60 bg-white text-white flex flex-col p-5 fixed left-0 top-0 bottom-0 border-r border-gray-300">
       <h2 className="mb-7 text-2xl text-center text-black"><strong className="mb-7 text-2xl text-center text-blue-600">Raven</strong> Store</h2>
       <ul className="list-none p-0">
           <li className="mb-2">
