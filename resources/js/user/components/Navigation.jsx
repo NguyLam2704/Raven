@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Logo from "../assets/Raven.svg"
 import Search from "../assets/Search.svg"
 import Cart from "../assets/Cart.svg"
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 const Navigation = () => {
@@ -39,12 +39,11 @@ const Navigation = () => {
     
     //Hàm chuyển đến trang Tìm kiếm và truyền nội dung tìm kiếm
     const navigateToAbout = () => { 
-        if( text != ''){            
-            navigate('/search', { state: { message: text } });             
-            console.log(location.pathname)
-        }
+                  
+        navigate(`/search/${text}`);
+
     };
-    const location = useLocation()
+   
     return(
         
         <header className=" fixed left-0 z-30 top-0 w-full bg-white  ">

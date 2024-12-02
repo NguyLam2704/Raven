@@ -22,7 +22,7 @@ const ScrollToTopOnRouteChange = () => { const { pathname } = useLocation(); use
 const RouterUser = () => {
     return (
         <div>
-             <ScrollToTopOnRouteChange/>
+            <ScrollToTopOnRouteChange/>
             <Routes>               
                 <Route path="/" element={<HomeUser/>}/>
                 <Route path="/T_shirt" element={<Category cate={"Áo thun"}/>}/>
@@ -40,7 +40,7 @@ const RouterUser = () => {
                 <Route path="/about_us" element={<AboutUs/>}/>
                 <Route path="/cart" element={<Cart/>}/>
                 <Route path="/check_order" element={<CheckOrder/>}/>
-                <Route path="/search" element={<Search/>}/>
+                <Route path="/search/:text" element={<Search/>}/>
                 <Route path="/detail_product/:proId" element={<DetailProduct/>}/>
                 <Route path="/check_out" element={<CheckOut/>}/>
                 <Route path="/new_product" element={<NewProduct />}/>

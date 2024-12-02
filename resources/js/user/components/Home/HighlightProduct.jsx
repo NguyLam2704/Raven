@@ -100,6 +100,7 @@ const HightlightProduct = () => {
                             {products.filter((product) => product.quantitySold > 10) //fiter product have more 10 quantitySold.slice(NumberBackHighlight, NumberForwardHighlight) //choose 8 product
                                                 .map((product, index) => (
                                                     <Product key={index}
+                                                            proId={product.proId}
                                                             price={product.cost} 
                                                             img={product.productImage.find(img => img.isPrimary)?.image} //choose the primary image to display
                                                             name={product.productName} 
