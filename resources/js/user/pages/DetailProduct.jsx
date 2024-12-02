@@ -25,18 +25,19 @@ const DetailProduct = () =>{
     //Kiểm soát hiển thị thnah giỏ hàng
     const [isCartMini, setCart] =useState(false)
     const handleCart = () => {
+        if (selectedColor && selectedSize){
         // Lấy danh sách sản phẩm từ localStorage (nếu chưa có thì trả về mảng rỗng)
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
 
         // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
-        const existingProductIndex = cart.findIndex((item) => item.proId === cartProduct.proId);
+        const existingProductIndex = cart.findIndex((item) => item.proId === cartProduct.proId && item.color === selectedColor && item.size === selectedSize);
 
         if (existingProductIndex !== -1) {
             // Nếu sản phẩm đã có, tăng số lượng
-            cart[existingProductIndex].quantity += 1;
+            cart[existingProductIndex].quantity += quality;
         } else {
             // Nếu sản phẩm chưa có, thêm sản phẩm với số lượng ban đầu là 1
-            cart.push({ ...cartProduct, quantity: 1 });
+            cart.push({ ...cartProduct, color: selectedColor, size: selectedSize, quantity: quality });
         }
         // Cập nhật lại localStorage
         localStorage.setItem('cart', JSON.stringify(cart));
@@ -44,12 +45,17 @@ const DetailProduct = () =>{
         // Thông báo (tuỳ chọn)
         //  alert('Sản phẩm đã được thêm vào giỏ hàng!');
         setCart(!isCartMini)
+        }
+        else {
+            console.log("empty color or empty size")
+        }
     }
   
     // const[ListProduct, setLi]
     const [DetailProduct, setDetailProduct] = useState(null);
     const [loading, setLoading] = useState(false); // Trạng thái tải dữ liệu
     const [error, setError] = useState(null); // Trạng thái lỗi
+    const [categoryType, setCategory] = useState(null); // categroy type of detail product
     const fetchDetail = async() => {
         try {
             const response = await fetch(`/api/v1/product?proId[eq]=${proId}&includeProColorSize=true&includeImage=true`);
@@ -58,6 +64,7 @@ const DetailProduct = () =>{
             }
             const data = await response.json(); // Giả định API trả về JSON
             setDetailProduct(data.data[0]); // Lưu dữ liệu vào state
+            setCategory(data.data[0].categoryTypeId);
             setBigImg(data.data[0].productImage.find(img => img.isPrimary)?.image)
             if (data?.data?.[0]){
             const newcartProduct = {
@@ -65,7 +72,7 @@ const DetailProduct = () =>{
                 productName: data.data[0].productName,
                 cost: data.data[0].cost,
                 discount: data.data[0].discount,
-                // quantity: "1",
+                // quantity: quality,
                 productImage: data.data[0].productImage.find(img => img.isPrimary)?.image,
             }
             setcartProduct(newcartProduct);}
@@ -78,39 +85,27 @@ const DetailProduct = () =>{
 
     //Kiểm soát hiển thị bảng size
     const [isBangSise, setBangSize] = useState(false)
-    const ListProduct = [
-        {
-            key: 1,
-            name: "Cao Quốc Kiệt",
-            price: 1000000,
-            img: img_product,
-            sale: 20,
-        },
-        {
-            key: 2,
-            name: "Cao Quốc Kiệt",
-            price: 1000000,
-            img: img_product,
-            sale: 0,
-          },
-          {
-            key: 3,
-            name: "Cao Quốc Kiệt",
-            price: 100000,
-            img: img_product,
-            sale: 0,
-          },
-          {
-            key: 2,
-            name: "Cao Quốc Kiệt",
-            price: 1000000,
-            img: img_product,
-            sale: 0,
-          },
-    ];
+    const [products, setProducts] = useState([]); // sản phẩm tương tự
+    
+    const fetchProducts = async () => {
+        try {
+            const response = await fetch('/api/v1/product?includeImage=true'); // fetch api include image
+            if (!response.ok) {
+                throw new Error('Failed to fetch products');
+            }
+            const data = await response.json(); // Giả định API trả về JSON
+            setProducts(data.data || []); // Lưu dữ liệu vào state
+        } catch (err) {
+            setError(err.message); // Lưu thông báo lỗi nếu xảy ra
+        } finally {
+            setLoading(false); // Kết thúc trạng thái tải
+        }
+    };
+    
     useEffect(() => {
         setLoading(true);
         fetchDetail();
+        fetchProducts();
     }, [proId])
     const navigate = useNavigate()
     //Nhận giá trị số lượng sản phẩm
@@ -300,11 +295,19 @@ const DetailProduct = () =>{
                                 <div className=' content-center text-center text-[#c73659] text-xl font-extrabold ml-3 mt-1 active:text-[#a91d3a]'>THÊM VÀO GIỎ </div>
                             </button>
                             {/* Mua ngay sp */}
-                            <button className="w-full h-11 flex flow-row items-center text-white text-xl font-extrabold justify-center bg-[#c73659] rounded-md mt-3 active:bg-[#a91d3a] "
-                                onClick={()=>navigate("/check_out")}
-                                title={!selectedColor || !selectedSize ? 'Vui lòng chọn màu sắc và số lượng' : ''}
-                                disabled={!selectedColor || !selectedSize }
-                            >
+                            <button className="w-full h-11 flex flow-row items-center text-white text-xl font-extrabold justify-center bg-[#c73659] rounded-md mt-3"
+                                onClick={()=> {
+                                    if(selectedColor && selectedSize)
+                                    {
+                                    const updateCartProduct = {
+                                        ...cartProduct,
+                                        size: selectedSize,
+                                        color: selectedColor,
+                                        quantity: quality,
+                                    };
+                                    navigate("/check_out", { state: { product: updateCartProduct} })}
+                                    else console.log("empty color and empty size");
+                                    }}>
                                 MUA NGAY
                             </button>
                         </div>
@@ -334,8 +337,8 @@ const DetailProduct = () =>{
                         </button>                        
                         <div className='w-10/12 mt-6'>
                             <div className='grid grid-cols-4 gap-10'>
-                                {ListProduct.map((product, index) => (
-                                    <Product key={index} img={product.img} name={product.name} price={product.price} sale={product.sale}/>                            
+                                {products.filter((product) => product.categoryTypeId == categoryType && product.proId != proId).slice(0,4).map((product, index) => (
+                                    <Product key={index} proId={product.proId} img={product.productImage.find(img => img.isPrimary)?.image} name={product.productName} price={product.cost} sale={product.discount}/>                            
                                 ))}                      
                             </div>
                         </div>
@@ -345,7 +348,7 @@ const DetailProduct = () =>{
                     </div>  
             </div>
 
-        )}
+        )}  
             {/* Ẩn/Hiện thanh giỏ hàng */}
             { isCartMini && <CartMini handleCart={()=>setCart(!isCartMini)}/>}
             <Footer/>

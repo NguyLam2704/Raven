@@ -17,6 +17,11 @@ const CartMini = ({handleCart}) => {
             console.error("Dữ liệu không phải là mảng:", savedProduct);
           }
       }, []);
+    
+    const totalCost = storeProduct.reduce((total,item) => {
+        return total + + (item.cost - (item.cost * item.discount / 100))*item.quantity;
+    },0);
+    
       console.log(storeProduct)
     //Hàm xóa sản phẩm
     const removeProduct = (product) =>{
@@ -43,7 +48,7 @@ const CartMini = ({handleCart}) => {
         setStoreProduct(JSON.parse(savedProduct));
     }
     
-    const naviagte = useNavigate();
+    const navigate = useNavigate();
     return(
         <div className=" w-full h-screen">
             <div className='h-screen w-full opacity-30 bg-black right-0 absolute top-0 z-50'
@@ -69,11 +74,11 @@ const CartMini = ({handleCart}) => {
                     {/* Tổng giá tiền các sp trong giỏ hàng */}
                     <div className="w-11/12 flex flex-row justify-between "> 
                         <div className="text-black text-lg font-bold">Tổng tiền:</div>                        
-                        <div className="text-[#a91d3a] text-xl font-bold">100000đ</div> 
+                        <div className="text-[#a91d3a] text-xl font-bold">{totalCost.toLocaleString()}đ</div> 
                     </div>
                     <button 
-                        className="w-11/12 flex justify-center bg-[#c73659] rounded-[5px] border border-[#151515] py-1 my-5"
-                        onClick={()=>naviagte('/')} // Chuyển đến trang thanh toán
+                        className="w-11/12 flex justify-center bg-[#c73659] rounded-[5px] border border-[#151515] py-1 my-7"
+                        onClick={()=>navigate('/check_out')} // Chuyển đến trang thanh toán
                     >
                         <div className=" text-white text-lg font-bold">THANH TOÁN</div>
                     </button>

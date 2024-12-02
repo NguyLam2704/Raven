@@ -33,6 +33,27 @@ const SaleProduct = () => {
     useEffect(() => {
         fetchProducts();
     }, []); // [] đảm bảo chỉ gọi API một lần khi component mount
+
+    // const sortProducts = (value) => {
+    //     const ProductCategories = [...productCategories].sort((a,b) => {
+    //       if (value === 'Giá giảm dần') {
+    //         return (b.cost - b.cost*b.discount/100) - (a.cost - a.cost*a.discount/100);
+    //       }
+    //       else if (value == "Giá tăng dần") {
+    //         return (a.cost - a.cost*a.discount/100) - (b.cost - b.cost*b.discount/100);
+    //       }
+    //       else return (b.cost - b.cost*b.discount/100) - (a.cost - a.cost*a.discount/100);
+    //     }).map((productCategory, index) => (
+    //       <Product  key={index}
+    //                 proId={productCategory.proId}
+    //                 price={productCategory.cost} 
+    //                 img={productCategory.productImage.find(img => img.isPrimary)?.image}  //choose the primary image to display
+    //                 name={productCategory.productName} 
+    //                 sale={productCategory.discount} />
+    //   )); 
+    //     setMapProductCategories(ProductCategories);
+    //   }
+
     //Giá trị của bộ lọc sắp xếp
     const [sort, setSort] = useState('Giá giảm dần');
     // Ẩn/hiện các giá trị của bộ lọc tìm kiếm
@@ -97,7 +118,15 @@ const SaleProduct = () => {
                             {/* Danh sách các sản phẩm  */}
                             <div className="mt-10 grid grid-cols-4 gap-12 z-10">
                                 {products.filter((product) => product.discount > 0) //filter product have discount
-                                            .map((product, index) => (
+                                            .sort((a,b) => {
+                                                if (sort === 'Giá giảm dần') {
+                                                  return (b.cost - b.cost*b.discount/100) - (a.cost - a.cost*a.discount/100);
+                                                }
+                                                else if (sort == "Giá tăng dần") {
+                                                  return (a.cost - a.cost*a.discount/100) - (b.cost - b.cost*b.discount/100);
+                                                }
+                                                else return (b.cost - b.cost*b.discount/100) - (a.cost - a.cost*a.discount/100);
+                                              }).map((product, index) => (
                                                 <Product  key={index}
                                                     proId={product.proId}
                                                         price={product.cost} 
