@@ -16,20 +16,23 @@ const shipfee = 50000;
 
 const fetchProduct = async (id) => {
     const response = await axios.get(`/api/v1/product/${id}`);
+    console.log("product "+response.data)
     return response.data;
   }
 
 const fetchSize = async (id) => {
     const response = await axios.get(`/api/v1/size/${id}`);
+    console.log("size "+response.data)
     return response.data;
 }
 
 const fetchColor = async (id) => {
     const response = await axios.get(`/api/v1/color/${id}`);
+    console.log("color "+response.data)
     return response.data;
 }
 const OrderDetail = ({orderDetail, formatDate, getOrderStatus , costBill, onClose}) => {
-    const [product, setProduct] = useState();
+    const [product, setProduct] = useState(orderDetail.products);
     const [size, setSize] = useState();
     const [color, setColor] = useState();
     const [quantity, setQuantity] = useState();
@@ -39,28 +42,23 @@ const OrderDetail = ({orderDetail, formatDate, getOrderStatus , costBill, onClos
 
     useEffect(() => {
         const LoadData = async () => {
-            const productPromises = orderDetail.products.map((item) =>
-                fetchProduct(item.prod_id)
-            );
-            const sizePromises = orderDetail.products.map((item) =>
+            const sizePromises = orderDetail.pro_color_size.map((item) =>
                 fetchSize(item.size_id)
             );
-            const colorPromises = orderDetail.products.map((item) =>
+            const colorPromises = orderDetail.pro_color_size.map((item) =>
                 fetchColor(item.color_id)
             );
     
-            const productResults = await Promise.all(productPromises);
             const sizeResults = await Promise.all(sizePromises);
             const colorResults = await Promise.all(colorPromises);
-    
-            console.log(productResults);
+            
+            console.log("Product in detail: " + product)
             console.log(sizeResults);
             console.log(colorResults);
             // Set state with the fetched data
-            setProduct(productResults);
             setSize(sizeResults);
             setColor(colorResults);
-            setQuantity(orderDetail.products.map((item) => item.quantity));
+            setQuantity(orderDetail.pro_color_size.map((item) => item.quantity));
             setIsLoading(false)
         }
         LoadData();
@@ -147,9 +145,9 @@ const OrderDetail = ({orderDetail, formatDate, getOrderStatus , costBill, onClos
                                 <div className='flex flex-col mt-4 pl-4 items-start justify-center'>
                                     <div className="pb-1">Mã đơn hàng: {orderDetail.order.order_id}</div>
                                     <div className="pb-1">Ngày đặt hàng: {formatDate(orderDetail.order.datecreated)}</div>
-                                    <div className="pb-1">Họ tên: {orderDetail.user[0].name}</div>
-                                    <div className="pb-1">Số điện thoại: {orderDetail.user[0].phonenumber}</div>
-                                    <div>Email: {orderDetail.user[0].email}</div>
+                                    <div className="pb-1">Họ tên: {orderDetail.user.name}</div>
+                                    <div className="pb-1">Số điện thoại: {orderDetail.user.phonenumber}</div>
+                                    <div>Email: {orderDetail.user.email}</div>
                                 </div>
                            </div>
 

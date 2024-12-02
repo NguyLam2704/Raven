@@ -81,9 +81,9 @@ const Home = () => {
             trend:
                 ThongKeData.view.yesterday === 0
                     ? "0%"
-                    : ((ThongKeData.view.today - ThongKeData.view.yesterday) /
+                    : (((ThongKeData.view.today - ThongKeData.view.yesterday) /
                           ThongKeData.view.yesterday) *
-                          100 +
+                          100) +
                       "%",
             trendColor:
                 ThongKeData.view.today > ThongKeData.view.yesterday

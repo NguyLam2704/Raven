@@ -128,7 +128,7 @@ const ProductDetail = ({ProductDetail, onClose}) => {
                                                 <th className="py-4 px-2 border-b text-sm font-extrabold text-center">Size</th>
                                                 <th className="py-4 px-2 border-b text-sm font-extrabold text-center">Màu sắc</th>
                                                 <th className="py-4 px-2 border-b text-sm font-extrabold text-center">Số lượng còn lại</th>
-
+                                                <th className="py-4 px-2 border-b text-sm font-extrabold text-center">Số lượng đã bán</th>
                                             </tr>
                                         </thead>
 
@@ -138,6 +138,7 @@ const ProductDetail = ({ProductDetail, onClose}) => {
                                                 >
                                                     <td className="py-5 px-2 h-20 border-b text-sm font-semibold text-center">{getSize(product.size_id)}</td>
                                                     <td className="py-5 px-2 h-20 border-b text-sm font-semibold text-center">{product.colorName}</td>
+                                                    <td className="py-5 px-2 h-20 border-b text-sm font-semibold text-center">{product.quantity_available}</td>
                                                     <td className="py-5 px-2 h-20 border-b text-sm font-semibold text-center">{product.quantity_available}</td>
                                                 </tr>
                                             ))}

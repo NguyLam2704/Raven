@@ -89,7 +89,7 @@ const ChartUser = () => {
         <div className="bg-white h-[450px] rounded-lg p-4 max-w-3xl mx-auto">
             {/* Nút chuyển đổi */}
             <div className="flex justify-end mb-4">
-                <div className='h-5 w-full text-base font-bold  text-black p-4'>Số lượng đã mua</div>
+                <div className='h-5 w-full text-base font-bold  text-black p-4'>Thống kê đơn hàng đã giao</div>
                 <select
                     className="border rounded-md px-4 py-2 text-sm bg-gray-100"
                     value={view}
