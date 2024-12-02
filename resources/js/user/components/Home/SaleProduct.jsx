@@ -128,6 +128,7 @@ const SaleProduct = () => {
                                                 else return (b.cost - b.cost*b.discount/100) - (a.cost - a.cost*a.discount/100);
                                               }).map((product, index) => (
                                                 <Product  key={index}
+                                                    proId={product.proId}
                                                         price={product.cost} 
                                                         img={product.productImage.find(img => img.isPrimary)?.image} 
                                                         name={product.productName} 
