@@ -94,6 +94,7 @@ const HomeUser = () => {
     }, []); // [] đảm bảo chỉ gọi API một lần khi component mount
 
     const navigate = useNavigate() ; 
+    
     return(
         <div className='w-full h-screen '>
              { loading ? ( <div></div>) : (<Navigation/>) }

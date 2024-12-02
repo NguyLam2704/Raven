@@ -17,7 +17,7 @@ const ItemCheckOut = ({product}) => {
                     {/* Số lượng sản phẩm */}
                     <div className="text-black text-sm font-medium">Số lượng: {product.quantity}</div>
                     {/* Giá sản phẩm */}
-                    <div className=" text-[#c73659] text-sm font-bold ">{Number((product.cost - (product.cost * product.discount / 100))*product.quantity).toLocaleString()}đ</div>
+                    <div className=" text-[#c73659] text-sm font-bold ">{Number((product.cost - (product.cost * product.discount / 100))).toLocaleString()}đ</div>
                 </div>
             </div>
 

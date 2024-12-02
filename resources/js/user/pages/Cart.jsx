@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 //Giỏ hàng
 const Cart = () => {
 
-    const [ListProduct, setList] = useState([]);
     const [storeProduct, setStoreProduct] = useState([]);
 
     useEffect(() => {
@@ -24,39 +23,8 @@ const Cart = () => {
     const totalCost = storeProduct.reduce((total, item) => {
         return total + (item.cost - (item.cost * item.discount / 100))*item.quantity;
     },0);
-    // const [ListProduct, setList] = useState([
-    //     {
-    //       key: 1,
-    //       name: "Cao Quốc Kiệt",
-    //       price: 1000000,
-    //       img: img_product,
-    //       sale: 20,
-    //       quality: 1,
-    //       color: "Xanh",
-    //       size: "L"
-    //     },
-    //     {
-    //         key: 2,
-    //         name: "Cao Quốc Kiệt",
-    //         cost: 1000000,
-    //         img: img_product,
-    //         sale: 0,
-    //         quality: 2,
-    //         color: "Xanh",
-    //         size: "L"
-    //       },
-    //       {
-    //         key: 3,
-    //         name: "Cao Quốc Kiệt",
-    //         cost: 1000000,
-    //         img: img_product,
-    //         sale: 0,
-    //         quality: 3,
-    //         color: "Xanh",
-    //         size: "L"
-    //       }
-    // ]);
-    const navigate = useNavigate()
+
+    const navigate = useNavigate() // initialize navigate
     return(
         <div className="w-full">
             <Navigation/>

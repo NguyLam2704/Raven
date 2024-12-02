@@ -33,19 +33,25 @@ const CheckOut = () => {
             setStoreProduct(formattedProducts);
             // console.log(storeProduct);
             console.log(JSON.parse(savedProduct))
-            const calculateCost = (product.cost - (product.cost * product.discount / 100));
+            const calculateCost = (product.cost - (product.cost * product.discount / 100))*product.quantity;
             setTotalCost(calculateCost);
-            console.log(product.discount);
+            console.log(totalCost);
         }
         else if (savedProduct) {
-          setStoreProduct(JSON.parse(savedProduct)); // Cập nhật vào state nếu tồn tại
+            const parsedProduct = JSON.parse(savedProduct); // Parse once and reuse
+            setStoreProduct(parsedProduct); // Update state with parsed data
+            const calculateCost = parsedProduct?.reduce((total, item) => {
+                        return total + (item.cost - (item.cost * item.discount / 100))*item.quantity;
+                    },0);
+            setTotalCost(calculateCost);
+            console.log(totalCost);
         }
         else {
             console.error("Dữ liệu không phải là mảng:", savedProduct);
           }
       }, []);
     
-
+    console.log(totalCost);
 
     
     // if(product){
@@ -171,7 +177,7 @@ const CheckOut = () => {
                             {/* Tạm tính giá các sản phẩm */}
                             <div className="flex flex-row justify-between mt-3">
                                 <div className=" h-6 content-center text-black text-[15px] font-normal ">Tạm tính: </div>
-                                <div className="w-24 text-right text-[#c73659] text-base font-bold ">{totalCost.toLocaleString()}đ</div>
+                                <div className="w-24 text-right text-[#c73659] text-base font-bold ">{totalCost?.toLocaleString()}đ</div> {/*render có thể xảy ra trước khi dữ liệu được tải đầy đủ => use ? to check */}
                             </div>
                             {/* Phí vận chuyển */}
                             <div className="flex flex-row justify-between mt-3">

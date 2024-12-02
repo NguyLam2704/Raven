@@ -98,7 +98,15 @@ const HightlightProduct = () => {
                             {/* Danh sách các sản phẩm  */}
                             <div className="mt-10 grid grid-cols-4 gap-12 z-10">
                             {products.filter((product) => product.quantitySold > 10) //fiter product have more 10 quantitySold.slice(NumberBackHighlight, NumberForwardHighlight) //choose 8 product
-                                                .map((product, index) => (
+                                                .sort((a,b) => { //set sort
+                                                    if (sort === 'Giá giảm dần') {
+                                                      return (b.cost - b.cost*b.discount/100) - (a.cost - a.cost*a.discount/100);
+                                                    }
+                                                    else if (sort == "Giá tăng dần") {
+                                                      return (a.cost - a.cost*a.discount/100) - (b.cost - b.cost*b.discount/100);
+                                                    }
+                                                    else return (b.cost - b.cost*b.discount/100) - (a.cost - a.cost*a.discount/100);
+                                                  }).map((product, index) => (
                                                     <Product key={index}
                                                             price={product.cost} 
                                                             img={product.productImage.find(img => img.isPrimary)?.image} //choose the primary image to display
