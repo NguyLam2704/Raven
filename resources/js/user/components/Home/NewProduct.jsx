@@ -98,6 +98,7 @@ const NewProduct = () => {
                                 {products.sort((a, b) => new Date(b.datePosted) - new Date(a.datePosted)) // sort by day
                                                 .map((product, index) => (
                                                     <Product key={index} 
+                                                            proId={product.proId}
                                                             price={product.cost} 
                                                             img={product.productImage.find(img => img.isPrimary)?.image} //choose the primary image to display
                                                             name={product.productName} 
