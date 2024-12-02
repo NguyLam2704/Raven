@@ -215,6 +215,8 @@ const DetailProduct = () =>{
                                                 </button>
                                     )
                                 })}
+                                    
+                                       
                             </div>
                         </div>
                         {/* Size */}
@@ -261,6 +263,7 @@ const DetailProduct = () =>{
                             </div>
 
                             
+                                           
                         </div>
                         {/* Số lượng */}
                         <div className='h-8 flex flex-row'>
@@ -310,12 +313,14 @@ const DetailProduct = () =>{
                 </div>
                 {/* Thông tin mô tả */}
                 <div className='w-9/12 mt-14 font-medium '>
+                
                     {DetailProduct.description.split('\n').map((line, index) => (
                         <React.Fragment key={index} >
                         {line}
                         <br />
                         </React.Fragment>
                     ))}
+                        
                 </div>
 
                 {/* Sản phẩm tương tự */}

@@ -21,6 +21,7 @@ const ItemMini = ({product, handlerPlus, handlerTru, removeProduct}) => {
                             <button className="h-5 border border-[#c4c4c4] bg-[#d9d9d9] px-1"
                                 onClick={handlerTru}
                             >
+                            
                                 <FontAwesomeIcon className="h-2 pb-2"  icon={faMinus} />
                             </button>
                             <div className="text-center content-center text-black text-xs font-normal border border-[#c4c4c4] bg-[#d9d9d9] mx-[1px] px-1  ">{product.quantity}</div>
@@ -43,6 +44,7 @@ const ItemMini = ({product, handlerPlus, handlerTru, removeProduct}) => {
                         </button>
                     </div>
                 </div>
+                
                 
             </div>
 
