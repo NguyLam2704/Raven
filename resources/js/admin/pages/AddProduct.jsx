@@ -4,16 +4,20 @@ import NavigationAdmin from "../components/NavigationAdmin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faCloudArrowUp, faTrash} from "@fortawesome/free-solid-svg-icons"
 import { SketchPicker } from "react-color"; 
-import { Colors } from "chart.js";
+import Swal from "sweetalert2";
+import { useNavigate } from 'react-router-dom';
+
 
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = 'https://tpuxfltiiajorbixwyff.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRwdXhmbHRpaWFqb3JiaXh3eWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzAyMTQyMDYsImV4cCI6MjA0NTc5MDIwNn0.uFsVNVpgjADNV1VezxrzTfrBawHMRedjZPP4u3E0NnU'; // Thay bằng key phù hợp
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = createClient(
+    import.meta.env.VITE_SUPABASE_URL,
+    import.meta.env.VITE_SUPABASE_ANON_KEY
+);
 
 
 const AddProduct = () => {
+    const navigate = useNavigate();
     const [product, setProduct] = useState({
         prod_name: "",
         cost: null,
@@ -107,86 +111,114 @@ const AddProduct = () => {
 
     
     //Mở thư mục trên máy và chọn ảnh
-    const handleMainImageUpload = async (event) => {
+    // const handleMainImageUpload = async (event) => {
+    //     const file = event.target.files[0];
+    //     if (file && file.type.startsWith("image/")) {
+    //         const previewUrl = URL.createObjectURL(file); // Hiển thị preview hình ảnh
+    //         setMainImage(previewUrl);
+
+    //         const timestamp = new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15);
+
+    //         // Tạo tên file duy nhất giữ nguyên tên gốc và thêm timestamp
+    //         const uniqueFileName = `main/${file.name.split('.')[0]}_${timestamp}.${file.name.split('.').pop()}`;
+    
+    //         // Upload lên Supabase
+    //         const { data, error } = await supabase.storage
+    //             .from('Image/ProductImage') // Tên bucket trong storage của bạn
+    //             .upload(uniqueFileName, file, {
+    //                 cacheControl: '3600',
+    //                 upsert: false
+    //             });
+    
+    //         if (error) {
+    //             console.error("Upload error:", error);
+    //             alert("Lỗi up ảnh");
+    //             return;
+    //         }
+    
+    //         const publicUrl = supabase.storage.from('Image/ProductImage').getPublicUrl(data.path).data.publicUrl;
+    //         setMainImage(publicUrl);
+    //         setProduct((prev) => ({
+    //             ...prev,
+    //             images: [{ img: publicUrl, is_primary: true }, ...prev.images.slice(1)]
+    //         }));
+    //     }
+    // };
+    
+    // const handleOtherImageUpload = async (event, index) => {
+    //     const file = event.target.files[0];
+    //     if (file && file.type.startsWith("image/")) {
+    //         const previewUrl = URL.createObjectURL(file); // Hiển thị preview
+    //         setOtherImages((prev) => {
+    //             const newImages = [...prev];
+    //             newImages[index] = previewUrl;
+    //             return newImages;
+    //         });
+
+    //         const timestamp = new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15);
+
+    //         // Tạo tên file duy nhất giữ nguyên tên gốc và thêm timestamp
+    //         const uniqueFileName = `other/${file.name.split('.')[0]}_${timestamp}.${file.name.split('.').pop()}`;
+    
+    
+    //         // Upload lên Supabase
+    //         const { data, error } = await supabase.storage
+    //             .from('Image/ProductImage')
+    //             .upload(uniqueFileName, file, {
+    //                 cacheControl: '3600',
+    //                 upsert: false
+    //             });
+    
+    //         if (error) {
+    //             console.error("Upload error:", error);
+    //             alert("Lỗi upload ảnh phụ!");
+    //             return;
+    //         }
+    
+    //         const publicUrl = supabase.storage.from('Image/ProductImage').getPublicUrl(data.path).data.publicUrl;
+    //         setOtherImages((prev) => {
+    //             const newImages = [...prev];
+    //             newImages[index] = publicUrl;
+    //             return newImages;
+    //         });
+
+    //         setProduct((prev) => {
+    //             const newImages = [...prev.images];
+    //             newImages[index + 1] = { img: publicUrl, is_primary: false };
+    //             return { ...prev, images: newImages };
+    //         });
+    //     }
+    // };
+    
+    const [mainImageFile, setMainImageFile] = useState(null);
+    const [otherImageFiles, setOtherImageFiles] = useState([null, null, null, null]);
+
+    const handleMainImageUpload = (event) => {
         const file = event.target.files[0];
         if (file && file.type.startsWith("image/")) {
-            const previewUrl = URL.createObjectURL(file); // Hiển thị preview hình ảnh
+            const previewUrl = URL.createObjectURL(file);
             setMainImage(previewUrl);
-
-            const timestamp = new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15);
-
-            // Tạo tên file duy nhất giữ nguyên tên gốc và thêm timestamp
-            const uniqueFileName = `main/${file.name.split('.')[0]}_${timestamp}.${file.name.split('.').pop()}`;
-    
-            // Upload lên Supabase
-            const { data, error } = await supabase.storage
-                .from('Image/ProductImage') // Tên bucket trong storage của bạn
-                .upload(uniqueFileName, file, {
-                    cacheControl: '3600',
-                    upsert: false
-                });
-    
-            if (error) {
-                console.error("Upload error:", error);
-                alert("Lỗi up ảnh");
-                return;
-            }
-    
-            const publicUrl = supabase.storage.from('Image/ProductImage').getPublicUrl(data.path).data.publicUrl;
-            setMainImage(publicUrl);
-            setProduct((prev) => ({
-                ...prev,
-                images: [{ img: publicUrl, is_primary: true }, ...prev.images.slice(1)]
-            }));
+            setMainImageFile(file); // Lưu file tạm thời
         }
     };
     
-    const handleOtherImageUpload = async (event, index) => {
+    const handleOtherImageUpload = (event, index) => {
         const file = event.target.files[0];
         if (file && file.type.startsWith("image/")) {
-            const previewUrl = URL.createObjectURL(file); // Hiển thị preview
+            const previewUrl = URL.createObjectURL(file);
             setOtherImages((prev) => {
                 const newImages = [...prev];
                 newImages[index] = previewUrl;
                 return newImages;
             });
-
-            const timestamp = new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15);
-
-            // Tạo tên file duy nhất giữ nguyên tên gốc và thêm timestamp
-            const uniqueFileName = `other/${file.name.split('.')[0]}_${timestamp}.${file.name.split('.').pop()}`;
-    
-    
-            // Upload lên Supabase
-            const { data, error } = await supabase.storage
-                .from('Image/ProductImage')
-                .upload(uniqueFileName, file, {
-                    cacheControl: '3600',
-                    upsert: false
-                });
-    
-            if (error) {
-                console.error("Upload error:", error);
-                alert("Lỗi upload ảnh phụ!");
-                return;
-            }
-    
-            const publicUrl = supabase.storage.from('Image/ProductImage').getPublicUrl(data.path).data.publicUrl;
-            setOtherImages((prev) => {
-                const newImages = [...prev];
-                newImages[index] = publicUrl;
-                return newImages;
-            });
-
-            setProduct((prev) => {
-                const newImages = [...prev.images];
-                newImages[index + 1] = { img: publicUrl, is_primary: false };
-                return { ...prev, images: newImages };
+            setOtherImageFiles((prev) => {
+                const newFiles = [...prev];
+                newFiles[index] = file; // Lưu file tạm thời
+                return newFiles;
             });
         }
     };
     
-
     
 
     const handleDragOver = (event) => {
@@ -198,34 +230,9 @@ const AddProduct = () => {
         event.preventDefault(); // Ngăn hành vi mặc định của trình duyệt khi người dùng thả tệp vào phần tử (ví dụ: hiển thị tệp hoặc chuyển hướng).
         const file = event.dataTransfer.files[0]; // Lấy tệp đầu tiên từ sự kiện kéo thả (danh sách các tệp được thả).
         if (file && file.type.startsWith("image/")) {
-            const previewUrl = URL.createObjectURL(file); // Hiển thị preview hình ảnh
+            const previewUrl = URL.createObjectURL(file);
             setMainImage(previewUrl);
-
-            const timestamp = new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15);
-
-            // Tạo tên file duy nhất giữ nguyên tên gốc và thêm timestamp
-            const uniqueFileName = `main/${file.name.split('.')[0]}_${timestamp}.${file.name.split('.').pop()}`;
-    
-            // Upload lên Supabase
-            const { data, error } = await supabase.storage
-                .from('Image/ProductImage') // Tên bucket trong storage của bạn
-                .upload(uniqueFileName, file, {
-                    cacheControl: '3600',
-                    upsert: false
-                });
-    
-            if (error) {
-                console.error("Upload error:", error);
-                alert("Lỗi up ảnh");
-                return;
-            }
-    
-            const publicUrl = supabase.storage.from('Image/ProductImage').getPublicUrl(data.path).data.publicUrl;
-            setMainImage(publicUrl);
-            setProduct((prev) => ({
-                ...prev,
-                images: [{ img: publicUrl, is_primary: true }, ...prev.images.slice(1)]
-            }));
+            setMainImageFile(file); // Lưu file tạm thời
         }
     };
     
@@ -235,44 +242,16 @@ const AddProduct = () => {
         event.preventDefault(); // Ngăn hành vi mặc định của trình duyệt khi kéo và thả tệp.
         const file = event.dataTransfer.files[0]; // Lấy tệp đầu tiên được thả vào từ sự kiện kéo thả.
         if (file && file.type.startsWith("image/")) {
-            const previewUrl = URL.createObjectURL(file); // Hiển thị preview
+            const previewUrl = URL.createObjectURL(file);
             setOtherImages((prev) => {
                 const newImages = [...prev];
                 newImages[index] = previewUrl;
                 return newImages;
             });
-
-            const timestamp = new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15);
-
-            // Tạo tên file duy nhất giữ nguyên tên gốc và thêm timestamp
-            const uniqueFileName = `other/${file.name.split('.')[0]}_${timestamp}.${file.name.split('.').pop()}`;
-    
-    
-            // Upload lên Supabase
-            const { data, error } = await supabase.storage
-                .from('Image/ProductImage')
-                .upload(uniqueFileName, file, {
-                    cacheControl: '3600',
-                    upsert: false
-                });
-    
-            if (error) {
-                console.error("Upload error:", error);
-                alert("Lỗi upload ảnh phụ!");
-                return;
-            }
-    
-            const publicUrl = supabase.storage.from('Image/ProductImage').getPublicUrl(data.path).data.publicUrl;
-            setOtherImages((prev) => {
-                const newImages = [...prev];
-                newImages[index] = publicUrl;
-                return newImages;
-            });
-
-            setProduct((prev) => {
-                const newImages = [...prev.images];
-                newImages[index + 1] = { img: publicUrl, is_primary: false };
-                return { ...prev, images: newImages };
+            setOtherImageFiles((prev) => {
+                const newFiles = [...prev];
+                newFiles[index] = file; // Lưu file tạm thời
+                return newFiles;
             });
         }
     };
@@ -287,33 +266,125 @@ const AddProduct = () => {
         setOtherImages(newImages);
     };
 
-    const handleSaveProduct = () => {
-        if (!product.prod_name || !product.cost || !items.length || !product.category_type_id || !mainImage) {
-          alert('Vui lòng điền đầy đủ thông tin cần thiết!');
-          return;
+    // const handleSaveProduct = () => {
+    //     if (!product.prod_name || !product.cost || !items.length || !product.category_type_id || !mainImage) {
+    //       alert('Vui lòng điền đầy đủ thông tin cần thiết!');
+    //       return;
+    //     }
+      
+    //     const updatedProduct = {
+    //       ...product,
+    //       color_size_quantity: items.map((item) => ({
+    //         color_code: item.color,
+    //         nameColor: item.nameColor,
+    //         size_code: item.size,
+    //         quantity: parseInt(item.quantity, 10),
+    //       })),
+    //       images: [
+    //         { img: mainImage, is_primary: true },
+    //         ...otherImages.map((img) => ({ img, is_primary: false })).filter((img) => img.img), // Loại bỏ ảnh null
+    //       ],
+    //     };
+      
+    //     setProduct(updatedProduct);
+      
+    //     // Hiển thị thông tin sản phẩm trong console để kiểm tra
+    //     console.log('Product saved:', updatedProduct);
+    //     alert('Sản phẩm đã được lưu!');
+    //   };
+      
+    const handleSaveProduct = async () => {
+
+        if (!product.prod_name || !product.cost || !items.length || !product.category_type_id || !mainImageFile) {
+            alert('Vui lòng điền đầy đủ thông tin cần thiết!');
+            return;
         }
-      
-        const updatedProduct = {
-          ...product,
-          color_size_quantity: items.map((item) => ({
-            color_code: item.color,
-            nameColor: item.nameColor,
-            size_code: item.size,
-            quantity: parseInt(item.quantity, 10),
-          })),
-          images: [
-            { img: mainImage, is_primary: true },
-            ...otherImages.map((img) => ({ img, is_primary: false })).filter((img) => img.img), // Loại bỏ ảnh null
-          ],
-        };
-      
-        setProduct(updatedProduct);
-      
-        // Hiển thị thông tin sản phẩm trong console để kiểm tra
-        console.log('Product saved:', updatedProduct);
-        alert('Sản phẩm đã được lưu!');
-      };
-      
+    
+        try {
+            const loadingSwal = Swal.fire({
+                title: 'Loading...!',
+                text: 'Đang thêm sản phẩm',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading(); // Hiển thị spinner loading
+                }
+            });
+            let uploadedMainImageUrl = null;
+            const uploadedOtherImageUrls = [];
+    
+            // Upload main image
+            if (mainImageFile) {
+                const timestamp = new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15);
+                const uniqueFileName = `main/${mainImageFile.name.split('.')[0]}_${timestamp}.${mainImageFile.name.split('.').pop()}`;
+                const { data, error } = await supabase.storage
+                    .from('Image/ProductImage')
+                    .upload(uniqueFileName, mainImageFile, {
+                        cacheControl: '3600',
+                        upsert: false
+                    });
+    
+                if (error) throw error;
+                uploadedMainImageUrl = supabase.storage.from('Image/ProductImage').getPublicUrl(data.path).data.publicUrl;
+            }
+    
+            // Upload other images
+            for (const file of otherImageFiles) {
+                if (file) {
+                    const timestamp = new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15);
+                    const uniqueFileName = `other/${file.name.split('.')[0]}_${timestamp}.${file.name.split('.').pop()}`;
+                    const { data, error } = await supabase.storage
+                        .from('Image/ProductImage')
+                        .upload(uniqueFileName, file, {
+                            cacheControl: '3600',
+                            upsert: false
+                        });
+    
+                    if (error) throw error;
+                    const publicUrl = supabase.storage.from('Image/ProductImage').getPublicUrl(data.path).data.publicUrl;
+                    uploadedOtherImageUrls.push(publicUrl);
+                }
+            }
+    
+            const updatedProduct = {
+                ...product,
+                color_size_quantity: items.map((item) => ({
+                    color_code: item.color,
+                    nameColor: item.nameColor,
+                    size_code: item.size,
+                    quantity: parseInt(item.quantity, 10),
+                })),
+                images: [
+                    { img: uploadedMainImageUrl, is_primary: true },
+                    ...uploadedOtherImageUrls.map((url) => ({ img: url, is_primary: false }))
+                ],
+            };
+    
+            setProduct(updatedProduct);
+
+
+    
+            console.log('Product saved:', updatedProduct);
+            await Swal.fire({
+                title: 'Thành công!',
+                text: 'Sản phẩm đã được thêm ',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 4000,
+            });
+
+            navigate('/products_admin');
+        } catch (error) {
+            console.error('Upload error:', error);
+            Swal.fire({
+                title: 'Lỗi!',
+                text: 'Đã xảy ra lỗi khi thêm sản phẩm!',
+                icon: 'error',
+                showConfirmButton: true
+            });
+        }
+    };
+    
       
 
     return (
@@ -396,89 +467,91 @@ const AddProduct = () => {
 
 
                         <div className="text-2xl font-semibold">Nhập màu, size và số lượng<span className="text-red-600">*</span></div>
-                        <div className="mb-4 mt-2 flex items-center px-2 py-1 gap-3 border border-black">
-                            <div className="flex-row w-[50%]">
-                                <div className="relative">
-                                    <label className="block text-2xl font-normal">Color</label>
-                                    <div
-                                        className="w-8 h-8 border border-black rounded cursor-pointer"
-                                        style={{ backgroundColor: newItem.color }}
-                                        onClick={() => setShowColorPicker(!showColorPicker)}
-                                    ></div>
-                                    {showColorPicker && (
-                                        <div 
-                                            ref={colorPickerRef}
-                                            className="absolute left-0 mt-2 p-2 border bg-[#245ee0] border-gray-300 rounded shadow-lg z-10"
-                                        >
-                                            <SketchPicker
-                                                color={newItem.color}
-                                                onChangeComplete={(color) =>
-                                                setNewItem({ ...newItem, color: color.hex })
-                                                }
-                                            />
-                                            <button
-                                                onClick={() => setShowColorPicker(false)}
-                                                className="mt-2 px-2 py-1 bg-gray-200 border rounded"
+                        <div className="border border-black mb-2">
+                            <div className="mb-4 mt-2 flex items-center px-2 py-1 gap-3">
+                                <div className="flex-row w-[50%]">
+                                    <div className="relative">
+                                        <label className="block text-2xl font-normal">Color</label>
+                                        <div
+                                            className="w-8 h-8 border border-black rounded cursor-pointer"
+                                            style={{ backgroundColor: newItem.color }}
+                                            onClick={() => setShowColorPicker(!showColorPicker)}
+                                        ></div>
+                                        {showColorPicker && (
+                                            <div 
+                                                ref={colorPickerRef}
+                                                className="absolute left-0 mt-2 p-2 border bg-[#245ee0] border-gray-300 rounded shadow-lg z-10"
                                             >
-                                                Close
-                                            </button>
-                                        </div>
-                                    )}
+                                                <SketchPicker
+                                                    color={newItem.color}
+                                                    onChangeComplete={(color) =>
+                                                    setNewItem({ ...newItem, color: color.hex })
+                                                    }
+                                                />
+                                                <button
+                                                    onClick={() => setShowColorPicker(false)}
+                                                    className="mt-2 px-2 py-1 bg-gray-200 border rounded"
+                                                >
+                                                    Close
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="mt-2">
+                                        <label className="block text-2xl font-normal">Tên màu</label>
+                                        <input
+                                            type="string"
+                                            value={newItem.nameColor}
+                                            onChange={(e) =>
+                                            setNewItem({ ...newItem, nameColor: e.target.value })
+                                            }
+                                            className="border border-black rounded px-2 py-1"
+                                            placeholder="Enter color name"
+                                        />
+                                    </div>
                                 </div>
 
-                                <div className="mt-2">
-                                    <label className="block text-2xl font-normal">Tên màu</label>
-                                    <input
-                                        type="string"
-                                        value={newItem.nameColor}
-                                        onChange={(e) =>
-                                        setNewItem({ ...newItem, nameColor: e.target.value })
-                                        }
-                                        className="border border-black rounded px-2 py-1"
-                                        placeholder="Enter color name"
-                                    />
+                                <div className="flex-row gap-5">
+                                    <div>
+                                        <label className="block text-2xl font-normal">Size</label>
+                                        <select
+                                            value={newItem.size}
+                                            onChange={(e) => setNewItem({ ...newItem, size: e.target.value })}
+                                            className="border border-black rounded px-2 py-1"
+                                        >
+                                            <option value="">Chọn size</option>
+                                            <option value="S">S</option>
+                                            <option value="M">M</option>
+                                            <option value="L">L</option>
+                                            <option value="XL">XL</option>
+                                        </select>
+                                    </div>
+
+                                    <div className="mt-2">
+                                        <label className="block text-2xl font-normal">Quantity</label>
+                                        <input
+                                            type="number"
+                                            value={newItem.quantity}
+                                            onChange={(e) =>
+                                            setNewItem({ ...newItem, quantity: e.target.value })
+                                            }
+                                            className="border border-black rounded px-1 py-1"
+                                            placeholder="Enter quantity"
+                                        />
+                                    </div>
                                 </div>
                             </div>
-
-                            <div className="flex-row gap-5">
-                                <div>
-                                    <label className="block text-2xl font-normal">Size</label>
-                                    <select
-                                        value={newItem.size}
-                                        onChange={(e) => setNewItem({ ...newItem, size: e.target.value })}
-                                        className="border border-black rounded px-2 py-1"
+                            
+                            {/* btn Thêm color, size... */}
+                            <div className="mt-2 mb-2 flex items-center justify-center">
+                                    <button
+                                        onClick={handleAddItem}
+                                        className="bg-blue-500 py-[2px] w-40 hover:bg-blue-800 text-white text-lg rounded"
                                     >
-                                        <option value="">Chọn size</option>
-                                        <option value="S">S</option>
-                                        <option value="M">M</option>
-                                        <option value="L">L</option>
-                                        <option value="XL">XL</option>
-                                    </select>
-                                </div>
-
-                                <div className="mt-2">
-                                    <label className="block text-2xl font-normal">Quantity</label>
-                                    <input
-                                        type="number"
-                                        value={newItem.quantity}
-                                        onChange={(e) =>
-                                        setNewItem({ ...newItem, quantity: e.target.value })
-                                        }
-                                        className="border border-black rounded px-1 py-1"
-                                        placeholder="Enter quantity"
-                                    />
-                                </div>
+                                    Thêm
+                                    </button>
                             </div>
-                        </div>
-                        
-                        {/* btn Thêm color, size... */}
-                        <div className="mt-2 mb-2 border items-center justify-center">
-                                <button
-                                    onClick={handleAddItem}
-                                    className="bg-blue-500 w-32 text-white text-xl rounded"
-                                >
-                                Thêm
-                                </button>
                         </div>
 
 
@@ -591,12 +664,12 @@ const AddProduct = () => {
                 <div className="items-center flex w-full justify-center mt-4">
                     <button     
                         onClick={handleSaveProduct}
-                        className="bg-blue-500 text-white px-12 py-1 font-extrabold rounded border border-[#050c9c]"
+                        className="bg-blue-500 text-white px-12 py-1 text-xl font-extrabold rounded border border-[#050c9c]"
                     >
-                        THÊM
+                        THÊM SẢN PHẨM
                     </button>  
                 </div>
-          
+                                
             </div>
                 
         </NavigationAdmin>
