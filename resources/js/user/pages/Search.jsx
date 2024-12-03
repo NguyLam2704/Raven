@@ -6,7 +6,7 @@ import img_product from '../assets/img_product.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown} from '@fortawesome/free-solid-svg-icons'
 import Footer from "../components/Footer";
-import { useLocation } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 
 //Trang tiềm kiếm
 const ListProduct = [
@@ -81,16 +81,14 @@ const Search = () => {
       setOpen(false);
   };
     //Nhận giá trị từ thanh tìm kiếm
-    const location = useLocation(); 
-    const { message } = location.state || { message: 'No message' };
-    
-  console.log({message})
+  
+    const {text} = useParams();
     return(
         <div className='w-full h-full '> 
             <Navigation/>
 
             {/* Tiêu đề */}
-            <TitleSearch input={message}/>
+            <TitleSearch input={text}/>
 
             
             <div className=" justify-items-center mt-20">

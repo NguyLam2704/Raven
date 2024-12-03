@@ -18,22 +18,26 @@ const DetailProduct = () =>{
     // get proid from url
     const {proId} = useParams();
     const [cartProduct, setcartProduct] = useState(null);
+    
+    //Nhận giá trị ảnh lớn sản phẩm    
+    const [bigImg,setBigImg] = useState('')
    
     //Kiểm soát hiển thị thnah giỏ hàng
     const [isCartMini, setCart] =useState(false)
     const handleCart = () => {
+        if (selectedColor && selectedSize){
         // Lấy danh sách sản phẩm từ localStorage (nếu chưa có thì trả về mảng rỗng)
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
 
         // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
-        const existingProductIndex = cart.findIndex((item) => item.proId === cartProduct.proId);
+        const existingProductIndex = cart.findIndex((item) => item.proId === cartProduct.proId && item.color === selectedColor && item.size === selectedSize);
 
         if (existingProductIndex !== -1) {
             // Nếu sản phẩm đã có, tăng số lượng
-            cart[existingProductIndex].quantity += 1;
+            cart[existingProductIndex].quantity += quality;
         } else {
             // Nếu sản phẩm chưa có, thêm sản phẩm với số lượng ban đầu là 1
-            cart.push({ ...cartProduct, quantity: 1 });
+            cart.push({ ...cartProduct, color: selectedColor, size: selectedSize, quantity: quality });
         }
         // Cập nhật lại localStorage
         localStorage.setItem('cart', JSON.stringify(cart));
@@ -41,12 +45,17 @@ const DetailProduct = () =>{
         // Thông báo (tuỳ chọn)
         //  alert('Sản phẩm đã được thêm vào giỏ hàng!');
         setCart(!isCartMini)
+        }
+        else {
+            console.log("empty color or empty size")
+        }
     }
   
     // const[ListProduct, setLi]
     const [DetailProduct, setDetailProduct] = useState(null);
     const [loading, setLoading] = useState(false); // Trạng thái tải dữ liệu
     const [error, setError] = useState(null); // Trạng thái lỗi
+    const [categoryType, setCategory] = useState(null); // categroy type of detail product
     const fetchDetail = async() => {
         try {
             const response = await fetch(`/api/v1/product?proId[eq]=${proId}&includeProColorSize=true&includeImage=true`);
@@ -55,13 +64,15 @@ const DetailProduct = () =>{
             }
             const data = await response.json(); // Giả định API trả về JSON
             setDetailProduct(data.data[0]); // Lưu dữ liệu vào state
+            setCategory(data.data[0].categoryTypeId);
+            setBigImg(data.data[0].productImage.find(img => img.isPrimary)?.image)
             if (data?.data?.[0]){
             const newcartProduct = {
                 proId: data.data[0].proId,
                 productName: data.data[0].productName,
                 cost: data.data[0].cost,
                 discount: data.data[0].discount,
-                // quantity: "1",
+                // quantity: quality,
                 productImage: data.data[0].productImage.find(img => img.isPrimary)?.image,
             }
             setcartProduct(newcartProduct);}
@@ -74,49 +85,37 @@ const DetailProduct = () =>{
 
     //Kiểm soát hiển thị bảng size
     const [isBangSise, setBangSize] = useState(false)
-    const ListProduct = [
-        {
-          key: 1,
-          name: "Cao Quốc Kiệt",
-          price: 1000000,
-          img: img_product,
-          sale: 20,
-        },
-        {
-            key: 2,
-            name: "Cao Quốc Kiệt",
-            price: 1000000,
-            img: img_product,
-            sale: 0,
-          },
-          {
-            key: 3,
-            name: "Cao Quốc Kiệt",
-            price: 100000,
-            img: img_product,
-            sale: 0,
-          },
-          {
-            key: 2,
-            name: "Cao Quốc Kiệt",
-            price: 1000000,
-            img: img_product,
-            sale: 0,
-          },
-    ];
+    const [products, setProducts] = useState([]); // sản phẩm tương tự
+    
+    const fetchProducts = async () => {
+        try {
+            const response = await fetch('/api/v1/product?includeImage=true'); // fetch api include image
+            if (!response.ok) {
+                throw new Error('Failed to fetch products');
+            }
+            const data = await response.json(); // Giả định API trả về JSON
+            setProducts(data.data || []); // Lưu dữ liệu vào state
+        } catch (err) {
+            setError(err.message); // Lưu thông báo lỗi nếu xảy ra
+        } finally {
+            setLoading(false); // Kết thúc trạng thái tải
+        }
+    };
+    
     useEffect(() => {
         setLoading(true);
         fetchDetail();
+        fetchProducts();
     }, [proId])
-    console.log(DetailProduct);
     const navigate = useNavigate()
-
     //Nhận giá trị số lượng sản phẩm
     const [quality, setQuality] = useState(1)
     //Nhận giá trị màu sắc
-    const [selectedColor, setSelectedColor] = useState(null);   
+    const [selectedColor, setSelectedColor] = useState(null);
     //nhận giá trị size 
     const [selectedSize, setSelectedSize] = useState(null);
+    //Số lượng sản phẩm của màu = 0
+    
     return(        
         <div className={`w-full  ${(isCartMini || isBangSise) ? 'overflow-hidden h-screen' : 'overflow-auto'}`}>
             <Navigation/>
@@ -135,25 +134,37 @@ const DetailProduct = () =>{
                             <button >
                                 <FontAwesomeIcon icon={faChevronUp} />
                             </button>
+                            <div className=' overflow-y-auto flex flex-col justify-center items-center '>
                             {DetailProduct.productImage.filter(image => !image.isPrimary).map((element,index) => {
                                 return (
-                                    <img 
+                                    <button className='h-[110px] w-[100px] rounded-md my-4'
                                         key = {index}
-                                        className='h-[110px] w-[100px] rounded-md' src={element.image} alt="anh" />
+                                        onClick={()=>setBigImg(element.image)}
+                                    >
+                                        <img  className='h-[110px] w-[100px] rounded-md ' src={element.image} alt="anh" />
+                                    </button>
                                 )
-                            })}
-                            {/* <img className='h-[110px] w-[100px] rounded-md' src={img_product} alt="anh" />
-                            <img className='h-[110px] w-[100px] rounded-md' src={img_product} alt="anh" />
-                            <img className='h-[110px] w-[100px] rounded-md' src={img_product} alt="anh" /> */}
-                            
-                            <button>
+                            })}  
+                            </div>                          
+                            <button >
                                 <FontAwesomeIcon icon={faChevronDown} />
                             </button>
-                        </div>
+                        </div>                        
                         {/* Hình ảnh chính */}
                         <div className='w-3/4 '>
-                            <img className='h-[470px] ' src={DetailProduct.productImage.find(img => img.isPrimary)?.image} alt="anh" />
+                            {/* Hiển thị thẻ discount khi có discount */}
+                            {DetailProduct.discount  > 0 && (
+                                <div className="absolute w-[250px] h-[350px]">
+                                    <div className="w-12 h-12 ml-4 content-center bg-[#a91d3a] text-center text-white text-base rounded-b-md font-normal font-['Public Sans']">
+                                        {DetailProduct.discount}%<br />OFF
+                                    </div>
+                                </div>
+                            )}
+                            {/* Hình ảnh sản phẩm */}
+                            <img className='h-[470px] w-4/5 rounded-xl ' src={bigImg} alt="anh" />                            
                         </div>
+                        
+                        
                     </div>
                     {/* Thông tin sản phẩm */}
                     <div className='w-2/5 flex flex-col justify-between '>
@@ -161,8 +172,12 @@ const DetailProduct = () =>{
                         <div className='w-full content-center text-black text-3xl font-bold '>{DetailProduct.productName} </div>
                         {/* Giá sản phẩm */}
                         <div className='h-10 w-full flex flex-row border-b-2'>
-                            <div className='h-10 content-center text-[#a91d3a] text-3xl font-bold '>{(DetailProduct.cost - (DetailProduct.cost* DetailProduct.discount / 100)).toLocaleString()}</div>
-                            <div className='h-10 content-center text-[#9f9f9f] text-xl font-medium line-through ml-20'>{DetailProduct.cost.toLocaleString()}</div>
+                            <div className='h-10 content-center text-[#a91d3a] text-3xl font-bold '>{(DetailProduct.cost - (DetailProduct.cost* DetailProduct.discount / 100)).toLocaleString('vi-VN')}đ</div>
+                            {
+                                DetailProduct.discount > 0 && (
+                                    <div className='h-10 content-center text-[#9f9f9f] text-xl font-medium line-through ml-20'>{DetailProduct.cost.toLocaleString('vi-VN')}đ</div>
+                                )
+                            }
                         </div>
                         {/* Màu sắc */}
                         <div>
@@ -179,25 +194,31 @@ const DetailProduct = () =>{
                                             ));
                                         })
                                     .map((element,index) => {
-                                    
+                                        const totalQuantity = DetailProduct.proColorSize .filter((item) => item.colorId === element.colorId) .reduce((sum, item) => sum + item.quantityAvailable, 0);
+                                        const quanlitySize = DetailProduct?.proColorSize .find((item) => item.colorId === element.colorId && item.size.sizeCode === selectedSize)?.quantityAvailable && 1                                            
                                         return (
                                                 <button 
-                                                    key={index} 
-                                                    onClick={() => setSelectedColor(element.color.colorCode)} 
+                                                    key={index}                                          
+                                                    onClick={() => {
+                                                        if(totalQuantity && (selectedSize ? quanlitySize : 1))
+                                                            setSelectedColor(element.color.colorCode)
+                                                        else alert(`Sản phẩm màu ${element.color.colorName} đã hết hàng. Vui lòng chọn màu sắc khác`)
+                                                    }}
                                                     className={`h-8 w-8 rounded-md mr-5 ${selectedColor === element.color.colorCode ? 'ring-[#c73659] ring-2' : 'ring-[#EEEEEE] ring-1'} `} 
                                                     style={{ backgroundColor: element.color.colorCode }} 
-                                                />
-                                           
-                                
+                                                >
+                                                </button>
                                     )
                                 })}
+                                    
+                                       
                             </div>
                         </div>
                         {/* Size */}
                         <div>
                             <div className='h-10 flex flex-row'>
                                 <div className='content-center text-black text-base font-normal '>Size</div>
-                                <button  onClick={()=>setBangSize(true)} className='content-center hover:text-[15px] text-black text-sm font-extralight underline-offset-4 underline ml-20'>Bảng size</button>
+                                <button  onClick={()=>setBangSize(true)} className='content-center hover:text-gray-600 hover:decoration-gray-500 text-black text-sm font-light underline-offset-4 underline ml-20'>Bảng size</button>
                             </div>
                             {/* Ẩn/Hiện bảng size */}
                             {
@@ -208,6 +229,7 @@ const DetailProduct = () =>{
                                 )
                             }
                             <div className='flex flex-row'>
+                                
                                 {DetailProduct.proColorSize
                                     .filter((value, index, self) => {
                                         return index == self.findIndex((t) => (
@@ -215,17 +237,28 @@ const DetailProduct = () =>{
                                         ));
                                     })
                                     .map((element,index) => {
-                                        console.log(element.size.sizeCode);
+                                        const totalQuantity = DetailProduct.proColorSize .filter((item) => item.sizeId === element.sizeId) .reduce((sum, item) => sum + item.quantityAvailable, 0); 
+                                        const quanlityColor = DetailProduct?.proColorSize .find((item) => item.sizeId === element.sizeId && item.color.colorCode === selectedColor)?.quantityAvailable && 1
                                         return (
                                         <button 
-                                            key = {index} 
-                                            onClick={()=>setSelectedSize(element.size.sizeCode)}                                           
-                                            className={`h-8 w-8 content-center text-center text-xl  mr-5 ${selectedSize === element.size.sizeCode ? 'text-[#c73659] border-[#c73659] border-2 font-bold' : 'text-black border border-black font-medium'} `}>
+                                            key = {index}                                             
+                                            onClick={() => {
+                                                if(totalQuantity && (selectedColor? quanlityColor : 1))
+                                                    setSelectedSize(element.size.sizeCode)
+                                                else {alert(`Sản phẩm size ${element.size.sizeCode} đã hết hàng. Vui lòng chọn size khác`)}
+                                            }}                                           
+                                            className={`h-8 w-8 content-center text-center text-xl  mr-5 ${(selectedSize === element.size.sizeCode) ? 'text-[#c73659] border-[#c73659] border-2 font-bold': (totalQuantity && (selectedColor? quanlityColor : 1) )? 'text-black border border-black font-medium': 'text-gray-400 border border-gray-400 font-medium'} `}>
                                             {element.size.sizeCode}
+                                            
                                         </button>
+                                        
                                         )
                                     })}
-                                </div>
+                                    
+                            </div>
+
+                            
+                                           
                         </div>
                         {/* Số lượng */}
                         <div className='h-8 flex flex-row'>
@@ -253,14 +286,28 @@ const DetailProduct = () =>{
                         {/* Button */}
                         <div>
                             {/* Thêm sp vào giỏ hàng */}
-                            <button onClick={handleCart} className="w-full h-11 flex flow-row items-center justify-center rounded-md border-[3px] border-[#c73659]">
+                            <button  className="w-full h-11 flex flow-row items-center justify-center rounded-md border-[3px] border-[#c73659] border:bg-[#a91d3a] "
+                                onClick={handleCart}
+                                title={!selectedColor || !selectedSize ? 'Vui lòng chọn màu sắc và số lượng' : ''}
+                                disabled={!selectedColor || !selectedSize }
+                            >
                                 <img className='h-6' src={cart} alt="cart" />
-                                <div className=' content-center text-center text-[#c73659] text-xl font-extrabold ml-3 mt-1'>THÊM VÀO GIỎ </div>
+                                <div className=' content-center text-center text-[#c73659] text-xl font-extrabold ml-3 mt-1 active:text-[#a91d3a]'>THÊM VÀO GIỎ </div>
                             </button>
                             {/* Mua ngay sp */}
                             <button className="w-full h-11 flex flow-row items-center text-white text-xl font-extrabold justify-center bg-[#c73659] rounded-md mt-3"
-                                onClick={()=>navigate("/check_out")}
-                            >
+                                onClick={()=> {
+                                    if(selectedColor && selectedSize)
+                                    {
+                                    const updateCartProduct = {
+                                        ...cartProduct,
+                                        size: selectedSize,
+                                        color: selectedColor,
+                                        quantity: quality,
+                                    };
+                                    navigate("/check_out", { state: { product: updateCartProduct} })}
+                                    else console.log("empty color and empty size");
+                                    }}>
                                 MUA NGAY
                             </button>
                         </div>
@@ -268,13 +315,15 @@ const DetailProduct = () =>{
                     </div>
                 </div>
                 {/* Thông tin mô tả */}
-                <div className='w-9/12 mt-14'>
+                <div className='w-9/12 mt-14 font-medium '>
+                
                     {DetailProduct.description.split('\n').map((line, index) => (
-                        <React.Fragment key={index}>
+                        <React.Fragment key={index} >
                         {line}
                         <br />
                         </React.Fragment>
                     ))}
+                        
                 </div>
 
                 {/* Sản phẩm tương tự */}
@@ -288,8 +337,8 @@ const DetailProduct = () =>{
                         </button>                        
                         <div className='w-10/12 mt-6'>
                             <div className='grid grid-cols-4 gap-10'>
-                                {ListProduct.map((product, index) => (
-                                    <Product key={index} img={product.img} name={product.name} price={product.price} sale={product.sale}/>                            
+                                {products.filter((product) => product.categoryTypeId == categoryType && product.proId != proId).slice(0,4).map((product, index) => (
+                                    <Product key={index} proId={product.proId} img={product.productImage.find(img => img.isPrimary)?.image} name={product.productName} price={product.cost} sale={product.discount}/>                            
                                 ))}                      
                             </div>
                         </div>
@@ -299,7 +348,7 @@ const DetailProduct = () =>{
                     </div>  
             </div>
 
-        )}
+        )}  
             {/* Ẩn/Hiện thanh giỏ hàng */}
             { isCartMini && <CartMini handleCart={()=>setCart(!isCartMini)}/>}
             <Footer/>

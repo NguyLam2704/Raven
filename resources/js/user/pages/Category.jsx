@@ -39,6 +39,8 @@ const Category = ({ cate }) => {
           }
           const data = await response.json(); // Giả định API trả về JSON
           setProductCategories(data.data || []); // Lưu dữ liệu vào state
+          
+          
       } catch (err) {
           setError(err.message); // Lưu thông báo lỗi nếu xảy ra
       } finally {
@@ -50,9 +52,20 @@ const Category = ({ cate }) => {
   useEffect(() => {
       setLoading(true);
       fetchProductCategories();}, [cate]); // [] call API when cate change
-      console.log(productCategories);
 
-  const mapProductCategories = productCategories.map((productCategory, index) => (
+  // store product 
+  const [mapProductCategories,setMapProductCategories ] = useState([])
+  // function sort product 
+  const sortProducts = (value) => {
+    const ProductCategories = [...productCategories].sort((a,b) => {
+      if (value === 'Giá giảm dần') {
+        return (b.cost - b.cost*b.discount/100) - (a.cost - a.cost*a.discount/100);
+      }
+      else if (value == "Giá tăng dần") {
+        return (a.cost - a.cost*a.discount/100) - (b.cost - b.cost*b.discount/100);
+      }
+      else return (b.cost - b.cost*b.discount/100) - (a.cost - a.cost*a.discount/100);
+    }).map((productCategory, index) => (
       <Product  key={index}
                 proId={productCategory.proId}
                 price={productCategory.cost} 
@@ -60,6 +73,9 @@ const Category = ({ cate }) => {
                 name={productCategory.productName} 
                 sale={productCategory.discount} />
   )); 
+    setMapProductCategories(ProductCategories);
+  }
+
 
     //Giá trị của bộ lọc sắp xếp
     const [sort, setSort] = useState('Giá giảm dần');
@@ -67,11 +83,16 @@ const Category = ({ cate }) => {
     const [isOpen, setOpen] = useState(false);
 
     //Hàm set giá trị cho bộ lọc
-    const setValue = (value) => {
+    const handleSort = (value) => {
         setSort(value);
         setOpen(false);
+        sortProducts(value); // sort product
     };
 
+    useEffect(() => {
+      if (productCategories.length > 0) {
+          sortProducts(sort); // Sắp xếp ngay khi có dữ liệu hoặc khi sort thay đổi
+      }}, [productCategories, sort]); // Call when sort and category change
 
     return (
         <div  className='w-full h-full'>
@@ -116,10 +137,10 @@ const Category = ({ cate }) => {
                                         >
                                             <li className='pl-4 py-1 text-black leading-relaxed rounded-t hover:bg-gray-200'>
                                               <button 
-                                                onClick={() => setValue("Giá tăng dần")} //set giá trị bộ lọc khi nhấn
+                                                onClick={() => handleSort("Giá tăng dần")} //set giá trị bộ lọc khi nhấn
                                               > Giá tăng dần</button></li>
                                             <li className='pl-4 py-1 text-black hover:bg-gray-200 rounded-b leading-relaxed'>
-                                              <button onClick={() => setValue("Giá giảm dần")} //set giá trị bộ lọc khi nhấn
+                                              <button onClick={() => handleSort("Giá giảm dần")} //set giá trị bộ lọc khi nhấn
                                             >Giá giảm dần</button></li>
                                         </ul>)
 
