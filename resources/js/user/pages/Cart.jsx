@@ -23,7 +23,6 @@ const Cart = () => {
         return total + (item.cost - (item.cost * item.discount / 100))*item.quantity;
     },0);
 
-    const navigate = useNavigate() // initialize navigate
     //Xóa sản phẩm
     const removeProduct = (product) =>{
         console.log(product)

@@ -69,7 +69,7 @@ const OrderList = ({data}) => {
         try {
             const orderDetail = await fetchOrderDetail(orderId);
             const orderBill = await fetchOrderBill(orderId);
-            console.log(orderBill.data.totalCost)
+            console.log(orderDetail.user)
             setSelectedOrder(orderDetail);
             setCostBill(orderBill.data.totalCost);
         } catch (error) {

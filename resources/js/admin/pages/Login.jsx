@@ -109,7 +109,7 @@ const Login = () => {
                             </p>
                         )}
                     </div>
-                    <div className="mb-6 relative">
+                    <div className="relative">
                         <label
                             className="block text-gray-700 mb-2"
                             htmlFor="password"
@@ -138,12 +138,13 @@ const Login = () => {
                             color={showPassword ? "#3b82f6 " : "#c3c6d1"}
                         />
 
-                        {errors.password && (
-                            <p className=" text-[12px] text-red-500">
+
+                    </div>
+                    {errors.password && (
+                            <p className="mb-6 text-[12px] text-red-500">
                                 {errors.password}
                             </p>
-                        )}
-                    </div>
+                    )}
                     <div className="flex items-center">
                         <input type="checkbox" />
                         <p className="text-left ml-2 text-gray-600">Remember me</p>
