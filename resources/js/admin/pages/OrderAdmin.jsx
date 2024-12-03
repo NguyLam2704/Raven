@@ -14,7 +14,7 @@ const fetchOrder = async () => {
   }
 
 const Order = () => {
-    const [OrdersData, setOrderData] = useState();
+    const [OrdersData, setOrderData] = useState([]);
     const [dateFilter, setDateFilter] = useState();
     const [statusFilters, setStatusFilters] = useState([
         'Đã hoàn thành', 'Đã hủy', 'Đang xử lý', 'Đang giao hàng'
