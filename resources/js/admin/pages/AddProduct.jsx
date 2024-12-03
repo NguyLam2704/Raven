@@ -8,7 +8,7 @@ import { Colors } from "chart.js";
 
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = 'https://tpuxfltiiajorbixwyff.supabase.co'; // Thay bằng URL dự án của bạn
+const supabaseUrl = 'https://tpuxfltiiajorbixwyff.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRwdXhmbHRpaWFqb3JiaXh3eWZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzAyMTQyMDYsImV4cCI6MjA0NTc5MDIwNn0.uFsVNVpgjADNV1VezxrzTfrBawHMRedjZPP4u3E0NnU'; // Thay bằng key phù hợp
 const supabase = createClient(supabaseUrl, supabaseKey);
 
