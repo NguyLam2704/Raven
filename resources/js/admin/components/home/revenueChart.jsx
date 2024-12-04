@@ -23,7 +23,7 @@ ChartJS.register(
     Legend
 );
 
-const MonthlyRevenueChart = () => {
+const MonthlyRevenueChart = ({ year }) => {
     const month = [
         "Tháng 1",
         "Tháng 2",
@@ -44,9 +44,27 @@ const MonthlyRevenueChart = () => {
     const [data, setData] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
+    function createDaysObject(month, year) {
+        // Sử dụng Date để lấy số ngày trong tháng
+        let daysInMonth = new Date(year, month, 0).getDate();
+        // Tạo đối tượng với các thuộc tính tương ứng và giá trị ban đầu là 0
+        let daysObject = {};
+        for (let day = 1; day <= daysInMonth; day++) {
+            daysObject[day] = 0;
+        }
+        return daysObject;
+    }
+
     const fetchData = async (month) => {
-        const res = await axios.get("/api/dashboard/chitiet/" + month);
-        setData(res.data.chartdata);
+        let daysInMonth = createDaysObject(year, month);
+        const res = await axios.get("/api/dashboard/chitiet/2024/" + month);
+        const data = res.data;
+        data.forEach((e) => {
+            let x = new Date(e.date);
+            daysInMonth[x.getDate()] = e.sum;
+        });
+
+        setData(daysInMonth);
         setIsLoading(false);
     };
 
@@ -61,7 +79,6 @@ const MonthlyRevenueChart = () => {
         const id = month.indexOf(event.target.value) + 1;
         console.log(id);
         fetchData(id);
-
         setSelectedMonth(month[event.target.value]);
     };
 

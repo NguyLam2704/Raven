@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
@@ -76,7 +76,7 @@ const BieuDoCot = () => {
                     drawBorder: false,
                 },
                 ticks: {
-                    stepSize: 100,
+                    stepSize: 50000,
                     font: {
                         size: 12,
                     },

@@ -155,7 +155,7 @@ const Home = () => {
 
             <div className="flex w-full h-auto mt-4">
                 <div className="mr-auto pr-4 w-[65%]">
-                    <MonthlyRevenueChart />
+                    <MonthlyRevenueChart year={2024}/>
                 </div>
 
                 <div className="mr-auto py-4 pr-4 w-[35%] h-[460px] p-4 bg-white rounded-[14px] shadow-md">
