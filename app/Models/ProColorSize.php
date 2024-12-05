@@ -11,6 +11,12 @@ class ProColorSize extends Model
     use HasFactory;
     protected $table = 'pro_color_size';
     protected $primaryKey = 'pro_color_size_id';
+    protected $fillable = [
+        'prod_id',
+        'size_id',
+        'color_id',
+        'quantity_available'
+    ];
     //define relationship of procolorsize and color
     public function color(): HasOne 
     {

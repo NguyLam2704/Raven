@@ -3,7 +3,7 @@ import React from 'react';
 const OrderCart = ({ order, products }) => {
     const orderProducts = products.find(p => p[0]?.order_id === order.order_id) || [];
     const totalAmount = orderProducts.reduce((sum, product) => {
-        const discountPrice = product.cost * (1 - product.discount / 100);
+        const discountPrice = product.after_discount_cost;
         return sum + discountPrice * product.quantity;
     }, 0);
 

@@ -50,15 +50,15 @@ const dataTronSize = {
 };
 
 
-const ProductDetail = ({ProductDetail, onClose}) => {
-
+const ProductDetail = ({ProductDetail, chart , onClose}) => {
+    
     const [SizeColor, setSizeColor] = useState([]); //Biến trạng thái lưu size và color
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const LoadData = async () => {
             const product = await fetchSizeColorById(ProductDetail.proId); // Gọi API
-
+            
             const updatedData = await Promise.all(
                 product.map(async (item) => {
                     const colorName = await fetchColor(item.color_id); // Gọi API lấy tên màu
@@ -69,10 +69,13 @@ const ProductDetail = ({ProductDetail, onClose}) => {
                 })
             );
             setSizeColor(updatedData); // Cập nhật state với dữ liệu trả về
+            
             console.log(updatedData); 
             setIsLoading(false);
         };
         LoadData();
+        
+        
 
     }, [ProductDetail?.proId]); 
 
@@ -152,14 +155,14 @@ const ProductDetail = ({ProductDetail, onClose}) => {
                         {/* Cột phải */}
                         <div className="w-[40%] pr-2 pt-4 flex-col">
                             <div  className="h-auto mb-1 bg-white rounded-[10px] border border-[#3572ef]" >
-                                <BieuDoCot/>
+                                <BieuDoCot data={chart.doanhthu}/>
                             </div>
                             <div  className='flex w-full justify-between mr-4'>
                                 <div  className=" flex-1 w-1/2 h-auto bg-white rounded-[10px] mr-[1px] border border-[#3572ef]">
-                                    <BieuDoTron data={dataTronColor} title={"Màu sắc"}/>
+                                    <BieuDoTron data={chart.color} title={"Màu sắc"}/>
                                 </div>
                                 <div  className="flex-1 w-1/2 h-auto bg-white rounded-[10px] ml-[1px] border border-[#3572ef]">
-                                    <BieuDoTron data={dataTronSize} title={"Size"}/>
+                                    <BieuDoTron data={chart.size} title={"Size"}/>
                                 </div>
                             </div>
 
