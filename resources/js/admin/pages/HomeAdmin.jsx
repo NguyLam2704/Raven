@@ -143,32 +143,47 @@ const Home = () => {
             <Helmet>
                 <title>Tổng quan</title>
             </Helmet>
-            <h1 className="text-[32px] font-bold">Thống kê</h1>
+            <h1 className="mobile:text-[20px] ipad:text-[25px]  desktop:text-[32px] font-bold">Thống kê</h1>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 mobile:grid-cols-2 ipad:grid-cols-2 desktop:grid-cols-4 gap-3">
                 {stats.map((stat, index) => (
                     <StatsCard key={index} {...stat} />
                 ))}
             </div>
 
-            <div className="flex w-full h-auto mt-4">
-                <div className="mr-auto pr-4 w-[65%]">
+                {/*Biểu đồ trên Desktop  */}
+            <div className="mobile:hidden ipad:hidden gap-1 desktop:flex w-full mt-4">
+                <div className="mr-auto rounded-[14px] shadow-md bg-white desktop:pr-4  desktop:w-[65%]">
                     <MonthlyRevenueChart />
                 </div>
 
-                <div className="mr-auto py-4 pr-4 w-[35%] h-[460px] p-4 bg-white rounded-[14px] shadow-md">
-                    <h2 className="text-2xl font-bold mb-2">
+                <div className="mr-auto h-[470px] mobile:mt-2 ipad:mt-2 desktop:mt-0 py-4 pr-4 desktop:w-[35%] p-4 bg-white rounded-[14px] shadow-md">
+                    <h2 className="desktop:text-2xl ipad:text-xl font-bold mb-2">
                         Top 5 sản phẩm bán chạy
                     </h2>
                     <ProductsList data={ProductsListData} />
                 </div>
             </div>
 
-            <h1 className="text-[32px] font-bold mt-4">Đơn hàng</h1>
+            <div className="desktop:hidden mt-2 mobile:h-[200px] ipad:h-[420px] mr-auto rounded-[14px] border-2 border-red-600 shadow-md bg-white ">
+                    <MonthlyRevenueChart />
+            </div>
 
-            <div className="w-full">
+            <div className="desktop:hidden mr-auto h-[430px] mobile:mt-2 ipad:mt-2 py-4 pr-4 desktop:w-[35%] p-4 bg-white rounded-[14px] shadow-md">
+                    <h2 className="desktop:text-2xl ipad:text-xl font-bold mb-2">
+                        Top 5 sản phẩm bán chạy
+                    </h2>
+                    <ProductsList data={ProductsListData} />
+            </div>
+
+
+            <h1 className="mobile:text-[20px] ipad:text-[25px]  desktop:text-[32px]  font-bold mt-4">Đơn hàng</h1>
+
+            <div className="overflow-x-auto">
                 <OrderList data={OrdersData} />
             </div>
+
+
         </NavigationAdmin>
     );
 };

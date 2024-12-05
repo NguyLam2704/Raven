@@ -33,6 +33,7 @@ const OrderFilter = ({ onFilterChange }) => {
      // Quản lý trạng thái mở/đóng của DatePicker.
     const [calendarOpen, setCalendarOpen] = useState(false);
 
+
     //Mở hoặc đóng modal
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
@@ -55,35 +56,48 @@ const OrderFilter = ({ onFilterChange }) => {
     };
 
     return (
-        <div className="flex w-[45%] items-center gap-2 p-4 mx-4 bg-white rounded-2xl border shadow">
-            <FontAwesomeIcon icon={faFilter} size="xl" style={{color: "#3572ef",}} className='mx-2'/>
+        <div className="flex 
+            mobile:flex-col ipad:flex-row desktop:flex-row 
+            mobile:w-[90%] desktop:w-[55%] items-center gap-2
+            mobile:py-2 ipad:p-4 bg-white rounded-2xl border shadow">
+            
+            <div className='flex mobile:w-[80%] ipad:w-auto'>
+                <FontAwesomeIcon icon={faFilter} size="xl" style={{color: "#3572ef",}} className='mx-2'/>
+                <div className='ipad:hidden text-[#3572ef] font-semibold'>Bộ lọc</div>
+            </div>
+
 
             {/* Date Picker */}
-            <div className="flex items-center px-2 border-l border-black">
-                <DatePicker
-                    selected={selectedDate}
-                    onChange={(date) => {
-                        setSelectedDate(date);
-                        onFilterChange({ date, statuses: selectedStatuses });
-                    }}
-                    dateFormat="dd/MM/yyyy"
-                    placeholderText={selectedDate ? selectedDate.toLocaleDateString('vi-VN') : "Chọn ngày"}
-                    maxDate={new Date()}
-                    open={calendarOpen} 
-                    onClickOutside={() => setCalendarOpen(false)} // tắt bảng chọn ngày khi click ra ngoài
-                />
-                <FontAwesomeIcon icon={faChevronDown} className="mx-1 cursor-pointer" onClick={() => setCalendarOpen(!calendarOpen)} />
+            <div className="flex items-center mobile:w-[80%] ipad:w-auto mobile:border ipad:border-0 ipad:border-l border-black">
+                <div className='w-full'>
+                    <DatePicker
+                        selected={selectedDate}
+                        onChange={(date) => {
+                            setSelectedDate(date);
+                            onFilterChange({ date, statuses: selectedStatuses });
+                        }}
+                        dateFormat="dd/MM/yyyy"
+                        placeholderText={selectedDate ? selectedDate.toLocaleDateString('vi-VN') : "Chọn ngày"}
+                        className='px-2'
+                        maxDate={new Date()}
+                        open={calendarOpen} 
+                        onClickOutside={() => setCalendarOpen(false)} // tắt bảng chọn ngày khi click ra ngoài
+                    />
+                </div>
+                    <FontAwesomeIcon icon={faChevronDown} className="mx-3 cursor-pointer" onClick={() => setCalendarOpen(!calendarOpen)} />      
             </div>
 
             {/* Status Dropdown */}
-            <div className="flex items-center px-2 border-black border-x ">
-                <button
-                    onClick={toggleModal}
-                    className="px-4items-center bg-white"
-                >
-                    Trạng thái                 
-                </button>
-                <FontAwesomeIcon icon={faChevronDown} onClick={toggleModal} className="ml-2 mr-1 cursor-pointer"/>
+            <div className="flex items-center mobile:w-[80%] ipad:w-auto ipad:px-2 mobile:border ipad:border-0 border-black ipad:border-x ">
+                <div className='w-full'>
+                    <button
+                        onClick={toggleModal}
+                        className="px-2 items-center bg-white text-gray-400"
+                    >
+                        Trạng thái                 
+                    </button>
+                </div>
+                <FontAwesomeIcon icon={faChevronDown} onClick={toggleModal} className="mx-3 cursor-pointer"/>
             </div>
 
             {/* Reset Filters */}

@@ -12,12 +12,12 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap"
         rel="stylesheet">
-    <link rel="icon" type="image/png"
-        href="https://tpuxfltiiajorbixwyff.supabase.co/storage/v1/object/sign/Image/Logo/raven.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJJbWFnZS9Mb2dvL3JhdmVuLnBuZyIsImlhdCI6MTczMjU1MzI3MCwiZXhwIjoxNzY0MDg5MjcwfQ._U4TSSflQomBqgvmzxGDoyJXY38Sixdn5SeNjrHFw1Y&t=2024-11-25T16%3A47%3A49.406Z">
+    <link rel="icon" type="image/x-icon"
+        href="https://tpuxfltiiajorbixwyff.supabase.co/storage/v1/object/public/Image/Logo/raven1.svg?t=2024-12-05T04%3A26%3A08.834Z">
 </head>
 
 <body>
-    <div id="app"></div>
+    <div id="admin"></div>
 </body>
 
 </html>

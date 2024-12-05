@@ -392,13 +392,13 @@ const AddProduct = () => {
             <Helmet>
                 <title>Thêm sản phẩm mới</title>
             </Helmet>
-            <h1 className="text-[32px] font-bold mt-4">Thêm sản phẩm mới</h1>
+            <h1 className="mobile:text-[20px] ipad:text-[25px]  desktop:text-[32px] font-bold mt-4">Thêm sản phẩm mới</h1>
             <div className="p-4 border bg-white rounded-lg border-[#050c9c]">
-                <div className="flex">
+                <div className="desktop:flex">
                     {/* Cột trái */}
-                    <div className="w-[70%] mr-12">
+                    <div className="desktop:w-[70%] desktop:mr-12">
                         <div className="mb-4">
-                            <label className="block font-semibold mb-1 text-2xl">Tên sản phẩm<span className="text-red-600">*</span></label>
+                            <label className="block font-semibold mb-1 mobile:text-lg ipad:text-xl desktop:text-2xl">Tên sản phẩm<span className="text-red-600">*</span></label>
                             <input 
                                 type="text" 
                                 placeholder="Nhập tên sản phẩm" 
@@ -408,9 +408,9 @@ const AddProduct = () => {
                             />
                         </div>
 
-                        <div className="mb-4 grid grid-cols-2 gap-4">
+                        <div className="ipad:mb-4 ipad:grid ipad:grid-cols-2 ipad:gap-4">
                             <div>
-                                <label className="block font-semibold mb-1 text-2xl">Giá<span className="text-red-600">*</span></label>
+                                <label className="block font-semibold mb-1 mobile:text-lg ipad:text-xl desktop:text-2xl">Giá<span className="text-red-600">*</span></label>
                                 <input 
                                     type="number" 
                                     placeholder="Nhập giá cho sản phẩm" 
@@ -420,7 +420,7 @@ const AddProduct = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block font-semibold mb-1 text-2xl">Sale</label>
+                                <label className="block font-semibold mobile:mt-4 ipad:mt-0 ipad:mb-1 mobile:text-lg ipad:text-xl desktop:text-2xl">Sale</label>
                                 <input 
                                     type="number" 
                                     placeholder="Nhập sale" 
@@ -434,11 +434,11 @@ const AddProduct = () => {
                         <table className="min-w-full my-6 border-collapse border border-black">
                             <thead>
                             <tr>
-                                <th className="border border-black p-2 w-1/5 text-2xl font-semibold">Màu sắc</th>
-                                <th className="border border-black p-2 w-1/5 text-2xl font-semibold">Tên màu</th>
-                                <th className="border border-black p-2 w-1/5 text-2xl font-semibold">Size</th>
-                                <th className="border border-black p-2 w-1/5 text-2xl font-semibold">Số lượng</th>
-                                <th className="border border-black p-2 w-1/5 text-2xl font-semibold">Hành động</th>
+                                <th className="border border-black p-2 w-1/5 mobile:text-base ipad:text-2xl font-semibold">Màu sắc</th>
+                                <th className="border border-black p-2 w-1/5 mobile:text-base ipad:text-2xl font-semibold">Tên màu</th>
+                                <th className="border border-black p-2 w-1/5 mobile:text-base ipad:text-2xl font-semibold">Size</th>
+                                <th className="border border-black p-2 w-1/5 mobile:text-base ipad:text-2xl font-semibold">Số lượng</th>
+                                <th className="border border-black p-2 w-1/5 mobile:text-base ipad:text-2xl font-semibold">Hành động</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -449,13 +449,13 @@ const AddProduct = () => {
                                     style={{ backgroundColor: item.color, width: '24px', height: '24px', borderWidth: 1 }}
                                     ></div>
                                 </td>
-                                <td className=" border border-black p-2 text-center text-2xl font-normal">{item.nameColor}</td>
-                                <td className=" border border-black p-2 text-center text-2xl font-normal">{item.size}</td>
-                                <td className=" border border-black p-2 text-center text-2xl font-normal">{item.quantity}</td>
-                                <td className="border border-black p-2 items-center justify-center text-center">
+                                <td className=" border border-black p-2 text-center mobile:text-base ipad:text-2xl font-normal">{item.nameColor}</td>
+                                <td className=" border border-black p-2 text-center mobile:text-base ipad:text-2xl font-normal">{item.size}</td>
+                                <td className=" border border-black p-2 text-center mobile:text-base ipad:text-2xl font-normal">{item.quantity}</td>
+                                <td className="border border-black p-2 items-center mobile:text-base justify-center text-center">
                                     <button
                                     onClick={() => handleDeleteItem(index)}
-                                    className="bg-red-500 text-white px-2 py-1 border-2 rounded"
+                                    className="bg-red-500 text-white mobile:p-1 ipad:p-2 border-2 rounded"
                                     >
                                     Xóa
                                     </button>
@@ -466,12 +466,12 @@ const AddProduct = () => {
                         </table>
 
 
-                        <div className="text-2xl font-semibold">Nhập màu, size và số lượng<span className="text-red-600">*</span></div>
+                        <div className="mobile:text-lg ipad:text-xl desktop:text-2xl font-semibold">Nhập màu, size và số lượng<span className="text-red-600">*</span></div>
                         <div className="border border-black mb-2">
-                            <div className="mb-4 mt-2 flex items-center px-2 py-1 gap-3">
+                            <div className="mb-4 mt-2 ipad:flex items-center px-2 py-1 gap-3">
                                 <div className="flex-row w-[50%]">
-                                    <div className="relative">
-                                        <label className="block text-2xl font-normal">Color</label>
+                                    <div className="relative z-0">
+                                        <label className="block mobile:text-lg ipad:text-xl desktop:text-2xl font-normal">Color</label>
                                         <div
                                             className="w-8 h-8 border border-black rounded cursor-pointer"
                                             style={{ backgroundColor: newItem.color }}
@@ -480,7 +480,7 @@ const AddProduct = () => {
                                         {showColorPicker && (
                                             <div 
                                                 ref={colorPickerRef}
-                                                className="absolute left-0 mt-2 p-2 border bg-[#245ee0] border-gray-300 rounded shadow-lg z-10"
+                                                className="absolute left-0 mt-2 p-2 border bg-[#245ee0] border-gray-300 rounded shadow-lg z-0"
                                             >
                                                 <SketchPicker
                                                     color={newItem.color}
@@ -499,7 +499,7 @@ const AddProduct = () => {
                                     </div>
 
                                     <div className="mt-2">
-                                        <label className="block text-2xl font-normal">Tên màu</label>
+                                        <label className="block mobile:text-lg ipad:text-xl desktop:text-2xl font-normal">Tên màu</label>
                                         <input
                                             type="string"
                                             value={newItem.nameColor}
@@ -514,7 +514,7 @@ const AddProduct = () => {
 
                                 <div className="flex-row gap-5">
                                     <div>
-                                        <label className="block text-2xl font-normal">Size</label>
+                                        <label className="block mobile:mt-2 ipad:mt-0 mobile:text-lg ipad:text-xl desktop:text-2xl font-normal">Size</label>
                                         <select
                                             value={newItem.size}
                                             onChange={(e) => setNewItem({ ...newItem, size: e.target.value })}
@@ -529,7 +529,7 @@ const AddProduct = () => {
                                     </div>
 
                                     <div className="mt-2">
-                                        <label className="block text-2xl font-normal">Quantity</label>
+                                        <label className="block mobile:text-lg ipad:text-xl desktop:text-2xl font-normal">Quantity</label>
                                         <input
                                             type="number"
                                             value={newItem.quantity}
@@ -556,9 +556,9 @@ const AddProduct = () => {
 
 
                         {/* Phân loại  */}
-                        <div className="mb-4 grid grid-cols-2 gap-4">
+                        <div className="mb-4  ipad:grid ipad:grid-cols-2">
                         <div>
-                            <label className="block font-semibold mb-1 text-2xl">Phân loại<span className="text-red-600">*</span></label>
+                            <label className="block font-semibold mb-1 mobile:text-lg ipad:text-xl desktop:text-2xl">Phân loại<span className="text-red-600">*</span></label>
                             <select 
                                 className="w-full h-[50px] border border-black rounded px-3 py-2"
                                 onChange={handleCategoryChange}
@@ -574,7 +574,7 @@ const AddProduct = () => {
                         </div>
 
                         <div >
-                            <label className="block font-semibold mb-1 text-2xl">Mô tả sản phẩm<span className="text-red-600">*</span></label>
+                            <label className="block font-semibold mb-1 mobile:text-lg ipad:text-xl desktop:text-2xll">Mô tả sản phẩm<span className="text-red-600">*</span></label>
                             <textarea 
                                 type="text" 
                                 placeholder="Nhập mô tả sản phẩm" 
@@ -586,10 +586,14 @@ const AddProduct = () => {
                     </div>
 
                     {/* Cột phải */}
-                    <div className="w-[30%]">
-                        <div className="mb-4">
-                            <label className="block font-semibold mb-1 text-2xl">Hình ảnh chính của sản phẩm<span className="text-red-600">*</span></label>
-                            <div className="border-dashed border-2 border-black rounded-lg p-1 text-center h-[360px] w-[360px]"
+                    <div className="desktop:w-[30%] mobile:block ipad:flex desktop:block ">
+                        <div className="desktop:mb-4 desktop:w-full ipad:w-[50%]">
+                            <label className="block font-semibold mb-1 mobile:text-lg ipad:text-xl desktop:text-2xl">Hình ảnh chính của sản phẩm<span className="text-red-600">*</span></label>
+                            <div className="border-dashed border-2 border-black rounded-lg p-1 text-center 
+                                            desktop:h-[360px] desktop:w-[360px] 
+                                            ipad:h-[300px] ipad:w-[300px]
+                                            mobile:h-[80vw] 
+                                            ipad:mr-2 desktop:mr-0"
                                 onDrop={handleMainImageDrop}
                                 onDragOver={handleDragOver}
                             >
@@ -621,12 +625,15 @@ const AddProduct = () => {
                                 />
                         </div>
 
-                        <div>
-                            <label className="block font-semibold mb-1 text-2xl">Các hình ảnh khác:</label>
-                            <div className="grid grid-cols-2 gap-4 justify-between">
+                        <div className=" desktop:w-full ipad:w-[50%]">
+                            <label className="block font-semibold mb-1 mobile:text-lg ipad:text-xl desktop:text-2xl">Các hình ảnh khác:</label>
+                            <div className="grid grid-cols-2 gap-5 justify-center items-center">
                                 {otherImages.map((image, index) => (
                                 <div key={index} 
-                                    className="h-[170px] w-[170px] border-dashed border-2 border-black rounded-lg text-center"
+                                    className="
+                                        mobile:h-[140px] mobile:w-[150px] 
+                                        desktop:h-[170px] desktop:w-[170px] 
+                                        border-dashed border-2 border-black rounded-lg text-center"
                                     onDrop={(e) => handleImageDrop(e, index)}
                                     onDragOver={handleDragOver}
                                 >

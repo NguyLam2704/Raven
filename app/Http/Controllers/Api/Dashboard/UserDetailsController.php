@@ -25,7 +25,7 @@ class UserDetailsController extends Controller
                 ->where('order_id', $element->order_id)
                 ->join('pro_color_size', 'product_order.pro_color_size_id', '=', 'pro_color_size.pro_color_size_id')
                 ->join('products', 'pro_color_size.prod_id', '=', 'products.prod_id')
-                ->get(['order_id', 'quantity', 'product_order.cost', 'discount']);
+                ->get(['order_id', 'quantity', 'product_order.after_discount_cost', 'discount']);
             $products[] = $prod_color_size;
         }
 

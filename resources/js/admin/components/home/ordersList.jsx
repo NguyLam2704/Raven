@@ -84,9 +84,9 @@ const OrderList = ({data}) => {
 
 
     return (
-         <div className="container mx-auto px-4">
-            <div className="overflow-y-auto w-full">
-                <table className="w-full bg-white rounded-[14px] shadow-md">
+         <div className="container mobile:block">
+            <div>
+                <table className="bg-white ipad:w-[1200px] desktop:w-[1200px] mobile:w-[1200px] rounded-[14px] shadow-md">
                     <thead>
                         <tr>
                             <th className="py-4 px-2 border-b text-sm font-extrabold text-center">Mã đơn hàng</th>

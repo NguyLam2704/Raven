@@ -32,15 +32,14 @@ const UserList = ({data}) => {
 
    
     return (
-         <div className="container mx-auto px-4">
-            <div className="overflow-y-auto w-full">
-                <table className="w-full bg-white rounded-[14px] shadow-md">
+         <div className="container mobile:block">
+            <div>
+                <table className="bg-white ipad:w-[700px] desktop:w-[1200px] mobile:w-[400px] rounded-[14px] shadow-md">
                     <thead>
                         <tr>
                             <th className="py-4 px-2 border-b text-sm font-extrabold text-center">Số điện thoại</th>
                             <th className="py-4 px-2 border-b text-sm font-extrabold text-left">Email</th>
-                            <th className="py-4 px-2 border-b text-sm font-extrabold text-left">Số đơn hàng đã mua</th>
-
+                            {/* <th className="py-4 px-2 border-b text-sm font-extrabold text-left">Số đơn hàng đã mua</th> */}
                         </tr>
                     </thead>
 
@@ -52,7 +51,7 @@ const UserList = ({data}) => {
                             >
                                 <td className="py-5 px-2 border-b text-sm font-semibold text-center">{user.phoneNumber}</td>
                                 <td className="py-5 px-2 border-b text-sm font-semibold text-left">{user.email}</td>
-                                <td className="py-5 px-2 border-b text-sm font-semibold text-left"></td>
+                                {/* <td className="py-5 px-2 border-b text-sm font-semibold text-left"></td> */}
                             </tr>
                         ))}
                     </tbody>

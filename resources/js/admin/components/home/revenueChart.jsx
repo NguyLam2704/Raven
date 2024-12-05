@@ -11,6 +11,7 @@ import {
     Legend,
 } from "chart.js";
 import axios from "axios";
+import { height } from "@fortawesome/free-brands-svg-icons/faApple";
 
 //Tạo các thành phần của biểu đồ
 ChartJS.register(
@@ -92,7 +93,7 @@ const MonthlyRevenueChart = () => {
                 beginAtZero: true,
                 min: 0,
                 max: 10000000,
-                stepSize: 1000000,
+                // stepSize: 1000000,
                 //tùy chỉnh các nhãn trên trục y để hiển thị dưới dạng số có dấu phân cách hàng nghìn.
                 ticks: {
                     callback: function (value) {
@@ -102,7 +103,9 @@ const MonthlyRevenueChart = () => {
             },
             x: {
                 ticks: {
-                    autoSkip: false, //đảm bảo tất cả các nhãn điều được hiển thị
+                    autoSkip: true, // Bỏ qua một số nhãn nếu không đủ chỗ
+                    maxRotation: 45, // Xoay nhãn để tránh chồng chéo
+                    minRotation: 0,
                 },
             },
         },
@@ -126,15 +129,15 @@ const MonthlyRevenueChart = () => {
     };
 
     return (
-        <div className="px-4 bg-white rounded-[14px] shadow-md h-[444px]">
+        <div className="px-4 mobile:h-[300px] ipad:h-[400px] desktop:h-[470px]">
             <div className="flex items-center justify-between mb-1">
-                <h2 className="text-2xl font-bold my-4">
+                <h2 className="desktop:text-2xl ipad:text-xl mobile:text-sm font-bold mobile:my-2 ipad:my-2 desktop:my-4">
                     Doanh thu bán hàng theo tháng
                 </h2>
                 <select
                     value={selectedMonth}
                     onChange={handleMonthChange}
-                    className="pl-2 mr-4 border rounded"
+                    className="ipad:text-[14px] mobile:text-[11px] desktop:text-base pl-2 mr-4 border rounded"
                 >
                     {month.map((month) => (
                         <option key={month} value={month}>
@@ -147,9 +150,10 @@ const MonthlyRevenueChart = () => {
             {isLoading ? (
                 <div></div>
             ) : (
-                <div className="relative h-96">
-                    <Line data={chartData} options={options} />
-                </div>
+                <Line 
+                    data={chartData} 
+                    options={options}                     
+                />
             )}
         </div>
     );
