@@ -154,7 +154,7 @@ const Home = () => {
                 {/*Biểu đồ trên Desktop  */}
             <div className="mobile:hidden ipad:hidden gap-1 desktop:flex w-full mt-4">
                 <div className="mr-auto rounded-[14px] shadow-md bg-white desktop:pr-4  desktop:w-[65%]">
-                    <MonthlyRevenueChart />
+                    <MonthlyRevenueChart year={2024}/>
                 </div>
 
                 <div className="mr-auto h-[470px] mobile:mt-2 ipad:mt-2 desktop:mt-0 py-4 pr-4 desktop:w-[35%] p-4 bg-white rounded-[14px] shadow-md">
@@ -166,7 +166,7 @@ const Home = () => {
             </div>
 
             <div className="desktop:hidden mt-2 mobile:h-[200px] ipad:h-[420px] mr-auto rounded-[14px] border-2 border-red-600 shadow-md bg-white ">
-                    <MonthlyRevenueChart />
+                    <MonthlyRevenueChart year={2024} />
             </div>
 
             <div className="desktop:hidden mr-auto h-[430px] mobile:mt-2 ipad:mt-2 py-4 pr-4 desktop:w-[35%] p-4 bg-white rounded-[14px] shadow-md">

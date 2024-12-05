@@ -161,7 +161,7 @@ const DetailProduct = () =>{
                                 </div>
                             )}
                             {/* Hình ảnh sản phẩm */}
-                            <img className='h-[470px] w-4/5 rounded-xl ' src={bigImg} alt="anh" />                            
+                            <img className='h-[470px] w-4/5 rounded-xl' src={bigImg} alt="anh" />                            
                         </div>
                         
                         

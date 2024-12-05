@@ -47,8 +47,8 @@ const UserDetail = ({UserDetail, onClose}) => {
                                 </div>
                            </div>
 
-                           <div className="w-[95%] h-auto mobile:mx-2 desktop:ml-4 my-4 bg-white rounded-[10px] border border-[#3572ef]" >
-                                <ChartUser/>
+                           <div className="w-[95%] h-auto  ml-4 my-4 bg-white rounded-[10px] border border-[#3572ef]" >
+                                <ChartUser user_id={UserDetail.user[0].user_id}/>
 
                            </div>
 

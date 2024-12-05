@@ -13,12 +13,14 @@ const fetchProductById = async (id) => {
 const ProductsList = ({data}) => {
     const [selectedProduct, setSelectedProduct] = useState(null); //Lưu sản phẩm được chọn 
     const [isLoading, setIsLoading] = useState();
-
+    const [bieudo, setBieudo] = useState({});
     //Hàm lưu sản phẩm khi được click vào
-    const handleRowClick = async (orderId) => {
+    const handleRowClick = async (prodId) => {
         setIsLoading(true);
         try {
-            const productDetail = await fetchProductById(orderId);
+            const productDetail = await fetchProductById(prodId);
+            const res = await axios.get(`/api/dashboard/product/${prodId}/bieudo`);
+            setBieudo(res.data);
             console.log(productDetail.data)
             setSelectedProduct(productDetail.data);
         } catch (error) {
@@ -96,6 +98,7 @@ const ProductsList = ({data}) => {
             {selectedProduct && !isLoading && (
                 <ProductDetail
                     ProductDetail={selectedProduct}
+                    chart={bieudo}
                     onClose={closeDetail}
                 />
             )}
