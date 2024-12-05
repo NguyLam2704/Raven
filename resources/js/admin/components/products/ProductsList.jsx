@@ -13,12 +13,14 @@ const fetchProductById = async (id) => {
 const ProductsList = ({data}) => {
     const [selectedProduct, setSelectedProduct] = useState(null); //Lưu sản phẩm được chọn 
     const [isLoading, setIsLoading] = useState();
-
+    const [bieudo, setBieudo] = useState({});
     //Hàm lưu sản phẩm khi được click vào
-    const handleRowClick = async (orderId) => {
+    const handleRowClick = async (prodId) => {
         setIsLoading(true);
         try {
-            const productDetail = await fetchProductById(orderId);
+            const productDetail = await fetchProductById(prodId);
+            const res = await axios.get(`/api/dashboard/product/${prodId}/bieudo`);
+            setBieudo(res.data);
             console.log(productDetail.data)
             setSelectedProduct(productDetail.data);
         } catch (error) {
@@ -31,9 +33,9 @@ const ProductsList = ({data}) => {
     const closeDetail = () => setSelectedProduct(null);//Đóng popup chi tiết sản phẩm
     
     return (
-         <div className="container mx-auto px-4">
-            <div className="overflow-y-auto w-full">
-                <table className="w-full bg-white rounded-[14px] shadow-md">
+         <div className="container mobile:block">
+            <div>
+                <table className="bg-white ipad:w-[1200px] desktop:w-[1200px] mobile:w-[1200px] rounded-[14px] shadow-md">
                     <thead>
                         <tr>
                             <th className="py-4 px-2 border-b text-sm font-extrabold text-center">Mã sản phẩm</th>
@@ -96,6 +98,7 @@ const ProductsList = ({data}) => {
             {selectedProduct && !isLoading && (
                 <ProductDetail
                     ProductDetail={selectedProduct}
+                    chart={bieudo}
                     onClose={closeDetail}
                 />
             )}

@@ -6,7 +6,7 @@ import User from './user/User';
 import App from './admin/components/App';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-ReactDom.createRoot(document.getElementById('app')).render(
+ReactDom.createRoot(document.getElementById('admin')).render(
   <BrowserRouter>
     <App/>
     <User/>

@@ -101,7 +101,7 @@ const ForgotPass = () => {
                 )}
 
                 <button
-                    onClick={() => navigate("/")}
+                    onClick={() => navigate("/login_admin")}
                     className="text-[17px] font-bold text-center text-blue-800 mt-10 w-full mx-auto"
                 >
                     Quay lại đăng nhập
