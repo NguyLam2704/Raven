@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 const Cart = () => {
 
     const [storeProduct, setStoreProduct] = useState([]);
-
     useEffect(() => {
         const savedProduct = localStorage.getItem('cart'); // Lấy product từ localStorage
         if (savedProduct) {
@@ -18,35 +17,49 @@ const Cart = () => {
             console.error("Dữ liệu không phải là mảng:", savedProduct);
           }
       }, []);
-
-    const totalCost = storeProduct.reduce((total, item) => {
+    
+    //Danh sách sp được chọn
+    const [cartProduct, setCartProduct] = useState([])  
+    const handleCheckChange = (product, checked, quan) => {
+        
+        console.log("quan",quan)
+        if (checked && quan) {
+            setCartProduct((prev) => [...prev, product]); // Thêm vào `cartProduct`
+        } else {
+            setCartProduct((prev) => prev.filter((item) => item.proId !== product.proId ||  
+                                                            item.color !== product.color ||
+                                                            item.size !== product.size )); // Xóa khỏi `cartProduct`
+        }
+    };
+    //console.log(cartProduct)
+    const totalCost = cartProduct.reduce((total, item) => {
         return total + (item.cost - (item.cost * item.discount / 100))*item.quantity;
     },0);
-
-    const navigate = useNavigate() // initialize navigate
+    
     //Xóa sản phẩm
     const removeProduct = (product) =>{
-        console.log(product)
         const newCart = storeProduct.filter((item)=> item !== product)        
         localStorage.setItem('cart', JSON.stringify(newCart));
         setStoreProduct(newCart);
     }
     //Hàm tăng số lượng sp
-    const handlePlus = (id) =>{
-        const index = storeProduct.findIndex((item) => item.proId === id);
+    const handlePlus = (product) =>{
+        const index = storeProduct.findIndex((item) => item === product);
         storeProduct[index].quantity += 1;
         localStorage.setItem('cart', JSON.stringify(storeProduct));
         const savedProduct = localStorage.getItem('cart');
         setStoreProduct(JSON.parse(savedProduct));
+        setCartProduct(JSON.parse(savedProduct))
     }
     //Hàm giảm số lượng sp
-    const handleTru = (id) =>{
-        const index = storeProduct.findIndex((item) => item.proId === id);
+    const handleTru = (product) =>{
+        const index = storeProduct.findIndex((item) => item === product);
         if( storeProduct[index].quantity > 1)
         {storeProduct[index].quantity -= 1;}
         localStorage.setItem('cart', JSON.stringify(storeProduct));
         const savedProduct = localStorage.getItem('cart');
         setStoreProduct(JSON.parse(savedProduct));
+        setCartProduct(JSON.parse(savedProduct))
     }
     const navigate = useNavigate()
     return(
@@ -73,9 +86,10 @@ const Cart = () => {
                     </div>
                 )}
                 {/* Danh sách các sản phẩm */}
-                {storeProduct.map((product, index) => (
-                    <ItemProduct key={index} product={product} removeProduct={()=>removeProduct(product)} handlerPlus={()=>handlePlus(product.proId)} handlerTru={()=>handleTru(product.proId)}/>                            
+                {storeProduct.map((product, index) => (                
+                    <ItemProduct key={index} product={product} removeProduct={()=>removeProduct(product)} handlerPlus={()=>handlePlus(product)} handlerTru={()=>handleTru(product)} onCheckChange={handleCheckChange}/>                            
                 ))}
+                
                 {/* {
                     <ItemProduct data={ListProduct} />
                 } */}
@@ -90,11 +104,12 @@ const Cart = () => {
                  {/* Nút thanh toán */}
                 {   storeProduct.length>0 &&(
                     <div className="w-10/12 flex flex-row justify-end mt-16 pr-8 ease-in duration-300">
-                        <button onClick={() => navigate("/check_out")} className="w-36 h-10 bg-[#c73659] rounded-[5px] border border-[#151515] text-center text-[#eeeeee] text-[17px] font-bold ">Thanh toán</button>
+                        <button className="w-36 h-10 bg-[#c73659] rounded-[5px] border border-[#151515] text-center text-[#eeeeee] text-[17px] font-bold "
+                            onClick={() => navigate("/check_out", { state: { product: cartProduct} })} 
+                            disabled={!cartProduct.length}
+                        >Thanh toán</button>
                     </div>
                 )}
-                
-                
             </div>
             <Footer/>
         </div>
