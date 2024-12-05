@@ -24,14 +24,14 @@ const Footer = () => {
                     <ul className="w-[300]">
                         <li className=" w-[300] text-white text-3xl font-bold font-['Public Sans'] my-2">HỖ TRỢ</li>
                         <li className=" w-[300] text-white text-base font-extralight font-['Public Sans'] my-1"><Link to="/check_order">Kiểm tra đơn hàng</Link></li>
-                        <li className=" w-[300] text-white text-base font-extralight font-['Public Sans'] my-1">Điều khoản và dịch vụ</li>
-                        <li className=" w-[300] text-white text-base font-extralight font-['Public Sans'] my-1">Điều khoản và dịch vụ</li>
+                        <li className=" w-[300] text-white text-base font-extralight font-['Public Sans'] my-1"><Link to="/banking_info">Hướng dẫn thanh toán</Link></li>
+                        <li className=" w-[300] text-white text-base font-extralight font-['Public Sans'] my-1"><Link to="/size_info">Hướng dẫn chọn size</Link></li>
                     </ul>  
                     <ul className="w-[300] ">
                         <li className=" w-[300] text-white text-3xl font-bold font-['Public Sans'] mb-2 mt-6">CHÍNH SÁCH</li>
-                        <li className=" w-[300] text-white text-base font-extralight font-['Public Sans'] my-1">Chính sách mua hàng</li>
-                        <li className=" w-[300] text-white text-base font-extralight font-['Public Sans'] my-1">Chính sách bảo mật</li>
-                        <li className=" w-[300] text-white text-base font-extralight font-['Public Sans'] my-1">Chính sách đổi trả</li>
+                        <li className=" w-[300] text-white text-base font-extralight font-['Public Sans'] my-1"><Link to="/buy_info">Chính sách mua hàng</Link></li>
+                        <li className=" w-[300] text-white text-base font-extralight font-['Public Sans'] my-1"><Link to="/security_info">Chính sách bảo mật</Link></li>
+                        <li className=" w-[300] text-white text-base font-extralight font-['Public Sans'] my-1"><Link to="/return_info">Chính sách đổi trả</Link></li>
                     </ul>
                 </div>       
             </div>

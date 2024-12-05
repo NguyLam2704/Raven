@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Color;
 use App\Models\Order;
 use App\Models\ProColorSize;
 use App\Models\Product;
@@ -14,25 +15,76 @@ use Illuminate\Support\Facades\DB;
 class ProductDetailsController extends Controller
 {
     public function addProduct(Request $request){
-        $prod_create = Product::create([
-            'prod_name',
-            'cost',
-            'discount',
+        // Thêm vào bảng product
+        $prod_create = DB::table('products')->insert([ // trả về giá trị boolean
+            'prod_name' => $request->prod_name,
+            'cost' => $request->cost,
+            'discount' => $request->discount,
             'quantity_sold' => 0,
-            'description' ,
-            'category_type_id',
+            'description' => $request->description,
+            'category_type_id' => $request->category_type_id,
             'dateposted' => now()
         ]);
 
-        if (!$prod_create){
-            return 'That bai';
+        if (!$prod_create){ //kiểm tra thêm sp thành công chưa
+            return 'Add product that bai';
         }
 
-        // $img = ProductImage::create([
+        // Lấy sản phẩm vừa thêm
+        $prod = DB::table('products')->orderByDesc('prod_id')->first();
 
-        // ]) 
-        // ProColorSize
-        // Color
+        // Thêm vào bảng prod_img
+        foreach ($request->images as $element) {
+            $image = ProductImage::insert([ 
+                'image' => $element['img'],
+                'prod_id' => $prod->prod_id,
+                'is_primary' => $element['is_primary']
+            ]) ;
+            if (!$image){
+                return 'Add img that bai';
+            }
+        }
+
+        foreach ($request->color_size_quantity as $element) {
+            $color = Color::insert([
+                'color_code' => $element['color_code'],
+                'color_name' => $element['nameColor']
+            ]);
+
+            if(!$color){
+                return 'Add color that bai';
+            }
+            $color = DB::table('colors')->orderByDesc('color_id')->first();
+
+
+            $size_id = 0; // Mã hoá số sang kí tự
+            switch ($element['size_code']) {
+                case 'S':
+                    $size_id = 1;
+                    break;
+                case 'M':
+                    $size_id = 2;
+                    break;
+                case 'L':
+                    $size_id = 3;
+                    break;
+                default:
+                    $size_id= 4;
+                    break;
+            }
+
+            $pro_color_size = ProColorSize::insert([
+                'prod_id' => $prod->prod_id,
+                'size_id' => $size_id,
+                'color_id' => $color->color_id,
+                'quantity_available' => $element['quantity']
+            ]);
+
+            if(!$pro_color_size){
+                return 'Add pro_color_size that bai';
+            }
+        }
+
     }
 
     public function getChart($id){
@@ -148,46 +200,46 @@ class ProductDetailsController extends Controller
         'year' => $year
     ];
 
-    $result = ProColorSize::select('size_id',DB::raw('sum(quantity) as sl'))
-            // ->join('colors','colors.color_id', '=', 'pro_color_size.color_id')
+    $result = ProColorSize::select('size_code',DB::raw('sum(quantity) as sl'))
+            ->join('sizes','sizes.size_id', '=', 'pro_color_size.size_id')
             ->join('product_order','product_order.pro_color_size_id', '=', 'pro_color_size.pro_color_size_id')
             ->join('orders','orders.order_id','=','product_order.order_id')
             ->where('prod_id',$id)
             ->where('status',3)
-            ->groupBy('size_id')
+            ->groupBy('size_code')
             ->whereBetween('datecreated',[$dayStartofWeek, $dayEndofWeek])
             ->get();
         $week = collect();
         foreach ($result as $e) {
-            $week->put($e->size_id , $e->sl);
+            $week->put($e->size_code , $e->sl);
         }
 
-        $result = ProColorSize::select('size_id',DB::raw('sum(quantity) as sl'))
-            // ->join('colors','colors.color_id', '=', 'pro_color_size.color_id')
+        $result = ProColorSize::select('size_code',DB::raw('sum(quantity) as sl'))
+            ->join('sizes','sizes.size_id', '=', 'pro_color_size.size_id')
             ->join('product_order','product_order.pro_color_size_id', '=', 'pro_color_size.pro_color_size_id')
             ->join('orders','orders.order_id','=','product_order.order_id')
             ->where('prod_id',$id)
             ->where('status',3)
             ->where(DB::raw('DATE_PART(\'month\', datecreated)'),Carbon::now()->month)
-            ->groupBy('size_id')
+            ->groupBy('size_code')
             ->get();
         $month = collect();
         foreach ($result as $e) {
-            $month->put($e->size_id , $e->sl);
+            $month->put($e->size_code , $e->sl);
         }
 
-        $result = ProColorSize::select('size_id',DB::raw('sum(quantity) as sl'))
-            // ->join('colors','colors.color_id', '=', 'pro_color_size.color_id')
+        $result = ProColorSize::select('size_code',DB::raw('sum(quantity) as sl'))
+            ->join('sizes','sizes.size_id', '=', 'pro_color_size.size_id')
             ->join('product_order','product_order.pro_color_size_id', '=', 'pro_color_size.pro_color_size_id')
             ->join('orders','orders.order_id','=','product_order.order_id')
             ->where('prod_id',$id)
             ->where('status',3)
             ->where(DB::raw('DATE_PART(\'year\', datecreated)'),Carbon::now()->year)
-            ->groupBy('size_id')
+            ->groupBy('size_code')
             ->get();
         $year = collect();
         foreach ($result as $e) {
-            $year->put($e->size_id , $e->sl);
+            $year->put($e->size_code , $e->sl);
         }
         
         $bd_size = [

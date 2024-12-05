@@ -7,6 +7,7 @@ import Footer from '../components/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown} from '@fortawesome/free-solid-svg-icons'
 import TitleCategory from '../components/Category/TitleCategory';
+import img_loading from '../assets/loading.gif'
 
 const mapCategory = new Map([
     ["Áo thun", 1],
@@ -27,7 +28,7 @@ const Category = ({ cate }) => {
   // State để lưu danh sách sản phẩm
   const [productCategories, setProductCategories] = useState([]);
   const [loading, setLoading] = useState(true); // Trạng thái tải dữ liệu
-  const [error, setError] = useState(null); // Trạng thái lỗi
+
   let id = mapCategory.get(cate); // map category with category_id
 // Hàm fetch API
   const fetchProductCategories = async () => {
@@ -38,6 +39,8 @@ const Category = ({ cate }) => {
           }
           const data = await response.json(); // Giả định API trả về JSON
           setProductCategories(data.data || []); // Lưu dữ liệu vào state
+          
+          
       } catch (err) {
           setError(err.message); // Lưu thông báo lỗi nếu xảy ra
       } finally {
@@ -49,15 +52,30 @@ const Category = ({ cate }) => {
   useEffect(() => {
       setLoading(true);
       fetchProductCategories();}, [cate]); // [] call API when cate change
-      console.log(productCategories);
 
-  const mapProductCategories = productCategories.map((productCategory, index) => (
+  // store product 
+  const [mapProductCategories,setMapProductCategories ] = useState([])
+  // function sort product 
+  const sortProducts = (value) => {
+    const ProductCategories = [...productCategories].sort((a,b) => {
+      if (value === 'Giá giảm dần') {
+        return (b.cost - b.cost*b.discount/100) - (a.cost - a.cost*a.discount/100);
+      }
+      else if (value == "Giá tăng dần") {
+        return (a.cost - a.cost*a.discount/100) - (b.cost - b.cost*b.discount/100);
+      }
+      else return (b.cost - b.cost*b.discount/100) - (a.cost - a.cost*a.discount/100);
+    }).map((productCategory, index) => (
       <Product  key={index}
+                proId={productCategory.proId}
                 price={productCategory.cost} 
                 img={productCategory.productImage.find(img => img.isPrimary)?.image}  //choose the primary image to display
                 name={productCategory.productName} 
                 sale={productCategory.discount} />
   )); 
+    setMapProductCategories(ProductCategories);
+  }
+
 
     //Giá trị của bộ lọc sắp xếp
     const [sort, setSort] = useState('Giá giảm dần');
@@ -65,18 +83,16 @@ const Category = ({ cate }) => {
     const [isOpen, setOpen] = useState(false);
 
     //Hàm set giá trị cho bộ lọc
-    const setValue = (value) => {
+    const handleSort = (value) => {
         setSort(value);
         setOpen(false);
+        sortProducts(value); // sort product
     };
 
-    if (loading) {
-      return <div>Loading...</div>;
-    }
-  
-    if (error) {
-      return <div>Error: {error}</div>;
-    }
+    useEffect(() => {
+      if (productCategories.length > 0) {
+          sortProducts(sort); // Sắp xếp ngay khi có dữ liệu hoặc khi sort thay đổi
+      }}, [productCategories, sort]); // Call when sort and category change
 
     return (
         <div  className='w-full h-full'>
@@ -84,13 +100,25 @@ const Category = ({ cate }) => {
             <div  className='mt-[90px] justify-items-center'>
 
                 {/* Slide */}
-                <img className='w-full' src={img_silder} alt="none" />
+                {
+                  loading ? (
+                    <div className='h-5'></div>
+                  ): (
+                    <img className='w-full' src={img_silder} alt="none" />
+                  )
+                }
 
                 {/* Tiêu đề */}
                 <TitleCategory cate={cate}/>
-
+                
                 {/*Bộ lọc */}
-                <div className='w-10/12 h-full mt-16'>                    
+                {
+                  loading ? (
+                    <div>
+                      <img className='w-10 h-10 mt-10' src={img_loading} alt="loading" />
+                    </div>
+                  ) : (
+                    <div className='w-10/12 h-full mt-16'>                    
                         <div className='w-full h-8 justify-items-end '
                             onMouseLeave={()=>setOpen(false)} //ẩn các gái trị của bộ lọc 
                         >
@@ -109,20 +137,22 @@ const Category = ({ cate }) => {
                                         >
                                             <li className='pl-4 py-1 text-black leading-relaxed rounded-t hover:bg-gray-200'>
                                               <button 
-                                                onClick={() => setValue("Giá tăng dần")} //set giá trị bộ lọc khi nhấn
+                                                onClick={() => handleSort("Giá tăng dần")} //set giá trị bộ lọc khi nhấn
                                               > Giá tăng dần</button></li>
                                             <li className='pl-4 py-1 text-black hover:bg-gray-200 rounded-b leading-relaxed'>
-                                              <button onClick={() => setValue("Giá giảm dần")} //set giá trị bộ lọc khi nhấn
+                                              <button onClick={() => handleSort("Giá giảm dần")} //set giá trị bộ lọc khi nhấn
                                             >Giá giảm dần</button></li>
                                         </ul>)
 
                             }
                         </div>            
-                    {/* Danh sách các sản phẩm  */}
-                    <div className="mt-10 grid grid-cols-4 gap-12 z-10">
-                        {mapProductCategories}
+                        {/* Danh sách các sản phẩm  */}
+                        <div className="mt-10 grid grid-cols-4 gap-12 z-10">
+                            {mapProductCategories}
+                        </div>
                     </div>
-                </div>
+                  )
+                }
             </div>
             <Footer />
         </div>

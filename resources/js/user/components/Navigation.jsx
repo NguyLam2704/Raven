@@ -39,15 +39,20 @@ const Navigation = () => {
     
     //Hàm chuyển đến trang Tìm kiếm và truyền nội dung tìm kiếm
     const navigateToAbout = () => { 
-        navigate('/search', { state: { message: text } }); 
-    };
+                  
+        navigate(`/search/${text}`);
 
+    };
+   
     return(
+        
         <header className=" fixed left-0 z-30 top-0 w-full bg-white  ">
         <nav   className="flex flex-row items-center justify-between h-24 border-b-[1px] border-b-slate-300 w-full">
             {/* Logo  */}
             <div className=" items-center justify-items-center basis-2/12 ">
-                <img src={Logo} alt="Logo"/> 
+                <Link to="/">
+                    <img src={Logo} alt="Logo"/>
+                </Link>
             </div>
             {/* Thanh điều hướng */}
             <ul   className=" h-full basis-6/12 items-center justify-between flex mt-10 mb-4 mr-10  ">

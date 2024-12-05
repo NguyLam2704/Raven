@@ -10,23 +10,24 @@ use Illuminate\Support\Facades\DB;
 
 class UserDetailsController extends Controller
 {
-    public function UserDetails($id){
+    public function UserDetails($id)
+    {
         // Lay thong tin nguoi dung
-        $user = DB::table('users')->where('user_id',$id)->get();
-        $count = DB::table('orders')->where('user_id',$id)->count();
-        $address = DB::table('orders')->where('user_id',$id)->orderByDesc('datecreated')->get('address')->first();
+        $user = DB::table('users')->where('user_id', $id)->get();
+        $count = DB::table('orders')->where('user_id', $id)->count();
+        $address = DB::table('orders')->where('user_id', $id)->orderByDesc('datecreated')->get('address')->first();
         $user[0]->address = $address->address;
         $user[0]->count = $count;
 
         // Lay thong tin don hang
-        $order = DB::table('orders')->where('user_id',$id)->get();
+        $order = DB::table('orders')->where('user_id', $id)->get();
         $products = [];
-        foreach ($order as $element ) {
+        foreach ($order as $element) {
             $prod_color_size = DB::table('product_order')
-            ->where('order_id',$element->order_id)
-            ->join('pro_color_size','product_order.pro_color_size_id', '=' ,'pro_color_size.pro_color_size_id')
-            ->join('products','pro_color_size.prod_id','=','products.prod_id')
-            ->get(['order_id','quantity','after_discount_cost','discount']);
+                ->where('order_id', $element->order_id)
+                ->join('pro_color_size', 'product_order.pro_color_size_id', '=', 'pro_color_size.pro_color_size_id')
+                ->join('products', 'pro_color_size.prod_id', '=', 'products.prod_id')
+                ->get(['order_id', 'quantity', 'after_discount_cost', 'discount']);
             $products[] = $prod_color_size;
         }
 
@@ -64,7 +65,6 @@ class UserDetailsController extends Controller
             $year = Order::select(DB::raw('DATE_TRUNC(\'year\', datecreated) as date'), DB::raw('count(*) as buy'))
                     ->where('user_id',$id)
                     ->where('status', 3)
-                    ->whereBetween('datecreated',[Carbon::createFromDate(Carbon::now()->year-3,1,1), Carbon::now()])->where('status', 3)
                     ->groupBy(DB::raw('DATE_TRUNC(\'year\', datecreated)'))
                     ->get();
             return $year;

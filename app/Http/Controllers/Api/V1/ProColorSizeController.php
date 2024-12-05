@@ -21,11 +21,11 @@ class ProColorSizeController extends Controller
         $queryItems = $filter->transform($request); //chuyển đổi các tham số  trong $request thành một mảng [['column','operator','value']]
         if (count($queryItems) == 0)// Nếu không có điều kiện lọc
         {
-            return new ProColorSizeCollection(ProColorSize::paginate());//paginate chia nhỏ danh sách dữ liệu
+            return new ProColorSizeCollection(ProColorSize::with(['color','size'])->paginate());//paginate chia nhỏ danh sách dữ liệu
         }
         else
         {
-            $proColorSize = ProColorSize::where($queryItems)->paginate();//truy vấn dựa trên $queryItems thông qua where()
+            $proColorSize = ProColorSize::where($queryItems)->with(['color','size'])->paginate();//truy vấn dựa trên $queryItems thông qua where()
             return new ProColorSizeCollection($proColorSize->appends($request->query()));
         }
     }

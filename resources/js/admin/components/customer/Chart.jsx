@@ -21,7 +21,7 @@ ChartJS.register(
     Legend
 );
 
-const ChartUser = () => {
+const ChartUser = ({user_id}) => {
     // Khởi tạo dữ liệu
     const [data, setData] = useState({
         week: [0, 0, 0, 0, 0, 0, 0],
@@ -32,7 +32,8 @@ const ChartUser = () => {
 
     // Hàm lấy dữ liệu từ DB
     const getData = async (type) => {
-        const res = await axios.get(`/api/dashboard/user/1/bieudo/${type}`);
+        const res = await axios.get(`/api/dashboard/user/${user_id}/bieudo/${type}`);
+
         const value = res.data;
         if (type == "week") {
             let week = [0, 0, 0, 0, 0, 0, 0];
@@ -100,7 +101,7 @@ const ChartUser = () => {
         datasets: [
             {
                 label: "Doanh thu",
-                data: test[view],
+                data: data[view],
                 backgroundColor: "#5a99f0", // Màu cột
                 borderRadius: 6, // Bo góc
                 barThickness: 20, // Độ dày cột
@@ -151,9 +152,7 @@ const ChartUser = () => {
         <div className="bg-white h-[450px] rounded-lg p-4 max-w-3xl mx-auto">
             {/* Nút chuyển đổi */}
             <div className="flex justify-end mb-4">
-                <div className="h-5 w-full text-base font-bold  text-black p-4">
-                    Số lượng đã mua
-                </div>
+                <div className='h-5 w-full text-base font-bold  text-black p-4'>Thống kê đơn hàng đã giao</div>
                 <select
                     className="border rounded-md px-4 py-2 text-sm bg-gray-100"
                     value={view}
