@@ -70,20 +70,29 @@ const Login = () => {
                 <title>Login</title>
             </Helmet>
             <div className="mt-2">
-                <h1 className="text-[32px] font-bold text-white text-center mb-3">
+                <h1 className="mobile:text-[20px] ipad:text-[25px]  desktop:text-[32px] font-bold text-white text-center mb-3">
                     ADMIN DASHBOARD
                 </h1>
             </div>
-            <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-[500px] h-[550px] border-2 border-red">
-                <h2 className="text-2xl font-medium text-center mb-4 mt-9">
+            <div className="
+                        bg-white mobile:p-4 desktop:p-8 rounded-2xl shadow-lg  border-2 border-red
+                        mobile:w-[350px] mobile:h-[400px]
+                        ipad:w-[400px] ipad:h-[450px]
+                        desktop:w-[500px] desktop:h-[550px]
+                ">
+                <h2 className="mobile:text-lg ipad:text-xl desktop:text-2xl font-bold text-center 
+                                mobile:mb-1 mobile:mt-4
+                                ipad:mb-2 ipad:mt-7
+                                desktop:mb-4 desktop:mt-9
+                ">
                     Đăng nhập
                 </h2>
-                <p className="text-sm text-center mb-6 text-gray-600">
-                    Vui lòng nhập email và password Admin đã được cung cấp
-                </p>
+                {/* <p className="text-sm text-center mb-6 text-gray-600">
+                    Đăng nhập tài khoản của bạn
+                </p> */}
 
                 <form onSubmit={handleSubmit}>
-                    <div className="mb-6">
+                    <div>
                         <label
                             className="block text-gray-700 mb-2"
                             htmlFor="username"
@@ -103,12 +112,12 @@ const Login = () => {
                             }
                             defaultValue={formData.account}
                         />
-                        {errors.account && (
-                            <p className=" text-[12px] text-red-500">
+                    </div>
+                    {errors.account && (
+                            <p className="mobile:mb-2 desktop:mb-6 text-[12px] text-red-500">
                                 {errors.account}
                             </p>
-                        )}
-                    </div>
+                    )}
                     <div className="relative">
                         <label
                             className="block text-gray-700 mb-2"
@@ -141,7 +150,7 @@ const Login = () => {
 
                     </div>
                     {errors.password && (
-                            <p className="mb-6 text-[12px] text-red-500">
+                            <p className="mobile:mb-2 desktop:mb-6 text-[12px] text-red-500">
                                 {errors.password}
                             </p>
                     )}
@@ -160,7 +169,7 @@ const Login = () => {
 
                 <button
                     onClick={() => navigate("/forgotpass")}
-                    className="text-[17px] font-bold underline text-center text-blue-800 mt-10 w-full mx-auto"
+                    className="text-[17px] font-bold underline text-center text-blue-800 mobile:mt-2 ipad:mt-6 desktop:mt-10 w-full mx-auto"
                 >
                     Quên mật khẩu ?
                 </button>

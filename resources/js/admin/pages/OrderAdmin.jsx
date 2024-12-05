@@ -89,7 +89,7 @@ const Order = () => {
             <Helmet>
                 <title>Quản lý đơn hàng</title>
             </Helmet>
-            <h1 className='text-[32px] font-bold mt-4'>
+            <h1 className='mobile:text-[20px] ipad:text-[25px]  desktop:text-[32px] font-bold mt-4'>
                 Đơn hàng
             </h1>
 
@@ -99,10 +99,10 @@ const Order = () => {
             </div>
 
             {/* Order List */}
-            <div className='w-full'>
+            <div className='overflow-x-auto'>
                 {filteredOrders.length > 0 
                     ? <OrderList data={filteredOrders}/> 
-                    : <div className="text-[#ff3333] ml-4 font-bold text-2xl mt-4">Không có dữ liệu</div>
+                    : <div className="text-black ml-4 font-bold text-2xl mt-4">Không có dữ liệu</div>
                 }
 
             </div>

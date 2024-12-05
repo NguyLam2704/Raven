@@ -7,10 +7,11 @@ import {
     faUserGear,
     faKey,
     faRightFromBracket,
+    faBars
 } from "@fortawesome/free-solid-svg-icons";
 import ConQua from "../asset/ConQua.png"
 
-const Header = () => {
+const Header = ({toggleSidebar}) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const navigate = useNavigate();
     const dropdownRef = useRef(null);
@@ -72,31 +73,65 @@ const Header = () => {
     }, []);
 
     return (
-        <header className="header bg-white fixed top-0 right-0 left-60 h-20 flex justify-between items-center p-5 border-b border-gray-300">
-            <div className="fixed top-0 z-0 animate-fly">
-                    <img
-                    src={ConQua}
-                    alt="Flying Crow"
-                    className="w-20 h-20"
-                    />
-            </div>
+        <header className={`header z-100 mobile:w-full ipad:w-full desktop:w-auto bg-white fixed top-0 right-0 mobile:h-12 ipad:h-17 desktop:h-20 flex justify-between items-center desktop:p-0 p-5 border-b border-gray-300
+            desktop:left-60    
+        `}>
+ 
+            <img src="https://tpuxfltiiajorbixwyff.supabase.co/storage/v1/object/public/Image/Logo/left.png?t=2024-12-05T04%3A52%3A47.750Z"  
+                    alt="tree left"
+                    className="mobile:hidden desktop:block h-20 left-0 absolute z-10"
+            />
+
+            <img 
+                    src="https://tpuxfltiiajorbixwyff.supabase.co/storage/v1/object/public/Image/Logo/ConQua.png"
+                    alt="qua trái"
+                    className="mobile:hidden desktop:block h-20 left-[120px] absolute z-10"
+            />
+
+            <img src="https://tpuxfltiiajorbixwyff.supabase.co/storage/v1/object/public/Image/Logo/right.png?t=2024-12-05T04%3A57%3A45.652Z"  
+                    alt="tree right"
+                    className="desktop:hidden h-20 right-0 absolute z-10"
+            />
+
+            <img src="https://tpuxfltiiajorbixwyff.supabase.co/storage/v1/object/public/Image/Logo/ConQua_right.png?t=2024-12-05T05%3A29%3A44.868Z"  
+                    alt="qua phải"
+                    className="mobile:hidden ipad:block desktop:hidden h-20 right-[120px] absolute z-10"
+            />
+
+            <button className={`desktop:hidden mr-4 absolute z-50 ml-0`} onClick={toggleSidebar}>
+                    <FontAwesomeIcon icon={faBars} />
+            </button>     
             
-            <h1 className="text-4xl text-blue-600 text-center font-bold w-full z-10">
+            <h1 className="
+                desktop:text-4xl text-[#C73659] text-center font-bold w-full z-10
+                ipad:text-2xl
+                mobile:text-xl
+            ">
                 ADMIN DASHBOARD
             </h1>
-            <div className="user-info flex items-center w-[250px] absolute h-full right-5 z-20">
+            <div className="mobile:w-auto ipad:w-auto desktop:w-[250px] 
+                    flex items-center absolute h-full right-2 z-20
+            ">
                 <img
                     src="https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg"
                     alt="User Avatar"
-                    className="avatar w-16 h-16 rounded-full mr-2 border-2"
+                    onClick={toggleDropdown}
+                    className="desktop:w-16 desktop:h-16 
+                                ipad:w-10 ipad:h-10
+                                mobile:w-8 mobile:h-8
+                    rounded-full mr-2 border-2"
                 />
-                <div className="user-name flex flex-col items-start relative w-[100px] ">
-                    <p className="block text-lg truncate w-[100px]">{admin.name}</p>
+                <div className="mobile:hidden ipad:hidden desktop:block flex flex-col items-start relative w-[100px] ">
+                    <p className="block text-lg truncate w-[100px] text-[#C73659] font-bold">{admin.name}</p>
                     <p className="role text-xs text-gray-600">Admin</p>
                 </div>
                 <ul
                     ref={dropdownRef}
-                    className={`user-dropdown absolute top-20 right-10 bg-white shadow-md list-none p-2 w-44 z-10 rounded-2xl border-2 ${
+                    className={`
+                        mobile:top-12 mobile:right-0
+                        ipad:top-17 ipad:right-0
+                        desktop:top-20 desktop:right-10
+                        absolute  bg-white shadow-md list-none p-2 w-44 z-10 rounded-2xl border-2 ${
                         isDropdownOpen ? "block" : "hidden"
                     }`}
                 >
@@ -144,7 +179,7 @@ const Header = () => {
                 <div>
                     <button
                         type="button"
-                        className="dropdown-btn bg-none text-xs cursor-pointer ml-4 hover:text-blue-600 focus:text-blue-600"
+                        className="mobile:hidden ipad:hidden desktop:block bg-none text-xs cursor-pointer ml-4 hover:text-[#C73659] focus:text-[#C73659] "
                         onClick={toggleDropdown}
                     >
                         <FontAwesomeIcon icon={faCircleChevronDown} size="xl" />

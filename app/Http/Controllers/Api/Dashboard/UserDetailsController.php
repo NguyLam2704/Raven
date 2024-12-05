@@ -37,36 +37,36 @@ class UserDetailsController extends Controller
             'products' => $products
         ];
     }
-    public function getAmount($id,$type){
-        
-        if ($type == "week"){
+    public function getAmount($id, $type)
+    {
+
+        if ($type == "week") {
             $week = 0;
             $dayStartofWeek = Carbon::now()->startOfWeek();
             $dayEndofWeek = Carbon::now()->endOfWeek();
-            $week_count = Order::whereBetween('datecreated',[$dayStartofWeek, $dayEndofWeek])->where('status', 3)->count();
-    
-            if ($week_count > 0){
+            $week_count = Order::whereBetween('datecreated', [$dayStartofWeek, $dayEndofWeek])->where('status', 3)->count();
+
+            if ($week_count > 0) {
                 $week = Order::select(DB::raw('DATE(datecreated) as date'), DB::raw('count(*) as buy'))
-                            ->where('user_id',$id)
-                            ->whereBetween('datecreated',[$dayStartofWeek, $dayEndofWeek])->where('status', 3)
-                            ->groupBy(DB::raw('DATE(datecreated)'))->get();
-    
+                    ->where('user_id', $id)
+                    ->whereBetween('datecreated', [$dayStartofWeek, $dayEndofWeek])->where('status', 3)
+                    ->groupBy(DB::raw('DATE(datecreated)'))->get();
             }
             return $week;
-        } else if ($type == "month"){
+        } else if ($type == "month") {
             $month = Order::select(DB::raw('DATE_TRUNC(\'month\', datecreated) as date'), DB::raw('count(*) as buy'))
-                    ->where('user_id',$id)
-                    ->where('status', 3)
-                    ->whereYear('datecreated',Carbon::now()->year)
-                    ->groupBy(DB::raw('DATE_TRUNC(\'month\', datecreated)'))
-                    ->get();
+                ->where('user_id', $id)
+                ->where('status', 3)
+                ->whereYear('datecreated', Carbon::now()->year)
+                ->groupBy(DB::raw('DATE_TRUNC(\'month\', datecreated)'))
+                ->get();
             return $month;
         } else {
             $year = Order::select(DB::raw('DATE_TRUNC(\'year\', datecreated) as date'), DB::raw('count(*) as buy'))
-                    ->where('user_id',$id)
-                    ->where('status', 3)
-                    ->groupBy(DB::raw('DATE_TRUNC(\'year\', datecreated)'))
-                    ->get();
+                ->where('user_id', $id)
+                ->where('status', 3)
+                ->groupBy(DB::raw('DATE_TRUNC(\'year\', datecreated)'))
+                ->get();
             return $year;
         }
     }
