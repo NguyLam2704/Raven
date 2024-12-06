@@ -53,20 +53,6 @@ const CheckOut = () => {
     
     console.log(totalCost);
 
-    
-    // if(product){
-    //     setStoreProduct(Object.values(product));
-    //     console.log(typeof storeProduct);
-    //     totalCost = (product.cost - (product.cost * product.discount / 100))*1;
-    // }
-    // else {
-    //     totalCost = storeProduct.reduce((total, item) => {
-    //         return total + (item.cost - (item.cost * item.discount / 100))*item.quantity;
-    //     },0);
-    // }
-
-
-
     const [tinh, setTinh] = useState([]); 
     const [quan, setQuan] = useState([]); 
     const [phuong, setPhuong] = useState([]); 
@@ -94,6 +80,44 @@ const CheckOut = () => {
             if (response.data.error === 0) { setPhuong(response.data.data); } 
         }); 
     };
+
+    const fetchdata = async () => {
+        // const response = await axios.get("/api/v1/testroute");
+        // return response.data;
+        const response = await fetch(`/api/v1/updateOrder`,{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: "Lam Doan",         // Giả sử bạn truyền tham số name,
+                phonenumber: "1234567892",
+                email: 'doannguyenlambt1@gmail.com',
+                status: 0,          // Giả sử bạn truyền tham số status
+                address: 'Di An, Binh Duong', // Địa chỉ giao hàng
+                detail_address: '35/18',      // Địa chỉ chi tiết
+                payingmethod: false,          // Phương thức thanh toán
+                totalCost: totalCost+50000,
+
+                // Thêm các tham số khác nếu cần thiết
+            }),
+        });
+        const data = await response.json();  // Đọc dữ liệu phản hồi
+        console.log(data);  // Kiểm tra dữ liệu trả về
+        console.log(storeProduct);
+
+        // if (!response.ok){
+        //     throw new Error('Failed to fetch order info')
+        // }
+        // const data = await response.json();
+        // setOrderInfo(data.data || []);
+        // console.log(orderInfo);
+    };
+
+    const updateOrder = () =>{
+        
+        fetchMail();
+    }
     return(
 
         <div className="w-full justify-items-center">
@@ -194,7 +218,7 @@ const CheckOut = () => {
                     </div>
                     {/* Nút thanh toán */}
                     <div className="w-fulf flex items-center justify-center mt-14">
-                        <button className=" h-12 content-center text-center text-white text-2xl font-bold rounded-lg border border-black bg-[#c73659] px-10 py-1">THANH TOÁN</button>
+                        <button onClick={fetchdata} className=" h-12 content-center text-center text-white text-2xl font-bold rounded-lg border border-black bg-[#c73659] px-10 py-1">THANH TOÁN</button>
                     </div>
                     
                 </div>

@@ -9,7 +9,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\OrderResource;
 use App\Http\Resources\V1\OrderCollection;
 use App\Filters\V1\OrdersFilter;
+use App\Mail\CheckOrder;
+use App\Models\Bill;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
+
 class OrderController extends Controller
 {
     /**
@@ -45,7 +52,23 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
-        //
+        $date = now()->format('Ymd'); // 20241205
+        $id = str_pad(Order::max('order_id') + 1, 3, '0', STR_PAD_LEFT); // 001
+        $order_id = "ORD-{$date}-{$id}"; // Kết quả: ORD-20241205-001
+        $status = 0;
+        $user_id = 1;
+        $payingMethod = false;
+        $address = 'Di An, Binh Duong';
+        $detailAddress = '35/18';
+        Order::create([
+            // 'order_id' => $order_id,
+            'status' => $status,
+            'user_id' => $user_id,
+            'datecreated' => $date,
+            'address' => $address,
+            'detail_address' => $detailAddress,
+            'payingmethod' => $payingMethod
+        ]);
     }
 
     /**
@@ -106,5 +129,52 @@ class OrderController extends Controller
             'status' => 'error',
             'message' => 'Vui lòng nhập email hoặc số điện thoại hợp lệ.'
         ], 400);
+    }
+
+    public function testMail(Request $request) {
+        // $input = $request->input('input');// Lấy parameter từ query parameter
+        $message = $request->input('input');// Lấy parameter từ query parameter
+        $toEmail = '22520736@gm.uit.edu.vn';
+        Mail::to($toEmail)->send(new CheckOrder($message));
+    }
+
+    public function updateOrder(Request $request){
+        $validator_user = Validator::make($request->all(),[
+            'phonenumber' => 'required|unique:users,phonenumber'
+        ]);
+        
+        if ($validator_user->fails()) {
+            // return response()->json(['errors' => $validator_user->errors()], 400);
+        }
+        else{
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->phonenumber = $request->phonenumber;
+            $user->datefirstbuy = Carbon::now();
+            $user->save();
+        }
+        // $user->refresh();
+        // $user->save();
+        /******************************/
+        /*****************************/
+        $user = User::where('phonenumber', $request->phonenumber)->first();
+        $order = new Order();
+        $order->status =  $request->status;
+        $order->address = $request->address;
+        $order->datecreated = Carbon::now();
+        $order->detail_address = $request->detail_address;
+        $order->payingmethod = $request->payingmethod;
+        $order->user_id = $user->user_id; 
+        $order->save();
+        Mail::to($request->email)->send(new CheckOrder($request->name));
+        
+        /************************************ */
+        $bill = new Bill();
+        $bill->total_cost = $request->totalCost;
+        $order = $order->refresh();
+        $bill->order_id = $order->order_id;
+        $bill->save();
+        return response()->json(['message' => 'Order updated successfully']);
     }
 }

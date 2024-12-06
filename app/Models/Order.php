@@ -12,6 +12,18 @@ class Order extends Model
     use HasFactory;
     protected $table = 'orders';
     protected $primaryKey = 'order_id';
+    protected $fillable = [
+        'order_id',
+        'datecreated',
+        'status',
+        'user_id',
+        'payingmethod',
+        'datepaid',
+        'address',
+        'detail_address',
+    ];
+
+    public $timestamps = false;
     // define relationship of user and order : 1 order belongsTo 1 user (One to many (inverse))
     public function user(): BelongsTo
     {

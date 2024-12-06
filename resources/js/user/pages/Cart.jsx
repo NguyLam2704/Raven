@@ -23,7 +23,6 @@ const Cart = () => {
         return total + (item.cost - (item.cost * item.discount / 100))*item.quantity;
     },0);
 
-    const navigate = useNavigate() // initialize navigate
     //Xóa sản phẩm
     const removeProduct = (product) =>{
         console.log(product)
@@ -32,16 +31,16 @@ const Cart = () => {
         setStoreProduct(newCart);
     }
     //Hàm tăng số lượng sp
-    const handlePlus = (id) =>{
-        const index = storeProduct.findIndex((item) => item.proId === id);
+    const handlePlus = (id,color,size) =>{
+        const index = storeProduct.findIndex((item) => item.proId === id && item.color === color && item.size === size);
         storeProduct[index].quantity += 1;
         localStorage.setItem('cart', JSON.stringify(storeProduct));
         const savedProduct = localStorage.getItem('cart');
         setStoreProduct(JSON.parse(savedProduct));
     }
     //Hàm giảm số lượng sp
-    const handleTru = (id) =>{
-        const index = storeProduct.findIndex((item) => item.proId === id);
+    const handleTru = (id,color,size) =>{
+        const index = storeProduct.findIndex((item) => item.proId === id && item.color === color && item.size === size);
         if( storeProduct[index].quantity > 1)
         {storeProduct[index].quantity -= 1;}
         localStorage.setItem('cart', JSON.stringify(storeProduct));
@@ -74,7 +73,7 @@ const Cart = () => {
                 )}
                 {/* Danh sách các sản phẩm */}
                 {storeProduct.map((product, index) => (
-                    <ItemProduct key={index} product={product} removeProduct={()=>removeProduct(product)} handlerPlus={()=>handlePlus(product.proId)} handlerTru={()=>handleTru(product.proId)}/>                            
+                    <ItemProduct key={index} product={product} removeProduct={()=>removeProduct(product)} handlerPlus={()=>handlePlus(product.proId, product.color, product.size)} handlerTru={()=>handleTru(product.proId, product.color, product.size)}/>                            
                 ))}
                 {/* {
                     <ItemProduct data={ListProduct} />
