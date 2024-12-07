@@ -74,6 +74,9 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/getUserByPhone/{phone}', [DashboardController::class, 'getUserByPhone']);
     Route::get('/views', [ViewsController::class, 'addView']);
     Route::post('/addproduct', [ProductDetailsController::class, 'addProduct']);
+    Route::get('/product/{id}', [ProductDetailsController::class, 'getProduct']);
+    Route::put('/product/{id}', [ProductDetailsController::class, 'changeProduct']);
+    Route::delete('/product/{id}', [ProductDetailsController::class, 'deleteProduct']);
     Route::get('/product/{id}/bieudo', [ProductDetailsController::class, 'getChart']);
 });
 
