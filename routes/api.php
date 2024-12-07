@@ -19,7 +19,9 @@ use App\Http\Controllers\Api\V1\ProductImageController;
 use App\Http\Controllers\Api\V1\ProductOrderController;
 use App\Http\Controllers\Api\V1\TestController;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Mail\CheckOrder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
@@ -43,6 +45,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], f
     Route::apiResource('user', UserController::class);
     Route::apiResource('productOrder', ProductOrderController::class);
     Route::post('orderInfo', [OrderController::class, 'orderInfo']); //check order : api/v1/orderInfo
+    Route::post('verifyOrder',[OrderController::class,'testMail']);  
+    Route::post('/updateOrder',[OrderController::class,'updateOrder']);
 });
 
 //auth
@@ -72,3 +76,5 @@ Route::prefix('dashboard')->group(function () {
     Route::post('/addproduct', [ProductDetailsController::class, 'addProduct']);
     Route::get('/product/{id}/bieudo', [ProductDetailsController::class, 'getChart']);
 });
+
+ 

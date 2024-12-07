@@ -33,7 +33,7 @@ const Cart = () => {
     const totalCost = cartProduct.reduce((total, item) => {
         return total + (item.cost - (item.cost * item.discount / 100))*item.quantity;
     },0);
-    
+
     //Xóa sản phẩm
     const removeProduct = (product) =>{
         const newCart = storeProduct.filter((item)=> item !== product)        
@@ -44,8 +44,8 @@ const Cart = () => {
                                                             item.size !== product.size )); 
     }
     //Hàm tăng số lượng sp
-    const handlePlus = (product) =>{
-        const index = storeProduct.findIndex((item) => item === product);
+    const handlePlus = (id,color,size) =>{
+        const index = storeProduct.findIndex((item) => item.proId === id && item.color === color && item.size === size);
         storeProduct[index].quantity += 1;
         localStorage.setItem('cart', JSON.stringify(storeProduct));
         const savedProduct = localStorage.getItem('cart');
@@ -56,8 +56,8 @@ const Cart = () => {
         cartProduct[id].quantity += 1;
     }
     //Hàm giảm số lượng sp
-    const handleTru = (product) =>{
-        const index = storeProduct.findIndex((item) => item === product);
+    const handleTru = (id,color,size) =>{
+        const index = storeProduct.findIndex((item) => item.proId === id && item.color === color && item.size === size);
         if( storeProduct[index].quantity > 1)
         {storeProduct[index].quantity -= 1;}
         localStorage.setItem('cart', JSON.stringify(storeProduct));
@@ -94,8 +94,8 @@ const Cart = () => {
                     </div>
                 )}
                 {/* Danh sách các sản phẩm */}
-                {storeProduct.map((product, index) => (                
-                    <ItemProduct key={index} product={product} removeProduct={()=>removeProduct(product)} handlerPlus={()=>handlePlus(product)} handlerTru={()=>handleTru(product)} onCheckChange={handleCheckChange}/>                            
+                {storeProduct.map((product, index) => (
+                    <ItemProduct key={index} product={product} removeProduct={()=>removeProduct(product)} handlerPlus={()=>handlePlus(product.proId, product.color, product.size)} handlerTru={()=>handleTru(product.proId, product.color, product.size)} onCheckChange={handleCheckChange}/>                            
                 ))}
                 
                 {/* {

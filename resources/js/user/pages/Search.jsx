@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TitleSearch from '../components/Search/Titile_Search';
 import Navigation from "../components/Navigation";
 import Product from "../components/Product";
@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown} from '@fortawesome/free-solid-svg-icons'
 import Footer from "../components/Footer";
 import {  useParams } from "react-router-dom";
-
+import { useLocation } from "react-router-dom";
 //Trang tiềm kiếm
 const ListProduct = [
     {
@@ -70,6 +70,8 @@ const ListProduct = [
   ];
 
 const Search = () => {
+  
+   
     //Giá trị của bộ lọc sắp xếp
     const [sort, setSort] = useState('Giá giảm dần');
     // Ẩn/hiện các giá trị của bộ lọc tìm kiếm
@@ -81,15 +83,50 @@ const Search = () => {
       setOpen(false);
   };
     //Nhận giá trị từ thanh tìm kiếm
-  
-    const {text} = useParams();
+    const location = useLocation();
+    const text = new URLSearchParams(location.search).get("query");
+    console.log(text);
+    // const {text} = useParams();
+    // State lưu danh sách sản phẩm từ API
+    const [products, setProducts] = useState([]);
+
+    // State lưu danh sách sản phẩm đã lọc
+    const [filteredProducts, setFilteredProducts] = useState([])
+
+    // Gọi API để lấy danh sách sản phẩm
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('/api/v1/product?includeImage=true'); // Gọi API
+        const data = await response.json(); // Chuyển đổi JSON
+        setProducts(data.data || []); // Lưu danh sách sản phẩm vào state
+        setFilteredProducts(data.data || []); // Hiển thị toàn bộ sản phẩm ban đầu
+      } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu:", error);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+    // Lọc sản phẩm khi từ khóa tìm kiếm thay đổi
+    useEffect(() => {
+      if (text) {
+        const filtered = products.filter((product) =>
+          product.productName.toLowerCase().includes(text.toLowerCase())
+        );
+        setFilteredProducts(filtered);
+        setValue("Giá giảm dần")
+      } else {
+        setFilteredProducts(products);
+      }
+    }, [text, products]);
+
     return(
         <div className='w-full h-full font-Public'> 
             <Navigation/>
 
             {/* Tiêu đề */}
             <TitleSearch input={text}/>
-
             
             <div className=" justify-items-center mt-20">
               <div className="w-10/12">
@@ -116,10 +153,29 @@ const Search = () => {
                     </div>
                     {/* Danh sách các sản phẩm */}
                     <div className="mt-10 grid desktop:grid-cols-4 ipad:grid-cols-3 gap-12 z-10">
-                        {ListProduct.map((product, index) => (
-                            <Product key={index} price={product.price} img={product.img} name={product.name} sale={product.sale} />
-                        ))}
-                    </div>
+                    {filteredProducts.length > 0 ? (
+                      filteredProducts.filter((product) => product.discount > 0) //filter product have discount
+                      .sort((a,b) => {
+                          if (sort === 'Giá giảm dần') {
+                            return (b.cost - b.cost*b.discount/100) - (a.cost - a.cost*a.discount/100);
+                          }
+                          else if (sort == "Giá tăng dần") {
+                            return (a.cost - a.cost*a.discount/100) - (b.cost - b.cost*b.discount/100);
+                          }
+                          else return (b.cost - b.cost*b.discount/100) - (a.cost - a.cost*a.discount/100);
+                        }).map((product, index) => (
+                        <Product
+                          key={index}
+                          price={product.cost}
+                          img={product.productImage.find(img => img.isPrimary)?.image}
+                          name={product.productName}
+                          sale={product.discount}
+                        />
+                      ))
+                    ) : (
+              <p>Không tìm thấy sản phẩm nào.</p>
+            )}
+                      </div>
               </div>
             </div>
             <Footer/>

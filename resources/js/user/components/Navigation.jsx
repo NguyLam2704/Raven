@@ -38,11 +38,10 @@ const Navigation = () => {
     const navigate = useNavigate();
     
     //Hàm chuyển đến trang Tìm kiếm và truyền nội dung tìm kiếm
-    const navigateToAbout = () => { 
-                  
-        navigate(`/search/${text}`);
-
-    };
+    const navigateToAbout = (e) => { 
+        e.preventDefault(); // prevent default form submission
+        navigate(`/search?query=${text}`); // include search query in URL
+      };
 
     //Số lượng trong giỏ hàng
     const [quantityCart, setQuantityCart] = useState()

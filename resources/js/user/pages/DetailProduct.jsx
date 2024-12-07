@@ -58,7 +58,7 @@ const DetailProduct = () =>{
             cart[existingProductIndex].quantity += quality;
         } else {
             // Nếu sản phẩm chưa có, thêm sản phẩm với số lượng ban đầu là 1
-            cart.push({ ...cartProduct, color: selectedColor, size: selectedSize, quantity: quality });
+            cart.push({ ...cartProduct, color: selectedColor, size: selectedSize, quantity: quality, sizeId: selectedSizeId, colorId: selectedColorId });
         }
         // Cập nhật lại localStorage
         localStorage.setItem('cart', JSON.stringify(cart));
@@ -75,7 +75,7 @@ const DetailProduct = () =>{
     // const[ListProduct, setLi]
     const [DetailProduct, setDetailProduct] = useState(null);
     const [loading, setLoading] = useState(false); // Trạng thái tải dữ liệu
-    const [error, setError] = useState(null); // Trạng thái lỗi
+    // const [error, setError] = useState(null); // Trạng thái lỗi
     const [categoryType, setCategory] = useState(null); // categroy type of detail product
     const fetchDetail = async() => {
         try {
@@ -135,7 +135,10 @@ const DetailProduct = () =>{
     const [selectedColor, setSelectedColor] = useState(null);
     //nhận giá trị size 
     const [selectedSize, setSelectedSize] = useState(null);
-    
+    //Nhận giá trị id color
+    const [selectedColorId, setColorId] = useState(null);
+    //Nhận giá trị id size
+    const [selectedSizeId, setSizeId] = useState(null);
     //Nút mũi tên
     const [NumberBack, setBack] = useState(0)
     const [NumberForward, setForward] = useState(4)
@@ -281,9 +284,14 @@ const DetailProduct = () =>{
                                                     onClick={() => {
                                                         if((totalQuantity && (selectedSize ? quanlitySize : 1)) || selectedColor===element.color.colorCode)
                                                         {
-                                                            if(selectedColor===element.color.colorCode)
-                                                                setSelectedColor('')
-                                                            else    setSelectedColor(element.color.colorCode)
+                                                            if(selectedColor===element.color.colorCode) {
+                                                                    setSelectedColor('');
+                                                                    setColorId('');
+                                                                }
+                                                            else {
+                                                                setSelectedColor(element.color.colorCode)
+                                                                setColorId(element.colorId);
+                                                            }
                                                         }
                                                         else alert(`Sản phẩm màu ${element.color.colorName} đã hết hàng. Vui lòng chọn màu sắc khác`)
                                                     }}
@@ -328,9 +336,14 @@ const DetailProduct = () =>{
                                             onClick={() => {
                                                 if(totalQuantity && (selectedColor? quanlityColor : 1) || selectedSize===element.size.sizeCode)
                                                     {
-                                                        if(selectedSize===element.size.sizeCode)
-                                                            setSelectedSize('')
-                                                        else    setSelectedSize(element.size.sizeCode)
+                                                        if(selectedSize===element.size.sizeCode){
+                                                            setSelectedSize('');
+                                                            setSizeId('');
+                                                        }
+                                                        else {
+                                                            setSelectedSize(element.size.sizeCode)
+                                                            setSizeId(element.sizeId);
+                                                        }
                                                     }
                                                 else {alert(`Sản phẩm size ${element.size.sizeCode} đã hết hàng. Vui lòng chọn size khác`)}
                                             }}                                           
@@ -392,6 +405,8 @@ const DetailProduct = () =>{
                                         size: selectedSize,
                                         color: selectedColor,
                                         quantity: quality,
+                                        sizeId: selectedSizeId,
+                                        colorId: selectedColorId
                                     };
                                     navigate("/check_out", { state: { product: updateCartProduct} })}
                                     else console.log("empty color and empty size");
