@@ -96,7 +96,7 @@ const HomeUser = () => {
     const navigate = useNavigate() ; 
     
     return(
-        <div className='w-full h-screen '>
+        <div className='w-full h-screen font-Public'>
              { loading ? ( <div></div>) : (<Navigation/>) }
             <main className=" mt-[90px] w-full">
                 { loading ? ( <div></div>) : (<SliderHome/>) }
@@ -115,7 +115,7 @@ const HomeUser = () => {
                             <button onClick={hanlderBackNew} className=" p-1 pr-2 bg-opacity-30 rounded-full " >
                                 <img src={back} alt="none"/>
                             </button>                        
-                            <div className="h-4/5 w-10/12 grid grid-cols-4 gap-10 "  >                             
+                            <div className="h-4/5 w-10/12 grid desktop:grid-cols-4 ipad:grid-cols-3 gap-10 "  >                             
                                 {products.sort((a, b) => new Date(b.datePosted) - new Date(a.datePosted)) // sort by day
                                         .slice(NumberBackNew, NumberForwardNew) // choose 8 product
                                         .map((product, index) => (
@@ -155,7 +155,7 @@ const HomeUser = () => {
                             >
                                 <img src={back} alt="none"/>
                             </button>                        
-                            <div className="h-4/5 w-10/12 grid grid-cols-4 gap-10 "  > 
+                            <div className="h-4/5 w-10/12 grid desktop:grid-cols-4 ipad:grid-cols-3 gap-10 "  > 
                                 
                                 {products.filter((product) => product.quantitySold > 10) //fiter product have more 10 quantitySold
                                         .slice(NumberBackHighlight, NumberForwardHighlight) //choose 8 product
@@ -200,7 +200,7 @@ const HomeUser = () => {
                             >
                                 <img src={back} alt="none"/>
                             </button>                        
-                            <div className="h-4/5 w-10/12 grid grid-cols-4 gap-10 "  > 
+                            <div className="h-4/5 w-10/12 grid desktop:grid-cols-4 ipad:grid-cols-3 gap-10 "  > 
                                 
                                 {products.filter((product) => product.discount > 0) //filter product have discount
                                     .slice(NumberBackSale, NumberForwardSale)

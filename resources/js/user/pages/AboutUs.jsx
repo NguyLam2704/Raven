@@ -23,11 +23,11 @@ const AboutUs = () => {
 
     return(
         
-        <div className='w-full'>
+        <div className='w-full font-Public'>
             <Navigation/>
             <div className='w-full justify-items-center pt-16 mt-[90px]'>
                 <div className='w-10/12 border-b-[3px] border-black text-center text-7xl font-extrabold py-10 '>RAVEN</div>
-                <div className='w-10/12 text-justify text-2xl font-semibold pt-10'>Raven là thương hiệu thời trang nổi bật với phong cách trẻ trung, mới mẻ và đặc biệt là sự độc đáo. Được thiết kế dành riêng cho những người yêu thích sự sáng tạo và cá tính, Raven mang đến những bộ sưu tập thời trang không chỉ bắt mắt mà còn thể hiện rõ nét cá nhân của người mặc. Với mỗi sản phẩm, Raven không chỉ chú trọng  chất lượng mà còn tạo nên những thiết kế độc đáo, giúp bạn tự tin tỏa sáng, khẳng định phong cách và chất riêng của bạn.</div>
+                <div className='w-10/12 text-justify text-2xl font-medium pt-10'>Raven là thương hiệu thời trang nổi bật với phong cách trẻ trung, mới mẻ và đặc biệt là sự độc đáo. Được thiết kế dành riêng cho những người yêu thích sự sáng tạo và cá tính, Raven mang đến những bộ sưu tập thời trang không chỉ bắt mắt mà còn thể hiện rõ nét cá nhân của người mặc. Với mỗi sản phẩm, Raven không chỉ chú trọng  chất lượng mà còn tạo nên những thiết kế độc đáo, giúp bạn tự tin tỏa sáng, khẳng định phong cách và chất riêng của bạn.</div>
                 <div className='w-10/12 text-center text-2xl font-bold pt-2 pb-10'>Hãy để Raven đồng hành cùng bạn trên hành trình khám phá và thể hiện bản thân!</div>
                 <img className='w-10/12' src={about1} alt="img" />
             </div>
@@ -36,10 +36,10 @@ const AboutUs = () => {
                     <div className=' w-full h-full rounded-full justify-items-center'> 
                         <img className='h-60 w-60 rounded-full' src={founder1} alt="" />
                     </div>
-                    <div className=' col-span-2 content-center text-justify text-xl font-semibold'>Đoàn Nguyễn Lâm Là người sáng lập và giám đốc sáng tạo của Raven, Đoàn Nguyễn Lâm mang đến sự sáng tạo và tầm nhìn độc đáo cho thương hiệu. Với nền tảng vững chắc trong thiết kế thời trang và niềm đam mê không ngừng nghỉ, Lâm đã dẫn dắt Raven trở thành biểu tượng của phong cách trẻ trung và mới mẻ.</div>
+                    <div className=' col-span-2 content-center text-justify text-xl font-medium'>Đoàn Nguyễn Lâm Là người sáng lập và giám đốc sáng tạo của Raven, Đoàn Nguyễn Lâm mang đến sự sáng tạo và tầm nhìn độc đáo cho thương hiệu. Với nền tảng vững chắc trong thiết kế thời trang và niềm đam mê không ngừng nghỉ, Lâm đã dẫn dắt Raven trở thành biểu tượng của phong cách trẻ trung và mới mẻ.</div>
                 </div>
                 <div className='w-10/12 grid grid-cols-3 py-5'>                    
-                    <div className=' col-span-2 content-center text-justify text-xl font-semibold'>Thạch Minh Luân là chuyên gia về marketing và truyền thông, đóng vai trò quan trọng trong việc xây dựng hình ảnh và thương hiệu của Raven. Với kinh nghiệm dày dặn trong lĩnh vực quảng cáo và truyền thông, Luân đã giúp Raven tiếp cận và thu hút được đông đảo khách hàng trẻ tuổi.</div>
+                    <div className=' col-span-2 content-center text-justify text-xl font-medium'>Thạch Minh Luân là chuyên gia về marketing và truyền thông, đóng vai trò quan trọng trong việc xây dựng hình ảnh và thương hiệu của Raven. Với kinh nghiệm dày dặn trong lĩnh vực quảng cáo và truyền thông, Luân đã giúp Raven tiếp cận và thu hút được đông đảo khách hàng trẻ tuổi.</div>
                     <div className=' w-full justify-items-center'> 
                         <img className='h-60 w-60 rounded-full' src={founder2} alt="" />
                     </div>
@@ -48,17 +48,17 @@ const AboutUs = () => {
                     <div className=' w-full justify-items-center'> 
                         <img className='h-60 w-60 rounded-full' src={founder3} alt="" />
                     </div>
-                    <div className='col-span-2 content-center text-justify text-xl font-semibold'>Cao Quốc Kiệt là giám đốc tài chính của Raven, Cao Quốc Kiệt đảm bảo rằng mọi hoạt động tài chính của công ty đều được quản lý một cách hiệu quả. Với kiến thức sâu rộng về tài chính và quản lý, Kiệt đã giúp Raven phát triển bền vững và mở rộng quy mô kinh doanh.</div>
+                    <div className='col-span-2 content-center text-justify text-xl font-medium'>Cao Quốc Kiệt là giám đốc tài chính của Raven, Cao Quốc Kiệt đảm bảo rằng mọi hoạt động tài chính của công ty đều được quản lý một cách hiệu quả. Với kiến thức sâu rộng về tài chính và quản lý, Kiệt đã giúp Raven phát triển bền vững và mở rộng quy mô kinh doanh.</div>
                 </div>
                 <div className='w-10/12 grid grid-cols-3 py-5 rounded-full'>                    
-                    <div className=' col-span-2 content-center text-justify text-xl font-semibold'>Đỗ Nguyên Phương là giám đốc sản xuất của Raven, chịu trách nhiệm giám sát quá trình sản xuất và đảm bảo chất lượng sản phẩm. Với kinh nghiệm lâu năm trong ngành công nghiệp thời trang, Phương đã mang đến những sản phẩm chất lượng cao và độc đáo, giúp Raven khẳng định vị thế trên thị trường.</div>
+                    <div className=' col-span-2 content-center text-justify text-xl font-medium'>Đỗ Nguyên Phương là giám đốc sản xuất của Raven, chịu trách nhiệm giám sát quá trình sản xuất và đảm bảo chất lượng sản phẩm. Với kinh nghiệm lâu năm trong ngành công nghiệp thời trang, Phương đã mang đến những sản phẩm chất lượng cao và độc đáo, giúp Raven khẳng định vị thế trên thị trường.</div>
                     <div className=' w-full justify-items-center'> 
                         <img className='h-60 w-60 rounded-full' src={founder4} alt="" />
                     </div>
                 </div>
             </div>
             <div className='w-full h-96  justify-items-center pt-16 mb-30'>
-                <div className='w-10/12 text-center text-3xl font-extrabold py-10 '>LỊCH SỬ PHÁT TRIỂN</div>
+                <div className='w-10/12 text-center text-3xl font-bold py-10 '>LỊCH SỬ PHÁT TRIỂN</div>
                 <div className=' w-10/12 pb-1 flex flow-row justify-between text-xl font-bold text-[#a91d3a]'>
                     <div></div>
                     <div >2021</div>
@@ -96,7 +96,7 @@ const AboutUs = () => {
                     <div>2024</div>
                 </div>
                     { is2020 && (
-                        <div className='w-10/12 text-justify text-xl font-semibold pt-5 pb-5 '>
+                        <div className='w-10/12 text-justify text-xl font-medium pt-5 pb-5 '>
                         <div className='text-2xl font-bold text-[#a91d3a]'> 2020 - Khởi Đầu:</div>
                             Raven được thành lập vào năm 2016 bởi bốn nhà sáng lập đầy nhiệt huyết: Đoàn Nguyễn Lâm, Thạch Minh Luân, Cao Quốc Kiệt, và Đỗ Nguyên Phương. Với tầm nhìn mang đến phong cách thời trang trẻ trung, mới mẻ và độc đáo, Raven nhanh chóng thu hút sự chú ý của giới trẻ.
                         </div>
