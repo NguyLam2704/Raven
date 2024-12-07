@@ -62,11 +62,12 @@ const CheckOrder = () => {
                         <ul className="flex flex-row ">
                             <li className="w-1/4 h-11 content-center border border-black border-r-0 bg-[#eeeeee] text-center text-[#a91d3a] text-lg font-bold">Mã đơn hàng</li>
                             <li className="w-1/3 h-11 content-center border border-black border-r-0 bg-[#eeeeee] text-center text-[#a91d3a] text-lg font-bold">Tên khách hàng</li>
+                            <li className="w-1/3 h-11 content-center border border-black border-r-0 bg-[#eeeeee] text-center text-[#a91d3a] text-lg font-bold">Thời gian đặt hàng</li>
                             <li className="w-1/3 h-11 content-center border border-black border-r-0 bg-[#eeeeee] text-center text-[#a91d3a] text-lg font-bold">Tổng tiền thanh toán</li>
                             <li className="w-1/3 h-11 content-center border border-black  bg-[#eeeeee] text-center text-[#a91d3a] text-lg font-bold">Trạng thái đơn hàng</li>
                         </ul>
                         {/* Danh sách các đơn hàng */}
-                        {orderInfo.map((order, index)=>{
+                        {orderInfo.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated)).slice(0,10).map((order, index)=>{
 
                             return(
                                 <ItemOrder key={index} order={order} />

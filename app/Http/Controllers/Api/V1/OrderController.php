@@ -11,6 +11,9 @@ use App\Http\Resources\V1\OrderCollection;
 use App\Filters\V1\OrdersFilter;
 use App\Mail\CheckOrder;
 use App\Models\Bill;
+use App\Models\ProColorSize;
+use App\Models\Product;
+use App\Models\ProductOrder;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -115,13 +118,13 @@ class OrderController extends Controller
         }
         // Kiểm tra định dạng email
         elseif (filter_var($input, FILTER_VALIDATE_EMAIL)) {
-            $orders = Order::whereRelation('user','email','=',$input)->with(['user', 'bill'])->get();
+            $orders = Order::whereRelation('user','email','=',$input)->with(['user', 'productOrder'])->get();
             return new OrderCollection($orders);
         }
 
         // Kiểm tra định dạng số điện thoại (10 chữ số, bắt đầu bằng 0)
         elseif (preg_match('/^0\d{9}$/', $input)) {
-            $orders = Order::whereRelation('user','phonenumber','=',$input)->with(['user', 'bill'])->get();
+            $orders = Order::whereRelation('user','phonenumber','=',$input)->with(['user', 'productOrder'])->get();
             return new OrderCollection($orders);
         }
 
@@ -135,10 +138,11 @@ class OrderController extends Controller
         // $input = $request->input('input');// Lấy parameter từ query parameter
         $message = $request->input('input');// Lấy parameter từ query parameter
         $toEmail = '22520736@gm.uit.edu.vn';
-        Mail::to($toEmail)->send(new CheckOrder($message));
+        // Mail::to($toEmail)->send(new CheckOrder($message));
     }
 
     public function updateOrder(Request $request){
+        //check phonenumber
         $validator_user = Validator::make($request->all(),[
             'phonenumber' => 'required|unique:users,phonenumber'
         ]);
@@ -147,17 +151,18 @@ class OrderController extends Controller
             // return response()->json(['errors' => $validator_user->errors()], 400);
         }
         else{
+            // insert user if not exist
             $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
             $user->phonenumber = $request->phonenumber;
             $user->datefirstbuy = Carbon::now();
             $user->save();
+            $user->refresh();
         }
-        // $user->refresh();
-        // $user->save();
         /******************************/
         /*****************************/
+        // Insert order
         $user = User::where('phonenumber', $request->phonenumber)->first();
         $order = new Order();
         $order->status =  $request->status;
@@ -167,14 +172,41 @@ class OrderController extends Controller
         $order->payingmethod = $request->payingmethod;
         $order->user_id = $user->user_id; 
         $order->save();
-        Mail::to($request->email)->send(new CheckOrder($request->name));
-        
+        $order->fresh();
+        /************************************* */
+        $productOrder = new ProductOrder();
+        $products = $request->product;
+        foreach($products as $product){
+            $proId = $product['proId'];
+            $colorId = $product['colorId'];
+            $sizeId = $product['sizeId'];
+            // update quantity_available in pro_color_size
+            $proColorSize = ProColorSize::where('prod_id',$proId)->where('color_id',$colorId)->where('size_id',$sizeId)->first();
+            $proColorSize->quantity_available = $proColorSize->quantity_available - $product['quantity'];
+            $proColorSize->save();
+
+            /************************************************************ */
+            // update quantity_sold in products
+            $updateProQuantitySold = Product::where('prod_id',$proId)->first();
+            $updateProQuantitySold->quantity_sold = $updateProQuantitySold->quantity_sold+$product['quantity'];
+            $updateProQuantitySold->save();
+            /************************************************************ */
+            // insert to product_order
+            $productOrder->order_id = $order->order_id;
+            $productOrder->pro_color_size_id = $proColorSize->pro_color_size_id;
+            $productOrder->quantity = $product['quantity'];
+            $productOrder->after_discount_cost = $product['discount'] > 0 ? $product['cost'] - $product['cost']*$product['discount']/100 : $product['cost'] ;
+            $productOrder->save();
+            // return response()->json(['message' => $proColorSize->pro_color_size_id]);
+        }
         /************************************ */
-        $bill = new Bill();
-        $bill->total_cost = $request->totalCost;
-        $order = $order->refresh();
-        $bill->order_id = $order->order_id;
-        $bill->save();
+        // $bill = new Bill();
+        // $bill->total_cost = $request->totalCost;
+        // $order = $order->refresh();
+        // $bill->order_id = $order->order_id;
+        // $bill->save();
+        // $product = json_decode($products, true);
+        Mail::to($request->email)->send(new CheckOrder($request->name, $request->phonenumber, $request->address, $request->detail_address, Carbon::now(), $order->order_id, $request->totalCost, $request->product));
         return response()->json(['message' => 'Order updated successfully']);
     }
 }

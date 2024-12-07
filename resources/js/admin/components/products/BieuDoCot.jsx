@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
@@ -13,13 +13,13 @@ import 'tailwindcss/tailwind.css';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const BieuDoCot = () => {
+const BieuDoCot = ({data}) => {
     // Dữ liệu
-    const data = {
-        week: [200, 100, 300, 50, 250, 80, 400],
-        month: [1200, 4530, 5600, 6000, 5400, 6600, 6400, 5000, 4800, 5200, 4500, 6000],
-        year: [60000, 75000, 80000, 95000],
-    };
+    // const data = {
+    //     week: [200, 100, 300, 50, 250, 80, 400],
+    //     month: [1200, 4530, 5600, 6000, 5400, 6600, 6400, 5000, 4800, 5200, 4500, 6000],
+    //     year: [60000, 75000, 80000, 95000],
+    // };
 
     const labels = {
         week: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -76,7 +76,7 @@ const BieuDoCot = () => {
                     drawBorder: false,
                 },
                 ticks: {
-                    stepSize: 100,
+                    stepSize: 50000,
                     font: {
                         size: 12,
                     },

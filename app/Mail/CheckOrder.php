@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-
+use Illuminate\Mail\Mailables\Address;
 class CheckOrder extends Mailable
 {
     use Queueable, SerializesModels;
@@ -17,11 +17,25 @@ class CheckOrder extends Mailable
      * Create a new message instance.
      */
 
-    public $CustomMessage ;
+    public $CustomerName ;
+    public $CustomerPhonenumber;
+    public $CustomerAddress;
+    public $CustomerDetailAddress;
+    public $CustomerTimeOrder;
+    public $OrderId;
+    public $TotalCost;
+    public $Product;
 
-    public function __construct($message)
+    public function __construct($name, $phonenumber, $address, $detailAddress, $timeOrder, $orderId, $totalCost, $product)
     {
-        $this->CustomMessage = $message;
+        $this->CustomerName = $name;
+        $this->CustomerPhonenumber = $phonenumber;
+        $this->CustomerAddress = $address;
+        $this->CustomerDetailAddress = $detailAddress;
+        $this->CustomerTimeOrder = $timeOrder;
+        $this->OrderId = $orderId;
+        $this->TotalCost = $totalCost;
+        $this->Product = $product;
     }
 
     /**
@@ -30,7 +44,8 @@ class CheckOrder extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Check Order',
+            from: new Address('raven@clothes.com', 'Raven Clothes'),
+            subject: 'Xác nhận đơn hàng',
         );
     }
 

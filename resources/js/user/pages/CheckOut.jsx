@@ -5,11 +5,29 @@ import img_product from '../assets/img_product.svg'
 import ItemCheckOut from "../components/CheckOut/ItemCheckOut";
 import QR from '../assets/QR.svg'
 import axios from 'axios';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 //Thanh toán
 const CheckOut = () => {
+    //Họ và tên
+    const [name, setName] = useState('')
+    //email
+    const [email, setEmail] = useState('')
+    //Số điện thoại
+    const [phone, setPhone] = useState('')
+    //Ghi chú
+    const [note, setNote] = useState('')
+    //Tên tỉnh
+    const [selectedTinhName, setSelectedTinhName] = useState('');
+    //Tên huyện
+    const [selectedQuanName, setSelectedQuanName] = useState('');
+    //Tên phường
+    const [selectedPhuongName, setSelectedPhuongName] = useState('');
+    //Tên đường
+    const [street, setStreet] = useState('')
+    //Thanh toán tiền mặt
     const [COD, setCOD] = useState(false)
+    //Thanh toán chuyển khoản
     const [banking, setBanking] = useState(false)
     const hanlderCOD = () =>{
         setCOD(true)
@@ -23,36 +41,33 @@ const CheckOut = () => {
     const [storeProduct, setStoreProduct] = useState([]);
     const location = useLocation();
     const { product } = location.state || {};
-    // console.log(product);
     const [totalCost, setTotalCost] = useState(null);
 
     useEffect(() => {
-        const savedProduct = localStorage.getItem('cart'); // Lấy product từ localStorage
-        if(product){
-            const formattedProducts = Object.values(Array.isArray(product) ? product : [product]);
-            setStoreProduct(formattedProducts);
-            // console.log(storeProduct);
-            console.log(JSON.parse(savedProduct))
-            const calculateCost = (product.cost - (product.cost * product.discount / 100))*product.quantity;
-            setTotalCost(calculateCost);
-            console.log(totalCost);
-        }
-        else if (savedProduct) {
-            const parsedProduct = JSON.parse(savedProduct); // Parse once and reuse
-            setStoreProduct(parsedProduct); // Update state with parsed data
-            const calculateCost = parsedProduct?.reduce((total, item) => {
-                        return total + (item.cost - (item.cost * item.discount / 100))*item.quantity;
-                    },0);
-            setTotalCost(calculateCost);
-            console.log(totalCost);
-        }
-        else {
-            console.error("Dữ liệu không phải là mảng:", savedProduct);
-          }
-      }, []);
+        const savedProduct = localStorage.getItem('cart'); // Lấy dữ liệu từ localStorage
+        let productsToProcess = [];
     
-    console.log(totalCost);
-
+        if (product) {
+            // Nếu product là một đối tượng, biến nó thành mảng
+            productsToProcess = Array.isArray(product) ? product : [product];
+        } else if (savedProduct) {
+            try {
+                productsToProcess = JSON.parse(savedProduct);
+            } catch (error) {
+                console.error("Lỗi khi parse dữ liệu từ localStorage:", error);
+            }
+        }
+    
+        // Tính tổng chi phí
+        const calculateCost = productsToProcess.reduce((total, item) => {
+            const itemCost = item.cost - (item.cost * item.discount / 100);
+            return total + (itemCost * item.quantity);
+        }, 0);
+        setStoreProduct(productsToProcess)
+        setTotalCost(calculateCost);
+    }, [product]);
+    
+    //Các trang thái để lấy api tỉnh thành
     const [tinh, setTinh] = useState([]); 
     const [quan, setQuan] = useState([]); 
     const [phuong, setPhuong] = useState([]); 
@@ -67,6 +82,8 @@ const CheckOut = () => {
     const handleTinhChange = (e) => { 
         const idtinh = e.target.value; 
         setSelectedTinh(idtinh); 
+        const selectedTinhObj = tinh.find((item) => item.id === idtinh);
+        setSelectedTinhName(selectedTinhObj?.full_name || '');
         axios.get(`https://esgoo.net/api-tinhthanh/2/${idtinh}.htm`) 
         .then(response => { 
             if (response.data.error === 0) { setQuan(response.data.data); setPhuong([]); } 
@@ -75,10 +92,17 @@ const CheckOut = () => {
     const handleQuanChange = (e) => { 
         const idquan = e.target.value; 
         setSelectedQuan(idquan); 
+        const selectedQuanObj = quan.find((item) => item.id === idquan);
+        setSelectedQuanName(selectedQuanObj?.full_name || '');
         axios.get(`https://esgoo.net/api-tinhthanh/3/${idquan}.htm`) 
         .then(response => { 
             if (response.data.error === 0) { setPhuong(response.data.data); } 
         }); 
+    };
+    const handlePhuongChange = (e) => {
+        const idphuong = e.target.value;
+        const selectedPhuongObj = phuong.find((item) => item.id === idphuong);
+        setSelectedPhuongName(selectedPhuongObj?.full_name || '');
     };
 
     const fetchdata = async () => {
@@ -90,30 +114,43 @@ const CheckOut = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: "Lam Doan",         // Giả sử bạn truyền tham số name,
-                phonenumber: "1234567892",
-                email: 'doannguyenlambt1@gmail.com',
-                status: 0,          // Giả sử bạn truyền tham số status
-                address: 'Di An, Binh Duong', // Địa chỉ giao hàng
-                detail_address: '35/18',      // Địa chỉ chi tiết
-                payingmethod: false,          // Phương thức thanh toán
+                name: name,         // Giả sử bạn truyền tham số name,
+                phonenumber: phone,
+                email: email,
+                status: 1,          // Giả sử bạn truyền tham số status
+                address: [selectedPhuongName,selectedQuanName, selectedTinhName].join(', '),// Địa chỉ giao hàng
+                detail_address: street,      // Địa chỉ chi tiết
+                payingmethod: banking,          // Phương thức thanh toán
+                note: note,
                 totalCost: totalCost+50000,
+                product: storeProduct
 
                 // Thêm các tham số khác nếu cần thiết
             }),
         });
-        const data = await response.json();  // Đọc dữ liệu phản hồi
-        console.log(data);  // Kiểm tra dữ liệu trả về
+        // const data = await response.json();  // Đọc dữ liệu phản hồi
+          // Kiểm tra dữ liệu trả về
         console.log(storeProduct);
 
-        // if (!response.ok){
-        //     throw new Error('Failed to fetch order info')
-        // }
-        // const data = await response.json();
+        if (!response.ok){
+            throw new Error('Failed to fetch order info')
+        }
+        const data = await response.json();
+        // delete data in local storage
+        if (data.message === 'Order updated successfully')
+            {
+                localStorage.removeItem('cart');
+                handleRedirect();
+            }
+
+        console.log(data);
         // setOrderInfo(data.data || []);
         // console.log(orderInfo);
     };
-
+    const navigate = useNavigate();
+    const handleRedirect = () => {
+        navigate('/');  // Redirect to a different path
+      };
     const updateOrder = () =>{
         
         fetchMail();
@@ -132,17 +169,29 @@ const CheckOut = () => {
                             <input className="h-10 w-full border border-black px-2 mt-6"
                                 type="text"
                                 placeholder="Họ và tên"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
                             />                            
                             <div  className="h-10 w-full grid grid-cols-3 mt-5 gap-4">
                                 {/* Nhập email */}
                                 <input className="h-10 w-full col-span-2 border border-black px-2 "
                                     type="text"
                                     placeholder="Email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />  
                                 {/* Nhập sđt    */}
-                                <input className="h-10 w-full border border-black px-2 "
+                                <input 
+                                    className="h-10 w-full border border-black px-2 "
                                     type="text"
                                     placeholder="Số điện thoại"
+                                    value={phone}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        if (/^\d*$/.test(value)) {
+                                            setPhone(value); // Chỉ cho phép số
+                                        }
+                                    }}
                                 />                                
                             </div>
                             {/* Chọn tỉnh thành */}
@@ -153,21 +202,25 @@ const CheckOut = () => {
                                 ))} 
                             </select> 
                             <select className="h-10 w-full border border-black px-2 mt-6" title="Chọn Quận Huyện" onChange={handleQuanChange}> 
-                                <option value="0">Quận Huyện</option> 
+                                <option value="0">Quận/Huyện</option> 
                                 {quan.map((item) => ( <option key={item.id} value={item.id}>{item.full_name}</option> ))} 
                             </select> 
-                            <select className="h-10 w-full border border-black px-2 mt-6" title="Chọn Phường Xã"> 
-                                <option value="0">Phường Xã</option> {phuong.map((item) => ( <option key={item.id} value={item.id}>{item.full_name}</option> ))} 
+                            <select className="h-10 w-full border border-black px-2 mt-6" title="Chọn Phường Xã" onChange={handlePhuongChange}> 
+                                <option value="0">Phường/Xã</option> {phuong.map((item) => ( <option key={item.id} value={item.id}>{item.full_name}</option> ))} 
                             </select>
                             {/* Nhập tên đường, số nhà */}
                             <input className="h-10 w-full border border-black px-2 mt-6"
                                 type="text"
                                 placeholder="Số nhà, Tên đường"
+                                value={street}
+                                onChange={(e) => setStreet(e.target.value)}
                             />
                             {/* Ghi chú */}
                             <input className="h-16 w-full border border-black px-2 mt-6"
                                 type="text"
                                 placeholder="Ghi chú (nếu có)"
+                                value={note}
+                                onChange={(e) => setNote(e.target.value)}
                             /> 
                             {/* Chọn phương thức thanh toán */}
                             <div className=" text-center text-[#151515] text-xl font-bold mt-8">Phương thức thanh toán</div>
@@ -187,9 +240,7 @@ const CheckOut = () => {
                                 />
                                 <div className="w-full h-7content-center text-black text-xl font-normal ml-2">Chuyển khoản qua ngân hàng</div> 
                             </div>
-                            {
-                                banking && <img className="mt-5" src={QR} alt="thanh toan" />
-                            }
+                            
                         </div>
                         {/* Cột đơn hàng */}
                         <div className=" px-20">
@@ -218,7 +269,17 @@ const CheckOut = () => {
                     </div>
                     {/* Nút thanh toán */}
                     <div className="w-fulf flex items-center justify-center mt-14">
-                        <button onClick={fetchdata} className=" h-12 content-center text-center text-white text-2xl font-bold rounded-lg border border-black bg-[#c73659] px-10 py-1">THANH TOÁN</button>
+                        <button className=" h-12 content-center text-center text-white text-2xl font-bold rounded-lg border border-black bg-[#c73659] px-10 py-1"
+                            onClick={()=>{
+                                fetchdata() 
+                                // console.log("tên", name)
+                                // console.log("email", email)
+                                // console.log("sdt", phone)
+                                // console.log("diachi", street, selectedPhuongName,selectedQuanName, selectedTinhName)
+                                // console.log("ghi chú", note)
+                                // console.log(storeProduct)
+                            }}
+                        >THANH TOÁN</button>
                     </div>
                     
                 </div>

@@ -42,7 +42,7 @@ const Products = () => {
             </Helmet>
             <h1 className='text-[32px] font-bold mt-4'>Sản phẩm hiện có</h1>
 
-            <div className='w-full'>
+            <div className='overflow-x-auto'>
                 <ProductsList data={ProductsData} />
             </div>
         </NavigationAdmin>

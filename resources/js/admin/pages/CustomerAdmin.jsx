@@ -41,7 +41,7 @@ const Customer = () => {
                 Khách hàng
             </h1>
 
-            <div className="w-full">
+            <div className="overflow-x-auto">
                 <UserList data={UsersData}/>
             </div>
 

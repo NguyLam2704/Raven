@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Logo from "../assets/Raven.svg"
 import Search from "../assets/Search.svg"
 import Cart from "../assets/Cart.svg"
@@ -38,12 +38,45 @@ const Navigation = () => {
     const navigate = useNavigate();
     
     //Hàm chuyển đến trang Tìm kiếm và truyền nội dung tìm kiếm
-    const navigateToAbout = () => { 
-                  
-        navigate(`/search/${text}`);
+    const navigateToAbout = (e) => { 
+        e.preventDefault(); // prevent default form submission
+        navigate(`/search?query=${text}`); // include search query in URL
+      };
 
-    };
-   
+    //Số lượng trong giỏ hàng
+    const [quantityCart, setQuantityCart] = useState()
+    const [storeProduct, setStoreProduct] = useState([]);
+    useEffect(() => {
+        // Hàm này sẽ chạy khi thêm hoặc xóa sản phẩm trong localStorage
+        const updateCartQuantity = () => {
+            const savedProduct = localStorage.getItem('cart'); // Lấy dữ liệu từ localStorage
+            if (savedProduct) {
+                try {
+                    const parsedProducts = JSON.parse(savedProduct); // Parse dữ liệu
+                    if (Array.isArray(parsedProducts)) {
+                        setStoreProduct(parsedProducts); // Lưu vào state
+                        setQuantityCart(parsedProducts.length); // Đếm số lượng sản phẩm
+                    }
+                } catch (error) {
+                    console.error("Lỗi parse dữ liệu từ localStorage:", error);
+                    setStoreProduct([]); 
+                    setQuantityCart(0); 
+                }
+            } else {
+                setStoreProduct([]); 
+                setQuantityCart(0); 
+            }
+        };
+    
+        // Theo dõi sự kiện `storage` (cho trường hợp localStorage thay đổi ở tab khác)
+        window.addEventListener('storage', updateCartQuantity);
+    
+        // Lắng nghe sự thay đổi khi người dùng thao tác thêm/xóa sản phẩm
+        const interval = setInterval(updateCartQuantity, 5); // Polling kiểm tra mỗi 5ms
+    
+    }, []);
+    
+
     return(
         
         <header className=" fixed left-0 z-30 top-0 w-full bg-white  ">
@@ -61,10 +94,9 @@ const Navigation = () => {
                     <Link to="/">HOME</Link></div>
                 </li>
                 <li className="h-full mt-16 "
-                    onMouseEnter={handleHoverAo} //hiện mục Áo
                     onMouseLeave={handleMenuLeave} //ẩn mục ÁO
                 >
-                    <div className=' h-9 text-[#a91d3a] text-2xl font-bold hover:border-b-2 hover:border-b-[#a91d3a]  '><Link to="/T_shirt">ÁO</Link></div>
+                    <div className=' h-9 text-[#a91d3a] text-2xl font-bold hover:border-b-2 hover:border-b-[#a91d3a]  ' onMouseEnter={handleHoverAo} ><Link to="/T_shirt">ÁO</Link></div>
                     {isOpenAo && (<ul className=' absolute z-50 w-32 bg-[#C73659] text-base uppercase text-left text-white mt-4 '>
                         <li className='py-2 pl-3 border-b-[1px] border-white hover:font-bold hover:pl-3'><Link to="/T_shirt">Áo thun</Link></li>
                         <li className='py-2 pl-3 border-b-[1px] border-white hover:font-bold hover:pl-3'><Link to="/polo">Áo polo</Link></li>
@@ -74,20 +106,18 @@ const Navigation = () => {
                     </ul>)}
                 </li>
                 <li className="h-full mt-16 "
-                    onMouseEnter={handleHoverQuan} //hiện mục Quần
                     onMouseLeave={handleMenuLeave} //ẩn much Quần
                 >
-                    <div className=' h-9  text-[#a91d3a] text-2xl font-bold hover:border-b-2 hover:border-b-[#a91d3a] '><Link to="/long_pants"> QUẦN</Link></div>
+                    <div className=' h-9  text-[#a91d3a] text-2xl font-bold hover:border-b-2 hover:border-b-[#a91d3a] ' onMouseEnter={handleHoverQuan} ><Link to="/long_pants"> QUẦN</Link></div>
                     {isOpenQuan && (<ul className=' absolute z-50 w-36 bg-[#C73659] text-base uppercase text-left text-white mt-4 '>
                         <li className='py-2 pl-3 border-b-[1px] border-white hover:font-bold hover:pl-3'><Link to="/long_pants"> QUẦN DÀI</Link></li>
                         <li className='py-2 pl-3 hover:font-bold hover:pl-3'><Link to="/short_pants">QUẦN SHORT</Link></li>
                     </ul>)}
                 </li>
-                <li className="h-full mt-16 "
-                    onMouseEnter={handleHoverPk} //hiện mục Phụ kiện
+                <li className="h-full mt-16 "                    
                     onMouseLeave={handleMenuLeave} //ẩn mục Phụ kiện
                 >
-                    <div className=' h-9 text-[#a91d3a] text-2xl font-bold hover:border-b-2 hover:border-b-[#a91d3a]'><Link to="/balo">PHỤ KIỆN</Link></div>
+                    <div className=' h-9 text-[#a91d3a] text-2xl font-bold hover:border-b-2 hover:border-b-[#a91d3a]' onMouseEnter={handleHoverPk}><Link to="/balo">PHỤ KIỆN</Link></div>
                     {isOpenPk && (<ul className=' absolute z-50 w-32 bg-[#C73659] text-base uppercase text-left text-white mt-4 '>
                         <li className='py-2 pl-3 border-b-[1px] border-white hover:font-bold hover:pl-3'><Link to="/balo">cặp</Link></li>
                         <li className='py-2 pl-3 border-b-[1px] border-white hover:font-bold hover:pl-3'><Link to="/handbag">túi xách</Link></li>
@@ -113,11 +143,9 @@ const Navigation = () => {
             {/* Nút giỏ hàng */}
             <div className=" basis-1/12 mt-6 ml-10 ">                    
                 <Link className="flex flex-row"  to="/cart">
-                    <img className="inline-block" src={Cart} alt="cart"/>
-                    <span>
-                        {/* Số lượng sản phẩm trong giỏ hàng */}
-                        <div className="ml-1 focus:outline-none">3</div>
-                    </span>
+                    <img className="inline-block h-7" src={Cart} alt="cart"/>
+                    {/* Số lượng sản phẩm trong giỏ hàng */}
+                    <div className=" bottom-[27px] ml-[3px] absolute  rounded-full text-center content-center align-middle h-[18px] w-[18px] text-base text-black focus:outline-none">{quantityCart}</div>
                 </Link>
             </div>
         </nav>        

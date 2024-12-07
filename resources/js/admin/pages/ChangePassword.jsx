@@ -51,16 +51,16 @@ const ChangePassword = () => {
                 <title>Thay đổi mật khẩu</title>
             </Helmet>
             <div className="mt-2">
-                <h1 className="text-[32px] font-bold text-black text-left mb-6">
+                <h1 className="mobile:text-[20px] ipad:text-[25px]  desktop:text-[32px] font-bold text-black text-left mb-6">
                     Thay đổi mật khẩu
                 </h1>
             </div>
-            <div className="bg-white p-8 rounded-lg shadow-lg w-full h-auto border-2 tems-center justify-center">
+            <div className="bg-white mobile:p-2 ipad:p-4 rounded-lg shadow-lg w-full h-auto border-2 tems-center justify-center">
                 <form
-                    className="w-[60%] items-center justify-center mx-auto border-5"
+                    className="desktop:w-[60%] items-center justify-center mx-auto border-5"
                     onSubmit={handleSubmit}
                 >
-                    <div className="mb-4 w-1/2 mx-auto">
+                    <div className="mb-4 mobile:w-[80%] ipad:w-2/3 mx-auto">
                         <label
                             className="block text-gray-700 mb-2"
                             htmlFor="password_old"
@@ -88,7 +88,7 @@ const ChangePassword = () => {
                             </p>
                         )}
                     </div>
-                    <div className="mb-4 w-1/2 mx-auto">
+                    <div className="mb-4 mobile:w-[80%] ipad:w-2/3 mx-auto">
                         <label
                             className="block text-gray-700 mb-2"
                             htmlFor="password_new"
@@ -115,7 +115,7 @@ const ChangePassword = () => {
                             </p>
                         )}
                     </div>
-                    <div className="mb-4 w-1/2 mx-auto">
+                    <div className="mb-4 mobile:w-[80%] ipad:w-2/3 mx-auto">
                         <label
                             className="block text-gray-700 mb-2"
                             htmlFor="confirm_password"

@@ -50,15 +50,15 @@ const dataTronSize = {
 };
 
 
-const ProductDetail = ({ProductDetail, onClose}) => {
-
+const ProductDetail = ({ProductDetail, chart , onClose}) => {
+    
     const [SizeColor, setSizeColor] = useState([]); //Biến trạng thái lưu size và color
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const LoadData = async () => {
             const product = await fetchSizeColorById(ProductDetail.proId); // Gọi API
-
+            
             const updatedData = await Promise.all(
                 product.map(async (item) => {
                     const colorName = await fetchColor(item.color_id); // Gọi API lấy tên màu
@@ -69,10 +69,13 @@ const ProductDetail = ({ProductDetail, onClose}) => {
                 })
             );
             setSizeColor(updatedData); // Cập nhật state với dữ liệu trả về
+            
             console.log(updatedData); 
             setIsLoading(false);
         };
         LoadData();
+        
+        
 
     }, [ProductDetail?.proId]); 
 
@@ -101,15 +104,15 @@ const ProductDetail = ({ProductDetail, onClose}) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white w-[70rem] max-h-[90vh] overflow-y-auto p-6 rounded shadow-lg">
+            <div className="bg-white w-[70rem] max-h-[90vh] overflow-y-auto mobile:p-4 mobile:mx-2 desktop:mx-0 desktop:p-6 rounded">
                 <div className="border bg-white rounded-lg border-[#050c9c]">     
-                    <div className="items-center rounded-tl-lg rounded-tr-lg flex w-full h-12 justify-center bg-[#3572ef]">
-                        <h2 className='text-3xl font-bold text-white'>Tổng quan về sản phẩm</h2>
+                    <div className="items-center rounded-tl-lg rounded-tr-lg flex w-full desktop:h-12 justify-center bg-[#C73659]">
+                        <h2 className='mobile:text-[20px] ipad:text-[25px]  desktop:text-[32px] font-bold text-white'>Tổng quan về sản phẩm</h2>
                     </div>
-                    <div className="flex">
+                    <div className="desktop:flex">
                         {/* Cột trái */}
-                        <div className="w-[60%]">
-                            <div className="w-[600px] h-auto ml-4 my-4 bg-white rounded-[10px] border border-[#3572ef]" >
+                        <div className="desktop:w-[60%]">
+                            <div className="desktop:w-[600px] h-auto mobile:mx-2 desktop:ml-4 my-4 bg-white rounded-[10px] border border-[#3572ef]" >
                                 <div className='h-5 text-base font-bold text-black p-4'>Thông tin về sản phẩm</div>
                                 <div className='flex flex-col mt-4 pl-4 items-start justify-center'>
                                     <div className="pb-1">Mã sản phẩm: {ProductDetail.proId}</div>
@@ -119,16 +122,16 @@ const ProductDetail = ({ProductDetail, onClose}) => {
                                 </div>
                            </div>
 
-                           <div className="w-[600px] h-auto ml-4 my-4 bg-white rounded-[10px] border border-[#3572ef]" >
+                           <div className="desktop:w-[600px] desktop:h-[630px] mobile:mx-2 desktop:ml-4 my-4 bg-white rounded-[10px] border border-[#3572ef]" >
                                 <div className='h-5 text-base font-bold text-black p-4'>Thống kê số lượng mỗi sản phẩm</div>
-                                <div className='flex flex-col mt-4 pl-4 items-start justify-center'>
-                                    <table className="w-full bg-white rounded-[14px] shadow-md">
-                                        <thead>
+                                <div className='flex flex-col mt-4 px-4 max-h-[570px] overflow-y-auto items-center justify-start'>
+                                    <table className="w-full bg-white rounded-[14px]">
+                                        <thead >
                                             <tr>
                                                 <th className="py-4 px-2 border-b text-sm font-extrabold text-center">Size</th>
                                                 <th className="py-4 px-2 border-b text-sm font-extrabold text-center">Màu sắc</th>
                                                 <th className="py-4 px-2 border-b text-sm font-extrabold text-center">Số lượng còn lại</th>
-
+                                                <th className="py-4 px-2 border-b text-sm font-extrabold text-center">Số lượng đã bán</th>
                                             </tr>
                                         </thead>
 
@@ -138,6 +141,7 @@ const ProductDetail = ({ProductDetail, onClose}) => {
                                                 >
                                                     <td className="py-5 px-2 h-20 border-b text-sm font-semibold text-center">{getSize(product.size_id)}</td>
                                                     <td className="py-5 px-2 h-20 border-b text-sm font-semibold text-center">{product.colorName}</td>
+                                                    <td className="py-5 px-2 h-20 border-b text-sm font-semibold text-center">{product.quantity_available}</td>
                                                     <td className="py-5 px-2 h-20 border-b text-sm font-semibold text-center">{product.quantity_available}</td>
                                                 </tr>
                                             ))}
@@ -149,16 +153,16 @@ const ProductDetail = ({ProductDetail, onClose}) => {
                         </div>
 
                         {/* Cột phải */}
-                        <div className="w-[40%] pr-2 pt-4 flex-col">
+                        <div className="desktop:w-[40%] mobile:px-2 desktop:pr-2 pt-4 flex-col">
                             <div  className="h-auto mb-1 bg-white rounded-[10px] border border-[#3572ef]" >
-                                <BieuDoCot/>
+                                <BieuDoCot data={chart.doanhthu}/>
                             </div>
                             <div  className='flex w-full justify-between mr-4'>
                                 <div  className=" flex-1 w-1/2 h-auto bg-white rounded-[10px] mr-[1px] border border-[#3572ef]">
-                                    <BieuDoTron data={dataTronColor} title={"Màu sắc"}/>
+                                    <BieuDoTron data={chart.color} title={"Màu sắc"}/>
                                 </div>
                                 <div  className="flex-1 w-1/2 h-auto bg-white rounded-[10px] ml-[1px] border border-[#3572ef]">
-                                    <BieuDoTron data={dataTronSize} title={"Size"}/>
+                                    <BieuDoTron data={chart.size} title={"Size"}/>
                                 </div>
                             </div>
 
@@ -167,7 +171,7 @@ const ProductDetail = ({ProductDetail, onClose}) => {
 
                     <div className="items-center flex w-full justify-center my-4">
                         <button 
-                            className="bg-blue-500 text-white px-12 py-1 font-extrabold rounded border border-[#050c9c]"
+                            className="bg-[#C73659] text-white px-12 py-1 font-extrabold rounded border  border-[#C73659] hover:bg-[#A91D3A] active:bg-[#cf9ca6] transition-all duration-200"
                             onClick={onClose}
                         >
                             Hoàn tất

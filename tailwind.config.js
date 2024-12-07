@@ -24,7 +24,16 @@ export default {
       animation: {
         fly: 'fly 12s linear infinite',
       },
+      screens: {
+        'mobile': '0px',
+  
+        'ipad': '768px',
+  
+        'desktop': '1280px',
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    // require('@tailwindcss/line-clamp'),
+  ],
 }

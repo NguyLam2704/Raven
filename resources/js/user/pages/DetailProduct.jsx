@@ -4,13 +4,14 @@ import Footer from '../components/Footer';
 import CartMini from '../components/Cart/CartMini';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp, faChevronDown, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
-import img_product from '../assets/img_product.svg'
 import cart from '../assets/cart_red.svg'
 import Product from '../components/Product';
 import back from '../assets/Back.svg'
 import forward from '../assets/Forward.svg'
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import BangSize from '../assets/bang_size.svg'
+import SizeAo from '../assets/bang_size.svg'
+import SizeQuanDai from '../assets/size_quandai.jpg'
+import SizeQuanNgan from '../assets/size_quanngan.jpg'
 import img_loading from '../assets/loading.gif'
 
 //Chi tiết sản phẩm
@@ -37,7 +38,7 @@ const DetailProduct = () =>{
             cart[existingProductIndex].quantity += quality;
         } else {
             // Nếu sản phẩm chưa có, thêm sản phẩm với số lượng ban đầu là 1
-            cart.push({ ...cartProduct, color: selectedColor, size: selectedSize, quantity: quality });
+            cart.push({ ...cartProduct, color: selectedColor, size: selectedSize, quantity: quality, sizeId: selectedSizeId, colorId: selectedColorId });
         }
         // Cập nhật lại localStorage
         localStorage.setItem('cart', JSON.stringify(cart));
@@ -54,7 +55,7 @@ const DetailProduct = () =>{
     // const[ListProduct, setLi]
     const [DetailProduct, setDetailProduct] = useState(null);
     const [loading, setLoading] = useState(false); // Trạng thái tải dữ liệu
-    const [error, setError] = useState(null); // Trạng thái lỗi
+    // const [error, setError] = useState(null); // Trạng thái lỗi
     const [categoryType, setCategory] = useState(null); // categroy type of detail product
     const fetchDetail = async() => {
         try {
@@ -66,6 +67,7 @@ const DetailProduct = () =>{
             setDetailProduct(data.data[0]); // Lưu dữ liệu vào state
             setCategory(data.data[0].categoryTypeId);
             setBigImg(data.data[0].productImage.find(img => img.isPrimary)?.image)
+            
             if (data?.data?.[0]){
             const newcartProduct = {
                 proId: data.data[0].proId,
@@ -73,7 +75,7 @@ const DetailProduct = () =>{
                 cost: data.data[0].cost,
                 discount: data.data[0].discount,
                 // quantity: quality,
-                productImage: data.data[0].productImage.find(img => img.isPrimary)?.image,
+                productImage: data.data[0].productImage.find(img => img.isPrimary)?.image,                
             }
             setcartProduct(newcartProduct);}
         } catch (err) {
@@ -82,11 +84,9 @@ const DetailProduct = () =>{
             setLoading(false); // Kết thúc trạng thái tải
         }
     }
-
     //Kiểm soát hiển thị bảng size
     const [isBangSise, setBangSize] = useState(false)
     const [products, setProducts] = useState([]); // sản phẩm tương tự
-    
     const fetchProducts = async () => {
         try {
             const response = await fetch('/api/v1/product?includeImage=true'); // fetch api include image
@@ -106,6 +106,7 @@ const DetailProduct = () =>{
         setLoading(true);
         fetchDetail();
         fetchProducts();
+        handlerBangSize()
     }, [proId])
     const navigate = useNavigate()
     //Nhận giá trị số lượng sản phẩm
@@ -114,8 +115,37 @@ const DetailProduct = () =>{
     const [selectedColor, setSelectedColor] = useState(null);
     //nhận giá trị size 
     const [selectedSize, setSelectedSize] = useState(null);
-    //Số lượng sản phẩm của màu = 0
-    
+    //Nhận giá trị id color
+    const [selectedColorId, setColorId] = useState(null);
+    //Nhận giá trị id size
+    const [selectedSizeId, setSizeId] = useState(null);
+    //Nút mũi tên
+    const [NumberBack, setBack] = useState(0)
+    const [NumberForward, setForward] = useState(4)
+    const hanlderBack = () =>{
+        if( NumberBack > 1 ){            
+            setBack( NumberBack - 4 )
+            setForward( NumberForward - 4 )
+        }
+    }
+    const hanlderForward = () =>{
+        if( NumberForward < products.length ){
+            setBack( NumberBack + 4 )
+            setForward( NumberForward + 4 )
+        }
+    }
+    //Loai bang size
+    const [BangSize, setBang] = useState()
+    const handlerBangSize = () => {
+        if(categoryType===6){
+            setBang(SizeQuanDai)
+        }else if(categoryType===7){
+            setBang(SizeQuanNgan)
+        }else{
+            setBang(BangSize)
+        }
+    }
+    console.log(categoryType)
     return(        
         <div className={`w-full  ${(isCartMini || isBangSise) ? 'overflow-hidden h-screen' : 'overflow-auto'}`}>
             <Navigation/>
@@ -131,13 +161,10 @@ const DetailProduct = () =>{
                     <div className='w-3/5 flex flex-row'>
                         {/* Hình ảnh phụ */}
                         <div className='w-1/4 h-[470px] flex flex-col justify-between items-center'>
-                            <button >
-                                <FontAwesomeIcon icon={faChevronUp} />
-                            </button>
-                            <div className=' overflow-y-auto flex flex-col justify-center items-center '>
-                            {DetailProduct.productImage.filter(image => !image.isPrimary).map((element,index) => {
+                            <div className=' w-[100px] flex flex-col h-full justify-between'>
+                            {DetailProduct.productImage.filter(image => !image.isPrimary).slice(0,4).map((element,index) => {
                                 return (
-                                    <button className='h-[110px] w-[100px] rounded-md my-4'
+                                    <button className='h-[110px] w-[100px] rounded-md '
                                         key = {index}
                                         onClick={()=>setBigImg(element.image)}
                                     >
@@ -145,10 +172,7 @@ const DetailProduct = () =>{
                                     </button>
                                 )
                             })}  
-                            </div>                          
-                            <button >
-                                <FontAwesomeIcon icon={faChevronDown} />
-                            </button>
+                            </div>
                         </div>                        
                         {/* Hình ảnh chính */}
                         <div className='w-3/4 '>
@@ -161,7 +185,7 @@ const DetailProduct = () =>{
                                 </div>
                             )}
                             {/* Hình ảnh sản phẩm */}
-                            <img className='h-[470px] w-4/5 rounded-xl ' src={bigImg} alt="anh" />                            
+                            <img className='h-[470px] w-4/5 rounded-xl' src={bigImg} alt="anh" />                            
                         </div>
                         
                         
@@ -200,8 +224,17 @@ const DetailProduct = () =>{
                                                 <button 
                                                     key={index}                                          
                                                     onClick={() => {
-                                                        if(totalQuantity && (selectedSize ? quanlitySize : 1))
-                                                            setSelectedColor(element.color.colorCode)
+                                                        if((totalQuantity && (selectedSize ? quanlitySize : 1)) || selectedColor===element.color.colorCode)
+                                                        {
+                                                            if(selectedColor===element.color.colorCode) {
+                                                                    setSelectedColor('');
+                                                                    setColorId('');
+                                                                }
+                                                            else {
+                                                                setSelectedColor(element.color.colorCode)
+                                                                setColorId(element.colorId);
+                                                            }
+                                                        }
                                                         else alert(`Sản phẩm màu ${element.color.colorName} đã hết hàng. Vui lòng chọn màu sắc khác`)
                                                     }}
                                                     className={`h-8 w-8 rounded-md mr-5 ${selectedColor === element.color.colorCode ? 'ring-[#c73659] ring-2' : 'ring-[#EEEEEE] ring-1'} `} 
@@ -243,8 +276,17 @@ const DetailProduct = () =>{
                                         <button 
                                             key = {index}                                             
                                             onClick={() => {
-                                                if(totalQuantity && (selectedColor? quanlityColor : 1))
-                                                    setSelectedSize(element.size.sizeCode)
+                                                if(totalQuantity && (selectedColor? quanlityColor : 1) || selectedSize===element.size.sizeCode)
+                                                    {
+                                                        if(selectedSize===element.size.sizeCode){
+                                                            setSelectedSize('');
+                                                            setSizeId('');
+                                                        }
+                                                        else {
+                                                            setSelectedSize(element.size.sizeCode)
+                                                            setSizeId(element.sizeId);
+                                                        }
+                                                    }
                                                 else {alert(`Sản phẩm size ${element.size.sizeCode} đã hết hàng. Vui lòng chọn size khác`)}
                                             }}                                           
                                             className={`h-8 w-8 content-center text-center text-xl  mr-5 ${(selectedSize === element.size.sizeCode) ? 'text-[#c73659] border-[#c73659] border-2 font-bold': (totalQuantity && (selectedColor? quanlityColor : 1) )? 'text-black border border-black font-medium': 'text-gray-400 border border-gray-400 font-medium'} `}>
@@ -304,6 +346,8 @@ const DetailProduct = () =>{
                                         size: selectedSize,
                                         color: selectedColor,
                                         quantity: quality,
+                                        sizeId: selectedSizeId,
+                                        colorId: selectedColorId
                                     };
                                     navigate("/check_out", { state: { product: updateCartProduct} })}
                                     else console.log("empty color and empty size");
@@ -328,21 +372,25 @@ const DetailProduct = () =>{
 
                 {/* Sản phẩm tương tự */}
                 <div className='w-10/12 mt-24'>
-                    <div className='text-center text-[#a91d3a] text-[56px] font-semibold'>SẢN PHẨM TƯƠNG TỰ</div>                    
+                    <div className='text-center text-[#a91d3a] text-5xl font-semibold'>SẢN PHẨM TƯƠNG TỰ</div>                    
                 </div>
                 {/* Danh sách các sản phẩm tương tự */}
                 <div className='w-full flex flex-row justify-center'>                       
-                        <button className=" p-1 pr-2 bg-opacity-30 rounded-full ">
+                        <button className=" p-1 pr-2 bg-opacity-30 rounded-full "
+                            onClick={hanlderBack}
+                        >
                             <img src={back} alt="none"/>
                         </button>                        
                         <div className='w-10/12 mt-6'>
                             <div className='grid grid-cols-4 gap-10'>
-                                {products.filter((product) => product.categoryTypeId == categoryType && product.proId != proId).slice(0,4).map((product, index) => (
+                                {products.filter((product) => product.proId != proId).slice(NumberBack,NumberForward).map((product, index) => (
                                     <Product key={index} proId={product.proId} img={product.productImage.find(img => img.isPrimary)?.image} name={product.productName} price={product.cost} sale={product.discount}/>                            
                                 ))}                      
                             </div>
                         </div>
-                        <button  className=" p-1 pr-2 bg-white bg-opacity-30 rounded-full ">
+                        <button  className=" p-1 pr-2 bg-white bg-opacity-30 rounded-full "
+                            onClick={hanlderForward}
+                        >
                                 <img  src={forward} alt="none"/>
                         </button>
                     </div>  

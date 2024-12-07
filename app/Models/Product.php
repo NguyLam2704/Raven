@@ -20,7 +20,7 @@ class Product extends Model
         'description',
         'dateposted'
     ];
-
+    public $timestamps = false;
     //Create relationship to ProductImage : 1 product - hasMany productImage
     // second prod_id is foreigin key in table product_image 
     // first prod_id is key in table product
