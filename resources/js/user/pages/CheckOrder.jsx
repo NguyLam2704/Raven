@@ -39,10 +39,10 @@ const CheckOrder = () => {
         }
     }
     return(
-        <div className="w-full">
+        <div className="w-full font-Public">
             <Navigation/>
             <div className="w-full justify-items-center pt-24 mt-24 ">
-                <div className="text-black text-2xl font-bold uppercase ">kiểm tra đơn hàng</div>
+                <div className="text-black desktop:text-2xl ipad:text-xl font-bold uppercase ">kiểm tra đơn hàng</div>
                 {/* Text input email hoặc sdt để kiểm tra đơn hàng */}
                 <form onSubmit={fetchOrderInfo} className="w-1/3 justify-items-center">
                     <div className="flex w-full h-10 border border-black mt-16">
@@ -59,12 +59,11 @@ const CheckOrder = () => {
                 { orderInfo.length !=0 //Kiểm tra độ dài của mảng
                     && (<div className="w-4/6 mt-24 ">
                         {/* Các cột thông tin của đơn hàng */}
-                        <ul className="flex flex-row ">
-                            <li className="w-1/4 h-11 content-center border border-black border-r-0 bg-[#eeeeee] text-center text-[#a91d3a] text-lg font-bold">Mã đơn hàng</li>
-                            <li className="w-1/3 h-11 content-center border border-black border-r-0 bg-[#eeeeee] text-center text-[#a91d3a] text-lg font-bold">Tên khách hàng</li>
-                            <li className="w-1/3 h-11 content-center border border-black border-r-0 bg-[#eeeeee] text-center text-[#a91d3a] text-lg font-bold">Thời gian đặt hàng</li>
-                            <li className="w-1/3 h-11 content-center border border-black border-r-0 bg-[#eeeeee] text-center text-[#a91d3a] text-lg font-bold">Tổng tiền thanh toán</li>
-                            <li className="w-1/3 h-11 content-center border border-black  bg-[#eeeeee] text-center text-[#a91d3a] text-lg font-bold">Trạng thái đơn hàng</li>
+                        <ul className="flex flex-row desktop:text-lg ipad:text-sm">
+                            <li className="w-1/4 h-11 content-center border border-black border-r-0 bg-[#eeeeee] text-center text-[#a91d3a] font-bold">Mã đơn hàng</li>
+                            <li className="w-1/3 h-11 content-center border border-black border-r-0 bg-[#eeeeee] text-center text-[#a91d3a] font-bold">Tên khách hàng</li>
+                            <li className="w-1/3 h-11 content-center border border-black border-r-0 bg-[#eeeeee] text-center text-[#a91d3a] font-bold">Tổng tiền thanh toán</li>
+                            <li className="w-1/3 h-11 content-center border border-black  bg-[#eeeeee] text-center text-[#a91d3a] font-bold">Trạng thái đơn hàng</li>
                         </ul>
                         {/* Danh sách các đơn hàng */}
                         {orderInfo.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated)).slice(0,10).map((order, index)=>{

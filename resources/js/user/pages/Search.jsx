@@ -122,7 +122,7 @@ const Search = () => {
     }, [text, products]);
 
     return(
-        <div className='w-full h-full '> 
+        <div className='w-full h-full font-Public'> 
             <Navigation/>
 
             {/* Tiêu đề */}
@@ -138,13 +138,13 @@ const Search = () => {
                             <button className='flex mr-3'
                                     onClick={()=>setOpen(true)} // hiện các giá trị bộ lọc
                             >
-                              <div className='rounded rounded-r-none py-1  border border-r-0 border-gray-400 shadow w-28 text-black text-sm font-bold '>{sort}</div>
+                              <div className='rounded rounded-r-none py-1  border border-r-0 border-gray-400 shadow w-28 text-black text-sm font-medium '>{sort}</div>
                               <div className='rounded rounded-l-none border border-gray-400 shadow py-[2px] px-1 '>
                                 <FontAwesomeIcon icon={faChevronDown}  />
                               </div>
                             </button>
                         </div>
-                        { isOpen && (<ul className={ `relative w-[138px] border border-[#9f9f9f] bg-white rounded z-20 mt-[1px] mr-3 }`}>
+                        { isOpen && (<ul className={ `relative w-[138px] border border-[#9f9f9f] text-sm bg-white rounded z-20 mt-[1px] mr-3 font-Public}`}>
                                             <li className='pl-4 py-1 text-black leading-relaxed rounded-t hover:bg-gray-200'><button onClick={() => setValue("Giá tăng dần")}>Giá tăng dần</button></li>
                                             <li className='pl-4 py-1 text-black hover:bg-gray-200 rounded-b leading-relaxed'><button onClick={() => setValue("Giá giảm dần")}>Giá giảm dần</button></li>
                                     </ul>)
@@ -152,7 +152,7 @@ const Search = () => {
 
                     </div>
                     {/* Danh sách các sản phẩm */}
-                    <div className="mt-10 grid grid-cols-4 gap-12 z-10">
+                    <div className="mt-10 grid desktop:grid-cols-4 ipad:grid-cols-3 gap-12 z-10">
                     {filteredProducts.length > 0 ? (
                       filteredProducts.filter((product) => product.discount > 0) //filter product have discount
                       .sort((a,b) => {

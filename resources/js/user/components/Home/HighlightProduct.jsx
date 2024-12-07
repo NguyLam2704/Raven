@@ -46,7 +46,7 @@ const HightlightProduct = () => {
     };
 
     return (
-        <div  className='w-full h-full'>
+        <div  className='w-full h-full font-Public'>
             <Navigation />
             <div  className='mt-[90px] justify-items-center'>
 
@@ -75,13 +75,13 @@ const HightlightProduct = () => {
                                     <button className='flex' 
                                             onClick={()=>setOpen(true)} //ẩn các gái trị của bộ lọc 
                                     >
-                                    <div className='rounded rounded-r-none py-1  border border-r-0 border-gray-400 shadow w-28 text-black text-sm font-bold '>{sort}</div>
+                                    <div className='rounded rounded-r-none py-1  border border-r-0 border-gray-400 shadow w-28 text-black text-sm font-medium '>{sort}</div>
                                     <div className='h-full rounded rounded-l-none border border-gray-400 shadow px-1 pt-1 mr-3 '>
                                         <FontAwesomeIcon icon={faChevronDown}  />
                                     </div>
                                     </button>
                                 </div>                     
-                                { isOpen && (<ul className={ `relative w-[138px] border border-[#9f9f9f] bg-white rounded z-20  mt-[1px] mr-3  }`}
+                                { isOpen && (<ul className={ `relative w-[138px] border border-[#9f9f9f] bg-white rounded z-20  mt-[1px] mr-3 font-Public  }`}
                                                 onMouseLeave={()=>setOpen(false)} //hiện các giá trị của bộ lọc
                                             >
                                                 <li className='pl-4 py-1 text-black leading-relaxed rounded-t hover:bg-gray-200'>
@@ -96,7 +96,7 @@ const HightlightProduct = () => {
                                 }
                             </div>            
                             {/* Danh sách các sản phẩm  */}
-                            <div className="mt-10 grid grid-cols-4 gap-12 z-10">
+                            <div className="mt-10 grid desktop:grid-cols-4 ipad:grid-cols-3 gap-12 z-10">
                             {products.filter((product) => product.quantitySold > 10) //fiter product have more 10 quantitySold.slice(NumberBackHighlight, NumberForwardHighlight) //choose 8 product
                                                 .sort((a,b) => { //set sort
                                                     if (sort === 'Giá giảm dần') {

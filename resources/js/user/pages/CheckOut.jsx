@@ -157,10 +157,10 @@ const CheckOut = () => {
     }
     return(
 
-        <div className="w-full justify-items-center">
+        <div className="w-full justify-items-center font-Public">
             <Navigation/>
                 <div className="w-10/12 mt-[150px]">
-                    <div className=" text-center text-[#a91d3a] text-4xl font-extrabold">THANH TOÁN</div>
+                    <div className=" text-center text-[#a91d3a] desktop:text-4xl ipad:text-3xl font-extrabold">THANH TOÁN</div>
                     <div className="w-full grid grid-cols-2 mt-12">
                         {/* Cột nhập Thông tin thanh toán */}
                         <div className="border-r border-black px-20">
@@ -172,7 +172,7 @@ const CheckOut = () => {
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                             />                            
-                            <div  className="h-10 w-full grid grid-cols-3 mt-5 gap-4">
+                            <div  className="h-10 w-full ipad:hidden desktop:grid grid-cols-3 mt-5 gap-4">
                                 {/* Nhập email */}
                                 <input className="h-10 w-full col-span-2 border border-black px-2 "
                                     type="text"
@@ -194,6 +194,26 @@ const CheckOut = () => {
                                     }}
                                 />                                
                             </div>
+                            {/* Nhập email */}
+                            <input className="h-10 w-full desktop:hidden border border-black px-2 mt-6 "
+                                    type="text"
+                                    placeholder="Email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />  
+                                {/* Nhập sđt    */}
+                                <input 
+                                    className="h-10 w-full desktop:hidden border border-black px-2 mt-6 "
+                                    type="text"
+                                    placeholder="Số điện thoại"
+                                    value={phone}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        if (/^\d*$/.test(value)) {
+                                            setPhone(value); // Chỉ cho phép số
+                                        }
+                                    }}
+                                /> 
                             {/* Chọn tỉnh thành */}
                             <select className="h-10 w-full border border-black px-2 mt-6" title="Chọn Tỉnh Thành" onChange={handleTinhChange}> 
                                 <option value={tinh} >Tỉnh Thành</option> 
@@ -251,25 +271,25 @@ const CheckOut = () => {
                             ))}
                             {/* Tạm tính giá các sản phẩm */}
                             <div className="flex flex-row justify-between mt-3">
-                                <div className=" h-6 content-center text-black text-[15px] font-normal ">Tạm tính: </div>
-                                <div className="w-24 text-right text-[#c73659] text-base font-bold ">{totalCost?.toLocaleString()}đ</div> {/*render có thể xảy ra trước khi dữ liệu được tải đầy đủ => use ? to check */}
+                                <div className=" h-6 content-center text-black desktop:text-base ipad:text-sm font-normal ">Tạm tính: </div>
+                                <div className="w-24 content-center text-right text-[#c73659] desktop:text-base ipad:text-sm font-bold ">{totalCost?.toLocaleString()}đ</div> {/*render có thể xảy ra trước khi dữ liệu được tải đầy đủ => use ? to check */}
                             </div>
                             {/* Phí vận chuyển */}
                             <div className="flex flex-row justify-between mt-3">
-                                <div className=" h-6 content-center text-black text-[15px] font-normal ">Phí vận chuyển: </div>
-                                <div className="h-6 text-right text-black text-sm font-bold ">50,000đ</div>
+                                <div className=" h-6 content-center text-black desktop:text-sm ipad:text-xs font-normal ">Phí vận chuyển: </div>
+                                <div className="h-6 content-center text-right text-black desktop:text-sm ipad:text-xs font-bold ">50,000đ</div>
                             </div>
                             {/* Tổng giá */}
                             <div className="h-1 border-b-[1px] border-[#C4C4C4] mt-2"></div>
-                            <div className="flex flex-row justify-between mt-3">
-                                <div className="h-10 content-center text-black text-xl font-bold ">Tổng cộng </div>
-                                <div className="h-10 text-right text-[#a91d3a] text-xl font-bold">{(totalCost+50000).toLocaleString()}đ</div>
+                            <div className="flex flex-row justify-between mt-3 ">
+                                <div className="h-10 content-center text-black desktop:text-xl ipad:text-lg font-bold ">Tổng cộng </div>
+                                <div className="h-10 content-center text-right text-[#a91d3a] desktop:text-xl ipad:text-lg font-bold">{(totalCost+50000).toLocaleString()}đ</div>
                             </div>
                         </div>
                     </div>
                     {/* Nút thanh toán */}
                     <div className="w-fulf flex items-center justify-center mt-14">
-                        <button className=" h-12 content-center text-center text-white text-2xl font-bold rounded-lg border border-black bg-[#c73659] px-10 py-1"
+                        <button className="content-center text-center text-white desktop:text-2xl ipad:text-xl font-bold rounded-lg border border-black bg-[#c73659] px-10 py-1"
                             onClick={()=>{
                                 fetchdata() 
                                 // console.log("tên", name)
