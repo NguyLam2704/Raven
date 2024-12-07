@@ -423,7 +423,7 @@ const AddProduct = () => {
                 <title>Thêm sản phẩm mới</title>
             </Helmet>
             <h1 className="mobile:text-[20px] ipad:text-[25px]  desktop:text-[32px] font-bold mt-4">Thêm sản phẩm mới</h1>
-            <div className="p-4 border bg-white rounded-lg border-[#050c9c]">
+            <div className="p-4 border bg-white rounded-lg border-[#C73659]">
                 <div className="desktop:flex">
                     {/* Cột trái */}
                     <div className="desktop:w-[70%] desktop:mr-12">
@@ -618,7 +618,8 @@ const AddProduct = () => {
                             <div className="mt-2 mb-2 flex items-center justify-center">
                                 <button
                                     onClick={handleAddItem}
-                                    className="bg-blue-500 py-[2px] w-40 hover:bg-blue-800 text-white text-lg rounded"
+                                    className="bg-blue-500 py-[2px] w-40 hover:bg-blue-800 text-white text-lg rounded
+                                    transition-all duration-200 outline-none ring-indigo-500/70 ring-offset-2 focus-visible:ring-2 hover:scale-[1.03] active:scale-[0.98]"
                                 >
                                     Thêm
                                 </button>
@@ -768,7 +769,8 @@ const AddProduct = () => {
                 <div className="items-center flex w-full justify-center mt-4">
                     <button
                         onClick={handleSaveProduct}
-                        className="bg-blue-500 text-white px-12 py-1 text-xl font-extrabold rounded border border-[#050c9c]"
+                        className="bg-blue-500 text-white px-12 py-1 text-xl font-extrabold rounded border hover:bg-blue-800
+                        transition-all duration-200 outline-none ring-indigo-500/70 ring-offset-2 focus-visible:ring-2 hover:scale-[1.03] active:scale-[0.98]"
                     >
                         THÊM SẢN PHẨM
                     </button>

@@ -9,7 +9,7 @@ const OrderCart = ({ order, products }) => {
 
     return (
         <div className="w-[98%]">
-            <div className="w-[100%] h-auto ipad:flex mobile:ml-1 ipad:mx-2 my-2 py-2 px-2 rounded-[5px] border-2 border-[#a7e6ff]/50">
+            <div className="w-[100%] h-auto ipad:flex mobile:ml-1 ipad:mx-2 my-2 py-2 px-2 rounded-[5px] border-2 border-[#C73659]/50">
                 <div className="h-full ipad:w-[35%] text-sm font-medium px-[4px]">
                     <div className="text-left">Mã đơn hàng: {order.order_id}</div>
                     <div className="text-left">Ngày đặt hàng: {new Date(order.datecreated).toLocaleDateString()}</div>

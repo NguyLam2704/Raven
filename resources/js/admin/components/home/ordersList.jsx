@@ -102,7 +102,7 @@ const OrderList = ({data}) => {
                         {data.map(order => (
                             <tr key={order.orderId} 
                                 onClick={() => handleRowClick(order.orderId)}
-                                className="cursor-pointer hover:bg-gray-100"
+                                className="cursor-pointer hover:bg-gray-100 active:scale-[0.99]"
                             >
                                 <td className="py-5 px-2 border-b text-sm font-semibold text-center">{order.orderId}</td>
                                 <td className="py-5 px-2 border-b text-sm font-semibold text-left">{order.user.name}</td>

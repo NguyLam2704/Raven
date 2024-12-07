@@ -8,7 +8,7 @@ const ProductCardInOrderDetail = ({products, sizes, colors, quantity}) => {
 
     useEffect(() => {
         const LoadData = async () => {
-            console.log(products)
+            console.log("KEK" + products)
         }
         LoadData();
     } ,[])
@@ -17,11 +17,11 @@ const ProductCardInOrderDetail = ({products, sizes, colors, quantity}) => {
     return (
         <div>
             {products.map((product, index) => (
-                <div key={index} className="flex my-2 h-20 rounded-[5px] border-2 border-[#3d55cb]/50">
+                <div key={index} className="flex my-2 h-20 rounded-[5px] border-2 border-[#A91D3A]/50">
                     <div className="flex ipad:gap-2 h-full desktop:pr-8">
 
                         <div className="h-full flex justify-center items-center">
-                            <img src={product.image} alt={product.prod_name} className="w-[60px] h-[60px] m-1 rounded-[5px]"/>
+                            <img src={product.image} alt={product.prod_name} className="w-[60px] h-[60px] m-1 shadow-md rounded-[5px]"/>
                         </div>
 
                         <div className="h-full mobile:w-40 flex flex-col justify-center text-left">
@@ -39,7 +39,7 @@ const ProductCardInOrderDetail = ({products, sizes, colors, quantity}) => {
                         </div>
 
                         <div className="h-full mobile:mx-1 ipad:mx-4 flex justify-center items-center ">
-                            <div className="text-[#050c9c] text-sm font-medium ipad:px-4">{(product.cost).toLocaleString('vi-VN')}đ</div>
+                            <div className="text-[#A91D3A] text-sm font-semibold ipad:px-4">{(product.cost).toLocaleString('vi-VN')}đ</div>
                         </div>
                     </div>
                 </div>

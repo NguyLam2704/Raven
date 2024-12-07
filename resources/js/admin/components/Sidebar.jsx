@@ -24,34 +24,33 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
   };
 
   return (
-    <nav className="mobile:w-40 ipad:w-50 desktop:w-60 h-full bg-white text-white flex flex-col mobile:px-3 py-5 desktop:p-5 fixed left-0 top-0 bottom-0 border-r border-gray-300">
+      <nav className={`mobile:w-40 ipad:w-50 desktop:w-60 h-full bg-[#EEEEEE] text-white flex flex-col
+              mobile:px-3 py-5 desktop:p-5 fixed left-0 top-0 bottom-0 border-r border-gray-300
+              transform transition-transform duration-300 ease-in-out
+              ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} desktop:translate-x-0 z-30`}
+      >
         <div className="mobile:flex desktop:block items-center justify-between mb-7">
             <h2 className="mobile:text-lg ipad:text-xl desktop:text-2xl text-center text-[#151515]">
-              <strong className="mobile:text-lg ipad:text-xl desktop:text-2xl text-[#C73659]">Raven</strong> Store
+              <strong className="mobile:text-lg ipad:text-xl desktop:text-2xl text-[#31363F]">Raven</strong> Store
             </h2>
             
             <button
-              className="desktop:hidden text-[#151515] ml-1 self-end hover:text-[#C73659] transition-all duration-200"
+              className="desktop:hidden text-[#151515] ml-1 self-end hover:text-[#31363F] transition-all duration-200"
               onClick={toggleSidebar}
             >
               <FontAwesomeIcon icon={faBars} />
           </button>
         </div>
 
-        {/* <div className='-ml-5'>
-          <img 
-            src="https://tpuxfltiiajorbixwyff.supabase.co/storage/v1/object/public/Image/Logo/cay.png?t=2024-12-05T07%3A38%3A46.002Z" 
-            className='absolute bottom-0 z-0'
-          ></img>
-        </div> */}
-
         {/* Sidebar Content */}
-        <ul className="list-none p-0 z-10">
+        <ul className="list-none p-0 z-30">
             <li className="mb-2">
               <Link to="/home_admin" 
-              className={`text-[#151515] no-underline mobile:text-base ipad:text-lg desktop:text-2xl mobile:p-1 ipad:p-1 desktop:p-2 block rounded font-bold
-              ${ selectedMenu === '/home_admin' ? "bg-[#C73659] text-white": "text-[#151515]"} 
-                hover:bg-[#A91D3A] hover:text-white active:bg-[#cf9ca6] transition-all duration-200`}
+              className={`text-[#151515] no-underline mobile:text-base ipad:text-lg desktop:text-2xl 
+                          mobile:p-1 ipad:p-1 desktop:p-2 block rounded font-bold
+                          ${ selectedMenu === '/home_admin' ? "bg-[#76ABAE] text-white": "text-[#151515]"} 
+                         hover:bg-[#76ABAE] hover:text-white active:bg-[#cf9ca6] transition-all duration-200
+                         active:scale-[0.98] hover:scale-[1.03] `}
                 onClick={() => handleMenuClick('/home_admin')}  
               >
                 <FontAwesomeIcon icon={faChartSimple} className='mr-2' />
@@ -60,8 +59,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
             <li className="mb-2">
               <Link to="/order_admin" 
               className={`text-[#151515] no-underline mobile:text-base ipad:text-lg desktop:text-2xl mobile:p-1 ipad:p-1 desktop:p-2 block rounded font-bold
-              ${ selectedMenu === '/order_admin' ? "bg-[#C73659] text-white": "text-[#151515]"} 
-                hover:bg-[#A91D3A] hover:text-white active:bg-[#cf9ca6] transition-all duration-200`}
+              ${ selectedMenu === '/order_admin' ? "bg-[#76ABAE] text-white": "text-[#151515]"} 
+                hover:bg-[#76ABAE] hover:text-white active:bg-[#cf9ca6] transition-all duration-200 active:scale-[0.98] hover:scale-[1.03]`}
                 onClick={() => handleMenuClick('/order_admin')}  
               >
               <FontAwesomeIcon icon={faListCheck} className='mr-2' />
@@ -69,39 +68,62 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
             </li>
             <li className="relative mb-2">
               <button onClick={toggleProductMenu} 
-                className={`text-[#151515] text-left mobile:text-base ipad:text-lg desktop:text-2xl mobile:p-1 ipad:p-1 desktop:p-2  block w-full rounded font-bold hover:bg-[#A91D3A] hover:text-white active:bg-[#cf9ca6] transition-all duration-200
-                  ${isProductMenuOpen  ? "bg-[#C73659] text-white": "text-[#151515]"}`}
+                className={`text-[#151515] text-left mobile:text-base ipad:text-lg desktop:text-2xl mobile:p-1 ipad:p-1 desktop:p-2  block w-full rounded font-bold 
+                  hover:bg-[#76ABAE] hover:text-white active:bg-[#cf9ca6] transition-all duration-200
+                  ${isProductMenuOpen  ? "bg-[#76ABAE] text-white": "text-[#151515]"} active:scale-[0.98] hover:scale-[1.03]`}
                 >
                 <FontAwesomeIcon icon={faShapes} className='mr-2' />
                 Sản phẩm
                 {isProductMenuOpen ? <FontAwesomeIcon icon={faCaretUp} className='ml-2' size='xs'/> : <FontAwesomeIcon icon={faCaretDown} className='ml-2' size='xs'/>}
                 
               </button>
-              <ul className={`dropdown-menu list-none mobile:pl-2 ipad:pl-2 desktop:pl-5 ${isProductMenuOpen ? 'block' : 'hidden'}`}>
-                <li className='flex items-center mt-1 mobile:h-7 ipad:h-7 desktop:h-10 rounded-md hover:bg-[#A91D3A] active:bg-[#cf9ca6] transition-all duration-200'>
+              {/* <ul className={`dropdown-menu transition-transform duration-300 ease-in-out list-none mobile:pl-2 ipad:pl-2 desktop:pl-5 ${isProductMenuOpen ? 'block' : 'hidden'}`}>
+                <li className='flex items-center mt-1 mobile:h-7 ipad:h-7 desktop:h-10 rounded-md hover:bg-[#31363F] active:bg-[#cf9ca6] transition-all duration-200'>
                   <Link to="/products_admin" 
                     className={`font-normal text-left px-2 items-center flex w-full h-full mobile:text-xs ipad:text-xs desktop:text-base text-[#151515]
-                    ${ selectedMenu === '/products_admin' ? " text-[#C73659]": "text-[#151515]"} 
+                    ${ selectedMenu === '/products_admin' ? " text-[#31363F]": "text-[#151515]"} 
                   hover:text-white`}
                     onClick={() => handleMenuClick('/products_admin')}
                   >
                     Sản phẩm hiện có</Link>
                 </li>
-                <li className='flex items-center mt-1 mobile:h-7 ipad:h-7 desktop:h-10 rounded-md hover:bg-[#A91D3A] active:bg-[#cf9ca6] transition-all duration-200'>
+                <li className='flex items-center mt-1 mobile:h-7 ipad:h-7 desktop:h-10 rounded-md hover:bg-[#31363F] active:bg-[#cf9ca6] transition-all duration-200'>
                   <Link to="/addproduct_admin"  
                   className={`font-normal text-left px-2 items-center flex w-full h-full mobile:text-xs ipad:text-xs desktop:text-base text-[#151515]
-                  ${ selectedMenu === '/addproduct_admin' ? " text-[#C73659]": "text-[#151515]"} 
+                  ${ selectedMenu === '/addproduct_admin' ? " text-[#31363F]": "text-[#151515]"} 
                   hover:text-white`}
                     onClick={() => handleMenuClick('/addproduct_admin')}>
                     Thêm sản phẩm mới</Link>
+                  </li>
+              </ul> */}
+              <ul className={`transition-all duration-300 ease-in-out overflow-hidden list-none mobile:pl-2 ipad:pl-2 desktop:pl-5 ${isProductMenuOpen ? 'max-h-40' : 'max-h-0'}`}>
+                  <li className='flex items-center mt-1 mobile:h-7 ipad:h-7 desktop:h-10 rounded-md hover:bg-[#76ABAE] active:bg-[#cf9ca6] transition-all duration-200'>
+                    <Link to="/products_admin"
+                      className={`font-normal text-left px-2 items-center flex w-full h-full mobile:text-xs ipad:text-xs desktop:text-base text-[#151515]
+                      ${selectedMenu === '/products_admin' ? " text-[#76ABAE]" : "text-[#151515]"}
+                      hover:text-white active:scale-[0.98] hover:scale-[1.03]`}
+                      onClick={() => handleMenuClick('/products_admin')}
+                    >
+                      Sản phẩm hiện có
+                    </Link>
+                  </li>
+                  <li className='flex items-center mt-1 mobile:h-7 ipad:h-7 desktop:h-10 rounded-md hover:bg-[#76ABAE] active:bg-[#cf9ca6] transition-all duration-200'>
+                    <Link to="/addproduct_admin"
+                      className={`font-normal text-left px-2 items-center flex w-full h-full mobile:text-xs ipad:text-xs desktop:text-base text-[#151515]
+                      ${selectedMenu === '/addproduct_admin' ? " text-[#76ABAE]" : "text-[#151515]"}
+                      hover:text-white active:scale-[0.98] hover:scale-[1.03]`}
+                      onClick={() => handleMenuClick('/addproduct_admin')}
+                    >
+                      Thêm sản phẩm mới
+                    </Link>
                   </li>
               </ul>
             </li>
             <li>
               <Link to="/customer_admin" 
               className={`text-[#151515] no-underline mobile:text-base ipad:text-lg desktop:text-2xl mobile:p-1 ipad:p-1 desktop:p-2 block rounded font-bold
-                ${ selectedMenu === '/customer_admin' ? "bg-[#C73659] text-white": "text-[#151515]"} 
-                hover:bg-[#A91D3A] hover:text-white active:bg-[#cf9ca6] transition-all duration-200`}
+                ${ selectedMenu === '/customer_admin' ? "bg-[#76ABAE] text-white": "text-[#151515]"} 
+                hover:bg-[#76ABAE] hover:text-white active:bg-[#cf9ca6] transition-all duration-200 active:scale-[0.98] hover:scale-[1.03]`}
                 onClick={() => handleMenuClick('/customer_admin')}  
               >
               <FontAwesomeIcon icon={faUsers} size="sm" className='mr-2 pt-1' />

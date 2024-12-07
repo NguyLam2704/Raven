@@ -19,7 +19,8 @@ const Header = ({toggleSidebar}) => {
     const admin = JSON.parse(localStorage.getItem("admin"));
 
     //Bật hoặc tắt popup quản lý tài khoản,...
-    const toggleDropdown = () => {
+    const toggleDropdown = (event) => {
+        event.stopPropagation();
         setIsDropdownOpen(!isDropdownOpen); 
     };
 
@@ -73,7 +74,7 @@ const Header = ({toggleSidebar}) => {
     }, []);
 
     return (
-        <header className={`header z-100 mobile:w-full ipad:w-full desktop:w-auto bg-white fixed top-0 right-0 mobile:h-12 ipad:h-17 desktop:h-20 flex justify-between items-center desktop:p-0 p-5 border-b border-gray-300
+        <header className={`header shadow-md z-0 mobile:w-full ipad:w-full desktop:w-auto bg-[#EEEEEE] fixed top-0 right-0 mobile:h-12 ipad:h-17 desktop:h-20 flex justify-between items-center desktop:p-0 p-5 border-b border-gray-300
             desktop:left-60    
         `}>
  
@@ -103,7 +104,7 @@ const Header = ({toggleSidebar}) => {
             </button>     
             
             <h1 className="
-                desktop:text-4xl text-[#C73659] text-center font-bold w-full z-10
+                desktop:text-4xl text-[#31363F] text-center font-bold w-full z-10
                 ipad:text-2xl
                 mobile:text-xl
             ">
@@ -122,7 +123,7 @@ const Header = ({toggleSidebar}) => {
                     rounded-full mr-2 border-2"
                 />
                 <div className="mobile:hidden ipad:hidden desktop:block flex flex-col items-start relative w-[100px] ">
-                    <p className="block text-lg truncate w-[100px] text-[#C73659] font-bold">{admin.name}</p>
+                    <p className="block text-lg truncate w-[100px] text-[#A91D3A] font-bold">{admin.name}</p>
                     <p className="role text-xs text-gray-600">Admin</p>
                 </div>
                 <ul
@@ -131,9 +132,10 @@ const Header = ({toggleSidebar}) => {
                         mobile:top-12 mobile:right-0
                         ipad:top-17 ipad:right-0
                         desktop:top-20 desktop:right-10
-                        absolute  bg-white shadow-md list-none p-2 w-44 z-10 rounded-2xl border-2 ${
-                        isDropdownOpen ? "block" : "hidden"
-                    }`}
+                        absolute bg-white shadow-md list-none p-2 w-44 rounded-2xl border-2
+                        transition-all duration-300 ease-in-out transform
+                        ${isDropdownOpen ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}
+                    `}
                 >
                     <li>
                         <Link
@@ -179,7 +181,7 @@ const Header = ({toggleSidebar}) => {
                 <div>
                     <button
                         type="button"
-                        className="mobile:hidden ipad:hidden desktop:block bg-none text-xs cursor-pointer ml-4 hover:text-[#C73659] focus:text-[#C73659] "
+                        className="mobile:hidden ipad:hidden desktop:block bg-none text-xs cursor-pointer ml-4 hover:text-[#A91D3A] focus:text-[#A91D3A] "
                         onClick={toggleDropdown}
                     >
                         <FontAwesomeIcon icon={faCircleChevronDown} size="xl" />

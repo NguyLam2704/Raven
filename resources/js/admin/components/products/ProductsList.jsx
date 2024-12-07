@@ -91,11 +91,10 @@ const ProductsList = ({data}) => {
             {isLoading && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
                     <img src={Loading} alt="Loading..." className="w-12 h-12" />
-                    <div> Product List</div>
                 </div>
             )}
             {/* Hiển thị chi tiết đơn hàng khi đã có dữ liệu */}
-            {selectedProduct && !isLoading && (
+            {selectedProduct && (
                 <ProductDetail
                     ProductDetail={selectedProduct}
                     chart={bieudo}
