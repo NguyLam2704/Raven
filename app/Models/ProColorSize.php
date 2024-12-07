@@ -17,6 +17,7 @@ class ProColorSize extends Model
         'color_id',
         'quantity_available'
     ];
+    public $timestamps = false;
     //define relationship of procolorsize and color
     public function color(): HasOne 
     {

@@ -17,7 +17,8 @@ class ProductOrderResource extends JsonResource
         return [
             'proColorSizeId' => $this->pro_color_size_id,
             'orderId' => $this->order_id,
-            'quantity' => $this->quantity
+            'quantity' => $this->quantity,
+            'cost' => $this->after_discount_cost
         ];
     }
 }

@@ -10,6 +10,7 @@ export default {
     extend: {
       fontFamily: {
         nunito: ['Nunito Sans', 'sans-serif'],
+        Public: ['Public Sans', 'sans-serif']
       },
       keyframes: {
         fly: {
@@ -34,5 +35,6 @@ export default {
     },
   },
   plugins: [
+    // require('@tailwindcss/line-clamp'),
   ],
 }

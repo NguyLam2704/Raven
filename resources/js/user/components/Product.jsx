@@ -18,7 +18,7 @@ const Product = ({ key, proId, img, name, price, sale}) => {
                     </div>
                 )}
                 {/* Ảnh sản phẩm */}
-                <img className="w-[230px] h-[235px] rounded-md my-2" src={img} alt={name} />
+                <img className="w-[230px] h-[235px] rounded-md my-2 object-cover" src={img} alt={name} />
                 {/* Tên sản phẩm */}
                 <div className="h-10 content-center text-center text-base font-medium">{name}</div>
                 
