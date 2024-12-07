@@ -66,7 +66,7 @@ const SaleProduct = () => {
     };
 
     return (
-        <div  className='w-full h-full'>
+        <div  className='w-full h-full font-Public'>
             <Navigation />
             <div  className='mt-[90px] justify-items-center'>
 
@@ -95,7 +95,7 @@ const SaleProduct = () => {
                                     <button className='flex' 
                                             onClick={()=>setOpen(true)} //ẩn các gái trị của bộ lọc 
                                     >
-                                    <div className='rounded rounded-r-none py-1  border border-r-0 border-gray-400 shadow w-28 text-black text-sm font-bold '>{sort}</div>
+                                    <div className='rounded rounded-r-none py-1  border border-r-0 border-gray-400 shadow w-28 text-black text-sm font-medium '>{sort}</div>
                                     <div className='h-full rounded rounded-l-none border border-gray-400 shadow px-1 pt-1 mr-3 '>
                                         <FontAwesomeIcon icon={faChevronDown}  />
                                     </div>
@@ -116,7 +116,7 @@ const SaleProduct = () => {
                                 }
                             </div>            
                             {/* Danh sách các sản phẩm  */}
-                            <div className="mt-10 grid grid-cols-4 gap-12 z-10">
+                            <div className="mt-10 grid desktop:grid-cols-4 ipad:grid-cols-3 gap-12 z-10">
                                 {products.filter((product) => product.discount > 0) //filter product have discount
                                             .sort((a,b) => {
                                                 if (sort === 'Giá giảm dần') {
