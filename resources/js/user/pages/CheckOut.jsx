@@ -5,7 +5,7 @@ import img_product from '../assets/img_product.svg'
 import ItemCheckOut from "../components/CheckOut/ItemCheckOut";
 import QR from '../assets/QR.svg'
 import axios from 'axios';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 //Thanh toán
 const CheckOut = () => {
@@ -104,6 +104,57 @@ const CheckOut = () => {
         const selectedPhuongObj = phuong.find((item) => item.id === idphuong);
         setSelectedPhuongName(selectedPhuongObj?.full_name || '');
     };
+
+    const fetchdata = async () => {
+        // const response = await axios.get("/api/v1/testroute");
+        // return response.data;
+        const response = await fetch(`/api/v1/updateOrder`,{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: name,         // Giả sử bạn truyền tham số name,
+                phonenumber: phone,
+                email: email,
+                status: 1,          // Giả sử bạn truyền tham số status
+                address: [selectedPhuongName,selectedQuanName, selectedTinhName].join(', '),// Địa chỉ giao hàng
+                detail_address: street,      // Địa chỉ chi tiết
+                payingmethod: banking,          // Phương thức thanh toán
+                note: note,
+                totalCost: totalCost+50000,
+                product: storeProduct
+
+                // Thêm các tham số khác nếu cần thiết
+            }),
+        });
+        // const data = await response.json();  // Đọc dữ liệu phản hồi
+          // Kiểm tra dữ liệu trả về
+        console.log(storeProduct);
+
+        if (!response.ok){
+            throw new Error('Failed to fetch order info')
+        }
+        const data = await response.json();
+        // delete data in local storage
+        if (data.message === 'Order updated successfully')
+            {
+                localStorage.removeItem('cart');
+                handleRedirect();
+            }
+
+        console.log(data);
+        // setOrderInfo(data.data || []);
+        // console.log(orderInfo);
+    };
+    const navigate = useNavigate();
+    const handleRedirect = () => {
+        navigate('/');  // Redirect to a different path
+      };
+    const updateOrder = () =>{
+        
+        fetchMail();
+    }
     return(
 
         <div className="w-full justify-items-center font-Public">
@@ -171,11 +222,11 @@ const CheckOut = () => {
                                 ))} 
                             </select> 
                             <select className="h-10 w-full border border-black px-2 mt-6" title="Chọn Quận Huyện" onChange={handleQuanChange}> 
-                                <option value="0">Quận Huyện</option> 
+                                <option value="0">Quận/Huyện</option> 
                                 {quan.map((item) => ( <option key={item.id} value={item.id}>{item.full_name}</option> ))} 
                             </select> 
                             <select className="h-10 w-full border border-black px-2 mt-6" title="Chọn Phường Xã" onChange={handlePhuongChange}> 
-                                <option value="0">Phường Xã</option> {phuong.map((item) => ( <option key={item.id} value={item.id}>{item.full_name}</option> ))} 
+                                <option value="0">Phường/Xã</option> {phuong.map((item) => ( <option key={item.id} value={item.id}>{item.full_name}</option> ))} 
                             </select>
                             {/* Nhập tên đường, số nhà */}
                             <input className="h-10 w-full border border-black px-2 mt-6"
@@ -240,11 +291,13 @@ const CheckOut = () => {
                     <div className="w-fulf flex items-center justify-center mt-14">
                         <button className="content-center text-center text-white desktop:text-2xl ipad:text-xl font-bold rounded-lg border border-black bg-[#c73659] px-10 py-1"
                             onClick={()=>{
-                                console.log("tên", name)
-                                console.log("email", email)
-                                console.log("sdt", phone)
-                                console.log("diachi", street, selectedPhuongName,selectedQuanName, selectedTinhName)
-                                console.log("ghi chú", note)
+                                fetchdata() 
+                                // console.log("tên", name)
+                                // console.log("email", email)
+                                // console.log("sdt", phone)
+                                // console.log("diachi", street, selectedPhuongName,selectedQuanName, selectedTinhName)
+                                // console.log("ghi chú", note)
+                                // console.log(storeProduct)
                             }}
                         >THANH TOÁN</button>
                     </div>

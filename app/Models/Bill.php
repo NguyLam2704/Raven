@@ -10,4 +10,5 @@ class Bill extends Model
     use HasFactory;
     protected $table = 'bills'; // initial table
     protected $primaryKey = 'bill_id'; //primary key in database
+    public $timestamps = false;
 }

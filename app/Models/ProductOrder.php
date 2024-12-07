@@ -10,4 +10,5 @@ class ProductOrder extends Model
     use HasFactory;
     protected $table = 'product_order';
     protected $primaryKey = 'product_order_id';
+    public $timestamps = false;
 }
