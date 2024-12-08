@@ -44,8 +44,8 @@ const Cart = () => {
                                                             item.size !== product.size )); 
     }
     //Hàm tăng số lượng sp
-    const handlePlus = (id,color,size) =>{
-        const index = storeProduct.findIndex((item) => item.proId === id && item.color === color && item.size === size);
+    const handlePlus = (product) =>{
+        const index = storeProduct.findIndex((item) => item === product);
         storeProduct[index].quantity += 1;
         localStorage.setItem('cart', JSON.stringify(storeProduct));
         const savedProduct = localStorage.getItem('cart');
@@ -56,8 +56,8 @@ const Cart = () => {
         cartProduct[id].quantity += 1;
     }
     //Hàm giảm số lượng sp
-    const handleTru = (id,color,size) =>{
-        const index = storeProduct.findIndex((item) => item.proId === id && item.color === color && item.size === size);
+    const handleTru = (product) =>{
+        const index = storeProduct.findIndex((item) => item === product);
         if( storeProduct[index].quantity > 1)
         {storeProduct[index].quantity -= 1;}
         localStorage.setItem('cart', JSON.stringify(storeProduct));

@@ -10,7 +10,7 @@ const TitleMore = ({type, load, }) => {
         if(type==="SẢN PHẨM MỚI"){
             naviagte('/new_product')
         }
-        if(type==="SẢN PHẨM NỔI BẬT"){
+        if(type==="SẢN PHẨM NỔI BẬT"){
             naviagte('/highlight_product')
         }
         if(type==="SALE"){
@@ -19,15 +19,15 @@ const TitleMore = ({type, load, }) => {
     }
 
     return(
-        <div className="w-full h-full ">
+        <div className="w-full font-nunito h-full ">
             <div className="h-1/5"></div>
             {/* Tiêu đề */}
-            <div className=" h-3/5 w-full flex text-center items-center justify-center text-[#a91d3a] desktop:text-5xl ipad:text-4xl font-medium font-Public">{type}</div>
+            <div className=" h-3/5 w-full flex text-center items-center justify-center text-[#1E0342] text-6xl font-semibold font-publicSan ">{type}</div>
             {/* Nút xem thêm */}
             {load ? (<div></div>):(
                 <button onClick={hanlderMore} className="flex h-1/5 justify-end w-full pr-4 pb-2">
-                    <div className="text-[#a91d3a] desktop:text-2xl ipad:text-xl font-normal underline">Xem thêm</div>
-                    <img className="pt-[6px] desktop:h-8 ipad:h-7 " src={more} />
+                    <div className="text-[#a91d3a] text-2xl font-normal underline">Xem thêm</div>
+                    <img className="pt-[6px] " src={more} />
                 </button>
             )}
         </div>

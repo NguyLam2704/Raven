@@ -11,6 +11,7 @@ import TitleMore from '../components/Home/TitleMore';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+
 // Trang chủ
 const HomeUser = () => {
     // State để lưu danh sách sản phẩm
@@ -95,138 +96,142 @@ const HomeUser = () => {
 
     const navigate = useNavigate() ; 
     
+    
     return(
-        <div className='w-full h-screen font-Public'>
-             { loading ? ( <div></div>) : (<Navigation/>) }
-            <main className=" mt-[90px] w-full">
-                { loading ? ( <div></div>) : (<SliderHome/>) }
-                {/* Các sản phẩm mới */}
-                <div className=" w-full  justify-items-center mt-20 "> 
-                    {/* Tiêu đề */}
-                    <div className="h-1/5 w-10/12 ">
-                        <TitleMore type={"SẢN PHẨM MỚI"} load={loading} />
-                    </div>
-                    { loading ? (
-                        <div>
-                            <img className='w-10 h-10 mt-10' src={img_loading} alt="loading" />
+        <div>
+            { loading ? ( <div></div>) : (<Navigation/>) }
+            <div className='w-full  border-2 mx-auto max-w-[1557px] '>
+                <main className="items-center justify-center mx-auto w-full">
+                    { loading ? ( <div></div>) : (<SliderHome/>) }
+                    {/* Các sản phẩm mới */}
+                    <div className=" w-full justify-items-center mt-20 "> 
+                        {/* Tiêu đề */}
+                        <div className="h-1/5 w-10/12 ">
+                            <TitleMore type={"SẢN PHẨM MỚI"} load={loading} />
                         </div>
-                    ) : (
-                        <div className='w-full flex flex-row justify-center'>                       
-                            <button onClick={hanlderBackNew} className=" p-1 pr-2 bg-opacity-30 rounded-full " >
-                                <img src={back} alt="none"/>
-                            </button>                        
-                            <div className="h-4/5 w-10/12 grid desktop:grid-cols-4 ipad:grid-cols-3 gap-10 "  >                             
-                                {products.sort((a, b) => new Date(b.datePosted) - new Date(a.datePosted)) // sort by day
-                                        .slice(NumberBackNew, NumberForwardNew) // choose 8 product
-                                        .map((product, index) => (
-                                            <Product key={index} 
-                                                    proId={product.proId}
-                                                    price={product.cost} 
-                                                    img={product.productImage.find(img => img.isPrimary)?.image} //choose the primary image to display
-                                                    name={product.productName} 
-                                                    sale={product.discount} />
-                                        ))}                       
+                        { loading ? (
+                            <div>
+                                <img className='w-10 h-10 mt-10' src={img_loading} alt="loading" />
                             </div>
-                            <button onClick={hanlderForwardNew} className=" p-1 pr-2 bg-white bg-opacity-30 rounded-full ">
-                                    <img  src={forward} alt="none"/>
-                            </button>
-                        </div>
-                    )}     
-                </div>
-
-                { loading ? ( <div></div>) : (<Line/>) }                
-
-                {/* Các sản phẩm nổi bật */}
-                <div className="  w-full  justify-items-center mt-20"> 
-                    {/* Tiêu đề */}
-                    <div className="h-1/5 w-10/12 ">
-                        <TitleMore type={"SẢN PHẨM NỔI BẬT"}  load={loading}/>
+                        ) : (
+                            <div className='w-full flex flex-row justify-center'>                       
+                                <button onClick={hanlderBackNew} className=" p-1 pr-2 bg-opacity-30 rounded-full " >
+                                    <img src={back} alt="none"/>
+                                </button>                        
+                                <div className="h-4/5 w-10/12 grid grid-cols-4 gap-10 "  >                             
+                                    {products.sort((a, b) => new Date(b.datePosted) - new Date(a.datePosted)) // sort by day
+                                            .slice(NumberBackNew, NumberForwardNew) // choose 8 product
+                                            .map((product, index) => (
+                                                <Product key={index} 
+                                                        proId={product.proId}
+                                                        price={product.cost} 
+                                                        img={product.productImage.find(img => img.isPrimary)?.image} //choose the primary image to display
+                                                        name={product.productName} 
+                                                        sale={product.discount} />
+                                            ))}                       
+                                </div>
+                                <button onClick={hanlderForwardNew} className=" p-1 pr-2 bg-opacity-30 rounded-full ">
+                                        <img  src={forward} alt="none"/>
+                                </button>
+                            </div>
+                        )}        
                     </div>
 
-                    {/* Danh sách sản phẩm */}
-                    { loading ? (
-                        <div>
-                            <img className='w-10 h-10 mt-10' src={img_loading} alt="loading" />
+                    { loading ? ( <div></div>) : (<Line/>) }                
+
+                    {/* Các sản phẩm nổi bật */}
+                    <div className="  w-full  justify-items-center mt-20"> 
+                        {/* Tiêu đề */}
+                        <div className="h-1/5 w-10/12 ">
+                            <TitleMore type={"SẢN PHẨM NỔI BẬT"}  load={loading}/>
                         </div>
-                    ) : (
-                        <div className='w-full flex flex-row justify-center'>                       
-                            <button className=" p-1 pr-2 bg-opacity-30 rounded-full "
-                                onClick={hanlderBackHight}
-                            >
-                                <img src={back} alt="none"/>
-                            </button>                        
-                            <div className="h-4/5 w-10/12 grid desktop:grid-cols-4 ipad:grid-cols-3 gap-10 "  > 
-                                
-                                {products.filter((product) => product.quantitySold > 10) //fiter product have more 10 quantitySold
-                                        .slice(NumberBackHighlight, NumberForwardHighlight) //choose 8 product
+
+                        {/* Danh sách sản phẩm */}
+                        { loading ? (
+                            <div>
+                                <img className='w-10 h-10 mt-10' src={img_loading} alt="loading" />
+                            </div>
+                        ) : (
+                            <div className='w-full flex flex-row justify-center'>                       
+                                <button className=" p-1 pr-2 bg-opacity-30 rounded-full "
+                                    onClick={hanlderBackHight}
+                                >
+                                    <img src={back} alt="none"/>
+                                </button>                        
+                                <div className="h-4/5 w-10/12 grid grid-cols-4 gap-10 "  > 
+                                    
+                                    {products.filter((product) => product.quantitySold > 10) //fiter product have more 10 quantitySold
+                                            .slice(NumberBackHighlight, NumberForwardHighlight) //choose 8 product
+                                            .map((product, index) => (
+                                                <Product key={index}
+                                                        proId={product.proId}
+                                                        price={product.cost} 
+                                                        img={product.productImage.find(img => img.isPrimary)?.image} //choose the primary image to display
+                                                        name={product.productName} 
+                                                        sale={product.discount} />
+                                            ))}
+                                    
+                                </div>
+                                <button className=" p-1 pr-2 bg-opacity-30 rounded-full "
+                                    onClick={hanlderForwardHighlight}
+                                >
+                                        <img  src={forward} alt="none"/>
+                                </button>
+                            </div>   
+                        )} 
+                                                        
+                    </div>   
+
+                    { loading ? ( <div></div>) : (<Line/>) }
+
+                    {/* Các sản phẩm sale */}
+                    <div className=" w-full  justify-items-center mt-20"> 
+                        {/* Tiêu đề */}
+                        <div className="h-1/5 w-10/12 ">
+                            <TitleMore type={"SALE"}  load={loading}/>
+                        </div>
+
+                        {/* Danh sách sản phẩm */}
+                        { loading ? (
+                            <div>
+                                <img className='w-10 h-10 mt-10'  src={img_loading} alt="loading" />
+                            </div>
+                        ) : (
+                            <div className='w-full flex flex-row justify-center'>                       
+                                <button className=" p-1 pr-2 bg-opacity-30 rounded-full "
+                                    onClick={hanlderBackSale}
+                                >
+                                    <img src={back} alt="none"/>
+                                </button>                        
+                                <div className="h-4/5 w-10/12 grid grid-cols-4 gap-10 "  > 
+                                    
+                                    {products.filter((product) => product.discount > 0) //filter product have discount
+                                        .slice(NumberBackSale, NumberForwardSale)
                                         .map((product, index) => (
-                                            <Product key={index}
+                                            <Product  key={index}
                                                     proId={product.proId}
                                                     price={product.cost} 
-                                                    img={product.productImage.find(img => img.isPrimary)?.image} //choose the primary image to display
+                                                    img={product.productImage.find(img => img.isPrimary)?.image} 
                                                     name={product.productName} 
                                                     sale={product.discount} />
                                         ))}
-                                
-                            </div>
-                            <button className=" p-1 pr-2 bg-white bg-opacity-30 rounded-full "
-                                onClick={hanlderForwardHighlight}
-                            >
-                                    <img  src={forward} alt="none"/>
-                            </button>
-                        </div>   
-                    )} 
-                                                     
-                </div>   
-
-                { loading ? ( <div></div>) : (<Line/>) }
-
-                {/* Các sản phẩm sale */}
-                <div className=" w-full  justify-items-center mt-20"> 
-                    {/* Tiêu đề */}
-                    <div className="h-1/5 w-10/12 ">
-                        <TitleMore type={"SALE"}  load={loading}/>
-                    </div>
-
-                    {/* Danh sách sản phẩm */}
-                    { loading ? (
-                        <div>
-                            <img className='w-10 h-10 mt-10'  src={img_loading} alt="loading" />
-                        </div>
-                    ) : (
-                        <div className='w-full flex flex-row justify-center'>                       
-                            <button className=" p-1 pr-2 bg-opacity-30 rounded-full "
-                                onClick={hanlderBackSale}
-                            >
-                                <img src={back} alt="none"/>
-                            </button>                        
-                            <div className="h-4/5 w-10/12 grid desktop:grid-cols-4 ipad:grid-cols-3 gap-10 "  > 
-                                
-                                {products.filter((product) => product.discount > 0) //filter product have discount
-                                    .slice(NumberBackSale, NumberForwardSale)
-                                    .map((product, index) => (
-                                        <Product  key={index}
-                                                proId={product.proId}
-                                                price={product.cost} 
-                                                img={product.productImage.find(img => img.isPrimary)?.image} 
-                                                name={product.productName} 
-                                                sale={product.discount} />
-                                    ))}
-                                
-                            </div>
-                            <button className=" p-1 pr-2 bg-white bg-opacity-30 rounded-full "
-                                onClick={hanlderForwardSale}
-                            >
-                                    <img  src={forward} alt="none"/>
-                            </button>
-                        </div> 
-                    )} 
-                                                          
-                </div>                    
-            </main>
+                                    
+                                </div>
+                                <button className=" p-1 pr-2 bg-opacity-30 rounded-full "
+                                    onClick={hanlderForwardSale}
+                                >
+                                        <img  src={forward} alt="none"/>
+                                </button>
+                            </div> 
+                        )} 
+                                                            
+                    </div>                    
+                </main>
+                
+            </div>
             <Footer/>
-            
         </div>
+
     )
 }
 
