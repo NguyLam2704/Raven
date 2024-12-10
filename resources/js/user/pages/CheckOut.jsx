@@ -159,11 +159,11 @@ const CheckOut = () => {
 
         <div className="w-full justify-items-center font-Public">
             <Navigation/>
-                <div className="w-10/12 mt-[150px]">
-                    <div className=" text-center text-[#a91d3a] desktop:text-4xl ipad:text-3xl font-extrabold">THANH TOÁN</div>
-                    <div className="w-full grid grid-cols-2 mt-12">
+                <div className="desktop:w-10/12 ipad:w-11/12 mobile:w-10/12 mt-[150px]">
+                    <div className=" text-center text-[#a91d3a] desktop:text-3xl ipad:text-2xl mobile:text-xl font-extrabold">THANH TOÁN</div>
+                    <div className=" desktop:grid ipad:grid mobile:hidden grid-cols-2 mt-12">
                         {/* Cột nhập Thông tin thanh toán */}
-                        <div className="border-r border-black px-20">
+                        <div className="border-r border-black desktop:px-20 ipad:px-10">
                             <div className=" text-center text-[#151515] text-xl font-bold ">Thông tin thanh toán</div>
                             {/* Nhập họ và tên */}
                             <input className="h-10 w-full border border-black px-2 mt-6"
@@ -263,7 +263,7 @@ const CheckOut = () => {
                             
                         </div>
                         {/* Cột đơn hàng */}
-                        <div className=" px-20">
+                        <div className="desktop:px-20 ipad:px-10">
                             <div className="w-full text-center text-[#151515] text-xl font-bold mb-8">Đơn hàng</div>
                             {/* Danh sách sản phẩm trong đơn hàng */}
                             {storeProduct.map((product,index) => (
@@ -286,6 +286,131 @@ const CheckOut = () => {
                                 <div className="h-10 content-center text-right text-[#a91d3a] desktop:text-xl ipad:text-lg font-bold">{(totalCost+50000).toLocaleString()}đ</div>
                             </div>
                         </div>
+                    </div>
+                    <div className="w-full desktop:hidden ipad:hidden mobile:grid mt-12">
+                        {/* Cột đơn hàng */}
+                        <div className="">
+                            <div className="w-full text-center text-[#151515] text-xl font-bold mb-8">Đơn hàng</div>
+                            {/* Danh sách sản phẩm trong đơn hàng */}
+                            {storeProduct.map((product,index) => (
+                                <ItemCheckOut key={index} product={product} />                            
+                            ))}
+                            {/* Tạm tính giá các sản phẩm */}
+                            <div className="flex flex-row justify-between mt-3">
+                                <div className=" h-6 content-center text-black desktop:text-base ipad:text-sm font-normal ">Tạm tính: </div>
+                                <div className="w-24 content-center text-right text-[#c73659] desktop:text-base ipad:text-sm font-bold ">{totalCost?.toLocaleString()}đ</div> {/*render có thể xảy ra trước khi dữ liệu được tải đầy đủ => use ? to check */}
+                            </div>
+                            {/* Phí vận chuyển */}
+                            <div className="flex flex-row justify-between mt-3">
+                                <div className=" h-6 content-center text-black desktop:text-sm ipad:text-xs font-normal ">Phí vận chuyển: </div>
+                                <div className="h-6 content-center text-right text-black desktop:text-sm ipad:text-xs font-bold ">50,000đ</div>
+                            </div>
+                            {/* Tổng giá */}
+                            <div className="h-1 border-b-[1px] border-[#C4C4C4] mt-2"></div>
+                            <div className="flex flex-row justify-between mt-3 ">
+                                <div className="h-10 content-center text-black desktop:text-xl ipad:text-lg font-bold ">Tổng cộng </div>
+                                <div className="h-10 content-center text-right text-[#a91d3a] desktop:text-xl ipad:text-lg font-bold">{(totalCost+50000).toLocaleString()}đ</div>
+                            </div>
+                        </div>
+                        {/* Cột nhập Thông tin thanh toán */}
+                        <div className="mt-16">
+                            <div className=" text-center text-[#151515] text-xl font-bold ">Thông tin thanh toán</div>
+                            {/* Nhập họ và tên */}
+                            <input className="h-10 w-full border border-black px-2 mt-6"
+                                type="text"
+                                placeholder="Họ và tên"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />                            
+                                {/* Nhập email */}
+                                <input className="h-10 w-full col-span-2 border border-black px-2 mt-6 "
+                                    type="text"
+                                    placeholder="Email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />  
+                                {/* Nhập sđt    */}
+                                <input 
+                                    className="h-10 w-full border border-black px-2 mt-6 "
+                                    type="text"
+                                    placeholder="Số điện thoại"
+                                    value={phone}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        if (/^\d*$/.test(value)) {
+                                            setPhone(value); // Chỉ cho phép số
+                                        }
+                                    }}
+                                />          
+                            {/* Nhập email */}
+                            <input className="h-10 w-full desktop:hidden border border-black px-2 mt-6 "
+                                    type="text"
+                                    placeholder="Email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />  
+                                {/* Nhập sđt    */}
+                                <input 
+                                    className="h-10 w-full desktop:hidden border border-black px-2 mt-6 "
+                                    type="text"
+                                    placeholder="Số điện thoại"
+                                    value={phone}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        if (/^\d*$/.test(value)) {
+                                            setPhone(value); // Chỉ cho phép số
+                                        }
+                                    }}
+                                /> 
+                            {/* Chọn tỉnh thành */}
+                            <select className="h-10 w-full border border-black px-2 mt-6" title="Chọn Tỉnh Thành" onChange={handleTinhChange}> 
+                                <option value={tinh} >Tỉnh Thành</option> 
+                                {tinh.map((item) => ( 
+                                    <option key={item.id} value={item.id}>{item.full_name}</option>
+                                ))} 
+                            </select> 
+                            <select className="h-10 w-full border border-black px-2 mt-6" title="Chọn Quận Huyện" onChange={handleQuanChange}> 
+                                <option value="0">Quận/Huyện</option> 
+                                {quan.map((item) => ( <option key={item.id} value={item.id}>{item.full_name}</option> ))} 
+                            </select> 
+                            <select className="h-10 w-full border border-black px-2 mt-6" title="Chọn Phường Xã" onChange={handlePhuongChange}> 
+                                <option value="0">Phường/Xã</option> {phuong.map((item) => ( <option key={item.id} value={item.id}>{item.full_name}</option> ))} 
+                            </select>
+                            {/* Nhập tên đường, số nhà */}
+                            <input className="h-10 w-full border border-black px-2 mt-6"
+                                type="text"
+                                placeholder="Số nhà, Tên đường"
+                                value={street}
+                                onChange={(e) => setStreet(e.target.value)}
+                            />
+                            {/* Ghi chú */}
+                            <input className="h-16 w-full border border-black px-2 mt-6"
+                                type="text"
+                                placeholder="Ghi chú (nếu có)"
+                                value={note}
+                                onChange={(e) => setNote(e.target.value)}
+                            /> 
+                            {/* Chọn phương thức thanh toán */}
+                            <div className=" text-center text-[#151515] text-xl font-bold mt-8">Phương thức thanh toán</div>
+                            <div className="mt-6 flex flex-row items-center">
+                                <input className="h-5 w-5  rounded accent-black " 
+                                    type="checkbox"      
+                                    checked={COD}
+                                    onChange={hanlderCOD}
+                                />
+                                <div className="w-full h-7content-center text-black text-xl font-normal ml-2">Thanh toán khi nhận hàng (COD)</div> 
+                            </div>
+                            <div className="mt-6 flex flex-row items-center">
+                                <input className="h-5 w-5  rounded accent-black " 
+                                    type="checkbox" 
+                                    checked={banking} 
+                                    onChange={hanlderBanking}                  
+                                />
+                                <div className="w-full h-7content-center text-black text-xl font-normal ml-2">Chuyển khoản qua ngân hàng</div> 
+                            </div>
+                            
+                        </div>
+                        
                     </div>
                     {/* Nút thanh toán */}
                     <div className="w-fulf flex items-center justify-center mt-14">

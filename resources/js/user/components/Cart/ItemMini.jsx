@@ -35,8 +35,7 @@ const ItemMini = ({product, handlerPlus, handlerTru, removeProduct, handler}) =>
     }, []);
     useEffect(() => {
         handler(product,quantityAvailable)
-    }, [quantityAvailable]);
-    console.log(product.quantity>=quantityAvailable)    
+    }, [quantityAvailable]);    
     return(        
         <div className="w-full flex flex-row border-b-[1px] border-[#C4C4C4] pb-2 pt-4">
             <img className="w-[90px] h-[90px] self-center rounded-lg border-black border" src={product.productImage} alt="img" />

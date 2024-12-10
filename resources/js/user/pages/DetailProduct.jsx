@@ -8,7 +8,7 @@ import cart from '../assets/cart_red.svg'
 import Product from '../components/Product';
 import back from '../assets/Back.svg'
 import forward from '../assets/Forward.svg'
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import SizeAo from '../assets/bang_size.svg'
 import SizeQuanDai from '../assets/size_quandai.jpg'
 import SizeQuanNgan from '../assets/size_quanngan.jpg'
@@ -19,23 +19,32 @@ import 'swiper/swiper-bundle.css';
 //Chi tiết sản phẩm
 const DetailProduct = () =>{
     const swiperRef = useRef(null);
+    const swiperSameRef = useRef(null);
     const [currentIndex, setCurrentIndex] = useState(0); // Theo dõi slide hiện tại
 
-  // Xử lý khi nhấn nút "Up"
-  const handlePrev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex((prev) => prev - 1);
-      swiperRef.current?.slideTo(currentIndex - 1);
-    }
-  };
+    // Xử lý khi nhấn nút "Up"
+    const handlePrev = () => {
+        if (currentIndex > 0) {
+        setCurrentIndex((prev) => prev - 1);
+        swiperRef.current?.slideTo(currentIndex - 1);
+        }
+    };
 
-  // Xử lý khi nhấn nút "Down"
-  const handleNext = () => {
-    if (currentIndex < DetailProduct.productImage.length - 3) {
-      setCurrentIndex((prev) => prev + 1);
-      swiperRef.current?.slideTo(currentIndex + 1);
-    }
-  };
+    // Xử lý khi nhấn nút "Down"
+    const handleNext = () => {
+        if (currentIndex < DetailProduct.productImage.length - 3) {
+        setCurrentIndex((prev) => prev + 1);
+        swiperRef.current?.slideTo(currentIndex + 1);
+        }
+    };
+    //Kiểm soát nút qua lại
+    const handleBack = (swiperRef) => {
+        if (swiperRef.current) swiperRef.current.slidePrev();
+    };
+
+    const handleForward = (swiperRef) => {
+        if (swiperRef.current) swiperRef.current.slideNext();
+    };
     // get proid from url
     const {proId} = useParams();
     const [cartProduct, setcartProduct] = useState(null);
@@ -46,7 +55,6 @@ const DetailProduct = () =>{
     //Kiểm soát hiển thị thnah giỏ hàng
     const [isCartMini, setCart] =useState(false)
     const handleCart = () => {
-        if (selectedColor && selectedSize){
         // Lấy danh sách sản phẩm từ localStorage (nếu chưa có thì trả về mảng rỗng)
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -66,10 +74,7 @@ const DetailProduct = () =>{
         // Thông báo (tuỳ chọn)
         //  alert('Sản phẩm đã được thêm vào giỏ hàng!');
         setCart(!isCartMini)
-        }
-        else {
-            console.log("empty color or empty size")
-        }
+        
     }
   
     // const[ListProduct, setLi]
@@ -139,21 +144,7 @@ const DetailProduct = () =>{
     const [selectedColorId, setColorId] = useState(null);
     //Nhận giá trị id size
     const [selectedSizeId, setSizeId] = useState(null);
-    //Nút mũi tên
-    const [NumberBack, setBack] = useState(0)
-    const [NumberForward, setForward] = useState(4)
-    const hanlderBack = () =>{
-        if( NumberBack > 1 ){            
-            setBack( NumberBack - 4 )
-            setForward( NumberForward - 4 )
-        }
-    }
-    const hanlderForward = () =>{
-        if( NumberForward < products.length ){
-            setBack( NumberBack + 4 )
-            setForward( NumberForward + 4 )
-        }
-    }
+    
     //Loai bang size
     const [BangSize, setBang] = useState()
     const handlerBangSize = () => {
@@ -365,7 +356,7 @@ const DetailProduct = () =>{
                             <div className='h-8 content-center text-black text-base font-normal font-Public '>Số lượng:</div>
                             <div className="flex flex-row ml-20">
                                 {/* Giảm số lượng */}
-                                <button className="desktop:h-8 desktop:w-8 ipad:h-7 ipad:w-7  border border-[#c4c4c4] bg-[#d9d9d9] "
+                                <button className={`desktop:h-8 desktop:w-8 ipad:h-7 ipad:w-7  border border-[#c4c4c4] bg-[#d9d9d9] ${(quality>1)?'opacity-100':'opacity-70 cursor-not-allowed'} `}
                                     onClick={()=>{
                                         if(quality > 1)
                                             setQuality(quality-1)
@@ -375,7 +366,7 @@ const DetailProduct = () =>{
                                 </button>                
                                 <div className="desktop:h-8 desktop:w-8 ipad:h-7 ipad:w-7  content-center text-center text-black text-base font-normal border border-[#c4c4c4] bg-[#d9d9d9] mx-[1px] ">{quality}</div>
                                 {/* Tăng số lượng */}
-                                <button className=" desktop:h-8 desktop:w-8 ipad:h-7 ipad:w-7  border border-[#c4c4c4] bg-[#d9d9d9] "
+                                <button className={`desktop:h-8 desktop:w-8 ipad:h-7 ipad:w-7  border border-[#c4c4c4] bg-[#d9d9d9] ${(quality < (DetailProduct?.proColorSize .find((item) => item.color.colorCode === selectedColor  && item.size.sizeCode === selectedSize)?.quantityAvailable))?'opacity-100':'opacity-70 cursor-not-allowed'} `}
                                     onClick={()=>setQuality(quality+1)}
                                     disabled={!(quality<(DetailProduct?.proColorSize .find((item) => item.color.colorCode === selectedColor  && item.size.sizeCode === selectedSize)?.quantityAvailable))}
                                 >
@@ -388,9 +379,14 @@ const DetailProduct = () =>{
                         <div>
                             {/* Thêm sp vào giỏ hàng */}
                             <button  className="w-full desktop:h-11 ipad:h-9 flex flow-row items-center justify-center rounded-md border-[3px] border-[#c73659] border:bg-[#a91d3a] "
-                                onClick={handleCart}
+                                onClick={()=> {
+                                    if(selectedColor && selectedSize)
+                                    {
+                                        handleCart()
+                                    }
+                                    else alert('Vui lòng chọn màu sắc và kích thước!')
+                                    }}
                                 title={!selectedColor || !selectedSize ? 'Vui lòng chọn màu sắc và số lượng' : ''}
-                                disabled={!selectedColor || !selectedSize }
                             >
                                 <img className='desktop:h-6 ipad:h-5' src={cart} alt="cart" />
                                 <div className=' content-center text-center text-[#c73659] desktop:text-xl ipad:text-lg font-extrabold ml-3 mt-1 active:text-[#a91d3a]'>THÊM VÀO GIỎ </div>
@@ -400,16 +396,17 @@ const DetailProduct = () =>{
                                 onClick={()=> {
                                     if(selectedColor && selectedSize)
                                     {
-                                    const updateCartProduct = {
-                                        ...cartProduct,
-                                        size: selectedSize,
-                                        color: selectedColor,
-                                        quantity: quality,
-                                        sizeId: selectedSizeId,
-                                        colorId: selectedColorId
-                                    };
-                                    navigate("/check_out", { state: { product: updateCartProduct} })}
-                                    else console.log("empty color and empty size");
+                                        const updateCartProduct = {
+                                            ...cartProduct,
+                                            size: selectedSize,
+                                            color: selectedColor,
+                                            quantity: quality,
+                                            sizeId: selectedSizeId,
+                                            colorId: selectedColorId
+                                        };
+                                        navigate("/check_out", { state: { product: updateCartProduct} })
+                                    }
+                                    else alert('Vui lòng chọn màu sắc và kích thước!')
                                     }}>
                                 MUA NGAY
                             </button>
@@ -431,24 +428,60 @@ const DetailProduct = () =>{
 
                 {/* Sản phẩm tương tự */}
                 <div className='w-10/12 mt-24'>
-                    <div className='text-center text-[#a91d3a] desktop:text-4xl ipad:text-3xl font-semibold'>SẢN PHẨM TƯƠNG TỰ</div>                    
+                    <div className='text-center text-[#a91d3a] desktop:text-4xl ipad:text-3xl font-semibold mb-4'>SẢN PHẨM TƯƠNG TỰ</div>                    
                 </div>
                 {/* Danh sách các sản phẩm tương tự */}
                 <div className='w-full flex flex-row justify-center'>                       
                         <button className=" p-1 pr-2 bg-opacity-30 rounded-full "
-                            onClick={hanlderBack}
+                            onClick={() => handleBack(swiperSameRef)}
                         >
                             <img src={back} alt="none"/>
                         </button>                        
-                        <div className='w-10/12 mt-6'>
-                            <div className='grid desktop:grid-cols-4 ipad:grid-cols-3 gap-10'>
-                                {products.filter((product) => product.proId != proId).slice(NumberBack,NumberForward).map((product, index) => (
-                                    <Product key={index} proId={product.proId} img={product.productImage.find(img => img.isPrimary)?.image} name={product.productName} price={product.cost} sale={product.discount}/>                            
-                                ))}                      
-                            </div>
+                        <div className="w-10/12 justify-items-center">
+                            <Swiper
+                                slidesPerView={4} // Hiển thị 1 slide mỗi lần (vì mỗi slide sẽ chứa 6 sản phẩm chia làm 2 hàng)
+                                mousewheel={true} // Cuộn bằng chuột
+                                onSwiper={(swiper) => (swiperSameRef.current = swiper)} // Lưu instance của Swiper
+                                speed={500}
+                                breakpoints={{
+                                    640: { slidesPerView: 2, spaceBetween: 10 },
+                                    768: { slidesPerView: 3, spaceBetween: 15 },
+                                    1200: { slidesPerView: 4, spaceBetween: 20 },
+                                }}
+                                autoplay={{
+                                    delay: 1000, // Tự động chuyển trang sau 3 giây
+                                    disableOnInteraction: false, // Không dừng autoplay khi người dùng tương tác
+                                }}
+                            >
+                                {products
+                                    .filter((product) => product.proId != proId) // Sắp xếp sản phẩm theo ngày
+                                    .reduce((acc, product, index) => {
+                                        const groupIndex = Math.floor(index / 1); // Nhóm mỗi 8 sản phẩm thành một slide
+                                        if (!acc[groupIndex]) acc[groupIndex] = [];
+                                        acc[groupIndex].push(product);
+                                        return acc;
+                                    }, [])
+                                    .map((group, index) => (
+                                        <SwiperSlide key={index}>
+                                            <div className="grid grid-row-1 justify-items-center my-4">
+                                                {group.map((product, subIndex) => (
+                                                    <div key={subIndex} className="flex flex-col items-center">
+                                                        <Product
+                                                            proId={product.proId}
+                                                            price={product.cost}
+                                                            img={product.productImage.find((img) => img.isPrimary)?.image} // Ảnh chính
+                                                            name={product.productName}
+                                                            sale={product.discount}
+                                                        />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </SwiperSlide>
+                                    ))}
+                            </Swiper>
                         </div>
                         <button  className=" p-1 pr-2 bg-white bg-opacity-30 rounded-full "
-                            onClick={hanlderForward}
+                            onClick={() => handleForward(swiperSameRef)}
                         >
                                 <img  src={forward} alt="none"/>
                         </button>
