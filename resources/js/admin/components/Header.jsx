@@ -104,7 +104,7 @@ const Header = ({toggleSidebar}) => {
             </button>     
             
             <h1 className="
-                desktop:text-4xl text-[#31363F] text-center font-bold w-full z-10
+                desktop:text-4xl text-[#1E0342] text-center font-bold w-full z-10
                 ipad:text-2xl
                 mobile:text-xl
             ">
@@ -123,7 +123,7 @@ const Header = ({toggleSidebar}) => {
                     rounded-full mr-2 border-2"
                 />
                 <div className="mobile:hidden ipad:hidden desktop:block flex flex-col items-start relative w-[100px] ">
-                    <p className="block text-lg truncate w-[100px] text-[#A91D3A] font-bold">{admin.name}</p>
+                    <p className="block text-lg truncate w-[100px] text-[#1E0342] font-bold">{admin.name}</p>
                     <p className="role text-xs text-gray-600">Admin</p>
                 </div>
                 <ul

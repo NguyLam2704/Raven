@@ -4,18 +4,25 @@ import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import Loading from '../../asset/loading.svg'
 import ProductDetail from './ProductDetail';
+import ProductEdit from './ProductEdit';
 
 const fetchProductById = async (id) => {
     const response = await axios.get(`/api/v1/product/${id}`);
     return response.data;
 };
 
+const getProductEdit = async (id) => {
+    const response = await axios.get(`/api/dashboard/product/${id}`);
+    return response.data;
+};
 const ProductsList = ({data}) => {
     const [selectedProduct, setSelectedProduct] = useState(null); //Lưu sản phẩm được chọn 
+    const [productEdit, setProductEdit] = useState();
     const [isLoading, setIsLoading] = useState();
     const [bieudo, setBieudo] = useState({});
     //Hàm lưu sản phẩm khi được click vào
     const handleRowClick = async (prodId) => {
+        console.log("Đang gọi detail")
         setIsLoading(true);
         try {
             const productDetail = await fetchProductById(prodId);
@@ -24,13 +31,28 @@ const ProductsList = ({data}) => {
             console.log(productDetail.data)
             setSelectedProduct(productDetail.data);
         } catch (error) {
-            console.error('Error fetching order details:', error);
+            console.error('Error fetching product details:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleEditClick = async (prodId) => {
+        console.log("Đang gọi edit")
+        setIsLoading(true);
+        try {
+            const productedit = await getProductEdit(prodId);
+            console.log(productedit)
+            setProductEdit(productedit);
+        } catch (error) {
+            console.error('Error fetching product edit:', error);
         } finally {
             setIsLoading(false);
         }
     };
 
     const closeDetail = () => setSelectedProduct(null);//Đóng popup chi tiết sản phẩm
+    const closeEdit = () => setProductEdit(null);
     
     return (
          <div className="container mobile:block">
@@ -72,7 +94,11 @@ const ProductsList = ({data}) => {
                                 </td>
                                 <td className="py-5 px-2 h-20 border-b flex justify-center items-center">
                                     <div  className="w-24 bg-[#fafbfc] rounded-lg border">
-                                        <button className='h-full w-1/2 border-r'>
+                                        <button className='h-full w-1/2 border-r'
+                                             onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleEditClick(product.proId)
+                                        }}>
                                             <FontAwesomeIcon icon={faPenToSquare} tyle={{color: "#000000",}} />
                                         </button>
 
@@ -101,6 +127,16 @@ const ProductsList = ({data}) => {
                     onClose={closeDetail}
                 />
             )}
+
+            {productEdit && (
+                <ProductEdit 
+                    products={productEdit}
+                    onClose={closeEdit}
+                />
+
+            )
+
+            }
 
          </div>   
     )

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Logo from "../assets/Raven.svg"
+import Logo from "../assets/qua_moi.png"
 import Search from "../assets/Search.svg"
 import Cart from "../assets/Cart.svg"
 import { Link } from 'react-router-dom';
@@ -12,6 +12,7 @@ const Navigation = () => {
     const [isOpenQuan, setOpenQuan] = useState(false);
     //Giá trị để kiểm soát trạng thái ẩn/hiện của mục Phụ kiện
     const [isOpenPk, setOpenPk] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
 
     //Kiểm soát trạng thái hiện của mục Áo
     const handleHoverAo = () => {
@@ -79,15 +80,15 @@ const Navigation = () => {
 
     return(
         <div className="flex w-full fixed z-30 top-0 mx-auto bg-[#f7f2e1]">
-            <header className="flex flex-row self-center shadow-md  items-center px-5 justify-center top-0 w-full bg-[#EEEEEE] font-montserrat ">
+            <header className="desktop:flex flex-row self-center shadow-md  items-center px-5 justify-center top-0 w-full bg-[#EEEEEE] font-montserrat ">
                 {/* Logo  */}
-                <div className="absolute items-center left-2 justify-items-center ">
+                <div className="absolute border-red-500 border items-center h-20 left-2 justify-items-center ">
                         <Link to="/">
-                            <img src={Logo} alt="Logo"/>
+                            <img src={Logo} alt="Logo" className='w-22 h-20 ml-5'/>
                         </Link>
                 </div>
 
-                <nav   className="w-[45%] max-w-[1557px] flex flex-row items-center justify-center h-20 border-b-slate-300">
+                <nav className={`w-[45%] max-w-[1557px] mobile:hidden desktop:flex flex-row items-center justify-center h-20 border border-red-700`}>
                     {/* Thanh điều hướng */}
                     <ul   className=" h-full gap-16 items-center justify-between flex mx-auto  ">
                         <li className=" h-full items-center justify-center justify-items-center mt-16 ">
@@ -163,12 +164,23 @@ const Navigation = () => {
                             {/* <FontAwesomeIcon className='h-[30px]' icon={faBagShopping} /> */}
                             {/* Số lượng sản phẩm trong giỏ hàng */}
                             {/* <div className=" bottom-[27px] ml-[3px] absolute font-bold rounded-full text-center content-center align-middle h-[18px] w-[18px] text-base text-black focus:outline-none">{quantityCart}</div> */}
-                            <div className=" desktop:bottom-[34px] desktop:h-[18px] desktop:w-[18px] desktop:ml-[14px] desktop:text-sm 
+                            <div className=" desktop:bottom-[20px] desktop:h-[18px] desktop:w-[18px] desktop:ml-[14px] desktop:text-sm 
                             ipad:bottom-[35px] ipad:h-[15px] ipad:w-[15px] ipad:ml-[12px] ipad:text-xs
                             absolute bg-[#a91d3a] rounded-full text-center text-white focus:outline-none">{quantityCart}</div>
                         </Link>
                     </div>
                 </div>    
+
+                                {/* Hamburger Menu for mobile view */}
+                <div className="md:hidden flex items-center">
+                    <button onClick={() => setMenuOpen(!menuOpen)} className="mobile-menu-button">
+                        <div className={`hamburger ${menuOpen ? 'open' : ''}`}>
+                            <span className="bar"></span>
+                            <span className="bar"></span>
+                            <span className="bar"></span>
+                        </div>
+                    </button>
+                </div>
             </header>
         </div>
 

@@ -30,12 +30,12 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
               ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} desktop:translate-x-0 z-30`}
       >
         <div className="mobile:flex desktop:block items-center justify-between mb-7">
-            <h2 className="mobile:text-lg ipad:text-xl desktop:text-2xl text-center text-[#151515]">
-              <strong className="mobile:text-lg ipad:text-xl desktop:text-2xl text-[#31363F]">Raven</strong> Store
+            <h2 className="mobile:text-lg ipad:text-xl desktop:text-2xl text-center text-[#1E0342]">
+              <strong className="mobile:text-lg ipad:text-xl desktop:text-2xl text-[#1E0342]">Raven</strong> Store
             </h2>
             
             <button
-              className="desktop:hidden text-[#151515] ml-1 self-end hover:text-[#31363F] transition-all duration-200"
+              className="desktop:hidden text-[#1E0342] ml-1 self-end hover:text-[#31363F] transition-all duration-200"
               onClick={toggleSidebar}
             >
               <FontAwesomeIcon icon={faBars} />
@@ -46,10 +46,10 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
         <ul className="list-none p-0 z-30">
             <li className="mb-2">
               <Link to="/home_admin" 
-              className={`text-[#151515] no-underline mobile:text-base ipad:text-lg desktop:text-2xl 
+              className={`text-[#1E0342] no-underline mobile:text-base ipad:text-lg desktop:text-2xl 
                           mobile:p-1 ipad:p-1 desktop:p-2 block rounded font-bold
-                          ${ selectedMenu === '/home_admin' ? "bg-[#76ABAE] text-white": "text-[#151515]"} 
-                         hover:bg-[#76ABAE] hover:text-white active:bg-[#cf9ca6] transition-all duration-200
+                          ${ selectedMenu === '/home_admin' ? "bg-[#0E46A3] text-white": "text-[#1E0342]"} 
+                         hover:bg-[#1E0342] hover:text-white active:bg-[#9AC8CD] transition-all duration-200
                          active:scale-[0.98] hover:scale-[1.03] `}
                 onClick={() => handleMenuClick('/home_admin')}  
               >
@@ -58,9 +58,9 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
             </li>
             <li className="mb-2">
               <Link to="/order_admin" 
-              className={`text-[#151515] no-underline mobile:text-base ipad:text-lg desktop:text-2xl mobile:p-1 ipad:p-1 desktop:p-2 block rounded font-bold
-              ${ selectedMenu === '/order_admin' ? "bg-[#76ABAE] text-white": "text-[#151515]"} 
-                hover:bg-[#76ABAE] hover:text-white active:bg-[#cf9ca6] transition-all duration-200 active:scale-[0.98] hover:scale-[1.03]`}
+              className={`text-[#1E0342] no-underline mobile:text-base ipad:text-lg desktop:text-2xl mobile:p-1 ipad:p-1 desktop:p-2 block rounded font-bold
+              ${ selectedMenu === '/order_admin' ? "bg-[#0E46A3] text-white": "text-[#1E0342]"} 
+                hover:bg-[#1E0342] hover:text-white active:bg-[#9AC8CD] transition-all duration-200 active:scale-[0.98] hover:scale-[1.03]`}
                 onClick={() => handleMenuClick('/order_admin')}  
               >
               <FontAwesomeIcon icon={faListCheck} className='mr-2' />
@@ -68,9 +68,9 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
             </li>
             <li className="relative mb-2">
               <button onClick={toggleProductMenu} 
-                className={`text-[#151515] text-left mobile:text-base ipad:text-lg desktop:text-2xl mobile:p-1 ipad:p-1 desktop:p-2  block w-full rounded font-bold 
-                  hover:bg-[#76ABAE] hover:text-white active:bg-[#cf9ca6] transition-all duration-200
-                  ${isProductMenuOpen  ? "bg-[#76ABAE] text-white": "text-[#151515]"} active:scale-[0.98] hover:scale-[1.03]`}
+                className={`text-[#1E0342] text-left mobile:text-base ipad:text-lg desktop:text-2xl mobile:p-1 ipad:p-1 desktop:p-2  block w-full rounded font-bold 
+                  hover:bg-[#1E0342] hover:text-white active:bg-[#9AC8CD] transition-all duration-200
+                  ${isProductMenuOpen  ? "bg-[#0E46A3] text-white": "text-[#1E0342]"} active:scale-[0.98] hover:scale-[1.03]`}
                 >
                 <FontAwesomeIcon icon={faShapes} className='mr-2' />
                 Sản phẩm
@@ -78,39 +78,39 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 
               </button>
               {/* <ul className={`dropdown-menu transition-transform duration-300 ease-in-out list-none mobile:pl-2 ipad:pl-2 desktop:pl-5 ${isProductMenuOpen ? 'block' : 'hidden'}`}>
-                <li className='flex items-center mt-1 mobile:h-7 ipad:h-7 desktop:h-10 rounded-md hover:bg-[#31363F] active:bg-[#cf9ca6] transition-all duration-200'>
+                <li className='flex items-center mt-1 mobile:h-7 ipad:h-7 desktop:h-10 rounded-md hover:bg-[#31363F] active:bg-[#9AC8CD] transition-all duration-200'>
                   <Link to="/products_admin" 
-                    className={`font-normal text-left px-2 items-center flex w-full h-full mobile:text-xs ipad:text-xs desktop:text-base text-[#151515]
-                    ${ selectedMenu === '/products_admin' ? " text-[#31363F]": "text-[#151515]"} 
+                    className={`font-normal text-left px-2 items-center flex w-full h-full mobile:text-xs ipad:text-xs desktop:text-base text-[#1E0342]
+                    ${ selectedMenu === '/products_admin' ? " text-[#31363F]": "text-[#1E0342]"} 
                   hover:text-white`}
                     onClick={() => handleMenuClick('/products_admin')}
                   >
                     Sản phẩm hiện có</Link>
                 </li>
-                <li className='flex items-center mt-1 mobile:h-7 ipad:h-7 desktop:h-10 rounded-md hover:bg-[#31363F] active:bg-[#cf9ca6] transition-all duration-200'>
+                <li className='flex items-center mt-1 mobile:h-7 ipad:h-7 desktop:h-10 rounded-md hover:bg-[#31363F] active:bg-[#9AC8CD] transition-all duration-200'>
                   <Link to="/addproduct_admin"  
-                  className={`font-normal text-left px-2 items-center flex w-full h-full mobile:text-xs ipad:text-xs desktop:text-base text-[#151515]
-                  ${ selectedMenu === '/addproduct_admin' ? " text-[#31363F]": "text-[#151515]"} 
+                  className={`font-normal text-left px-2 items-center flex w-full h-full mobile:text-xs ipad:text-xs desktop:text-base text-[#1E0342]
+                  ${ selectedMenu === '/addproduct_admin' ? " text-[#31363F]": "text-[#1E0342]"} 
                   hover:text-white`}
                     onClick={() => handleMenuClick('/addproduct_admin')}>
                     Thêm sản phẩm mới</Link>
                   </li>
               </ul> */}
               <ul className={`transition-all duration-300 ease-in-out overflow-hidden list-none mobile:pl-2 ipad:pl-2 desktop:pl-5 ${isProductMenuOpen ? 'max-h-40' : 'max-h-0'}`}>
-                  <li className='flex items-center mt-1 mobile:h-7 ipad:h-7 desktop:h-10 rounded-md hover:bg-[#76ABAE] active:bg-[#cf9ca6] transition-all duration-200'>
+                  <li className='flex items-center mt-1 mobile:h-7 ipad:h-7 desktop:h-10 rounded-md hover:bg-[#1E0342] active:bg-[#9AC8CD] transition-all duration-200'>
                     <Link to="/products_admin"
-                      className={`font-normal text-left px-2 items-center flex w-full h-full mobile:text-xs ipad:text-xs desktop:text-base text-[#151515]
-                      ${selectedMenu === '/products_admin' ? " text-[#76ABAE]" : "text-[#151515]"}
+                      className={`font-normal text-left px-2 items-center flex w-full h-full mobile:text-xs ipad:text-xs desktop:text-base text-[#1E0342]
+                      ${selectedMenu === '/products_admin' ? " text-[#0E46A3]" : "text-[#1E0342]"}
                       hover:text-white active:scale-[0.98] hover:scale-[1.03]`}
                       onClick={() => handleMenuClick('/products_admin')}
                     >
                       Sản phẩm hiện có
                     </Link>
                   </li>
-                  <li className='flex items-center mt-1 mobile:h-7 ipad:h-7 desktop:h-10 rounded-md hover:bg-[#76ABAE] active:bg-[#cf9ca6] transition-all duration-200'>
+                  <li className='flex items-center mt-1 mobile:h-7 ipad:h-7 desktop:h-10 rounded-md hover:bg-[#1E0342] active:bg-[#9AC8CD] transition-all duration-200'>
                     <Link to="/addproduct_admin"
-                      className={`font-normal text-left px-2 items-center flex w-full h-full mobile:text-xs ipad:text-xs desktop:text-base text-[#151515]
-                      ${selectedMenu === '/addproduct_admin' ? " text-[#76ABAE]" : "text-[#151515]"}
+                      className={`font-normal text-left px-2 items-center flex w-full h-full mobile:text-xs ipad:text-xs desktop:text-base text-[#1E0342]
+                      ${selectedMenu === '/addproduct_admin' ? " text-[#0E46A3]" : "text-[#1E0342]"}
                       hover:text-white active:scale-[0.98] hover:scale-[1.03]`}
                       onClick={() => handleMenuClick('/addproduct_admin')}
                     >
@@ -121,9 +121,9 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
             </li>
             <li>
               <Link to="/customer_admin" 
-              className={`text-[#151515] no-underline mobile:text-base ipad:text-lg desktop:text-2xl mobile:p-1 ipad:p-1 desktop:p-2 block rounded font-bold
-                ${ selectedMenu === '/customer_admin' ? "bg-[#76ABAE] text-white": "text-[#151515]"} 
-                hover:bg-[#76ABAE] hover:text-white active:bg-[#cf9ca6] transition-all duration-200 active:scale-[0.98] hover:scale-[1.03]`}
+              className={`text-[#1E0342] no-underline mobile:text-base ipad:text-lg desktop:text-2xl mobile:p-1 ipad:p-1 desktop:p-2 block rounded font-bold
+                ${ selectedMenu === '/customer_admin' ? "bg-[#0E46A3] text-white": "text-[#1E0342]"} 
+                hover:bg-[#1E0342] hover:text-white active:bg-[#9AC8CD] transition-all duration-200 active:scale-[0.98] hover:scale-[1.03]`}
                 onClick={() => handleMenuClick('/customer_admin')}  
               >
               <FontAwesomeIcon icon={faUsers} size="sm" className='mr-2 pt-1' />
