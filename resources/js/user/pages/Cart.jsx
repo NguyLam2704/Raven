@@ -45,7 +45,7 @@ const Cart = () => {
     }
     //Hàm tăng số lượng sp
     const handlePlus = (product) =>{
-        const index = storeProduct.findIndex((item) => item === product);
+        const index = storeProduct.findIndex((item) => item === product );
         storeProduct[index].quantity += 1;
         localStorage.setItem('cart', JSON.stringify(storeProduct));
         const savedProduct = localStorage.getItem('cart');
@@ -74,7 +74,7 @@ const Cart = () => {
         <div className="w-full font-Public">
             <Navigation/>
             <div className="w-full justify-items-center pt-24 mt-16 ">
-                <div className="text-black text-2xl font-bold uppercase ">Giỏ hàng của bạn</div>
+                <div className="text-black desktop:text-2xl ipad:text-xl mobile:text-lg font-bold uppercase ">Giỏ hàng của bạn</div>
                 {
                     storeProduct.length === 0 && (
                         <div className="h-5 mt-10 mb-20 justify-items-center">
@@ -86,16 +86,16 @@ const Cart = () => {
                     )
                 }               
                 {   storeProduct.length>0 &&(
-                    <div className="w-10/12 flex flex-row border-b-[1px] desktop:text-lg ipad:text-base border-[#C4C4C4] py-2 mt-16">
-                        <div className="w-5/12"></div>
+                    <div className="desktop:w-10/12 ipad:w-10/12  mobile:w-11/12 flex flex-row border-b-[1px] desktop:text-lg ipad:text-base mobile:text-xs border-[#C4C4C4] py-2 mt-16">
+                        <div className="desktop:w-5/12 ipad:w-5/12 mobile:w-7/12"></div>
                         <div className="w-2/12 text-center text-black font-bold">Số lượng</div>
                         <div className="w-2/12 text-center text-black font-bold">Giá tiền</div>
-                        <div className="w-2/12 text-center text-black font-bold">Thành tiền</div>
+                        <div className="w-2/12 desktop:flex ipad:flex mobile:hidden justify-center text-center text-black font-bold">Thành tiền</div>
                     </div>
                 )}
                 {/* Danh sách các sản phẩm */}
                 {storeProduct.map((product, index) => (
-                    <ItemProduct key={index} product={product} removeProduct={()=>removeProduct(product)} handlerPlus={()=>handlePlus(product.proId, product.color, product.size)} handlerTru={()=>handleTru(product.proId, product.color, product.size)} onCheckChange={handleCheckChange}/>                            
+                    <ItemProduct key={index} product={product} removeProduct={()=>removeProduct(product)} handlerPlus={()=>handlePlus(product)} handlerTru={()=>handleTru(product )} onCheckChange={handleCheckChange}/>                            
                 ))}
                 
                 {/* {
@@ -103,16 +103,16 @@ const Cart = () => {
                 } */}
                 {/* Tổng giá các sản phẩm trong giỏ được check */}
                 {   storeProduct.length>0 &&(
-                    <div className="w-10/12 flex flex-row py-2 mt-5">
-                        <div className="w-7/12"></div>
-                        <div className="w-2/12 text-end text-black desktop:text-lg ipad:text-base font-bold">Tổng tiền:</div>
-                        <div className="w-2/12 text-center text-[#a91d3a] desktop:text-xl ipad:text-lg font-bold">{totalCost.toLocaleString('vi-VN')}đ</div>
+                    <div className="desktop:w-10/12 ipad:w-10/12 mobile:w-11/12 flex flex-row py-2 mt-5">
+                        <div className="desktop:w-7/12 ipad:w-7/12 mobile:w-7/12"></div>
+                        <div className="w-2/12  text-black desktop:text-lg ipad:text-base mobile:text-sm text-center content-center font-bold">Tổng tiền:</div>
+                        <div className="w-2/12 text-center text-[#a91d3a] desktop:text-xl ipad:text-lg mobile:text-sm content-center font-bold">{totalCost.toLocaleString('vi-VN')}đ</div>
                     </div>
                 )}
                  {/* Nút thanh toán */}
                 {   storeProduct.length>0 &&(
-                    <div className="w-10/12 flex flex-row justify-end mt-16 pr-8 ease-in duration-300">
-                        <button className="w-36 h-10 bg-[#c73659] rounded-[5px] border border-[#151515] text-center text-[#eeeeee] desktop:text-base ipad:text-sm font-bold "
+                    <div className="desktop:w-10/12 ipad:w-10/12 mobile:w-11/12 flex flex-row justify-end mt-16 desktop:pr-8 ipad:pr-7 mobile:pr-6 ease-in duration-300">
+                        <button className="desktop:w-36 ipad:w-32 mobile:w-28 desktop:h-10 ipad:h-9 mobile:h-8 bg-[#c73659] rounded-[5px] border border-[#151515] text-center text-[#eeeeee] desktop:text-base ipad:text-sm mobile:text-xs font-bold "
                             onClick={() => navigate("/check_out", { state: { product: cartProduct} })} 
                             disabled={!cartProduct.length}
                         >Thanh toán</button>

@@ -28,7 +28,7 @@ const CartMini = ({handleCart}) => {
                                                             item.size !== product.size )); // Xóa khỏi `cartProduct`
         }
     };
-    //console.log(cartProduct)
+    
     const totalCost = cartProduct.reduce((total, item) => {
         return total + (item.cost - (item.cost * item.discount / 100))*item.quantity;
     },0);

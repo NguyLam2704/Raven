@@ -35,15 +35,14 @@ const ItemMini = ({product, handlerPlus, handlerTru, removeProduct, handler}) =>
     }, []);
     useEffect(() => {
         handler(product,quantityAvailable)
-    }, [quantityAvailable]);
-    console.log(product.quantity>=quantityAvailable)    
+    }, [quantityAvailable]);    
     return(        
         <div className="w-full flex flex-row border-b-[1px] border-[#C4C4C4] pb-2 pt-4">
             <img className="w-[90px] h-[90px] self-center rounded-lg border-black border" src={product.productImage} alt="img" />
             <div className=" w-full flex flex-col pl-2 gap-1">
                 {/* Thông tin sản phẩm */}
                 <div className="w-full text-black text-sm  font-semibold">{product.productName}</div>
-                <div className=" text-black text-xs font-medium ">{product.color} / {product.size}</div>
+                <div className=" text-black text-xs font-medium ">{product.colorName} / {product.size}</div>
                 <div className="flex flex-row gird grid-cols-2 justify-between">
                     {/* Số lượng sản phẩm */}
                     <div> 

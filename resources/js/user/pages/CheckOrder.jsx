@@ -44,8 +44,8 @@ const CheckOrder = () => {
             <div className="w-full justify-items-center pt-24 mt-24 ">
                 <div className="text-black desktop:text-2xl ipad:text-xl font-bold uppercase ">kiểm tra đơn hàng</div>
                 {/* Text input email hoặc sdt để kiểm tra đơn hàng */}
-                <form onSubmit={fetchOrderInfo} className="w-1/3 justify-items-center">
-                    <div className="flex w-full h-10 border border-black mt-16">
+                <form onSubmit={fetchOrderInfo} className="desktop:w-1/3 ipad:w-2/3 mobile:w-3/4 justify-items-center">
+                    <div className="flex w-full h-10 border border-black desktop:mt-16 ipad:mt-14 mobile:mt-10">
                            <input className=" w-full px-2 focus:outline-none" 
                                 type="text" 
                                 placeholder="Nhập số điện thoại hoặc email" 
@@ -57,11 +57,12 @@ const CheckOrder = () => {
                 </form>
                
                 { orderInfo.length !=0 //Kiểm tra độ dài của mảng
-                    && (<div className="w-4/6 mt-24 ">
+                    && (<div className="desktop:w-4/6 ipad:w-4/6 mobile:w-5/6 desktop:mt-24 ipad:mt-20 mobile:mt-16 ">
                         {/* Các cột thông tin của đơn hàng */}
-                        <ul className="flex flex-row desktop:text-lg ipad:text-sm">
+                        <ul className="flex flex-row desktop:text-lg ipad:text-sm mobile:text-xs">
                             <li className="w-1/4 h-11 content-center border border-black border-r-0 bg-[#eeeeee] text-center text-[#a91d3a] font-bold">Mã đơn hàng</li>
-                            <li className="w-1/3 h-11 content-center border border-black border-r-0 bg-[#eeeeee] text-center text-[#a91d3a] font-bold">Tên khách hàng</li>
+                            <li className="w-1/3 h-11 content-center border border-black border-r-0 bg-[#eeeeee] text-center text-[#a91d3a] font-bold">Tên khách hàng</li>                            
+                            <li className="w-1/3 h-11 content-center border border-black border-r-0 bg-[#eeeeee] text-center text-[#a91d3a] font-bold">Ngày đặt hàng</li>
                             <li className="w-1/3 h-11 content-center border border-black border-r-0 bg-[#eeeeee] text-center text-[#a91d3a] font-bold">Tổng tiền thanh toán</li>
                             <li className="w-1/3 h-11 content-center border border-black  bg-[#eeeeee] text-center text-[#a91d3a] font-bold">Trạng thái đơn hàng</li>
                         </ul>

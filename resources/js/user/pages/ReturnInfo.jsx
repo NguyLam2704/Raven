@@ -8,7 +8,7 @@ const ReturnInfo = () => {
         <div className="w-full font-Public">
             <Navigation/>
             <div className="w-full justify-items-center mt-[90px] ">
-                <div className='w-8/12 justify-items-center pt-5'>
+                <div className='desktop:w-8/12 ipad:w-9/12 mobile:w-11/12 justify-items-center pt-5'>
                     <div className='w-full  text-center desktop:text-lg  ipad:text-base font-bold py-5 '>CHÍNH SÁCH</div>
                     <div className='w-full text-center desktop:text-4xl ipad:text-3xl font-bold py-6 '>ĐỔI TRẢ SẢN PHẨM</div>
                     <div className='w-full border-b-2 border-black text-center desktop:text-2xl ipad:text-xl font-bold py-5 '>RAVEN</div>    
