@@ -70,7 +70,7 @@ const ItemProduct = ({ product, handlerPlus, handlerTru, removeProduct, onCheckC
                             {product.productName}
                         </button>
                         <div className="text-black desktop:text-base ipad:text-sm font-medium ">
-                            {product.color} / {product.size}
+                            {product.colorName} / {product.size}
                         </div>
                         {/* Xóa sản phẩm */}
                         <button className="" onClick={removeProduct}>

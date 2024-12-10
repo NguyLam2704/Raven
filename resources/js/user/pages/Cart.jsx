@@ -44,7 +44,7 @@ const Cart = () => {
                                                             item.size !== product.size )); 
     }
     //Hàm tăng số lượng sp
-    const handlePlus = (id,color,size) =>{
+    const handlePlus = (product,color,size) =>{
         const index = storeProduct.findIndex((item) => item.proId === id && item.color === color && item.size === size);
         storeProduct[index].quantity += 1;
         localStorage.setItem('cart', JSON.stringify(storeProduct));
@@ -56,7 +56,7 @@ const Cart = () => {
         cartProduct[id].quantity += 1;
     }
     //Hàm giảm số lượng sp
-    const handleTru = (id,color,size) =>{
+    const handleTru = (product,color,size) =>{
         const index = storeProduct.findIndex((item) => item.proId === id && item.color === color && item.size === size);
         if( storeProduct[index].quantity > 1)
         {storeProduct[index].quantity -= 1;}

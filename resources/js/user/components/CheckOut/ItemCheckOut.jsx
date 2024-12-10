@@ -12,7 +12,7 @@ const ItemCheckOut = ({product}) => {
             <div className="w-full flex flex-col justify-between pl-2 mb-2">
                 {/* Thông tin sản phẩm */}
                 <div className="content-center text-black desktop:text-base ipad:text-sm font-medium ">{product.productName}</div>
-                <div className=" text-black desktop:text-sm ipad:text-xs font-medium ">{product.color} / {product.size}</div>
+                <div className=" text-black desktop:text-sm ipad:text-xs font-medium ">{product.colorName} / {product.size}</div>
                 <div className="flex flex-row gird grid-cols-2 justify-between mt-1">
                     {/* Số lượng sản phẩm */}
                     <div className="text-black desktop:text-sm ipad:text-xs font-medium">Số lượng: {product.quantity}</div>
