@@ -206,7 +206,7 @@ class OrderController extends Controller
         // $bill->order_id = $order->order_id;
         // $bill->save();
         // $product = json_decode($products, true);
-        Mail::to($request->email)->send(new CheckOrder($request->name, $request->phonenumber, $request->address, $request->detail_address, Carbon::now(), $order->order_id, $request->totalCost, $request->product));
+        Mail::to($request->email)->send(new CheckOrder($request->name, $request->phonenumber, $request->address, $request->detail_address, Carbon::now(), $order->order_id, $request->totalCost, $request->product, $request->payingmethod));
         return response()->json(['message' => 'Order updated successfully']);
     }
 }
