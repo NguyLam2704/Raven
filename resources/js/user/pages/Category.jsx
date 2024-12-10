@@ -115,31 +115,31 @@ const Category = ({ cate }) => {
                 {
                   loading ? (
                     <div>
-                      <img className='w-10 h-10 mt-10' src={img_loading} alt="loading" />
+                      <img className='desKtop:w-10 desktop:h-10 ipad:w-8 ipad:h-8 mobile:h-6 mobile:w-6 mt-10' src={img_loading} alt="loading" />
                     </div>
                   ) : (
                     <div className='w-10/12 h-full mt-16'>                    
-                        <div className='w-full h-8 justify-items-end '
+                        <div className='w-full desktop:h-8 ipad:h-7 mobile:h-6 justify-items-end '
                             onMouseLeave={()=>setOpen(false)} //ẩn các gái trị của bộ lọc 
                         >
                             <div  className='flex '>                            
                                 <button className='flex' 
                                         onClick={()=>setOpen(true)} //ẩn các gái trị của bộ lọc 
                                 >
-                                  <div className='rounded rounded-r-none py-1  border border-r-0 border-gray-400 shadow w-28 text-black text-sm font-medium '>{sort}</div>
-                                  <div className='h-full rounded rounded-l-none border border-gray-400 shadow px-1 pt-[2px] mr-3 '>
-                                    <FontAwesomeIcon icon={faChevronDown}  />
+                                  <div className='rounded rounded-r-none py-1  border border-r-0 border-gray-400 shadow desktop:w-28 ipad:w-24 mobile:w-20 text-black mobile:text-xs desktop:text-base ipad:text-sm font-medium '>{sort}</div>
+                                  <div className='h-full align-middle rounded rounded-l-none border border-gray-400 shadow px-1 mr-3 '>
+                                    <FontAwesomeIcon className='desktop:h-4 ipad:h-3 mobile:h-2 desktop:mt-[7px] ipad:mt-[6px] mobile:mb-1' icon={faChevronDown}  />
                                   </div>
                                 </button>
                             </div>                     
-                            { isOpen && (<ul className={ `relative w-[138px] border border-[#9f9f9f] bg-white rounded z-20 text-sm  mt-[1px] mr-3 font-Public }`}
+                            { isOpen && (<ul className={ `relative desktop:w-[138px] ipad:w-[118px] mobile:w-[102px] border border-[#9f9f9f] bg-white rounded z-20 mobile:text-xs desktop:text-base ipad:text-sm  mt-[1px] mr-3 font-Public }`}
                                             onMouseLeave={()=>setOpen(false)} //hiện các giá trị của bộ lọc
                                         >
-                                            <li className='pl-4 py-1 text-black leading-relaxed rounded-t hover:bg-gray-200 font-Public'>
+                                            <li className='desktop:pl-3 ipad:pl-2 mobile:pl-1 py-1 text-black leading-relaxed rounded-t hover:bg-gray-200 font-Public'>
                                               <button 
                                                 onClick={() => handleSort("Giá tăng dần")} //set giá trị bộ lọc khi nhấn
                                               > Giá tăng dần</button></li>
-                                            <li className='pl-4 py-1 text-black hover:bg-gray-200 rounded-b leading-relaxed font-Public'>
+                                            <li className='desktop:pl-3 ipad:pl-2 mobile:pl-1 py-1 text-black hover:bg-gray-200 rounded-b leading-relaxed font-Public'>
                                               <button onClick={() => handleSort("Giá giảm dần")} //set giá trị bộ lọc khi nhấn
                                             >Giá giảm dần</button></li>
                                         </ul>)
@@ -147,7 +147,7 @@ const Category = ({ cate }) => {
                             }
                         </div>            
                         {/* Danh sách các sản phẩm  */}
-                        <div className="mt-10 grid desktop:grid-cols-4 ipad:grid-cols-3 gap-12 z-10">
+                        <div className="mt-10 grid desktop:grid-cols-4 ipad:grid-cols-3 mobile:grid-cols-2 justify-items-center justify-around gap-10  z-10">
                             {mapProductCategories}
                         </div>
                     </div>

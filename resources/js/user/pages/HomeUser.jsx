@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Product from '../components/Product';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
@@ -8,60 +8,29 @@ import back from '../assets/Back.svg'
 import forward from '../assets/Forward.svg'
 import SliderHome from '../components/Home/SliderHome';
 import TitleMore from '../components/Home/TitleMore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper-bundle.css';
 
 // Trang chủ
 const HomeUser = () => {
+    const swiperNewRef = useRef(null); // Swiper cho sản phẩm mới
+    const swiperHighlightRef = useRef(null); // Swiper cho sản phẩm nổi bật
+    const swiperSaleRef = useRef(null); // Swiper cho sản phẩm sale
+
     // State để lưu danh sách sản phẩm
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false); // Trạng thái tải dữ liệu
 
-    //Kiểm soát mũi tên sản phẩm mới
-    const [NumberBackNew, setBackNew] = useState(0)
-    const [NumberForwardNew, setForwardNew] = useState(8)
-    const hanlderBackNew = () =>{
-        if( NumberBackNew > 1 ){            
-            setBackNew( NumberBackNew - 8 )
-            setForwardNew( NumberForwardNew - 8 )
-        }
-    }
-    const hanlderForwardNew = () =>{
-        if( NumberForwardNew < products.length ){
-            setBackNew( NumberBackNew + 8 )
-            setForwardNew( NumberForwardNew + 8 )
-        }
-    }
-    //Kiểm soát mũi tên sản phẩm nổi bật
-    const [NumberBackHighlight, setBackHighlight] = useState(0)
-    const [NumberForwardHighlight, setForwardHighlight] = useState(8)
-    const hanlderBackHight = () =>{
-        if( NumberBackHighlight > 1 ){            
-            setBackHighlight( NumberBackHighlight - 8 )
-            setForwardHighlight( NumberForwardHighlight - 8 )
-        }
-    }
-    const hanlderForwardHighlight = () =>{
-        if( NumberForwardHighlight < products.filter((product) => product.quantitySold > 10).length ){
-            setBackHighlight( NumberBackHighlight + 8 )
-            setForwardHighlight( NumberForwardHighlight + 8 )
-        }
-    }
-    //Kiểm soát mũi tên sản phẩm sale
-    const [NumberBackSale, setBackSale] = useState(0)
-    const [NumberForwardSale, setForwardSale] = useState(8)
-    const hanlderBackSale = () =>{
-        if( NumberBackSale > 1 ){            
-            setBackSale( NumberBackSale - 8 )
-            setForwardSale( NumberForwardSale - 8 )
-        }
-    }
-    const hanlderForwardSale = () =>{
-        if( NumberForwardSale < products.filter((product) => product.discount > 0).length ){
-            setBackSale( NumberBackSale + 8 )
-            setForwardSale( NumberForwardSale + 8 )
-        }
-    }
+    //Kiểm soát mũi tên sản phẩm
+    const handleBack = (swiperRef) => {
+        if (swiperRef.current) swiperRef.current.slidePrev();
+    };
+
+    const handleForward = (swiperRef) => {
+        if (swiperRef.current) swiperRef.current.slideNext();
+    };
 
     // Hàm fetch API
     const fetchProducts = async () => {
@@ -101,7 +70,7 @@ const HomeUser = () => {
             <main className=" mt-[90px] w-full">
                 { loading ? ( <div></div>) : (<SliderHome/>) }
                 {/* Các sản phẩm mới */}
-                <div className=" w-full  justify-items-center mt-20 "> 
+                <div className="justify-items-center mt-20 "> 
                     {/* Tiêu đề */}
                     <div className="h-1/5 w-10/12 ">
                         <TitleMore type={"SẢN PHẨM MỚI"} load={loading} />
@@ -111,26 +80,60 @@ const HomeUser = () => {
                             <img className='w-10 h-10 mt-10' src={img_loading} alt="loading" />
                         </div>
                     ) : (
-                        <div className='w-full flex flex-row justify-center'>                       
-                            <button onClick={hanlderBackNew} className=" p-1 pr-2 bg-opacity-30 rounded-full " >
-                                <img src={back} alt="none"/>
-                            </button>                        
-                            <div className="h-4/5 w-10/12 grid desktop:grid-cols-4 ipad:grid-cols-3 gap-10 "  >                             
-                                {products.sort((a, b) => new Date(b.datePosted) - new Date(a.datePosted)) // sort by day
-                                        .slice(NumberBackNew, NumberForwardNew) // choose 8 product
-                                        .map((product, index) => (
-                                            <Product key={index} 
-                                                    proId={product.proId}
-                                                    price={product.cost} 
-                                                    img={product.productImage.find(img => img.isPrimary)?.image} //choose the primary image to display
-                                                    name={product.productName} 
-                                                    sale={product.discount} />
-                                        ))}                       
-                            </div>
-                            <button onClick={hanlderForwardNew} className=" p-1 pr-2 bg-white bg-opacity-30 rounded-full ">
-                                    <img  src={forward} alt="none"/>
-                            </button>
+                        <div className="w-full flex flex-row justify-center items-center">
+                        <button
+                            onClick={() => handleBack(swiperNewRef)} 
+                            className="p-1 pr-2 bg-opacity-30 rounded-full"
+                        >
+                            <img src={back} alt="none" />
+                        </button>
+                        <div className="w-10/12 justify-items-center">
+                            <Swiper
+                                slidesPerView={4} // Hiển thị 1 slide mỗi lần (vì mỗi slide sẽ chứa 6 sản phẩm chia làm 2 hàng)
+                                mousewheel={true} // Cuộn bằng chuột
+                                onSwiper={(swiper) => (swiperNewRef.current = swiper)} // Lưu instance của Swiper                              
+                                breakpoints={{
+                                    0: { slidesPerView: 2, spaceBetween: 10 },
+                                    800: { slidesPerView: 3, spaceBetween: 10 },
+                                    1200: { slidesPerView: 4, spaceBetween: 20 },
+                                }}
+                            >
+                                {products
+                                    .sort((a, b) => new Date(b.datePosted) - new Date(a.datePosted)) // Sắp xếp sản phẩm theo ngày
+                                    .reduce((acc, product, index) => {
+                                        const groupIndex = Math.floor(index / 2); // Nhóm mỗi 8 sản phẩm thành một slide
+                                        if (!acc[groupIndex]) acc[groupIndex] = [];
+                                        acc[groupIndex].push(product);
+                                        return acc;
+                                    }, [])
+                                    .map((group, index) => (
+                                        <SwiperSlide key={index}>
+                                            <div className="grid grid-row-2 gap-10 justify-items-center my-4">
+                                                {group.map((product, subIndex) => (
+                                                    <div key={subIndex} className="flex flex-col items-center">
+                                                        <Product
+                                                            proId={product.proId}
+                                                            price={product.cost}
+                                                            img={product.productImage.find((img) => img.isPrimary)?.image} // Ảnh chính
+                                                            name={product.productName}
+                                                            sale={product.discount}
+                                                        />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </SwiperSlide>
+                                    ))}
+                            </Swiper>
                         </div>
+                        <button
+                            onClick={() => handleForward(swiperNewRef)} 
+                            className="p-1 pr-2 bg-white bg-opacity-30 rounded-full"
+                        >
+                            <img src={forward} alt="none" />
+                        </button>
+                    </div>
+                    
+
                     )}     
                 </div>
 
@@ -151,26 +154,52 @@ const HomeUser = () => {
                     ) : (
                         <div className='w-full flex flex-row justify-center'>                       
                             <button className=" p-1 pr-2 bg-opacity-30 rounded-full "
-                                onClick={hanlderBackHight}
+                                onClick={() => handleBack(swiperHighlightRef)}
+                                
                             >
                                 <img src={back} alt="none"/>
                             </button>                        
-                            <div className="h-4/5 w-10/12 grid desktop:grid-cols-4 ipad:grid-cols-3 gap-10 "  > 
-                                
-                                {products.filter((product) => product.quantitySold > 10) //fiter product have more 10 quantitySold
-                                        .slice(NumberBackHighlight, NumberForwardHighlight) //choose 8 product
-                                        .map((product, index) => (
-                                            <Product key={index}
-                                                    proId={product.proId}
-                                                    price={product.cost} 
-                                                    img={product.productImage.find(img => img.isPrimary)?.image} //choose the primary image to display
-                                                    name={product.productName} 
-                                                    sale={product.discount} />
+                            <div className="w-10/12 justify-items-center">
+                                <Swiper
+                                    slidesPerView={4} // Hiển thị 1 slide mỗi lần (vì mỗi slide sẽ chứa 6 sản phẩm chia làm 2 hàng)
+                                    mousewheel={true} // Cuộn bằng chuột
+                                    onSwiper={(swiper) => (swiperHighlightRef.current = swiper)} // Lưu instance của Swiper
+                                    speed={1000}
+                                    breakpoints={{
+                                        0: { slidesPerView: 2, spaceBetween: 10 },
+                                        768: { slidesPerView: 3, spaceBetween: 15 },
+                                        1200: { slidesPerView: 4, spaceBetween: 20 },
+                                    }}
+                                >
+                                    {products
+                                        .filter((product) => product.quantitySold > 10) // Sắp xếp sản phẩm theo ngày
+                                        .reduce((acc, product, index) => {
+                                            const groupIndex = Math.floor(index / 2); // Nhóm mỗi 8 sản phẩm thành một slide
+                                            if (!acc[groupIndex]) acc[groupIndex] = [];
+                                            acc[groupIndex].push(product);
+                                            return acc;
+                                        }, [])
+                                        .map((group, index) => (
+                                            <SwiperSlide key={index}>
+                                                <div className="grid grid-row-2 gap-10 justify-items-center my-4">
+                                                    {group.map((product, subIndex) => (
+                                                        <div key={subIndex} className="flex flex-col items-center">
+                                                            <Product
+                                                                proId={product.proId}
+                                                                price={product.cost}
+                                                                img={product.productImage.find((img) => img.isPrimary)?.image} // Ảnh chính
+                                                                name={product.productName}
+                                                                sale={product.discount}
+                                                            />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </SwiperSlide>
                                         ))}
-                                
+                                </Swiper>
                             </div>
                             <button className=" p-1 pr-2 bg-white bg-opacity-30 rounded-full "
-                                onClick={hanlderForwardHighlight}
+                                onClick={() => handleForward(swiperHighlightRef)} 
                             >
                                     <img  src={forward} alt="none"/>
                             </button>
@@ -196,26 +225,50 @@ const HomeUser = () => {
                     ) : (
                         <div className='w-full flex flex-row justify-center'>                       
                             <button className=" p-1 pr-2 bg-opacity-30 rounded-full "
-                                onClick={hanlderBackSale}
+                                onClick={() => handleBack(swiperSaleRef)}
                             >
                                 <img src={back} alt="none"/>
                             </button>                        
-                            <div className="h-4/5 w-10/12 grid desktop:grid-cols-4 ipad:grid-cols-3 gap-10 "  > 
-                                
-                                {products.filter((product) => product.discount > 0) //filter product have discount
-                                    .slice(NumberBackSale, NumberForwardSale)
-                                    .map((product, index) => (
-                                        <Product  key={index}
-                                                proId={product.proId}
-                                                price={product.cost} 
-                                                img={product.productImage.find(img => img.isPrimary)?.image} 
-                                                name={product.productName} 
-                                                sale={product.discount} />
+                            <div className="w-10/12 justify-items-center">
+                            <Swiper
+                                slidesPerView={4} // Hiển thị 1 slide mỗi lần (vì mỗi slide sẽ chứa 6 sản phẩm chia làm 2 hàng)
+                                mousewheel={true} // Cuộn bằng chuột
+                                onSwiper={(swiper) => (swiperSaleRef.current = swiper)} // Lưu instance của Swiper
+                                breakpoints={{
+                                    0: { slidesPerView: 2, spaceBetween: 10 },
+                                    768: { slidesPerView: 3, spaceBetween: 15 },
+                                    1200: { slidesPerView: 4, spaceBetween: 20 },
+                                }}
+                            >
+                                {products
+                                    .filter((product) => product.discount > 0) // Sắp xếp sản phẩm theo ngày
+                                    .reduce((acc, product, index) => {
+                                        const groupIndex = Math.floor(index / 2); // Nhóm mỗi 8 sản phẩm thành một slide
+                                        if (!acc[groupIndex]) acc[groupIndex] = [];
+                                        acc[groupIndex].push(product);
+                                        return acc;
+                                    }, [])
+                                    .map((group, index) => (
+                                        <SwiperSlide key={index}>
+                                            <div className="grid grid-row-2  gap-10 justify-items-center my-4">
+                                                {group.map((product, subIndex) => (
+                                                    <div key={subIndex} className="flex flex-col items-center">
+                                                        <Product
+                                                            proId={product.proId}
+                                                            price={product.cost}
+                                                            img={product.productImage.find((img) => img.isPrimary)?.image} // Ảnh chính
+                                                            name={product.productName}
+                                                            sale={product.discount}
+                                                        />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </SwiperSlide>
                                     ))}
-                                
-                            </div>
+                            </Swiper>
+                        </div>
                             <button className=" p-1 pr-2 bg-white bg-opacity-30 rounded-full "
-                                onClick={hanlderForwardSale}
+                                onClick={() => handleForward(swiperSaleRef)} 
                             >
                                     <img  src={forward} alt="none"/>
                             </button>

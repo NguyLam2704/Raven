@@ -46,18 +46,16 @@ const ItemProduct = ({ product, handlerPlus, handlerTru, removeProduct, onCheckC
         setCheck(newCheckState);
         onCheckChange(product, newCheckState, quantityAvailable);
     };
-
-    console.log(quantityAvailable)
     return (
-        <div className="w-10/12 flex flex-row border-b-[1px] border-[#C4C4C4] font-Public ">
-            <div className="w-5/12">
+        <div className="desktop:w-10/12 ipad:w-10/12 mobile:w-11/12 flex flex-row border-b-[1px] border-[#C4C4C4] font-Public ">
+            <div className="desktop:w-5/12 ipad:w-5/12 mobile:w-7/12">
                 <div className="flex flex-row pt-3 pb-5 ml-2">
                     {/* ảnh sản phẩm */}
-                    <button className="w-1/3 justify-items-center">
+                    <button className="justify-items-center">
                         <img
                             onClick={() => navigate(`/detail_product/${product.proId}`)}                            
                             src={product.productImage}
-                            className="desktop:w-36  ipad:w-32  object-fill rounded-lg"
+                            className="desktop:w-36  ipad:w-32 mobile:w-24  object-fill rounded-lg"
                             alt="img"
                         />
                     </button>
@@ -65,7 +63,7 @@ const ItemProduct = ({ product, handlerPlus, handlerTru, removeProduct, onCheckC
                     <div className=" w-2/3 flex flex-col ml-3 justify-between py-2">
                         <button
                             onClick={() => navigate(`/detail_product/${product.proId}`)}
-                            className="text-left text-black desktop:text-xl ipad:text-base font-medium "
+                            className="text-left text-black desktop:text-xl ipad:text-base mobile:text-sm font-medium "
                         >
                             {product.productName}
                         </button>
@@ -74,25 +72,25 @@ const ItemProduct = ({ product, handlerPlus, handlerTru, removeProduct, onCheckC
                         </div>
                         {/* Xóa sản phẩm */}
                         <button className="" onClick={removeProduct}>
-                            <img className="desktop:h-5 ipad:h-4 hover:opacity-65" src={remove} alt="remove" />
+                            <img className="desktop:h-6 ipad:h-5 mobile:h-4 hover:opacity-65" src={remove} alt="remove" />
                         </button>
                     </div>
                 </div>
             </div>
             {/* Số lượng sản phẩm */}
-            <div className="w-2/12 flex flex-row justify-center text-black text-lg font-bold pt-14">
+            <div className="w-2/12 flex flex-row justify-center text-black text-lg font-bold desktop:pt-14 ipad:pt-12 mobile:pt-8">
                 <button
-                    className="desktop:h-7 desktop:w-7 ipad:h-6 ipad:w-6 flex justify-center items-center border border-[#c4c4c4] bg-[#d9d9d9] px-2"
+                    className="desktop:h-7 desktop:w-7 ipad:h-6 ipad:w-6 mobile:h-5 mobile:w-5 flex justify-center items-center border border-[#c4c4c4] bg-[#d9d9d9] px-2"
                     onClick={handlerTru}
                     disabled={!quantityAvailable}
                 >
                     <FontAwesomeIcon className="h-3 w-3" i icon={faMinus} />
                 </button>
-                <div className="desktop:h-7 desktop:w-7 ipad:h-6 ipad:w-6  text-center content-center text-black desktop:text-base ipad:text-sm font-normal border border-[#c4c4c4] bg-[#d9d9d9] px-2 mx-[2px]">
+                <div className="desktop:h-7 desktop:w-7 ipad:h-6 ipad:w-6 mobile:h-5 mobile:w-5 text-center content-center text-black desktop:text-base ipad:text-sm mobile:text-xs font-normal border border-[#c4c4c4] bg-[#d9d9d9] px-2 mobile:px-0 mx-[2px]">
                     {product.quantity}
                 </div>
                 <button
-                    className="desktop:h-7 desktop:w-7 ipad:h-6 ipad:w-6 flex justify-center items-center border border-[#c4c4c4] bg-[#d9d9d9] px-2"
+                    className="desktop:h-7 desktop:w-7 ipad:h-6 ipad:w-6 mobile:h-5 mobile:w-5 flex justify-center items-center border border-[#c4c4c4] bg-[#d9d9d9] px-2"
                     onClick={handlerPlus}
                     disabled={!quantityAvailable || product.quantity>=quantityAvailable}
                 >
@@ -100,25 +98,25 @@ const ItemProduct = ({ product, handlerPlus, handlerTru, removeProduct, onCheckC
                 </button>
             </div>
             {/* Tổng giá sản phẩm */}
-            <div className="w-2/12 text-center text-[#a91d3a] desktop:text-xl ipad:text-lg font-bold pt-14">
+            <div className="w-2/12 text-center text-[#a91d3a] desktop:text-xl ipad:text-lg mobile:text-xs font-bold desktop:pt-14 ipad:pt-12 mobile:pt-8">
                 {(product.cost - product.cost * product.discount / 100).toLocaleString('vi-VN')}đ
             </div>
-            <div className="w-2/12 text-center text-[#a91d3a] desktop:text-xl ipad:text-lg font-bold pt-14">
+            <div className="desktop:flex ipad:flex w-2/12 justify-center mobile:hidden text-right text-[#a91d3a] desktop:text-xl ipad:text-lg font-bold desktop:pt-14 ipad:pt-12 mobile:pt-8">
                 {((product.cost - product.cost * product.discount / 100) * product.quantity).toLocaleString('vi-VN')}đ
             </div>
             {/* Checkbox chọn sản phẩm */}
-            <div className="w-1/12 text-center ">
+            <div className="w-1/12 text-center desktop:pt-14 ipad:pt-12 mobile:pt-8">
                 {loading ? (
                     <div></div>
                 ) : quantityAvailable > 0 ? (
                     <input
-                        className="h-5 w-5 mt-[59px] rounded accent-black"
+                        className="desktop:h-5 desktop:w-5 ipad:h-4 ipad:w-4 mobile:h-3 mobile:w-3 rounded accent-black"
                         type="checkbox"
                         checked={check}
                         onChange={handleCheckChange}
                     />
                 ) : (
-                    <div className="desktop:text-base ipad:text-sm font-black text-black mt-[59px]">Hết hàng</div>
+                    <div className="desktop:text-base ipad:text-sm mobile:text-xs font-black text-black">Hết hàng</div>
                 )}
             </div>
         </div>
