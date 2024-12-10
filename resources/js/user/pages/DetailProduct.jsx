@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef  } from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import CartMini from '../components/Cart/CartMini';
@@ -13,6 +13,8 @@ import SizeAo from '../assets/bang_size.svg'
 import SizeQuanDai from '../assets/size_quandai.jpg'
 import SizeQuanNgan from '../assets/size_quanngan.jpg'
 import img_loading from '../assets/loading.gif'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper-bundle.css';
 
 //Chi tiết sản phẩm
 const DetailProduct = () =>{
@@ -78,7 +80,7 @@ const DetailProduct = () =>{
     // const[ListProduct, setLi]
     const [DetailProduct, setDetailProduct] = useState(null);
     const [loading, setLoading] = useState(false); // Trạng thái tải dữ liệu
-    const [error, setError] = useState(null); // Trạng thái lỗi
+    // const [error, setError] = useState(null); // Trạng thái lỗi
     const [categoryType, setCategory] = useState(null); // categroy type of detail product
     const fetchDetail = async() => {
         try {
@@ -152,66 +154,100 @@ const DetailProduct = () =>{
         }else if(categoryType===7){
             setBang(SizeQuanNgan)
         }else{
-            setBang(BangSize)
+            setBang(SizeAo)
         }
     }
-    console.log(categoryType)
-
+    
     return(        
-        <div>
-            <div className={`w-full  ${(isCartMini || isBangSise) ? 'overflow-hidden h-screen' : 'overflow-auto'}`}>
-                <Navigation/>
-                { (!DetailProduct || loading) ? (
-                        <div className='w-full h-screen flex justify-center items-center'>
-                            <img className='w-1/12' src={img_loading} alt="loading" />
-                        </div> 
-                ) :(
-                <div className='w-full max-w-[1557px] mx-auto mt-[90px] justify-items-center '>
-                    
-                    <div className='w-[70%] border border-blue-400 flex flex-row mt-40'>
-                        {/* Các hình ảnh sản phẩm */}
-                        <div className='w-3/5 border border-red-500 flex flex-row justify-center'>
-                            {/* Hình ảnh phụ */}
-                            <div className='w-1/4 border h-[470px] flex flex-col justify-between items-center'>
-                                <div className=' w-[100px] flex flex-col h-full justify-between'>
-                                {DetailProduct.productImage.filter(image => !image.isPrimary).slice(0,4).map((element,index) => {
-                                    return (
-                                        <button className='h-[110px] w-[100px] rounded-md '
-                                            key = {index}
-                                            onClick={()=>setBigImg(element.image)}
-                                        >
-                                            <img  className='h-[110px] w-[100px] rounded-md ' src={element.image} alt="anh" />
-                                        </button>
-                                    )
-                                })}  
-                                </div>
-                            </div>                        
-                            {/* Hình ảnh chính */}
-                            <div className='w-auto border'>
-                                {/* Hiển thị thẻ discount khi có discount */}
-                                {DetailProduct.discount  > 0 && (
-                                    <div className="absolute w-[250px] h-[350px]">
-                                        <div className="w-12 h-12 ml-4 content-center bg-[#a91d3a] text-center text-white text-base rounded-b-md font-normal font-['Public Sans']">
-                                            {DetailProduct.discount}%<br />OFF
-                                        </div>
-                                    </div>
-                                )}
-                                {/* Hình ảnh sản phẩm */}
-                                <img className='h-[470px] w-[400px] border rounded-xl' src={bigImg} alt="anh" />                            
+        <div className={`w-full  ${(isCartMini || isBangSise) ? 'overflow-hidden h-screen' : 'overflow-auto'}`}>
+            <Navigation/>
+            { (!DetailProduct || loading) ? (
+                    <div className='w-full h-screen flex justify-center items-center'>
+                        <img className='w-1/12' src={img_loading} alt="loading" />
+                    </div> 
+            ) :(
+            <div className='w-full mt-[90px] justify-items-center font-Public'>
+                
+                <div className='w-10/12 flex flex-row mt-40'>
+                    {/* Các hình ảnh sản phẩm */}
+                    <div className='w-3/5 flex flex-row'>
+                        {/* Hình ảnh phụ */}
+                        <div className='w-1/4 desktop:h-[470px] ipad:h-[400px] flex flex-col justify-between items-center'>
+                            {/* Nút lên */}
+                            <button
+                                onClick={handlePrev}
+                                className={`text-gray-500 hover:text-black ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                disabled={currentIndex === 0}
+                            >
+                                <FontAwesomeIcon icon={faChevronUp} />
+                            </button>
+
+                            {/* Swiper */}
+                            <div className='overflow-hidden flex flex-col h-full'>
+                                <Swiper
+                                    direction={'vertical'}
+                                    slidesPerView={3} // Hiển thị 3 ảnh mỗi lần
+                                    onSwiper={(swiper) => (swiperRef.current = swiper)} // Lưu instance của Swiper
+                                    mousewheel={true} 
+                                    className='h-full'
+                                >
+                                {DetailProduct.productImage?.map((element, index) => (
+                                    <SwiperSlide key={index}>
+                                    <button
+                                        className='h-[110px] w-[100px] rounded-md my-4'
+                                        onClick={()=>setBigImg(element.image)}
+                                    >
+                                        <img
+                                        className='h-full w-full rounded-md object-cover'
+                                        src={element.image}
+                                        alt={`Thumbnail ${index + 1}`}
+                                        />
+                                    </button>
+                                    </SwiperSlide>
+                                ))}
+                                </Swiper>
                             </div>
-                            
-                            
+
+                            {/* Nút xuống */}
+                            <button
+                                onClick={handleNext}
+                                className={`text-gray-500 hover:text-black ${
+                                currentIndex >= DetailProduct.productImage.length - 3 ? 'opacity-50 cursor-not-allowed' : ''
+                                }`}
+                                disabled={currentIndex >= DetailProduct.productImage.length - 3}
+                            >
+                                <FontAwesomeIcon icon={faChevronDown} />
+                            </button>
+                            </div>
+
+                                               
+                        {/* Hình ảnh chính */}
+                        <div className='w-3/4 '>
+                            {/* Hiển thị thẻ discount khi có discount */}
+                            {DetailProduct.discount  > 0 && (
+                                <div className="absolute w-[250px] h-[350px]">
+                                    <div className="w-12 h-12 ml-4 content-center bg-[#a91d3a] text-center text-white text-base rounded-b-md font-normal font-['Public Sans']">
+                                        {DetailProduct.discount}%<br />OFF
+                                    </div>
+                                </div>
+                            )}
+                            {/* Hình ảnh sản phẩm */}
+                            <img className='w-4/5 desktop:h-[470px] ipad:h-[400px] rounded-xl object-cover' src={bigImg} alt="anh" />                            
                         </div>
-                        {/* Thông tin sản phẩm */}
-                        <div className='w-2/5 flex flex-col justify-between '>
-                            {/* Tên sản phẩm */}
-                            <div className='w-full content-center text-black text-3xl font-bold '>{DetailProduct.productName} </div>
-                            {/* Giá sản phẩm */}
-                            <div className='h-10 w-full flex flex-row border-b-2'>
-                                <div className='h-10 content-center text-[#a91d3a] text-3xl font-bold '>{(DetailProduct.cost - (DetailProduct.cost* DetailProduct.discount / 100)).toLocaleString('vi-VN')}đ</div>
+                        
+                        
+                    </div>
+                    {/* Thông tin sản phẩm */}
+                    <div className='w-2/5 flex flex-col justify-between '>
+                        {/* Tên sản phẩm */}
+                        <div className='w-full content-center text-black desktop:text-3xl ipad:text-2xl font-bold '>{DetailProduct.productName} </div>
+                        {/* Giá sản phẩm */}
+                        <div >
+                            <div className=' flex flex-row '>
+                                <div className=' content-center text-[#a91d3a] desktop:text-3xl ipad:text-xl font-bold '>{(DetailProduct.cost - (DetailProduct.cost* DetailProduct.discount / 100)).toLocaleString('vi-VN')}đ</div>
                                 {
                                     DetailProduct.discount > 0 && (
-                                        <div className='h-10 content-center text-[#9f9f9f] text-xl font-medium line-through ml-20'>{DetailProduct.cost.toLocaleString('vi-VN')}đ</div>
+                                        <div className='content-center text-[#9f9f9f] desktop:text-xl ipad:text-lg font-medium line-through desktop:ml-20 ipad:ml-16'>{DetailProduct.cost.toLocaleString('vi-VN')}đ</div>
                                     )
                                 }
                             </div> 
@@ -379,19 +415,19 @@ const DetailProduct = () =>{
                             </button>
                         </div>
 
-                        </div>
                     </div>
-                    {/* Thông tin mô tả */}
-                    <div className='w-[70%] border mt-14 font-medium '>
-                    
-                        {DetailProduct.description.split('\n').map((line, index) => (
-                            <React.Fragment key={index} >
-                            {line}
-                            <br />
-                            </React.Fragment>
-                        ))}
-                            
-                    </div>
+                </div>
+                {/* Thông tin mô tả */}
+                <div className='w-9/12 mt-14 font-medium font-Public text-justify'>
+                
+                    {DetailProduct.description.split('\n').map((line, index) => (
+                        <React.Fragment key={index} >
+                        {line}
+                        <br />
+                        </React.Fragment>
+                    ))}
+                        
+                </div>
 
                 {/* Sản phẩm tương tự */}
                 <div className='w-10/12 mt-24'>
@@ -455,13 +491,11 @@ const DetailProduct = () =>{
                     </div>  
             </div>
 
-            )}  
-                {/* Ẩn/Hiện thanh giỏ hàng */}
-                { isCartMini && <CartMini handleCart={()=>setCart(!isCartMini)}/>}
-                <Footer/>
-            </div>
+        )}  
+            {/* Ẩn/Hiện thanh giỏ hàng */}
+            { isCartMini && <CartMini handleCart={()=>setCart(!isCartMini)}/>}
+            <Footer/>
         </div>
-
     )
 }
 
