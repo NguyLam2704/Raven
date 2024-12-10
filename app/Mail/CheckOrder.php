@@ -9,6 +9,8 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
+use Illuminate\Mail\Mailables\Attachment;
+use Illuminate\Support\Facades\File;
 class CheckOrder extends Mailable
 {
     use Queueable, SerializesModels;
@@ -25,8 +27,9 @@ class CheckOrder extends Mailable
     public $OrderId;
     public $TotalCost;
     public $Product;
+    public $PaymentMethod;
 
-    public function __construct($name, $phonenumber, $address, $detailAddress, $timeOrder, $orderId, $totalCost, $product)
+    public function __construct($name, $phonenumber, $address, $detailAddress, $timeOrder, $orderId, $totalCost, $product, $paymentMethod)
     {
         $this->CustomerName = $name;
         $this->CustomerPhonenumber = $phonenumber;
@@ -36,6 +39,7 @@ class CheckOrder extends Mailable
         $this->OrderId = $orderId;
         $this->TotalCost = $totalCost;
         $this->Product = $product;
+        $this->PaymentMethod = $paymentMethod;
     }
 
     /**
@@ -59,6 +63,14 @@ class CheckOrder extends Mailable
         );
     }
 
+    /* Build the message.*/
+//    public function build()
+//    {
+//         return [
+//             Attachment::fromPath(public_path('storage/asset/icon/Logo.svg'))->as('Logo.svg')->embed(),
+//         ];
+//    }
+
     /**
      * Get the attachments for the message.
      *
@@ -68,4 +80,19 @@ class CheckOrder extends Mailable
     {
         return [];
     }
+
+    // // Chèn inline image vào nội dung email
+    // public function build()
+    // {
+    //     $imagePath = public_path('storage/asset/QR.png');
+    //     $imageData = file_get_contents($imagePath);
+    //     $logo = $this->att
+    //     $logoInline = $this->embed($imagePath); // Nhúng hình ảnh
+
+    //     return $this->view('emails.checkOrder')
+    //                 ->with([
+    //                     'QRInline' => $logoInline, // Chuyển URL của ảnh vào view
+    //                 ]);
+    // }
+    
 }

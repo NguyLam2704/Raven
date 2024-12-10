@@ -43,7 +43,7 @@ const ItemMini = ({product, handlerPlus, handlerTru, removeProduct, handler}) =>
             <div className=" w-full flex flex-col pl-2 gap-1">
                 {/* Thông tin sản phẩm */}
                 <div className="w-full text-black text-sm  font-semibold">{product.productName}</div>
-                <div className=" text-black text-xs font-medium ">{product.color} / {product.size}</div>
+                <div className=" text-black text-xs font-medium ">{product.colorName} / {product.size}</div>
                 <div className="flex flex-row gird grid-cols-2 justify-between">
                     {/* Số lượng sản phẩm */}
                     <div> 

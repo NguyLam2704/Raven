@@ -58,7 +58,7 @@ const DetailProduct = () =>{
             cart[existingProductIndex].quantity += quality;
         } else {
             // Nếu sản phẩm chưa có, thêm sản phẩm với số lượng ban đầu là 1
-            cart.push({ ...cartProduct, color: selectedColor, size: selectedSize, quantity: quality, sizeId: selectedSizeId, colorId: selectedColorId });
+            cart.push({ ...cartProduct, color: selectedColor, size: selectedSize, quantity: quality, sizeId: selectedSizeId, colorId: selectedColorId, colorName: selectedColorName});
         }
         // Cập nhật lại localStorage
         localStorage.setItem('cart', JSON.stringify(cart));
@@ -133,6 +133,7 @@ const DetailProduct = () =>{
     const [quality, setQuality] = useState(1)
     //Nhận giá trị màu sắc
     const [selectedColor, setSelectedColor] = useState(null);
+    const [selectedColorName, setSelectedColorName] = useState(null);
     //nhận giá trị size 
     const [selectedSize, setSelectedSize] = useState(null);
     //Nhận giá trị id color
@@ -287,10 +288,12 @@ const DetailProduct = () =>{
                                                             if(selectedColor===element.color.colorCode) {
                                                                     setSelectedColor('');
                                                                     setColorId('');
+                                                                    setSelectedColorName('');
                                                                 }
                                                             else {
                                                                 setSelectedColor(element.color.colorCode)
                                                                 setColorId(element.colorId);
+                                                                setSelectedColorName(element.color.colorName)
                                                             }
                                                         }
                                                         else alert(`Sản phẩm màu ${element.color.colorName} đã hết hàng. Vui lòng chọn màu sắc khác`)
@@ -406,7 +409,8 @@ const DetailProduct = () =>{
                                         color: selectedColor,
                                         quantity: quality,
                                         sizeId: selectedSizeId,
-                                        colorId: selectedColorId
+                                        colorId: selectedColorId,
+                                        colorName: selectedColorName
                                     };
                                     navigate("/check_out", { state: { product: updateCartProduct} })}
                                     else console.log("empty color and empty size");
