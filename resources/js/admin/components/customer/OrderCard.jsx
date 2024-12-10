@@ -41,13 +41,13 @@ const OrderCart = ({ order, products }) => {
 
 const getStatus = (status) => {
     switch (status) {
-        case 0:
-            return 'Chờ xác nhận';
         case 1:
-            return 'Đang giao hàng';
+            return 'Chờ xác nhận';
         case 2:
-            return 'Hoàn thành';
+            return 'Đang giao hàng';
         case 3:
+            return 'Hoàn thành';
+        case 0:
             return 'Đã hủy';
         default:
             return 'Không xác định';

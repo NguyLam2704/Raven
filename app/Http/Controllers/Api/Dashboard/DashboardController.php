@@ -87,11 +87,11 @@ class DashboardController extends Controller
             return ['error' => 'Không tồn tại tháng ' + $thang];
         }
 
-        $doanhthu = Order::select(DB::raw('DATE(datepaid)'), DB::raw('sum(total_cost) as sum'))
+        $doanhthu = Order::select(DB::raw('DATE(datepaid)'), DB::raw('sum(quantity*after_discount_cost) as sum'))
+            ->join('product_order', 'product_order.order_id', '=', 'orders.order_id')
             ->where('status', '3')
             ->whereBetween('datecreated',[Carbon::create($nam,$thang,1),Carbon::create($nam,$thang,1)->endOfMonth()])
             ->groupBy(DB::raw('DATE(datepaid)'))
-            ->join('bills', 'bills.order_id', '=', 'orders.order_id')
             ->get();
 
         return $doanhthu;

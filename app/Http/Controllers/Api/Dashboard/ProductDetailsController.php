@@ -87,16 +87,18 @@ class ProductDetailsController extends Controller
         }
     }
 
-    public function deleteProduct($id){
-        $prod = Product::find($id);
-        if (!$prod) {
-            return [
-                'error' => 'Không tồn tại id'
-            ];
-        }
+    public function deleteProduct($id)
+    {
+        // $prod = Product::find($id);
+        // if (!$prod) {
+        //     return [
+        //         'error' => 'Không tồn tại id'
+        //     ];
+        // }
+        // $prod->delete();
 
-        // $prod = ProductImage::withTrashed()->where('prod_id',$id);
-        $prod->delete();
+        $prod = Product::withTrashed()->where('prod_id', $id);
+        $prod->restore();
     }
 
     public function getProduct($id)
@@ -123,26 +125,42 @@ class ProductDetailsController extends Controller
     {
 
         $product = Product::find($id);
-        if(!$product){
+        if (!$product) {
             return [
-                'error' => 'Không tồn tại id' + $id 
+                'error' => 'Không tồn tại id' + $id
             ];
         }
 
-        $product->prod_name = $request->prod_name;
-        $product->cost = $request->cost;
-        $product->description = $request->description;
-        $product->category_type_id = $request->category_type_id;
-        $product->discount = $request->discount;
-        $product->save();
+        // $product->prod_name = $request->prod_name;
+        // $product->cost = $request->cost;
+        // $product->description = $request->description;
+        // $product->category_type_id = $request->category_type_id;
+        // $product->discount = $request->discount;
+        // $product->save();
+
+        // if (count($request->images) < 1)
+        // {
+        //     return ['error' => 'Amount of image must be greater than 1'];
+        // }
+
+        $hasPrimaryImg = false;
+        foreach ($product->productImage as $value) {
+            if ($value['is_primary'] == true){
+                $hasPrimaryImg = true;
+            }
+        }
+        if (!$hasPrimaryImg)
+        {
+            return ['error' => 'Must be have one primary img'];
+        }
 
         if ($request->images) { //kiểm tra có thay đổi ảnh hay không
             $newImg = $request->images;
             foreach ($product->productImage as $lastImg) {
                 $exists = false;
                 for ($i=0; $i < count($request->images); $i++) { 
-                    if($lastImg->image == $newImg[$i]['img']){
-                        $lastImg->is_primary = $newImg[$i]['is_primary'];
+                    if($lastImg->image == $request->images[$i]['img']){
+                        $lastImg->is_primary = $request->images[$i]['is_primary'];
                         $lastImg->save();
                         $exists = true;
                         unset($newImg[$i]);
@@ -160,6 +178,95 @@ class ProductDetailsController extends Controller
                 'prod_id' => $product->prod_id,
                 'is_primary' => $e['is_primary']
             ]);
+        }
+
+        $pro_color_size = $product->proColorSize;
+        $hasChange = [];
+        if (count($request->color_size_quantity) < 1)
+        {
+            return ['error' => 'Amount of pro_size_color must be greater than 1'];
+        }
+        
+        foreach ($pro_color_size as $db_procolorsize) {
+            $check = false;
+            foreach ($request->color_size_quantity as $key => $req_value) {
+                if ($db_procolorsize->color->color_code == $req_value['color_code'] && $db_procolorsize->size->size_code == $req_value['size_code']) {
+                    $db_procolorsize->color->color_name = $req_value['nameColor'];
+                    $db_procolorsize->color->save();
+                    $db_procolorsize->quantity_available = $req_value['quantity'];
+                    $db_procolorsize->save();
+                    array_push($hasChange, $key);
+                    $check = true;
+                }
+            }
+            if (!$check) {
+                $db_procolorsize->delete();
+            }
+        }
+
+        foreach ($request->color_size_quantity as $key => $req_value) {
+            if (!in_array($key, $hasChange)) {
+
+                $size_id = 0; // Mã hoá số sang kí tự
+                switch ($req_value['size_code']) {
+                    case 'S':
+                        $size_id = 1;
+                        break;
+                    case 'M':
+                        $size_id = 2;
+                        break;
+                    case 'L':
+                        $size_id = 3;
+                        break;
+                    default:
+                        $size_id = 4;
+                        break;
+                }
+
+                $item_from_trash = ProColorSize::withTrashed()->join('colors','colors.color_id','=','pro_color_size.color_id')
+                            ->where('color_code', $req_value['color_code'])
+                            ->where('size_id', $size_id)
+                            ->first('pro_color_size_id');
+                if ($item_from_trash) {
+                    ProColorSize::withTrashed()->where('pro_color_size_id', $item_from_trash->pro_color_size_id)->restore();
+                    $item = ProColorSize::find($item_from_trash->pro_color_size_id);
+                    $item_color = Color::find($item->color->color_id);
+                    $item_color->color_name = $req_value['nameColor'];
+                    $item_color->updated_at = Carbon::now();
+                    $item_color->save();
+                    $item->quantity_available = $req_value['quantity'];
+                    $item->save();
+                } else {
+                    $color = DB::table('colors')->where('color_code', $req_value['color_code'])->exists();
+
+                    if (!$color) {
+                        $color = Color::insert([
+                            'color_code' => $req_value['color_code'],
+                            'color_name' => $req_value['nameColor']
+                        ]);
+                        if (!$color) {
+                            return 'Add color that bai';
+                        }
+                    } else {
+                        Color::where('color_code', $req_value['color_code'])->update([
+                            'color_name' => $req_value['nameColor']
+                        ]);
+                    }
+
+                    $color = DB::table('colors')->where('color_code', $req_value['color_code'])->first();
+
+                    $pro_color_size = ProColorSize::insert([
+                        'prod_id' => $product->prod_id,
+                        'size_id' => $size_id,
+                        'color_id' => $color->color_id,
+                        'quantity_available' => $req_value['quantity']
+                    ]);
+
+                    if (!$pro_color_size) {
+                        return 'Add pro_color_size that bai';
+                    }
+                }
+            }
         }
     }
 
