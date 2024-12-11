@@ -85,7 +85,7 @@ const Search = () => {
     //Nhận giá trị từ thanh tìm kiếm
     const location = useLocation();
     const text = new URLSearchParams(location.search).get("query");
-    console.log(text);
+    
     // const {text} = useParams();
     // State lưu danh sách sản phẩm từ API
     const [products, setProducts] = useState([]);
@@ -93,6 +93,7 @@ const Search = () => {
     // State lưu danh sách sản phẩm đã lọc
     const [filteredProducts, setFilteredProducts] = useState([])
 
+    console.log(filteredProducts);
     // Gọi API để lấy danh sách sản phẩm
   useEffect(() => {
     const fetchProducts = async () => {
@@ -112,7 +113,7 @@ const Search = () => {
     useEffect(() => {
       if (text) {
         const filtered = products.filter((product) =>
-          product.productName.toLowerCase().includes(text.toLowerCase())
+          product.productName.toLowerCase().includes(text.normalize('NFC').toLowerCase())
         );
         setFilteredProducts(filtered);
         setValue("Giá giảm dần")
@@ -131,28 +132,28 @@ const Search = () => {
             <div className=" justify-items-center mt-20">
               <div className="w-10/12">
                     {/* Bộ lọc */}
-                    <div  className="w-full h-8 justify-items-end"
+                    <div className='w-full desktop:h-8 ipad:h-7 mobile:h-6 justify-items-end '
                           onMouseLeave={()=>setOpen(false)} //ẩn các giá trị bộ lọc
                     >
                         <div  className='flex  '>                            
                             <button className='flex mr-3'
                                     onClick={()=>setOpen(true)} // hiện các giá trị bộ lọc
                             >
-                              <div className='rounded rounded-r-none py-1  border border-r-0 border-gray-400 shadow w-28 text-black text-sm font-medium '>{sort}</div>
-                              <div className='rounded rounded-l-none border border-gray-400 shadow py-[2px] px-1 '>
-                                <FontAwesomeIcon icon={faChevronDown}  />
-                              </div>
+                              <div className='rounded rounded-r-none py-1  border border-r-0 border-gray-400 shadow desktop:w-28 ipad:w-24 mobile:w-20 text-black mobile:text-xs desktop:text-base ipad:text-sm font-medium '>{sort}</div>
+                              <div className='h-full align-middle rounded rounded-l-none border border-gray-400 shadow px-1 mr-3 '>
+                                        <FontAwesomeIcon className='desktop:h-4 ipad:h-3 mobile:h-2 desktop:mt-[7px] ipad:mt-[6px] mobile:mb-1' icon={faChevronDown}  />
+                                    </div>
                             </button>
                         </div>
-                        { isOpen && (<ul className={ `relative w-[138px] border border-[#9f9f9f] text-sm bg-white rounded z-20 mt-[1px] mr-3 font-Public}`}>
-                                            <li className='pl-4 py-1 text-black leading-relaxed rounded-t hover:bg-gray-200'><button onClick={() => setValue("Giá tăng dần")}>Giá tăng dần</button></li>
-                                            <li className='pl-4 py-1 text-black hover:bg-gray-200 rounded-b leading-relaxed'><button onClick={() => setValue("Giá giảm dần")}>Giá giảm dần</button></li>
+                        { isOpen && (<ul className={ `relative desktop:w-[138px] ipad:w-[118px] mobile:w-[98px] border border-[#9f9f9f] bg-white rounded z-20 mobile:text-xs desktop:text-base ipad:text-sm  mt-[1px] mr-6 font-Public }`}>
+                                            <li className='desktop:pl-3 ipad:pl-2 mobile:pl-1 py-1 text-black leading-relaxed rounded-t hover:bg-gray-200'><button onClick={() => setValue("Giá tăng dần")}>Giá tăng dần</button></li>
+                                            <li className='desktop:pl-3 ipad:pl-2 mobile:pl-1 py-1 text-black hover:bg-gray-200 rounded-b leading-relaxed'><button onClick={() => setValue("Giá giảm dần")}>Giá giảm dần</button></li>
                                     </ul>)
                         }
 
                     </div>
                     {/* Danh sách các sản phẩm */}
-                    <div className="mt-10 grid desktop:grid-cols-4 ipad:grid-cols-3 gap-12 z-10">
+                    <div className="mt-10 grid desktop:grid-cols-4 ipad:grid-cols-3 mobile:grid-cols-2 gap-12 z-10">
                     {filteredProducts.length > 0 ? (
                       filteredProducts.filter((product) => product.discount > 0) //filter product have discount
                       .sort((a,b) => {
@@ -166,6 +167,7 @@ const Search = () => {
                         }).map((product, index) => (
                         <Product
                           key={index}
+                          proId={product.proId}
                           price={product.cost}
                           img={product.productImage.find(img => img.isPrimary)?.image}
                           name={product.productName}

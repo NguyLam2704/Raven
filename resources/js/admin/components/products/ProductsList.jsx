@@ -72,7 +72,7 @@ const ProductsList = ({data}) => {
                                 </td>
                                 <td className="py-5 px-2 h-20 border-b flex justify-center items-center">
                                     <div  className="w-24 bg-[#fafbfc] rounded-lg border">
-                                        <button className='h-full w-1/2 border-r'>
+                                        <button className='h-full w-1/2 border-r z-10'>
                                             <FontAwesomeIcon icon={faPenToSquare} tyle={{color: "#000000",}} />
                                         </button>
 
