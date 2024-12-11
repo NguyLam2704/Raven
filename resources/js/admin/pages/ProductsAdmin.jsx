@@ -11,6 +11,8 @@ const fetchProducts = async () => {
     return response.data;
 } 
 
+
+
 const Products = () => {
     const [ProductsData, setProductsData] = useState();
     const [isLoading, setIsLoading] = useState(true)
