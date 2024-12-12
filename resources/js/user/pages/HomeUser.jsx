@@ -66,114 +66,42 @@ const HomeUser = () => {
     
     
     return(
-        <div className='w-full h-screen font-Public'>
+        <div>
              { loading ? ( <div></div>) : (<Navigation/>) }
-            <main className=" mt-[90px] w-full">
-                { loading ? ( <div></div>) : (<SliderHome/>) }
-                {/* Các sản phẩm mới */}
-                <div className="justify-items-center mt-20 "> 
-                    {/* Tiêu đề */}
-                    <div className="h-1/5 w-10/12 ">
-                        <TitleMore type={"SẢN PHẨM MỚI"} load={loading} />
-                    </div>
-                    { loading ? (
-                        <div>
-                            <img className='w-10 h-10 mt-10' src={img_loading} alt="loading" />
-                        </div>
-                    ) : (
-                        <div className="w-full flex flex-row justify-center items-center">
-                        <button
-                            onClick={() => handleBack(swiperNewRef)} 
-                            className="p-1 pr-2 bg-opacity-30 rounded-full"
-                        >
-                            <img src={back} alt="none" />
-                        </button>
-                        <div className="w-10/12 justify-items-center">
-                            <Swiper
-                                slidesPerView={4} // Hiển thị 1 slide mỗi lần (vì mỗi slide sẽ chứa 6 sản phẩm chia làm 2 hàng)
-                                mousewheel={true} // Cuộn bằng chuột
-                                onSwiper={(swiper) => (swiperNewRef.current = swiper)} // Lưu instance của Swiper                              
-                                breakpoints={{
-                                    0: { slidesPerView: 2, spaceBetween: 10 },
-                                    800: { slidesPerView: 3, spaceBetween: 10 },
-                                    1200: { slidesPerView: 4, spaceBetween: 20 },
-                                }}
-                            >
-                                {products
-                                    .sort((a, b) => new Date(b.datePosted) - new Date(a.datePosted)) // Sắp xếp sản phẩm theo ngày
-                                    .reduce((acc, product, index) => {
-                                        const groupIndex = Math.floor(index / 2); // Nhóm mỗi 8 sản phẩm thành một slide
-                                        if (!acc[groupIndex]) acc[groupIndex] = [];
-                                        acc[groupIndex].push(product);
-                                        return acc;
-                                    }, [])
-                                    .map((group, index) => (
-                                        <SwiperSlide key={index}>
-                                            <div className="grid grid-row-2 gap-10 justify-items-center my-4">
-                                                {group.map((product, subIndex) => (
-                                                    <div key={subIndex} className="flex flex-col items-center">
-                                                        <Product
-                                                            proId={product.proId}
-                                                            price={product.cost}
-                                                            img={product.productImage.find((img) => img.isPrimary)?.image} // Ảnh chính
-                                                            name={product.productName}
-                                                            sale={product.discount}
-                                                        />
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </SwiperSlide>
-                                    ))}
-                            </Swiper>
-                        </div>
-                        <button
-                            onClick={() => handleForward(swiperNewRef)} 
-                            className="p-1 pr-2 bg-white bg-opacity-30 rounded-full"
-                        >
-                            <img src={forward} alt="none" />
-                        </button>
-                    </div>
-                    
-
-                    )}     
-                </div>
-
-                    { loading ? ( <div></div>) : (<Line/>) }                
-
-                    {/* Các sản phẩm nổi bật */}
-                    <div className="  w-full  justify-items-center mt-20"> 
+             <div className='w-full  border-2 mx-auto max-w-[1557px] '>
+                <main className="items-center justify-center mx-auto w-full">
+                    { loading ? ( <div></div>) : (<SliderHome/>) }
+                    {/* Các sản phẩm mới */}
+                    <div className="justify-items-center mt-20 "> 
                         {/* Tiêu đề */}
-                        <div className="h-1/5 w-10/12 ">
-                            <TitleMore type={"SẢN PHẨM NỔI BẬT"}  load={loading}/>
+                        <div className="h-1/5 w-[80%] ">
+                            <TitleMore type={"SẢN PHẨM MỚI"} load={loading} />
                         </div>
-
-                    {/* Danh sách sản phẩm */}
-                    { loading ? (
-                        <div>
-                            <img className='w-10 h-10 mt-10' src={img_loading} alt="loading" />
-                        </div>
-                    ) : (
-                        <div className='w-full flex flex-row justify-center'>                       
-                            <button className=" p-1 pr-2 bg-opacity-30 rounded-full "
-                                onClick={() => handleBack(swiperHighlightRef)}
-                                
+                        { loading ? (
+                            <div>
+                                <img className='w-10 h-10 mt-10' src={img_loading} alt="loading" />
+                            </div>
+                        ) : (
+                            <div className="w-full flex flex-row justify-center items-center">
+                            <button
+                                onClick={() => handleBack(swiperNewRef)} 
+                                className="p-1 pr-2 bg-opacity-30 rounded-full"
                             >
-                                <img src={back} alt="none"/>
-                            </button>                        
-                            <div className="w-10/12 justify-items-center">
+                                <img src={back} alt="none" />
+                            </button>
+                            <div className="w-[80%] justify-items-center">
                                 <Swiper
                                     slidesPerView={4} // Hiển thị 1 slide mỗi lần (vì mỗi slide sẽ chứa 6 sản phẩm chia làm 2 hàng)
                                     mousewheel={true} // Cuộn bằng chuột
-                                    onSwiper={(swiper) => (swiperHighlightRef.current = swiper)} // Lưu instance của Swiper
-                                    speed={1000}
+                                    onSwiper={(swiper) => (swiperNewRef.current = swiper)} // Lưu instance của Swiper                              
                                     breakpoints={{
                                         0: { slidesPerView: 2, spaceBetween: 10 },
-                                        768: { slidesPerView: 3, spaceBetween: 15 },
+                                        800: { slidesPerView: 3, spaceBetween: 10 },
                                         1200: { slidesPerView: 4, spaceBetween: 20 },
                                     }}
                                 >
                                     {products
-                                        .filter((product) => product.quantitySold > 10) // Sắp xếp sản phẩm theo ngày
+                                        .sort((a, b) => new Date(b.datePosted) - new Date(a.datePosted)) // Sắp xếp sản phẩm theo ngày
                                         .reduce((acc, product, index) => {
                                             const groupIndex = Math.floor(index / 2); // Nhóm mỗi 8 sản phẩm thành một slide
                                             if (!acc[groupIndex]) acc[groupIndex] = [];
@@ -182,7 +110,7 @@ const HomeUser = () => {
                                         }, [])
                                         .map((group, index) => (
                                             <SwiperSlide key={index}>
-                                                <div className="grid grid-row-2 gap-10 justify-items-center my-4">
+                                                <div className="grid grid-row-2 gap-5 justify-items-center my-4">
                                                     {group.map((product, subIndex) => (
                                                         <div key={subIndex} className="flex flex-col items-center">
                                                             <Product
@@ -199,85 +127,160 @@ const HomeUser = () => {
                                         ))}
                                 </Swiper>
                             </div>
-                            <button className=" p-1 pr-2 bg-white bg-opacity-30 rounded-full "
-                                onClick={() => handleForward(swiperHighlightRef)} 
+                            <button
+                                onClick={() => handleForward(swiperNewRef)} 
+                                className="p-1 pr-2bg-opacity-30 rounded-full"
                             >
-                                    <img  src={forward} alt="none"/>
+                                <img src={forward} alt="none" />
                             </button>
-                        </div>   
-                    )} 
-                                                     
-                </div>   
-
-                    { loading ? ( <div></div>) : (<Line/>) }
-
-                    {/* Các sản phẩm sale */}
-                    <div className=" w-full  justify-items-center mt-20"> 
-                        {/* Tiêu đề */}
-                        <div className="h-1/5 w-10/12 ">
-                            <TitleMore type={"SALE"}  load={loading}/>
                         </div>
+                        
 
-                    {/* Danh sách sản phẩm */}
-                    { loading ? (
-                        <div>
-                            <img className='w-10 h-10 mt-10'  src={img_loading} alt="loading" />
-                        </div>
-                    ) : (
-                        <div className='w-full flex flex-row justify-center'>                       
-                            <button className=" p-1 pr-2 bg-opacity-30 rounded-full "
-                                onClick={() => handleBack(swiperSaleRef)}
-                            >
-                                <img src={back} alt="none"/>
-                            </button>                        
-                            <div className="w-10/12 justify-items-center">
-                            <Swiper
-                                slidesPerView={4} // Hiển thị 1 slide mỗi lần (vì mỗi slide sẽ chứa 6 sản phẩm chia làm 2 hàng)
-                                mousewheel={true} // Cuộn bằng chuột
-                                onSwiper={(swiper) => (swiperSaleRef.current = swiper)} // Lưu instance của Swiper
-                                breakpoints={{
-                                    0: { slidesPerView: 2, spaceBetween: 10 },
-                                    768: { slidesPerView: 3, spaceBetween: 15 },
-                                    1200: { slidesPerView: 4, spaceBetween: 20 },
-                                }}
-                            >
-                                {products
-                                    .filter((product) => product.discount > 0) // Sắp xếp sản phẩm theo ngày
-                                    .reduce((acc, product, index) => {
-                                        const groupIndex = Math.floor(index / 2); // Nhóm mỗi 8 sản phẩm thành một slide
-                                        if (!acc[groupIndex]) acc[groupIndex] = [];
-                                        acc[groupIndex].push(product);
-                                        return acc;
-                                    }, [])
-                                    .map((group, index) => (
-                                        <SwiperSlide key={index}>
-                                            <div className="grid grid-row-2  gap-10 justify-items-center my-4">
-                                                {group.map((product, subIndex) => (
-                                                    <div key={subIndex} className="flex flex-col items-center">
-                                                        <Product
-                                                            proId={product.proId}
-                                                            price={product.cost}
-                                                            img={product.productImage.find((img) => img.isPrimary)?.image} // Ảnh chính
-                                                            name={product.productName}
-                                                            sale={product.discount}
-                                                        />
+                        )}     
+                    </div>
+
+                        { loading ? ( <div></div>) : (<Line/>) }                
+
+                        {/* Các sản phẩm nổi bật */}
+                        <div className="  w-full  justify-items-center mt-20"> 
+                            {/* Tiêu đề */}
+                            <div className="h-1/5 w-[80%]">
+                                <TitleMore type={"SẢN PHẨM NỔI BẬT"}  load={loading}/>
+                            </div>
+
+                        {/* Danh sách sản phẩm */}
+                        { loading ? (
+                            <div>
+                                <img className='w-10 h-10 mt-10' src={img_loading} alt="loading" />
+                            </div>
+                        ) : (
+                            <div className='w-full flex flex-row justify-center'>                       
+                                <button className=" p-1 pr-2 bg-opacity-30 rounded-full "
+                                    onClick={() => handleBack(swiperHighlightRef)}
+                                    
+                                >
+                                    <img src={back} alt="none"/>
+                                </button>                        
+                                <div className="w-[80%] justify-items-center">
+                                    <Swiper
+                                        slidesPerView={4} // Hiển thị 1 slide mỗi lần (vì mỗi slide sẽ chứa 6 sản phẩm chia làm 2 hàng)
+                                        mousewheel={true} // Cuộn bằng chuột
+                                        onSwiper={(swiper) => (swiperHighlightRef.current = swiper)} // Lưu instance của Swiper
+                                        speed={1000}
+                                        breakpoints={{
+                                            0: { slidesPerView: 2, spaceBetween: 10 },
+                                            768: { slidesPerView: 2, spaceBetween: 10 },
+                                            1200: { slidesPerView: 4, spaceBetween: 20 },
+                                        }}
+                                    >
+                                        {products
+                                            .filter((product) => product.quantitySold > 10) // Sắp xếp sản phẩm theo ngày
+                                            .reduce((acc, product, index) => {
+                                                const groupIndex = Math.floor(index / 2); // Nhóm mỗi 8 sản phẩm thành một slide
+                                                if (!acc[groupIndex]) acc[groupIndex] = [];
+                                                acc[groupIndex].push(product);
+                                                return acc;
+                                            }, [])
+                                            .map((group, index) => (
+                                                <SwiperSlide key={index}>
+                                                    <div className="grid grid-row-2 gap-10 justify-items-center my-4">
+                                                        {group.map((product, subIndex) => (
+                                                            <div key={subIndex} className="flex flex-col items-center">
+                                                                <Product
+                                                                    proId={product.proId}
+                                                                    price={product.cost}
+                                                                    img={product.productImage.find((img) => img.isPrimary)?.image} // Ảnh chính
+                                                                    name={product.productName}
+                                                                    sale={product.discount}
+                                                                />
+                                                            </div>
+                                                        ))}
                                                     </div>
-                                                ))}
-                                            </div>
-                                        </SwiperSlide>
-                                    ))}
-                            </Swiper>
-                        </div>
-                            <button className=" p-1 pr-2 bg-white bg-opacity-30 rounded-full "
-                                onClick={() => handleForward(swiperSaleRef)} 
-                            >
-                                    <img  src={forward} alt="none"/>
-                            </button>
-                        </div> 
-                    )} 
-                                                          
-                </div>                    
-            </main>
+                                                </SwiperSlide>
+                                            ))}
+                                    </Swiper>
+                                </div>
+                                <button className=" p-1 pr-2 bg-opacity-30 rounded-full "
+                                    onClick={() => handleForward(swiperHighlightRef)} 
+                                >
+                                        <img  src={forward} alt="none"/>
+                                </button>
+                            </div>   
+                        )} 
+                                                        
+                    </div>   
+
+                        { loading ? ( <div></div>) : (<Line/>) }
+
+                        {/* Các sản phẩm sale */}
+                        <div className=" w-full  justify-items-center mt-20"> 
+                            {/* Tiêu đề */}
+                            <div className="h-1/5 w-[80%] ">
+                                <TitleMore type={"SALE"}  load={loading}/>
+                            </div>
+
+                        {/* Danh sách sản phẩm */}
+                        { loading ? (
+                            <div>
+                                <img className='w-10 h-10 mt-10'  src={img_loading} alt="loading" />
+                            </div>
+                        ) : (
+                            <div className='w-full flex flex-row justify-center'>                       
+                                <button className=" p-1 pr-2 bg-opacity-30 rounded-full "
+                                    onClick={() => handleBack(swiperSaleRef)}
+                                >
+                                    <img src={back} alt="none"/>
+                                </button>                        
+                                <div className="w-[80%] justify-items-center">
+                                <Swiper
+                                    slidesPerView={4} // Hiển thị 1 slide mỗi lần (vì mỗi slide sẽ chứa 6 sản phẩm chia làm 2 hàng)
+                                    mousewheel={true} // Cuộn bằng chuột
+                                    onSwiper={(swiper) => (swiperSaleRef.current = swiper)} // Lưu instance của Swiper
+                                    breakpoints={{
+                                        0: { slidesPerView: 2, spaceBetween: 10 },
+                                        768: { slidesPerView: 2, spaceBetween: 10 },
+                                        1200: { slidesPerView: 4, spaceBetween: 20 },
+                                    }}
+                                >
+                                    {products
+                                        .filter((product) => product.discount > 0) // Sắp xếp sản phẩm theo ngày
+                                        .reduce((acc, product, index) => {
+                                            const groupIndex = Math.floor(index / 2); // Nhóm mỗi 8 sản phẩm thành một slide
+                                            if (!acc[groupIndex]) acc[groupIndex] = [];
+                                            acc[groupIndex].push(product);
+                                            return acc;
+                                        }, [])
+                                        .map((group, index) => (
+                                            <SwiperSlide key={index}>
+                                                <div className="grid grid-row-2  gap-10 justify-items-center my-4">
+                                                    {group.map((product, subIndex) => (
+                                                        <div key={subIndex} className="flex flex-col items-center">
+                                                            <Product
+                                                                proId={product.proId}
+                                                                price={product.cost}
+                                                                img={product.productImage.find((img) => img.isPrimary)?.image} // Ảnh chính
+                                                                name={product.productName}
+                                                                sale={product.discount}
+                                                            />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </SwiperSlide>
+                                        ))}
+                                </Swiper>
+                            </div>
+                                <button className=" p-1 pr-2bg-opacity-30 rounded-full "
+                                    onClick={() => handleForward(swiperSaleRef)} 
+                                >
+                                        <img  src={forward} alt="none"/>
+                                </button>
+                            </div> 
+                        )} 
+                                                            
+                    </div>                    
+                </main>
+             </div>
+
             <Footer/>
         </div>
 

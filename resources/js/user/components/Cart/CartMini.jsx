@@ -77,7 +77,7 @@ const CartMini = ({handleCart}) => {
             </div>
             <div className='h-screen w-1/4 bg-white justify-items-center right-0 absolute top-0 z-50'>
                 <div className="  w-10/12 py-4 flex flow-row justify-between items-center ">
-                    <div className=" text-[#a91d3a] text-xl font-bold">GIỎ HÀNG</div>
+                    <div className=" text-[#1E0342] text-xl font-bold">GIỎ HÀNG</div>
                     <button 
                         onClick={handleCart} //Ẩn thanh giỏ hàng
                     >
@@ -97,7 +97,7 @@ const CartMini = ({handleCart}) => {
                         <div className="text-[#a91d3a] text-xl  font-bold">{totalCost.toLocaleString('vi-VN')}đ</div> 
                     </div>
                     <button 
-                        className="w-11/12 flex justify-center bg-[#c73659] rounded-[5px] border border-[#151515] py-1 desktop:my-7 ipad:my-5"
+                        className="w-11/12 flex justify-center bg-[#1E0342] rounded-[5px] border border-[#151515] py-1 desktop:my-7 ipad:my-5"
                         onClick={() => navigate("/check_out", { state: { product: cartProduct} })}  // Chuyển đến trang thanh toán
                     >
                         <div className=" text-white text-lg font-bold">THANH TOÁN</div>
