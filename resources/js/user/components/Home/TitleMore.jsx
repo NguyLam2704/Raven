@@ -10,7 +10,7 @@ const TitleMore = ({type, load, }) => {
         if(type==="SẢN PHẨM MỚI"){
             naviagte('/new_product')
         }
-        if(type==="SẢN PHẨM NỔI BẬT"){
+        if(type==="SẢN PHẨM NỔI BẬT"){
             naviagte('/highlight_product')
         }
         if(type==="SALE"){
@@ -19,7 +19,7 @@ const TitleMore = ({type, load, }) => {
     }
 
     return(
-        <div className="w-full h-full ">
+        <div className="w-full font-nunito h-full ">
             <div className="h-1/5"></div>
             {/* Tiêu đề */}
             <div className=" h-3/5 w-full flex text-center items-center justify-center text-[#a91d3a] desktop:text-5xl ipad:text-4xl mobile:text-2xl font-medium font-Public">{type}</div>

@@ -99,9 +99,9 @@ const Home = () => {
             trend:
                 ThongKeData.donhang.yesterday === 0
                     ? "0%"
-                    : (ThongKeData.donhang.today /
+                    : (Math.round((ThongKeData.donhang.today /
                           ThongKeData.donhang.yesterday) *
-                          100 +
+                          100* 100) / 100) +
                       "%",
             trendColor:
                 ThongKeData.donhang.today >= ThongKeData.donhang.yesterday
@@ -119,9 +119,9 @@ const Home = () => {
             trend:
                 ThongKeData.doanhthu.yesterday === 0
                     ? "0%"
-                    : (ThongKeData.doanhthu.today /
+                    : (Math.round((ThongKeData.doanhthu.today /
                           ThongKeData.doanhthu.yesterday) *
-                          100 +
+                          100 * 100) / 100) +
                       "%",
             trendColor:
                 ThongKeData.doanhthu.today >= ThongKeData.doanhthu.yesterday
@@ -154,7 +154,7 @@ const Home = () => {
                 {/*Biểu đồ trên Desktop  */}
             <div className="mobile:hidden ipad:hidden gap-1 desktop:flex w-full mt-4">
                 <div className="mr-auto rounded-[14px] shadow-md bg-white desktop:pr-4  desktop:w-[65%]">
-                    <MonthlyRevenueChart year={2024}/>
+                    <MonthlyRevenueChart/>
                 </div>
 
                 <div className="mr-auto h-[470px] mobile:mt-2 ipad:mt-2 desktop:mt-0 py-4 pr-4 desktop:w-[35%] p-4 bg-white rounded-[14px] shadow-md">
@@ -165,8 +165,8 @@ const Home = () => {
                 </div>
             </div>
 
-            <div className="desktop:hidden mt-2 mobile:h-[200px] ipad:h-[420px] mr-auto rounded-[14px] border-2 border-red-600 shadow-md bg-white ">
-                    <MonthlyRevenueChart year={2024} />
+            <div className="desktop:hidden mt-2 mobile:h-[230px] ipad:h-[420px] mr-auto rounded-[14px] border-2 border-red-600 shadow-md bg-white ">
+                    <MonthlyRevenueChart/>
             </div>
 
             <div className="desktop:hidden mr-auto h-[430px] mobile:mt-2 ipad:mt-2 py-4 pr-4 desktop:w-[35%] p-4 bg-white rounded-[14px] shadow-md">
@@ -180,7 +180,7 @@ const Home = () => {
             <h1 className="mobile:text-[20px] ipad:text-[25px]  desktop:text-[32px]  font-bold mt-4">Đơn hàng</h1>
 
             <div className="overflow-x-auto">
-                <OrderList data={OrdersData} />
+                <OrderList data={OrdersData.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated)).slice(0,10)} />
             </div>
 
 

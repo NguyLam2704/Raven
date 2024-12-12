@@ -11,25 +11,28 @@ const NavigationAdmin = ({ children }) => {
 
 
   return (
-    <div className="fle w-full max-w-[1557px] mx-auto">
+    <div className="flex w-full max-w-[1557px] mx-auto bg-[#F5F6FA]">
       <div className='flex w-full'>  
         {/* Overlay */}
-      <div
-        className={`fixed inset-0 bg-black bg-opacity-50 z-10 transition-opacity duration-500 ${
-          isSidebarOpen ? "opacity-100 visible" : "opacity-0 invisible"
-        }`}
-        onClick={toggleSidebar} // Đóng sidebar khi bấm vào overlay
-      ></div>
-
-        <div className={`
-                mobile:z-20 ipad:z-20 desktop:z-0 
-                mobile:absolute ipad:absolute desktop:fixed ${isSidebarOpen ? "block" : "hidden"}
-                desktop:block
-              `}>
-          <Sidebar toggleSidebar={toggleSidebar}/>
+        <div className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ease-in-out
+          ${isSidebarOpen ? "opacity-100 visible" : "opacity-0 invisible"} z-20`}
+          onClick={toggleSidebar}>
         </div>
 
-        <Header toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen}/>
+        <div className={`
+                mobile:z-30 ipad:z-30 desktop:z-0 
+                mobile:absolute ipad:absolute desktop:block
+                transition-transform duration-300 ease-in-out
+                
+                `}
+                >
+          <Sidebar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen}/>
+        </div>
+
+        <div className='z-0'>
+          <Header toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen}/>
+        </div>
+
 
 
         
