@@ -12,12 +12,14 @@ class OrdersFilter extends ApiFilter{
         'status' => ['eq', 'ne'],
         'userId' => ['eq', 'ne'],
         'payingMethod' => ['eq', 'ne'],
+        'dateCreated' => ['eq', 'ne']
     ];
     // map column with field in color table
     protected $columnMap = [
         'status' => 'status',
         'userId' => 'user_id',
-        'payingMethod' => 'payingmethod'
+        'payingMethod' => 'payingmethod',
+        'dateCreated' => 'datecreated'
     ];
 
     protected $operatorMap = [

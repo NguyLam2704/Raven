@@ -22,6 +22,7 @@ class Order extends Model
         'datepaid',
         'address',
         'detail_address',
+        'email',
     ];
 
     public $timestamps = false;
