@@ -185,7 +185,9 @@ const AccountManage = () => {
                             <button
                                 type="button"
                                 onClick={setFalseEditing}
-                                className={`w-[10rem] text-white my-6 py-2 rounded-md mr-4 justify-items-end ${isEditing ? "bg-gray-600 hover:bg-gray-700" : "bg-gray-500 hover:bg-gray-700" }`}
+                                className={`w-[10rem] text-white my-6 py-2 rounded-md mr-4 justify-items-end 
+                                    ${isEditing ? "bg-gray-600 hover:bg-gray-700" : "bg-gray-500 hover:bg-gray-700" }
+                                    outline-none ring-indigo-500/70 ring-offset-2 focus-visible:ring-2 hover:scale-[1.03] active:scale-[0.98] `}
                             >
                                 <FontAwesomeIcon icon={faBan} className="mr-2"/>
                                 HỦY
@@ -193,7 +195,9 @@ const AccountManage = () => {
 
                             <button
                                 type="submit"
-                                className={`w-[10rem] text-white my-6 py-2 rounded-md  justify-items-end ${isEditing ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-500 hover:bg-gray-700" }`}
+                                className={`w-[10rem] text-white my-6 py-2 rounded-md  justify-items-end 
+                                    ${isEditing ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-500 hover:bg-gray-700" }
+                                     outline-none ring-indigo-500/70 ring-offset-2 focus-visible:ring-2 hover:scale-[1.03] active:scale-[0.98]`}
                             >
                                 <FontAwesomeIcon icon={faFloppyDisk} className="mr-2"/>
                                 LƯU
@@ -204,7 +208,9 @@ const AccountManage = () => {
                             <button
                                 type="button"
                                 onClick={handleEditing}
-                                className={`w-[10rem] text-white my-6 py-2 rounded-md  justify-items-end ${isEditing ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-500 hover:bg-gray-700" }`}
+                                className={`w-[10rem] text-white my-6 py-2 rounded-md  justify-items-end 
+                                    ${isEditing ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-500 hover:bg-gray-700" }
+                                     outline-none ring-indigo-500/70 ring-offset-2 focus-visible:ring-2 hover:scale-[1.03] active:scale-[0.98]`}
                             >
                                 <FontAwesomeIcon icon={faPenToSquare} className="mr-2"/>
                                 CHỈNH SỬA

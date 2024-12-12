@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Helmet } from "react-helmet";
-import NavigationAdmin from "../components/NavigationAdmin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloudArrowUp, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { SketchPicker } from "react-color";
@@ -15,14 +13,14 @@ const supabase = createClient(
     import.meta.env.VITE_SUPABASE_ANON_KEY
 );
 
-const AddProduct = () => {
+const ProductEdit = ({products, onClose}) => {
     const navigate = useNavigate();
     const [product, setProduct] = useState({
         prod_name: "",
         cost: null,
         discount: 0,
         description: "",
-        color_size_quantity: [],
+        pro_color_size: [],
         category_type_id: null,
         images: [
             { img: null, is_primary: true },
@@ -32,7 +30,7 @@ const AddProduct = () => {
             { img: null, is_primary: false },
         ],
     });
-
+    
     const [items, setItems] = useState([]); // mảng màu, size, số lượng
     const [newItem, setNewItem] = useState({
         color: "#FFFFFF", // Default color is white
@@ -40,10 +38,51 @@ const AddProduct = () => {
         size: "",
         quantity: "",
     });
-    const [showColorPicker, setShowColorPicker] = useState(false);
-
     const [mainImage, setMainImage] = useState(null);
     const [otherImages, setOtherImages] = useState([null, null, null, null]);
+    const [currentMainImageUrl, setCurrentMainImageUrl] = useState(null);
+    const [currentOtherImageUrls, setCurrentOtherImageUrls] = useState([null, null, null, null]);
+
+
+    const [showModal, setShowModal] = useState(false);
+
+    const modalFalse = () => setShowModal(false);
+
+    useEffect(() => {
+        const LoadData =  () => {
+            setProduct(products)
+            // Phân loại ảnh thành mainImage và otherImages
+            const primaryImage = products.images.find((img) => img.is_primary);
+            const nonPrimaryImages = products.images.filter((img) => !img.is_primary);
+
+            // Cập nhật trạng thái
+            setMainImage(primaryImage ? primaryImage.image : null);
+            setOtherImages([...nonPrimaryImages.map((img) => img.image), null]);
+
+
+            // Cập nhật URL hình ảnh cũ
+            setCurrentMainImageUrl(primaryImage ? primaryImage.img : null);
+            setCurrentOtherImageUrls(nonPrimaryImages.map((img) => img.img));
+
+            if (products.pro_color_size && products.pro_color_size.length > 0) {
+                const mappedItems = products.pro_color_size.map((item) => ({
+                    color: item.color_code,
+                    nameColor: item.color_name,
+                    size: item.size_code,
+                    quantity: item.quantity_available,
+                }));
+                setItems(mappedItems);
+            }
+
+            setShowModal(true);
+            console.log(products.images[1])
+        };
+        LoadData();
+        
+    }, []); 
+
+    const [showColorPicker, setShowColorPicker] = useState(false);
+
     const mainImageInputRef = useRef(null);
     const otherImageInputRefs = useRef([]);
 
@@ -66,6 +105,7 @@ const AddProduct = () => {
                 setShowSizeOptions(false);
             }
         };
+
         document.addEventListener("mousedown", handleClickOutside);
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
@@ -97,16 +137,20 @@ const AddProduct = () => {
         "Áo thun": 1,
         "Áo polo": 2,
         "Áo khoác": 3,
-        Sweater: 4,
+        "Sweater": 4,
         "Áo sơ mi": 5,
         "Quần dài": 6,
         "Quần ngắn": 7,
-        Cặp: 8,
+        "Cặp": 8,
         "Túi xách": 9,
-        Ví: 10,
-        Nón: 11,
+        "Ví": 10,
+        "Nón": 11,
     };
 
+    const getCategoryNameById = (id) => {
+        return Object.keys(categoryTypeMap).find((key) => categoryTypeMap[key] === id) || "";
+    };
+    
     // Xử lý thay đổi phân loại
     const handleCategoryChange = (e) => {
         const selectedCategory = e.target.value;
@@ -116,84 +160,6 @@ const AddProduct = () => {
         });
     };
 
-    //Mở thư mục trên máy và chọn ảnh
-    // const handleMainImageUpload = async (event) => {
-    //     const file = event.target.files[0];
-    //     if (file && file.type.startsWith("image/")) {
-    //         const previewUrl = URL.createObjectURL(file); // Hiển thị preview hình ảnh
-    //         setMainImage(previewUrl);
-
-    //         const timestamp = new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15);
-
-    //         // Tạo tên file duy nhất giữ nguyên tên gốc và thêm timestamp
-    //         const uniqueFileName = `main/${file.name.split('.')[0]}_${timestamp}.${file.name.split('.').pop()}`;
-
-    //         // Upload lên Supabase
-    //         const { data, error } = await supabase.storage
-    //             .from('Image/ProductImage') // Tên bucket trong storage của bạn
-    //             .upload(uniqueFileName, file, {
-    //                 cacheControl: '3600',
-    //                 upsert: false
-    //             });
-
-    //         if (error) {
-    //             console.error("Upload error:", error);
-    //             alert("Lỗi up ảnh");
-    //             return;
-    //         }
-
-    //         const publicUrl = supabase.storage.from('Image/ProductImage').getPublicUrl(data.path).data.publicUrl;
-    //         setMainImage(publicUrl);
-    //         setProduct((prev) => ({
-    //             ...prev,
-    //             images: [{ img: publicUrl, is_primary: true }, ...prev.images.slice(1)]
-    //         }));
-    //     }
-    // };
-
-    // const handleOtherImageUpload = async (event, index) => {
-    //     const file = event.target.files[0];
-    //     if (file && file.type.startsWith("image/")) {
-    //         const previewUrl = URL.createObjectURL(file); // Hiển thị preview
-    //         setOtherImages((prev) => {
-    //             const newImages = [...prev];
-    //             newImages[index] = previewUrl;
-    //             return newImages;
-    //         });
-
-    //         const timestamp = new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15);
-
-    //         // Tạo tên file duy nhất giữ nguyên tên gốc và thêm timestamp
-    //         const uniqueFileName = `other/${file.name.split('.')[0]}_${timestamp}.${file.name.split('.').pop()}`;
-
-    //         // Upload lên Supabase
-    //         const { data, error } = await supabase.storage
-    //             .from('Image/ProductImage')
-    //             .upload(uniqueFileName, file, {
-    //                 cacheControl: '3600',
-    //                 upsert: false
-    //             });
-
-    //         if (error) {
-    //             console.error("Upload error:", error);
-    //             alert("Lỗi upload ảnh phụ!");
-    //             return;
-    //         }
-
-    //         const publicUrl = supabase.storage.from('Image/ProductImage').getPublicUrl(data.path).data.publicUrl;
-    //         setOtherImages((prev) => {
-    //             const newImages = [...prev];
-    //             newImages[index] = publicUrl;
-    //             return newImages;
-    //         });
-
-    //         setProduct((prev) => {
-    //             const newImages = [...prev.images];
-    //             newImages[index + 1] = { img: publicUrl, is_primary: false };
-    //             return { ...prev, images: newImages };
-    //         });
-    //     }
-    // };
 
     const [mainImageFile, setMainImageFile] = useState(null);
     const [otherImageFiles, setOtherImageFiles] = useState([
@@ -273,59 +239,31 @@ const AddProduct = () => {
         setOtherImages(newImages);
     };
 
-    // const handleSaveProduct = () => {
-    //     if (!product.prod_name || !product.cost || !items.length || !product.category_type_id || !mainImage) {
-    //       alert('Vui lòng điền đầy đủ thông tin cần thiết!');
-    //       return;
-    //     }
-
-    //     const updatedProduct = {
-    //       ...product,
-    //       color_size_quantity: items.map((item) => ({
-    //         color_code: item.color,
-    //         nameColor: item.nameColor,
-    //         size_code: item.size,
-    //         quantity: parseInt(item.quantity, 10),
-    //       })),
-    //       images: [
-    //         { img: mainImage, is_primary: true },
-    //         ...otherImages.map((img) => ({ img, is_primary: false })).filter((img) => img.img), // Loại bỏ ảnh null
-    //       ],
-    //     };
-
-    //     setProduct(updatedProduct);
-
-    //     // Hiển thị thông tin sản phẩm trong console để kiểm tra
-    //     console.log('Product saved:', updatedProduct);
-    //     alert('Sản phẩm đã được lưu!');
-    //   };
-
     const handleSaveProduct = async () => {
+        console.log(product.category_type_id)
         if (
             !product.prod_name ||
             !product.cost ||
             !items.length ||
-            !product.category_type_id ||
-            !mainImageFile
+            !product.category_type_id
         ) {
             alert("Vui lòng điền đầy đủ thông tin cần thiết!");
             return;
         }
-
+    
         try {
-            const loadingSwal = Swal.fire({
+            Swal.fire({
                 title: "Loading...!",
-                text: "Đang thêm sản phẩm",
+                text: "Đang chỉnh sửa sản phẩm",
                 showConfirmButton: false,
                 allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading(); // Hiển thị spinner loading
-                },
+                didOpen: () => Swal.showLoading(),
             });
-            let uploadedMainImageUrl = null;
-            const uploadedOtherImageUrls = [];
-
-            // Upload main image
+    
+            let uploadedMainImageUrl = mainImage; // Mặc định giữ lại URL cũ
+            const uploadedOtherImageUrls = [...otherImages]; // Mặc định giữ lại URL cũ
+    
+            // Upload main image nếu có thay đổi
             if (mainImageFile) {
                 const timestamp = new Date()
                     .toISOString()
@@ -340,15 +278,16 @@ const AddProduct = () => {
                         cacheControl: "3600",
                         upsert: false,
                     });
-
+    
                 if (error) throw error;
                 uploadedMainImageUrl = supabase.storage
                     .from("Image/ProductImage")
                     .getPublicUrl(data.path).data.publicUrl;
             }
-
-            // Upload other images
-            for (const file of otherImageFiles) {
+    
+            // Upload other images nếu có thay đổi
+            for (let i = 0; i < otherImageFiles.length; i++) {
+                const file = otherImageFiles[i];
                 if (file) {
                     const timestamp = new Date()
                         .toISOString()
@@ -363,68 +302,63 @@ const AddProduct = () => {
                             cacheControl: "3600",
                             upsert: false,
                         });
-
+    
                     if (error) throw error;
                     const publicUrl = supabase.storage
                         .from("Image/ProductImage")
                         .getPublicUrl(data.path).data.publicUrl;
-                    uploadedOtherImageUrls.push(publicUrl);
+                    uploadedOtherImageUrls[i] = publicUrl;
                 }
             }
-
+    
             const updatedProduct = {
                 ...product,
-                color_size_quantity: items.map((item) => ({
+                pro_color_size: items.map((item) => ({
                     color_code: item.color,
-                    nameColor: item.nameColor,
+                    color_name: item.nameColor,
                     size_code: item.size,
-                    quantity: parseInt(item.quantity, 10),
+                    quantity_available: parseInt(item.quantity, 10),
                 })),
                 images: [
                     { img: uploadedMainImageUrl, is_primary: true },
-                    ...uploadedOtherImageUrls.map((url) => ({
+                    ...uploadedOtherImageUrls.map((url, index) => ({
                         img: url,
                         is_primary: false,
                     })),
                 ],
             };
-
-            setProduct(updatedProduct);
-
+    
             console.log("Product saved:", updatedProduct);
-            await axios.post("api/dashboard/addproduct", updatedProduct, {
-                headers: {
-                    Accept: "application/json",
-                },
-            });
-            await Swal.fire({
+            // Gửi dữ liệu sản phẩm lên server hoặc database
+            // await axios.post("api/dashboard/updateproduct", updatedProduct);
+    
+            Swal.fire({
                 title: "Thành công!",
-                text: "Sản phẩm đã được thêm ",
+                text: "Sản phẩm đã được cập nhật",
                 icon: "success",
                 showConfirmButton: false,
                 timer: 4000,
             });
-
             navigate("/products_admin");
         } catch (error) {
             console.error("Upload error:", error);
             Swal.fire({
                 title: "Lỗi!",
-                text: "Đã xảy ra lỗi khi thêm sản phẩm!",
+                text: "Đã xảy ra lỗi khi chỉnh sửa sản phẩm!",
                 icon: "error",
                 showConfirmButton: true,
+                timer: 2000,
             });
         }
     };
-
+    
     return (
-        <NavigationAdmin>
-            <Helmet>
-                <title>Thêm sản phẩm mới</title>
-            </Helmet>
-            <h1 className="mobile:text-[20px] ipad:text-[25px]  desktop:text-[32px] font-bold mt-4">Thêm sản phẩm mới</h1>
-            <div className="p-4 border bg-white rounded-lg border-[#0E46A3]">
-                <div className="desktop:flex">
+        <div className={`fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center transition-opacity duration-300 ${showModal ? 'opacity-100' : 'opacity-0'}`}>
+            <div className="p-4 border-3 h-[90%] w-[90%] overflow-x-hidden bg-white rounded-lg px-10 border-[#0E46A3]">
+                <div className="items-center rounded-tl-lg rounded-tr-lg flex w-full desktop:h-12 justify-center bg-[#1E0342]">
+                    <h2 className='mobile:text-[20px] ipad:text-[25px]  desktop:text-[32px] font-bold text-white'>Chỉnh sửa sản phẩm </h2>
+                </div>
+                <div className="desktop:flex px-5 border-2 border-[#0E46A3] w-full">
                     {/* Cột trái */}
                     <div className="desktop:w-[70%] desktop:mr-12">
                         <div className="mb-4">
@@ -633,12 +567,15 @@ const AddProduct = () => {
                             <select 
                                 className="w-full h-[50px] border border-black rounded px-3 py-2"
                                 onChange={handleCategoryChange}
-                            >
-                                <option value="">Chọn phân loại</option>
-                                    {Object.keys(categoryTypeMap).map((category, index) => (
-                                        <option key={index} value={category}>
-                                            {category}
-                                        </option>
+                                value={getCategoryNameById(product.category_type_id)}
+                                >
+                                <option value="" disabled>
+                                    Chọn phân loại
+                                </option>
+                                    {Object.keys(categoryTypeMap).map((category) => (
+                                                <option key={category} value={category}>
+                                                    {category}
+                                                </option>
                                     ))}
                             </select>
                         </div>
@@ -662,7 +599,7 @@ const AddProduct = () => {
                     </div>
 
                     {/* Cột phải */}
-                    <div className="desktop:w-[30%] mobile:block ipad:flex desktop:block ">
+                    <div className="desktop:w-[30%] mobile:block desktop:block ">
                         <div className="desktop:mb-4 desktop:w-full ipad:w-[50%]">
                             <label className="block font-semibold mb-1 mobile:text-lg ipad:text-xl desktop:text-2xl">Hình ảnh chính của sản phẩm<span className="text-red-600">*</span></label>
                             <div className="border-dashed border-2 border-black rounded-lg p-1 text-center 
@@ -766,18 +703,31 @@ const AddProduct = () => {
                     </div>
                 </div>
 
-                <div className="items-center flex w-full justify-center mt-4">
+                <div className="items-center gap-6 flex w-full justify-center mt-4">
+                    <button
+                        onClick={() => {
+                            modalFalse()
+                            setTimeout(() => {
+                                onClose(); 
+                            }, 400);  
+                        }}
+                        className="bg-gray-500 text-white px-12 py-1 text-xl font-extrabold rounded border hover:bg-blue-800
+                        transition-all duration-200 outline-none ring-indigo-500/70 ring-offset-2 focus-visible:ring-2 hover:scale-[1.03] active:scale-[0.98]"
+                    >
+                        HỦY
+                    </button>
                     <button
                         onClick={handleSaveProduct}
                         className="bg-blue-500 text-white px-12 py-1 text-xl font-extrabold rounded border hover:bg-blue-800
                         transition-all duration-200 outline-none ring-indigo-500/70 ring-offset-2 focus-visible:ring-2 hover:scale-[1.03] active:scale-[0.98]"
                     >
-                        THÊM SẢN PHẨM
+                        LƯU
                     </button>
                 </div>
             </div>
-        </NavigationAdmin>
+        </div>
+
     );
 };
 
-export default AddProduct;
+export default ProductEdit;

@@ -2,25 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    @apply font-nunito;
-}
-
 input[type="password"]::-ms-reveal,
 input[type="password"]::-ms-clear {
     display: none;
 }
 
-/* @media (max-width: 1024px) {
-    .ml-60 {
-        margin-left: 0;
-    }
+.fade-in {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
 
-    header h1 {
-        font-size: 1.5rem;
-    }
-
-    .main-content {
-        padding: 1rem;
-    }
-} */
+.fade-in.show {
+    opacity: 1;
+}

@@ -8,7 +8,7 @@ const ProductsList = ({data}) => {
             <div className="max-h-[370px]">
                 {/* top 5 product have biggest quantitySold */}
                 {data.sort((a, b) => b.quantitySold - a.quantitySold).slice(0, 5).map((product) => (
-                    <div key={product.proId} className="flex h-[70px] my-1 items-center rounded-[5px] border-[0.5px] border-[#A7E6FF]">
+                    <div key={product.proId} className="flex h-[70px] my-1 items-center rounded-[5px] border-[0.5px] border-[#0E46A3]">
                         <div className="desktop:w-[20%] mobile:w-[20%] ipad:w-[10%] ">
                             <img src={product.productImage.find(img => img.isPrimary)?.image} alt={product.productName} className="w-[60px] h-[60px] m-1 rounded-[5px]"/>
                         </div>

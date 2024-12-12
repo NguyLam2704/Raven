@@ -46,7 +46,7 @@ const Footer = () => {
                     <img className="mx-2 desktop:h-14 ipad:h-12 mobile:h-9" src={tiktok} alt="Logo"/>
                 </div>
             </div>
-            <div className=" basis-1/12"></div>
+
         </div>
     )
 }

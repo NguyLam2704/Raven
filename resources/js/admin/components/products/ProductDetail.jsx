@@ -54,6 +54,9 @@ const ProductDetail = ({ProductDetail, chart , onClose}) => {
     
     const [SizeColor, setSizeColor] = useState([]); //Biến trạng thái lưu size và color
     const [isLoading, setIsLoading] = useState(true);
+    const [showModal, setShowModal] = useState(false);
+
+    const modalFalse = () => setShowModal(false);
 
     useEffect(() => {
         const LoadData = async () => {
@@ -72,6 +75,7 @@ const ProductDetail = ({ProductDetail, chart , onClose}) => {
             
             console.log(updatedData); 
             setIsLoading(false);
+            setShowModal(true);
         };
         LoadData();
         
@@ -95,24 +99,18 @@ const ProductDetail = ({ProductDetail, chart , onClose}) => {
     }
 
 
-    {isLoading && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <img src={loading} alt="Loading..." className="w-12 h-12" />\
-            <div> Product Detail</div>
-        </div>
-    )}
-
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white w-[70rem] max-h-[90vh] overflow-y-auto mobile:p-4 mobile:mx-2 desktop:mx-0 desktop:p-6 rounded">
-                <div className="border bg-white rounded-lg border-[#050c9c]">     
-                    <div className="items-center rounded-tl-lg rounded-tr-lg flex w-full desktop:h-12 justify-center bg-[#C73659]">
+        <div className={`fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center transition-opacity duration-300 ${showModal ? 'opacity-100' : 'opacity-0'}`}>
+            <div className={`mobile:p-4 mobile:mx-2 desktop:mx-0 desktop:p-6 bg-white w-[70rem] max-h-[90vh] overflow-y-auto p-6 rounded shadow-lg transform transition-transform duration-300 ${showModal ? 'translate-y-0' : 'translate-y-full'}`}>
+         
+                <div className="border bg-white rounded-lg border-[#0E46A3]">     
+                    <div className="items-center rounded-tl-lg rounded-tr-lg flex w-full desktop:h-12 justify-center bg-[#1E0342]">
                         <h2 className='mobile:text-[20px] ipad:text-[25px]  desktop:text-[32px] font-bold text-white'>Tổng quan về sản phẩm</h2>
                     </div>
                     <div className="desktop:flex">
                         {/* Cột trái */}
                         <div className="desktop:w-[60%]">
-                            <div className="desktop:w-[600px] h-auto mobile:mx-2 desktop:ml-4 my-4 bg-white rounded-[10px] border border-[#3572ef]" >
+                            <div className="desktop:w-[600px] h-auto mobile:mx-2 desktop:ml-4 my-4 bg-white rounded-[10px] border border-[#0E46A3]" >
                                 <div className='h-5 text-base font-bold text-black p-4'>Thông tin về sản phẩm</div>
                                 <div className='flex flex-col mt-4 pl-4 items-start justify-center'>
                                     <div className="pb-1">Mã sản phẩm: {ProductDetail.proId}</div>
@@ -122,7 +120,7 @@ const ProductDetail = ({ProductDetail, chart , onClose}) => {
                                 </div>
                            </div>
 
-                           <div className="desktop:w-[600px] desktop:h-[630px] mobile:mx-2 desktop:ml-4 my-4 bg-white rounded-[10px] border border-[#3572ef]" >
+                           <div className="desktop:w-[600px] desktop:h-[630px] mobile:mx-2 desktop:ml-4 my-4 bg-white rounded-[10px] border border-[#0E46A3]" >
                                 <div className='h-5 text-base font-bold text-black p-4'>Thống kê số lượng mỗi sản phẩm</div>
                                 <div className='flex flex-col mt-4 px-4 max-h-[570px] overflow-y-auto items-center justify-start'>
                                     <table className="w-full bg-white rounded-[14px]">
@@ -154,14 +152,14 @@ const ProductDetail = ({ProductDetail, chart , onClose}) => {
 
                         {/* Cột phải */}
                         <div className="desktop:w-[40%] mobile:px-2 desktop:pr-2 pt-4 flex-col">
-                            <div  className="h-auto mb-1 bg-white rounded-[10px] border border-[#3572ef]" >
+                            <div  className="h-auto mb-1 bg-white rounded-[10px] border border-[#0E46A3]" >
                                 <BieuDoCot data={chart.doanhthu}/>
                             </div>
                             <div  className='flex w-full justify-between mr-4'>
-                                <div  className=" flex-1 w-1/2 h-auto bg-white rounded-[10px] mr-[1px] border border-[#3572ef]">
+                                <div  className=" flex-1 w-1/2 h-auto bg-white rounded-[10px] mr-[1px] border border-[#0E46A3]">
                                     <BieuDoTron data={chart.color} title={"Màu sắc"}/>
                                 </div>
-                                <div  className="flex-1 w-1/2 h-auto bg-white rounded-[10px] ml-[1px] border border-[#3572ef]">
+                                <div  className="flex-1 w-1/2 h-auto bg-white rounded-[10px] ml-[1px] border border-[#0E46A3]">
                                     <BieuDoTron data={chart.size} title={"Size"}/>
                                 </div>
                             </div>
@@ -171,8 +169,15 @@ const ProductDetail = ({ProductDetail, chart , onClose}) => {
 
                     <div className="items-center flex w-full justify-center my-4">
                         <button 
-                            className="bg-[#C73659] text-white px-12 py-1 font-extrabold rounded border  border-[#C73659] hover:bg-[#A91D3A] active:bg-[#cf9ca6] transition-all duration-200"
-                            onClick={onClose}
+                            className="bg-[#1E0342] text-white px-12 py-1 font-extrabold rounded border
+                                       border-[#0E46A3] hover:bg-[#0E46A3] active:bg-[#cf9ca6] transition-all duration-200
+                                       outline-none ring-indigo-500/70 ring-offset-2 focus-visible:ring-2 hover:scale-[1.03] active:scale-[0.98]"
+                            onClick={() => {
+                                modalFalse();
+                            setTimeout(() => {
+                                onClose(); 
+                            }, 400);                           
+                            }}
                         >
                             Hoàn tất
                         </button>  

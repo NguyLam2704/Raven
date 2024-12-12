@@ -57,7 +57,7 @@ const ChangePassword = () => {
             </div>
             <div className="bg-white mobile:p-2 ipad:p-4 rounded-lg shadow-lg w-full h-auto border-2 tems-center justify-center">
                 <form
-                    className="desktop:w-[60%] items-center justify-center mx-auto border-5"
+                    className="desktop:w-[60%] flex-col items-center justify-center mx-auto border-5"
                     onSubmit={handleSubmit}
                 >
                     <div className="mb-4 mobile:w-[80%] ipad:w-2/3 mx-auto">
@@ -143,12 +143,16 @@ const ChangePassword = () => {
                             </p>
                         )}
                     </div>
-                    <button
-                        type="submit"
-                        className="w-1/2 bg-blue-500 my-6 text-white py-2 rounded-md hover:bg-blue-600 transition ml-[25%]"
-                    >
-                        Xác nhận
-                    </button>
+                    <div className="flex justify-center">
+                        <button
+                            type="submit"
+                            className="mobile:w-[80%] ipad:w-2/3 bg-blue-500 my-6 text-white py-2 rounded-md hover:bg-blue-600 transition 
+                            outline-none ring-indigo-500/70 ring-offset-2 focus-visible:ring-2 hover:scale-[1.03] active:scale-[0.98]"
+                        >
+                            Xác nhận
+                        </button>
+                    </div>
+
                 </form>
             </div>
         </NavigationAdmin>
