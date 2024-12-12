@@ -33,11 +33,11 @@ class OrderController extends Controller
         $queryItems = $filter->transform($request); //chuyển đổi các tham số  trong $request thành một mảng [['column','operator','value']]
         if (count($queryItems) == 0)// Nếu không có điều kiện lọc
         {
-            return new OrderCollection(Order::with(['user', 'bill'])->paginate());//return them quan he user va bill, paginate chia nhỏ danh sách dữ liệu
+            return new OrderCollection(Order::with(['user', 'bill'])->get());//return them quan he user va bill, paginate chia nhỏ danh sách dữ liệu
         }
         else
         {
-            $order = Order::where($queryItems)->with(['user', 'bill'])->paginate();//return them quan he user va bill,truy vấn dựa trên $queryItems thông qua where()
+            $order = Order::where($queryItems)->with(['user', 'bill'])->get();//return them quan he user va bill,truy vấn dựa trên $queryItems thông qua where()
             return new OrderCollection($order->appends($request->query()));
         }
     }
@@ -171,6 +171,7 @@ class OrderController extends Controller
         $order->detail_address = $request->detail_address;
         $order->payingmethod = $request->payingmethod;
         $order->user_id = $user->user_id; 
+        $order->email = $request->email;
         $order->save();
         $order->fresh();
         /************************************* */
@@ -200,11 +201,11 @@ class OrderController extends Controller
             // return response()->json(['message' => $proColorSize->pro_color_size_id]);
         }
         /************************************ */
-        // $bill = new Bill();
-        // $bill->total_cost = $request->totalCost;
-        // $order = $order->refresh();
-        // $bill->order_id = $order->order_id;
-        // $bill->save();
+        $bill = new Bill();
+        $bill->total_cost = $request->totalCost;
+        $order = $order->refresh();
+        $bill->order_id = $order->order_id;
+        $bill->save();
         // $product = json_decode($products, true);
         Mail::to($request->email)->send(new CheckOrder($request->name, $request->phonenumber, $request->address, $request->detail_address, Carbon::now(), $order->order_id, $request->totalCost, $request->product, $request->payingmethod));
         return response()->json(['message' => 'Order updated successfully']);
