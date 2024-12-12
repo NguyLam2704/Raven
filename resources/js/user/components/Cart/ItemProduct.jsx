@@ -46,6 +46,7 @@ const ItemProduct = ({ product, handlerPlus, handlerTru, removeProduct, onCheckC
         setCheck(newCheckState);
         onCheckChange(product, newCheckState, quantityAvailable);
     };
+    console.log(quantityAvailable)
     return (
         <div className="desktop:w-10/12 ipad:w-10/12 mobile:w-11/12 flex flex-row border-b-[1px] border-[#C4C4C4] font-Public ">
             <div className="desktop:w-5/12 ipad:w-5/12 mobile:w-7/12">
@@ -55,7 +56,7 @@ const ItemProduct = ({ product, handlerPlus, handlerTru, removeProduct, onCheckC
                         <img
                             onClick={() => navigate(`/detail_product/${product.proId}`)}                            
                             src={product.productImage}
-                            className="desktop:w-36  ipad:w-32 mobile:w-24  object-fill rounded-lg"
+                            className="desktop:w-32 desktop:h-36  ipad:w-28 ipad:h-32 mobile:w-20 mobile:h-24 object-cover rounded-lg"
                             alt="img"
                         />
                     </button>
@@ -80,7 +81,7 @@ const ItemProduct = ({ product, handlerPlus, handlerTru, removeProduct, onCheckC
             {/* Số lượng sản phẩm */}
             <div className="w-2/12 flex flex-row justify-center text-black text-lg font-bold desktop:pt-14 ipad:pt-12 mobile:pt-8">
                 <button
-                    className="desktop:h-7 desktop:w-7 ipad:h-6 ipad:w-6 mobile:h-5 mobile:w-5 flex justify-center items-center border border-[#c4c4c4] bg-[#d9d9d9] px-2"
+                    className={`desktop:h-7 desktop:w-7 ipad:h-6 ipad:w-6 mobile:h-5 mobile:w-5 flex justify-center items-center border border-[#c4c4c4] bg-[#d9d9d9] px-2 ${product.quantity!=1?' opacity-100':' opacity-65'}`}
                     onClick={handlerTru}
                     disabled={!quantityAvailable}
                 >
@@ -90,7 +91,7 @@ const ItemProduct = ({ product, handlerPlus, handlerTru, removeProduct, onCheckC
                     {product.quantity}
                 </div>
                 <button
-                    className="desktop:h-7 desktop:w-7 ipad:h-6 ipad:w-6 mobile:h-5 mobile:w-5 flex justify-center items-center border border-[#c4c4c4] bg-[#d9d9d9] px-2"
+                    className={`desktop:h-7 desktop:w-7 ipad:h-6 ipad:w-6 mobile:h-5 mobile:w-5 flex justify-center items-center border border-[#c4c4c4] bg-[#d9d9d9] px-2 ${quantityAvailable!=product.quantity?' opacity-100':' opacity-65'}`}
                     onClick={handlerPlus}
                     disabled={!quantityAvailable || product.quantity>=quantityAvailable}
                 >

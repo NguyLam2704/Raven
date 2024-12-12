@@ -38,7 +38,7 @@ const ItemMini = ({product, handlerPlus, handlerTru, removeProduct, handler}) =>
     }, [quantityAvailable]);    
     return(        
         <div className="w-full flex flex-row border-b-[1px] border-[#C4C4C4] pb-2 pt-4">
-            <img className="w-[90px] h-[90px] self-center rounded-lg border-black border" src={product.productImage} alt="img" />
+            <img className="w-[80px] h-[90px] self-center rounded-lg object-cover border-black border" src={product.productImage} alt="img" />
             <div className=" w-full flex flex-col pl-2 gap-1">
                 {/* Thông tin sản phẩm */}
                 <div className="w-full text-black text-sm  font-semibold">{product.productName}</div>
@@ -48,7 +48,7 @@ const ItemMini = ({product, handlerPlus, handlerTru, removeProduct, handler}) =>
                     <div> 
                         <div className="text-[#151515] text-xs font-medium">Số lượng</div>
                         <div className="flex flex-row text-black text-lg font-bold pt-1">
-                            <button className="h-5 border border-[#c4c4c4] bg-[#d9d9d9] px-1"
+                            <button className={`h-5 border border-[#c4c4c4] bg-[#d9d9d9] px-1 ${product.quantity!=1?' opacity-100':' opacity-65'}`}
                                 onClick={handlerTru}
                                 disabled={!quantityAvailable || product.quantity===1}
                             >
@@ -56,7 +56,7 @@ const ItemMini = ({product, handlerPlus, handlerTru, removeProduct, handler}) =>
                                 <FontAwesomeIcon className="h-2 pb-2"  icon={faMinus} />
                             </button>
                             <div className="text-center content-center text-black text-xs font-normal border border-[#c4c4c4] bg-[#d9d9d9] mx-[1px] px-1  ">{product.quantity}</div>
-                            <button className="h-5 border border-[#c4c4c4] bg-[#d9d9d9] px-1"
+                            <button className={`h-5 border border-[#c4c4c4] bg-[#d9d9d9] px-1 ${product.quantity!=quantityAvailable?' opacity-100':' opacity-65'}`}
                                 onClick={handlerPlus}
                                 disabled={!quantityAvailable || product.quantity>=quantityAvailable}
                             >

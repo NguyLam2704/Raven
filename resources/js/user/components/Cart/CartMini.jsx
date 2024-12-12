@@ -75,7 +75,7 @@ const CartMini = ({handleCart}) => {
                 onClick={handleCart} // hàm hiển thị thanh giỏ hàng khi thêm sản phẩm
             >
             </div>
-            <div className='h-screen bg-white justify-items-center right-0 absolute top-0 z-50'>
+            <div className='h-screen w-1/4 bg-white justify-items-center right-0 absolute top-0 z-50'>
                 <div className="  w-10/12 py-4 flex flow-row justify-between items-center ">
                     <div className=" text-[#a91d3a] text-xl font-bold">GIỎ HÀNG</div>
                     <button 
