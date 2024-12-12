@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import ItemOrder from "../components/CheckOrder/ItemOrder";
+import img_loading from '../assets/loading.gif'
 
 //Kiểm tra đơn hàng
 const CheckOrder = () => {
@@ -11,10 +12,13 @@ const CheckOrder = () => {
     const [orderInfo, setOrderInfo] = useState([]); // state để lưu danh sách các order
     const [loading, setLoading] = useState(false); // state lưu trạng thái loading
     const [error, setError] = useState(null); // state lưu trạng thái lỗi
+    const [stateClick, setStateClick] = useState(false)
     //Fetch api get orderInfo
     const fetchOrderInfo = async (e) => {
         e.preventDefault(); // Ngăn hành vi reload của form
         setLoading(true); // Bắt đầu trạng thái tải
+        setStateClick(true)
+        setOrderInfo([])
         setError(null); // Xóa trạng thái lỗi trước đó
         try {
             const response = await fetch(`api/v1/orderInfo`,{
@@ -30,7 +34,6 @@ const CheckOrder = () => {
             }
             const data = await response.json();
             setOrderInfo(data.data || []);
-            console.log(orderInfo);
         }
         catch (err) {
             setError(err.message); // Lưu thông báo lỗi nếu xảy ra
@@ -38,6 +41,7 @@ const CheckOrder = () => {
             setLoading(false); // Kết thúc trạng thái tải
         }
     }
+    console.log(orderInfo)
     return(
         <div className="w-full font-Public">
             <Navigation/>
@@ -55,9 +59,11 @@ const CheckOrder = () => {
                     </div>
                     <button className="bg-[#C73659] rounded-md border border-black text-[#eeeeee] text-base font-bold  mt-6 px-5 py-1">Kiểm tra</button>
                 </form>
-               
-                { orderInfo.length !=0 //Kiểm tra độ dài của mảng
-                    && (<div className="desktop:w-4/6 ipad:w-4/6 mobile:w-5/6 desktop:mt-24 ipad:mt-20 mobile:mt-16 ">
+                {
+                    loading && (<img className="h-8 mt-6" src={img_loading}/>) 
+                }
+                { (orderInfo.length !=0 )//Kiểm tra độ dài của mảng
+                    ? (<div className="desktop:w-4/6 ipad:w-4/6 mobile:w-5/6 desktop:mt-24 ipad:mt-20 mobile:mt-16 ">
                         {/* Các cột thông tin của đơn hàng */}
                         <ul className="flex flex-row desktop:text-lg ipad:text-sm mobile:text-xs">
                             <li className="w-1/4 h-11 content-center border border-black border-r-0 bg-[#eeeeee] text-center text-[#a91d3a] font-bold">Mã đơn hàng</li>
@@ -74,7 +80,10 @@ const CheckOrder = () => {
                             )
                         })}
                     </div>
-                )}                
+                    ):(
+                        stateClick &&  <div className="mt-6 text-base font-medium">Hiện tại bạn chưa có đơn hàng nào</div>
+                    )
+                }                
             </div>
             <Footer/>
         </div>
