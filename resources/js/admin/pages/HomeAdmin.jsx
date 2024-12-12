@@ -180,7 +180,7 @@ const Home = () => {
             <h1 className="mobile:text-[20px] ipad:text-[25px]  desktop:text-[32px]  font-bold mt-4">Đơn hàng</h1>
 
             <div className="overflow-x-auto">
-                <OrderList data={OrdersData} />
+                <OrderList data={OrdersData.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated)).slice(0,10)} />
             </div>
 
 

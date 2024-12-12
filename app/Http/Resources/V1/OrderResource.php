@@ -21,12 +21,13 @@ class OrderResource extends JsonResource
             'dateCreated' => $this->datecreated,
             'status' => $this->status,
             'user' => new UserResource($this->whenLoaded('user')), //load relationship user
-            // 'bill' => new BillResource($this->whenLoaded('bill')), //load relationship bill
+            'bill' => new BillResource($this->whenLoaded('bill')), //load relationship bill
             'productOrder' => ProductOrderResource::collection($this->whenLoaded('productOrder')),
             'datePaid' => $this->datepaid,
             'payingMethod' => $this->payingmethod,
             'address' => $this->address,
-            'detailAddress' => $this->detail_address
+            'detailAddress' => $this->detail_address,
+            'email' => $this->email
         ];
     }
 }
