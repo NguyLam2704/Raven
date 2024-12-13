@@ -13,10 +13,12 @@ const Login = () => {
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
+    const [isRemember, setRemember] = useState(false);
 
     // Nếu chưa đăng xuất thì tự động điền các thông tin
     useEffect(() => {
         const admin = JSON.parse(localStorage.getItem("admin"));
+        setRemember(JSON.parse(localStorage.getItem("isRemember")));
         console.log(admin);
         if (admin) {
             setFormData({
@@ -25,11 +27,14 @@ const Login = () => {
             });
         }
     }, []);
+    const hanldeRemember = () => {
+        setRemember(!isRemember);
+    };
 
     // Kiểm tra xác thực
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         console.log(formData);
         const res = await fetch("/api/admin/auth/login", {
             method: "post",
@@ -53,13 +58,11 @@ const Login = () => {
             // Lưu các giá trị trả về
             localStorage.setItem("admin", JSON.stringify(admin));
             localStorage.setItem("token", data.token);
-
+            localStorage.setItem("isRemember", isRemember);
             // Điều hướng về trang chủ admin
             navigate("/home_admin");
         }
     };
-
-  
 
     return (
         <div
@@ -74,17 +77,21 @@ const Login = () => {
                     ADMIN DASHBOARD
                 </h1>
             </div>
-            <div className="
+            <div
+                className="
                         bg-white mobile:p-4 desktop:p-8 rounded-2xl shadow-lg  border-2 border-red
                         mobile:w-[350px] mobile:h-[400px]
                         ipad:w-[400px] ipad:h-[450px]
                         desktop:w-[500px] desktop:h-[550px]
-                ">
-                <h2 className="mobile:text-lg ipad:text-xl desktop:text-2xl font-bold text-center 
+                "
+            >
+                <h2
+                    className="mobile:text-lg ipad:text-xl desktop:text-2xl font-bold text-center 
                                 mobile:mb-1 mobile:mt-4
                                 ipad:mb-2 ipad:mt-7
                                 desktop:mb-4 desktop:mt-9
-                ">
+                "
+                >
                     Đăng nhập
                 </h2>
                 {/* <p className="text-sm text-center mb-6 text-gray-600">
@@ -103,7 +110,9 @@ const Login = () => {
                             type="text"
                             id="username"
                             className={`w-full px-3 py-2 border  rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400
-                                ${errors.account ? "border-[#E60000]" : null}    
+                                ${
+                                    errors.account ? "border-[#E60000]" : null
+                                }    
                             `}
                             placeholder="Username"
                             onChange={(e) =>
@@ -116,9 +125,9 @@ const Login = () => {
                         />
                     </div>
                     {errors.account && (
-                            <p className="mobile:mb-2 desktop:mb-6 absolute text-[12px] text-[#E60000]">
-                                {errors.account}
-                            </p>
+                        <p className="mobile:mb-2 desktop:mb-6 absolute text-[12px] text-[#E60000]">
+                            {errors.account}
+                        </p>
                     )}
                     <div className="relative">
                         <label
@@ -131,7 +140,11 @@ const Login = () => {
                             type={showPassword ? "text" : "password"}
                             id="password"
                             className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400
-                                    ${errors.password ? "border-[#E60000]" : null }
+                                    ${
+                                        errors.password
+                                            ? "border-[#E60000]"
+                                            : null
+                                    }
                                 `}
                             placeholder="Password"
                             defaultValue={formData.password}
@@ -143,24 +156,28 @@ const Login = () => {
                                 })
                             }
                         />
-                        
+
                         <FontAwesomeIcon
                             icon={showPassword ? faEye : faEyeSlash}
                             onClick={() => setShowPassword(!showPassword)}
                             className="absolute right-3 bottom-1 transform -translate-y-1/2 cursor-pointer"
                             color={showPassword ? "#3b82f6 " : "#c3c6d1"}
                         />
-
-
                     </div>
                     {errors.password && (
-                            <p className="mobile:mb-2 desktop:mb-6 absolute text-[12px] text-[#E60000]">
-                                {errors.password}
-                            </p>
+                        <p className="mobile:mb-2 desktop:mb-6 absolute text-[12px] text-[#E60000]">
+                            {errors.password}
+                        </p>
                     )}
                     <div className="flex mobile:mt-7 desktop:mt-8 items-center">
-                        <input type="checkbox" />
-                        <p className="text-left ml-2 text-gray-600">Remember me</p>
+                        <input
+                            type="checkbox"
+                            checked={isRemember}
+                            onChange={hanldeRemember}
+                        />
+                        <p className="text-left ml-2 text-gray-600">
+                            Remember me
+                        </p>
                     </div>
 
                     <button

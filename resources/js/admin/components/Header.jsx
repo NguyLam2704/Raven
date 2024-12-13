@@ -9,7 +9,6 @@ import {
     faRightFromBracket,
     faBars
 } from "@fortawesome/free-solid-svg-icons";
-import ConQua from "../asset/ConQua.png"
 
 const Header = ({toggleSidebar}) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -26,7 +25,7 @@ const Header = ({toggleSidebar}) => {
 
     const handleLogout = async (e) => {
         e.preventDefault();
-        console.log("Logout pressed");
+        console.log("Logout pressed", token);
 
         // Xoá các token trên database
         const res = await fetch("/api/admin/auth/logout", {
@@ -46,10 +45,13 @@ const Header = ({toggleSidebar}) => {
         }
 
         // Xoá token và admin lưu trong localstorage
-        localStorage.removeItem("token");
-        localStorage.removeItem("admin");
-
-
+        const isRemember = JSON.parse(localStorage.getItem("isRemember"));
+        
+        if (!isRemember) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("admin");
+        }
+        
         // Điều hướng về trang login
         navigate("/login_admin");
     };

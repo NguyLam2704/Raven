@@ -35,6 +35,14 @@ const Home = () => {
     const [ProductsListData, setProductListData] = useState();
     const [isLoading, setIsLoading] = useState(true);
 
+    let calPercent = (today, yesterday) => {
+        let x = ((today - yesterday) / yesterday) * 100;
+        if (x < 0) {
+            x *= -1;
+        }
+        return x.toFixed(2);
+    }
+
     //Tiến hành lấy dữ liệu
     useEffect(() => {
         const LoadData = async () => {
@@ -62,11 +70,11 @@ const Home = () => {
             </div>
         );
     }
-
+    
     //Tạo 4 mục thống kê
     const stats = [
         {
-            title: "Tổng số lượt truy cập",
+            title: "Lượt truy cập trong ngày",
             value: ThongKeData.view.today.toLocaleString(),
             icon: userIcon,
             icontrend:
@@ -76,7 +84,7 @@ const Home = () => {
             trend:
                 ThongKeData.view.yesterday === 0
                     ? "0%"
-                    : (Math.round(((ThongKeData.view.today - ThongKeData.view.yesterday) / ThongKeData.view.yesterday) * 100 * 100) / 100) +
+                    : calPercent(ThongKeData.view.today , ThongKeData.view.yesterday) +
                       "%",
             trendColor:
                 ThongKeData.view.today > ThongKeData.view.yesterday
@@ -94,9 +102,7 @@ const Home = () => {
             trend:
                 ThongKeData.donhang.yesterday === 0
                     ? "0%"
-                    : (Math.round((ThongKeData.donhang.today /
-                          ThongKeData.donhang.yesterday) *
-                          100* 100) / 100) +
+                    : calPercent(ThongKeData.donhang.today , ThongKeData.donhang.yesterday) +
                       "%",
             trendColor:
                 ThongKeData.donhang.today >= ThongKeData.donhang.yesterday
@@ -114,9 +120,7 @@ const Home = () => {
             trend:
                 ThongKeData.doanhthu.yesterday === 0
                     ? "0%"
-                    : (Math.round((ThongKeData.doanhthu.today /
-                          ThongKeData.doanhthu.yesterday) *
-                          100 * 100) / 100) +
+                    : calPercent(ThongKeData.doanhthu.today , ThongKeData.doanhthu.yesterday) +
                       "%",
             trendColor:
                 ThongKeData.doanhthu.today >= ThongKeData.doanhthu.yesterday
