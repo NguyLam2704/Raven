@@ -10,7 +10,8 @@ export default {
     extend: {
       fontFamily: {
         nunito: ['Nunito Sans', 'sans-serif'],
-        Public: ['Public Sans', 'sans-serif']
+        Public: ['Public Sans', 'sans-serif'],
+        Montserrat: ['Montserrat']
       },
       keyframes: {
         fly: {

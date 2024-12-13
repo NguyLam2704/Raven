@@ -1,34 +1,41 @@
 import React, { useState, useEffect } from "react";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
-import img_product from '../assets/img_product.svg'
 import ItemCheckOut from "../components/CheckOut/ItemCheckOut";
-import QR from '../assets/QR.svg'
 import axios from 'axios';
 import { useLocation, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 //Thanh toán
 const CheckOut = () => {
     //Họ và tên
     const [name, setName] = useState('')
+    const [stateName, setStateName] = useState(false)
     //email
     const [email, setEmail] = useState('')
+    const [stateEmail, setstateEmail] = useState(false)
     //Số điện thoại
     const [phone, setPhone] = useState('')
+    const [statePhone, setstatePhone] = useState(false)
     //Ghi chú
     const [note, setNote] = useState('')
     //Tên tỉnh
     const [selectedTinhName, setSelectedTinhName] = useState('');
+    const [stateTinh, setStateTinh] = useState(false)
     //Tên huyện
     const [selectedQuanName, setSelectedQuanName] = useState('');
+    const [stateQuan, setStateQuan] = useState(false)
     //Tên phường
     const [selectedPhuongName, setSelectedPhuongName] = useState('');
+    const [statePhuong, setStatePhuong] = useState(false)
     //Tên đường
     const [street, setStreet] = useState('')
+    const [stateStreet, setStateStreet] = useState(false)
     //Thanh toán tiền mặt
     const [COD, setCOD] = useState(false)
     //Thanh toán chuyển khoản
-    const [banking, setBanking] = useState(false)
+    const [banking, setBanking] = useState(true)
     const hanlderCOD = () =>{
         setCOD(true)
         setBanking(false)
@@ -152,7 +159,6 @@ const CheckOut = () => {
         navigate('/');  // Redirect to a different path
       };
     const updateOrder = () =>{
-        
         fetchMail();
     }
     return(
@@ -171,28 +177,44 @@ const CheckOut = () => {
                                 placeholder="Họ và tên"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                            />                            
-                            <div  className="h-10 w-full ipad:hidden desktop:grid grid-cols-3 mt-5 gap-4">
+                            />
+                            {
+                                stateName && <div className="mt-[1px] ml-[2px] text-xs text-red-600">
+                                <FontAwesomeIcon icon={faCircleExclamation} />  Vui lòng nhập họ tên</div>  
+                            }                          
+                            <div  className="h-10 w-full ipad:hidden desktop:flex flex-row mt-6 gap-4 ">
                                 {/* Nhập email */}
-                                <input className="h-10 w-full col-span-2 border border-black px-2 "
-                                    type="text"
-                                    placeholder="Email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />  
+                                <div className="w-2/3">
+                                    <input className="h-10 w-full border border-black px-2 "
+                                        type="text"
+                                        placeholder="Email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    /> 
+                                    {
+                                        stateEmail && <div className="mt-[1px] ml-[2px] text-xs text-red-600">
+                                        <FontAwesomeIcon icon={faCircleExclamation} />  Vui lòng nhập email</div>  
+                                    } 
+                                </div>
                                 {/* Nhập sđt    */}
-                                <input 
-                                    className="h-10 w-full border border-black px-2 "
-                                    type="text"
-                                    placeholder="Số điện thoại"
-                                    value={phone}
-                                    onChange={(e) => {
-                                        const value = e.target.value;
-                                        if (/^\d*$/.test(value)) {
-                                            setPhone(value); // Chỉ cho phép số
-                                        }
-                                    }}
-                                />                                
+                                <div className="">
+                                    <input 
+                                        className="h-10 w-full border border-black px-2 "
+                                        type="text"
+                                        placeholder="Số điện thoại"
+                                        value={phone}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            if (/^\d*$/.test(value)) {
+                                                setPhone(value); // Chỉ cho phép số
+                                            }
+                                        }}
+                                    /> 
+                                    {
+                                        statePhone && <div className="mt-[1px] ml-[2px] text-xs text-red-600">
+                                        <FontAwesomeIcon icon={faCircleExclamation} />  Vui lòng nhập số điện thoại</div>  
+                                    } 
+                                </div>                                                               
                             </div>
                             {/* Nhập email */}
                             <input className="h-10 w-full desktop:hidden border border-black px-2 mt-6 "
@@ -201,6 +223,10 @@ const CheckOut = () => {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />  
+                                {
+                                    stateEmail && <div className="desktop:hidden mt-[1px] ml-[2px] text-xs text-red-600">
+                                    <FontAwesomeIcon icon={faCircleExclamation} />  Vui lòng nhập email</div>  
+                                } 
                                 {/* Nhập sđt    */}
                                 <input 
                                     className="h-10 w-full desktop:hidden border border-black px-2 mt-6 "
@@ -214,20 +240,36 @@ const CheckOut = () => {
                                         }
                                     }}
                                 /> 
+                                {
+                                    statePhone && <div className=" desktop:hidden mt-[1px] ml-[2px] text-xs text-red-600">
+                                    <FontAwesomeIcon icon={faCircleExclamation} />  Vui lòng nhập số điện thoại</div>  
+                                } 
                             {/* Chọn tỉnh thành */}
-                            <select className="h-10 w-full border border-black px-2 mt-6" title="Chọn Tỉnh Thành" onChange={handleTinhChange}> 
+                            <select className={`h-10 w-full border border-black px-2  ${stateEmail?'mt-9':'mt-6'} `} title="Chọn Tỉnh Thành" onChange={handleTinhChange}> 
                                 <option value={tinh} >Tỉnh Thành</option> 
                                 {tinh.map((item) => ( 
                                     <option key={item.id} value={item.id}>{item.full_name}</option>
                                 ))} 
-                            </select> 
+                            </select>                            
+                            {
+                                 stateTinh && <div className=" mt-[1px] ml-[2px] text-xs text-red-600">
+                                    <FontAwesomeIcon icon={faCircleExclamation} />  Vui lòng chọn tỉnh thành</div>  
+                            }  
                             <select className="h-10 w-full border border-black px-2 mt-6" title="Chọn Quận Huyện" onChange={handleQuanChange}> 
                                 <option value="0">Quận/Huyện</option> 
                                 {quan.map((item) => ( <option key={item.id} value={item.id}>{item.full_name}</option> ))} 
-                            </select> 
+                            </select>                            
+                            {
+                                stateQuan && <div className=" mt-[1px] ml-[2px] text-xs text-red-600">
+                                    <FontAwesomeIcon icon={faCircleExclamation} />  Vui lòng chọn quận huyện</div>  
+                            }   
                             <select className="h-10 w-full border border-black px-2 mt-6" title="Chọn Phường Xã" onChange={handlePhuongChange}> 
                                 <option value="0">Phường/Xã</option> {phuong.map((item) => ( <option key={item.id} value={item.id}>{item.full_name}</option> ))} 
                             </select>
+                            {
+                                statePhuong && <div className=" mt-[1px] ml-[2px] text-xs text-red-600">
+                                    <FontAwesomeIcon icon={faCircleExclamation} />  Vui lòng chọn phường xã</div>  
+                            } 
                             {/* Nhập tên đường, số nhà */}
                             <input className="h-10 w-full border border-black px-2 mt-6"
                                 type="text"
@@ -235,6 +277,10 @@ const CheckOut = () => {
                                 value={street}
                                 onChange={(e) => setStreet(e.target.value)}
                             />
+                            {
+                                stateStreet && <div className=" mt-[1px] ml-[2px] text-xs text-red-600">
+                                    <FontAwesomeIcon icon={faCircleExclamation} />  Vui lòng nhập địa chỉ nhà, tên đường</div>  
+                            } 
                             {/* Ghi chú */}
                             <input className="h-16 w-full border border-black px-2 mt-6"
                                 type="text"
@@ -416,13 +462,24 @@ const CheckOut = () => {
                     <div className="w-fulf flex items-center justify-center mt-14">
                         <button className="content-center text-center text-white desktop:text-2xl ipad:text-xl font-bold rounded-lg border border-black bg-[#c73659] px-10 py-1"
                             onClick={()=>{
-                                fetchdata() 
-                                // console.log("tên", name)
-                                // console.log("email", email)
-                                // console.log("sdt", phone)
-                                // console.log("diachi", street, selectedPhuongName,selectedQuanName, selectedTinhName)
-                                // console.log("ghi chú", note)
-                                // console.log(storeProduct)
+                                if(name && email && phone && selectedTinhName && selectedQuanName && selectedPhuongName && street && (COD||banking) ){
+                                    // fetchdata() 
+                                }else{ 
+                                    if(name=='') setStateName(true)
+                                        else setStateName(false)
+                                    if(email == '') setstateEmail(true) 
+                                        else setstateEmail( false)
+                                    if(phone == '') setstatePhone(true)
+                                        else setstatePhone(false)
+                                    if(selectedTinhName == '') setStateTinh(true)
+                                        else setStateTinh(false)
+                                    if(selectedQuanName == '') setStateQuan(true)
+                                        else setStateQuan(false)
+                                    if(selectedPhuongName == '') setStatePhuong(true)
+                                        else setStatePhuong(false)
+                                    if(street == '')  setStateStreet(true)
+                                        else setStateStreet(false)
+                                }
                             }}
                         >THANH TOÁN</button>
                     </div>
