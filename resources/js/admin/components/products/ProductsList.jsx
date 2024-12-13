@@ -15,21 +15,24 @@ const getProductEdit = async (id) => {
     const response = await axios.get(`/api/dashboard/product/${id}`);
     return response.data;
 };
+
+const deleteProduct = async (id) => {
+    await axios.delete(`/api/dashboard/product/${id}`);
+};
 const ProductsList = ({data}) => {
+    const [productList, setProductList] = useState(data);
     const [selectedProduct, setSelectedProduct] = useState(null); //Lưu sản phẩm được chọn 
     const [productEdit, setProductEdit] = useState();
     const [isLoading, setIsLoading] = useState();
     const [bieudo, setBieudo] = useState({});
     //Hàm lưu sản phẩm khi được click vào
     const handleRowClick = async (prodId) => {
-        console.log("Đang gọi detail")
+        console.log("Đang gọi detail", prodId)
         setIsLoading(true);
         try {
-            const productDetail = await fetchProductById(prodId);
             const res = await axios.get(`/api/dashboard/product/${prodId}/bieudo`);
             setBieudo(res.data);
-            console.log(productDetail.data)
-            setSelectedProduct(productDetail.data);
+            setSelectedProduct(prodId);
         } catch (error) {
             console.error('Error fetching product details:', error);
         } finally {
@@ -51,6 +54,26 @@ const ProductsList = ({data}) => {
         }
     };
 
+    const handleDeleteClick = async (prodId) => {
+        console.log("Đang gọi delete")
+        setIsLoading(true);
+        try {
+            await deleteProduct(prodId);
+            console.log("delete thành công");
+            const newList = productList.filter((item) => item.proId !== prodId);
+            setProductList(newList);
+            console.log(newList);
+            
+        } catch (error) {
+            console.error('Error fetching product edit:', error);
+        } finally {
+            setIsLoading(false);
+            
+        }
+    };
+
+    
+
     const closeDetail = () => setSelectedProduct(null);//Đóng popup chi tiết sản phẩm
     const closeEdit = () => setProductEdit(null);
     
@@ -71,7 +94,7 @@ const ProductsList = ({data}) => {
                     </thead>
 
                     <tbody>
-                        {data.map(product => (
+                        {productList.map(product => (
                             <tr key={product.proId}
                                 onClick={() => handleRowClick(product.proId)} //Sự kiện click vào sản phẩm
                                 className="cursor-pointer hover:bg-gray-100"
@@ -102,7 +125,10 @@ const ProductsList = ({data}) => {
                                             <FontAwesomeIcon icon={faPenToSquare} tyle={{color: "#000000",}} />
                                         </button>
 
-                                        <button className='h-full w-1/2 border-l'>
+                                        <button className='h-full w-1/2 border-l z-10' onClick={(e) =>{
+                                            e.stopPropagation();
+                                            handleDeleteClick(product.proId);
+                                        }} >
                                             <FontAwesomeIcon icon={faTrashCan} style={{color: "#ef3826",}} />
                                         </button>
                                     </div>
@@ -122,7 +148,7 @@ const ProductsList = ({data}) => {
             {/* Hiển thị chi tiết đơn hàng khi đã có dữ liệu */}
             {selectedProduct && (
                 <ProductDetail
-                    ProductDetail={selectedProduct}
+                    ProductID={selectedProduct}
                     chart={bieudo}
                     onClose={closeDetail}
                 />

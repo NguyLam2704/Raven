@@ -24,7 +24,7 @@ ChartJS.register(
     Legend
 );
 
-const MonthlyRevenueChart = ({ year }) => {
+const MonthlyRevenueChart = () => {
     const month = [
         "Tháng 1",
         "Tháng 2",
@@ -39,9 +39,11 @@ const MonthlyRevenueChart = ({ year }) => {
         "Tháng 11",
         "Tháng 12",
     ];
-    const years = [2022, 2023, 2024]; // Danh sách các năm
+    
 
     const today = new Date();
+    const years = [today.getFullYear() -2, today.getFullYear() - 1, today.getFullYear()]; // Danh sách các năm
+    
     //Tạo trạng thái tháng đang được chọn, giá trị mặc định là tháng đầu tiên
     const [selectedYear, setSelectedYear] = useState(today.getFullYear());
     const [selectedMonth, setSelectedMonth] = useState(month[today.getMonth()]);
@@ -67,17 +69,14 @@ const MonthlyRevenueChart = ({ year }) => {
             let x = new Date(e.date);
             daysInMonth[x.getDate()] = e.sum;
         });
-        console.log(month+" "+ year)
         setData(daysInMonth);
         setIsLoading(false);
     };
 
-    useEffect(() => {
-        const id = new Date();
-        fetchData(id.getMonth() + 1, id.getFullYear());
-    }, []);
+    
 
     const handleYearChange = (event) => {
+        event.preventDefault();
         const year = parseInt(event.target.value);
         setSelectedYear(year);
         fetchData(month.indexOf(selectedMonth) + 1, year);
@@ -90,6 +89,11 @@ const MonthlyRevenueChart = ({ year }) => {
         setSelectedMonth(event.target.value);
         fetchData(id, selectedYear);
     };
+
+    useEffect(() => {
+        const id = new Date();
+        fetchData(id.getMonth() + 1, id.getFullYear());
+    }, []);
 
     //Cấu hình dữ liệu cho biểu đồ
     const chartData = {

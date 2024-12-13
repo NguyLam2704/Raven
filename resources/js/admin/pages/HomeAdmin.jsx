@@ -28,11 +28,6 @@ const fetchOrder = async () => {
     return response.data;
 };
 
-const fetchTop5Product = async () => {
-    const response = await axios.get("/api/v1/product?includeImage=true");
-    return response.data;
-};
-
 const Home = () => {
     //Khai báo các biến trạng thái
     const [ThongKeData, setThongKeData] = useState();
@@ -40,18 +35,26 @@ const Home = () => {
     const [ProductsListData, setProductListData] = useState();
     const [isLoading, setIsLoading] = useState(true);
 
+    let calPercent = (today, yesterday) => {
+        let x = ((today - yesterday) / yesterday) * 100;
+        if (x < 0) {
+            x *= -1;
+        }
+        return x.toFixed(2);
+    }
+
     //Tiến hành lấy dữ liệu
     useEffect(() => {
         const LoadData = async () => {
             const thongkeData = await fetchThongke();
             const orderData = await fetchOrder();
-            const productsListData = await fetchTop5Product();
+
             setThongKeData(thongkeData);
             setOrderData(orderData.data);
-            setProductListData(productsListData.data);
+
             console.log(thongkeData);
             console.log(orderData.data);
-            console.log(productsListData.data);
+            
             setIsLoading(false);
         };
         LoadData();
@@ -67,11 +70,11 @@ const Home = () => {
             </div>
         );
     }
-
+    
     //Tạo 4 mục thống kê
     const stats = [
         {
-            title: "Tổng số lượt truy cập",
+            title: "Lượt truy cập trong ngày",
             value: ThongKeData.view.today.toLocaleString(),
             icon: userIcon,
             icontrend:
@@ -81,7 +84,7 @@ const Home = () => {
             trend:
                 ThongKeData.view.yesterday === 0
                     ? "0%"
-                    : (Math.round(((ThongKeData.view.today - ThongKeData.view.yesterday) / ThongKeData.view.yesterday) * 100 * 100) / 100) +
+                    : calPercent(ThongKeData.view.today , ThongKeData.view.yesterday) +
                       "%",
             trendColor:
                 ThongKeData.view.today > ThongKeData.view.yesterday
@@ -99,9 +102,7 @@ const Home = () => {
             trend:
                 ThongKeData.donhang.yesterday === 0
                     ? "0%"
-                    : (Math.round((ThongKeData.donhang.today /
-                          ThongKeData.donhang.yesterday) *
-                          100* 100) / 100) +
+                    : calPercent(ThongKeData.donhang.today , ThongKeData.donhang.yesterday) +
                       "%",
             trendColor:
                 ThongKeData.donhang.today >= ThongKeData.donhang.yesterday
@@ -119,9 +120,7 @@ const Home = () => {
             trend:
                 ThongKeData.doanhthu.yesterday === 0
                     ? "0%"
-                    : (Math.round((ThongKeData.doanhthu.today /
-                          ThongKeData.doanhthu.yesterday) *
-                          100 * 100) / 100) +
+                    : calPercent(ThongKeData.doanhthu.today , ThongKeData.doanhthu.yesterday) +
                       "%",
             trendColor:
                 ThongKeData.doanhthu.today >= ThongKeData.doanhthu.yesterday
@@ -161,7 +160,7 @@ const Home = () => {
                     <h2 className="desktop:text-2xl ipad:text-xl font-bold mb-2">
                         Top 5 sản phẩm bán chạy
                     </h2>
-                    <ProductsList data={ProductsListData} />
+                    <ProductsList data={ThongKeData.top5prod} />
                 </div>
             </div>
 
@@ -173,7 +172,7 @@ const Home = () => {
                     <h2 className="desktop:text-2xl ipad:text-xl font-bold mb-2">
                         Top 5 sản phẩm bán chạy
                     </h2>
-                    <ProductsList data={ProductsListData} />
+                    <ProductsList data={ThongKeData.top5prod} />
             </div>
 
 
