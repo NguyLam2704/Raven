@@ -123,7 +123,7 @@ const Search = () => {
     }, [text, products]);
 
     return(
-        <div className='w-full h-full font-Public'> 
+        <div className='w-full bg-white h-full font-Public'> 
             <Navigation/>
 
             {/* Tiêu đề */}

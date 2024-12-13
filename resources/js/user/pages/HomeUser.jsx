@@ -66,10 +66,10 @@ const HomeUser = () => {
     
     
     return(
-        <div>
+        <div className='bg-white'>
              { loading ? ( <div></div>) : (<Navigation/>) }
-             <div className='w-full  border-2 mx-auto max-w-[1557px] '>
-                <main className="items-center justify-center mx-auto w-full">
+             <div className='w-full bg-white mx-auto max-w-[1557px]'>
+                <main className="items-center justify-center mx-auto bg-white  w-full">
                     { loading ? ( <div></div>) : (<SliderHome/>) }
                     {/* Các sản phẩm mới */}
                     <div className="justify-items-center mt-20 "> 
@@ -79,7 +79,7 @@ const HomeUser = () => {
                         </div>
                         { loading ? (
                             <div>
-                                <img className='w-10 h-10 mt-10' src={img_loading} alt="loading" />
+                                <img className='w-20 h-20 mt-10' src={img_loading} alt="loading" />
                             </div>
                         ) : (
                             <div className="w-full flex flex-row justify-center items-center">
@@ -151,7 +151,7 @@ const HomeUser = () => {
                         {/* Danh sách sản phẩm */}
                         { loading ? (
                             <div>
-                                <img className='w-10 h-10 mt-10' src={img_loading} alt="loading" />
+                                <img className='w-20 h-20 mt-10' src={img_loading} alt="loading" />
                             </div>
                         ) : (
                             <div className='w-full flex flex-row justify-center'>                       
@@ -222,7 +222,7 @@ const HomeUser = () => {
                         {/* Danh sách sản phẩm */}
                         { loading ? (
                             <div>
-                                <img className='w-10 h-10 mt-10'  src={img_loading} alt="loading" />
+                                <img className='w-20 h-20 mt-10'  src={img_loading} alt="loading" />
                             </div>
                         ) : (
                             <div className='w-full flex flex-row justify-center'>                       

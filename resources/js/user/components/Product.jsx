@@ -7,8 +7,8 @@ const Product = ({ key, proId, img, name, price, sale}) => {
     const navigate = useNavigate()    
     return (
         
-        <div className="w-full items-center font-Public flex justify-center ">
-            <button onClick={()=>navigate(`/detail_product/${proId}`)} className=" desktop:w-[250px] ipad:w-[220px] mobile:w-[160px] justify-items-center items-center rounded-[20px] border border-[#d9d9d9] relative hover:scale-105 transition duration-200">
+        <div className="w-full items-centerfont-Public flex justify-center ">
+            <button onClick={()=>navigate(`/detail_product/${proId}`)} className="shadow-md desktop:w-[250px] ipad:w-[220px] mobile:w-[160px] justify-items-center items-center rounded-[20px] bg-white border border-[#d9d9d9] relative hover:scale-105 transition duration-200">
                 {/* Hiển thị thẻ discount khi có discount */}
                 {sale > 0 && (
                     <div className="absolute desktop:w-[250px] ipad:w-[200px]  desktop:h-[350px] ipad:h-[300px] mobile:w-[150px] mobile:h-[270px]">
