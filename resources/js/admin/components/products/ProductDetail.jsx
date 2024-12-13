@@ -6,52 +6,9 @@ import loading from '../../asset/loading.svg'
 import BieuDoCot from './BieuDoCot';
 import BieuDoTron from './BieuDoTron';
 
-const fetchSizeColorById = async (id) => {
-    const response = await axios.get(`/api/dashboard/getSizeColorById/${id}`);
-    return response.data; // Trả về dữ liệu từ API
-};
 
-const fetchColor = async (idColor) => {
-    const response = await axios.get(`/api/v1/color/${idColor}`);
-    return response.data.data.colorName; // Lấy `colorName` từ dữ liệu trả về
-};
-
-const dataTronColor = {
-    "week": {
-        "Đen": [0, '#000000'],
-        "Trắng": [0, '#FFFFFF'],
-    },
-    "month": {
-        "Đen": [200, '#000000'],
-        "Trắng": [498, '#FFFFFF'],
-    },
-    "year": {
-        "Đen": [1000, '#000000'],
-        "Trắng": [698, '#FFFFFF'],
-    },
-};
-
-const dataTronSize = {
-    "week": {
-        "S": 100,
-        "M": 298,
-        "L": 50,
-    },
-    "month": {
-        "S": 200,
-        "M": 198,
-        "L": 510,
-    },
-    "year": {
-        "S": 400,
-        "M": 598,
-        "L": 600,
-    },
-};
-
-
-const ProductDetail = ({ProductDetail, chart , onClose}) => {
-    
+const ProductDetail = ({ProductID, chart , onClose}) => {
+    const [prod, setProduct] = useState({});
     const [SizeColor, setSizeColor] = useState([]); //Biến trạng thái lưu size và color
     const [isLoading, setIsLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
@@ -60,20 +17,10 @@ const ProductDetail = ({ProductDetail, chart , onClose}) => {
 
     useEffect(() => {
         const LoadData = async () => {
-            const product = await fetchSizeColorById(ProductDetail.proId); // Gọi API
+            const response = await axios.get(`/api/dashboard/product/details/${ProductID}`);
+            setProduct(response.data.prod)
+            setSizeColor(response.data.color_size); // Cập nhật state với dữ liệu trả về
             
-            const updatedData = await Promise.all(
-                product.map(async (item) => {
-                    const colorName = await fetchColor(item.color_id); // Gọi API lấy tên màu
-                    return {
-                        ...item,
-                        colorName, // Gắn thêm `colorName` vào item
-                    };
-                })
-            );
-            setSizeColor(updatedData); // Cập nhật state với dữ liệu trả về
-            
-            console.log(updatedData); 
             setIsLoading(false);
             setShowModal(true);
         };
@@ -81,7 +28,7 @@ const ProductDetail = ({ProductDetail, chart , onClose}) => {
         
         
 
-    }, [ProductDetail?.proId]); 
+    }, []); 
 
     const getSize = (size) => {
         switch (size) {
@@ -109,14 +56,15 @@ const ProductDetail = ({ProductDetail, chart , onClose}) => {
                     </div>
                     <div className="desktop:flex">
                         {/* Cột trái */}
+                        {/* (prod.cost).toLocaleString() */}
                         <div className="desktop:w-[60%]">
                             <div className="desktop:w-[600px] h-auto mobile:mx-2 desktop:ml-4 my-4 bg-white rounded-[10px] border border-[#0E46A3]" >
                                 <div className='h-5 text-base font-bold text-black p-4'>Thông tin về sản phẩm</div>
                                 <div className='flex flex-col mt-4 pl-4 items-start justify-center'>
-                                    <div className="pb-1">Mã sản phẩm: {ProductDetail.proId}</div>
-                                    <div className="pb-1">Tên sản phẩm:  {ProductDetail.productName}</div>
-                                    <div className="pb-1">Giá: {(ProductDetail.cost).toLocaleString()}đ</div>
-                                    <div className="pb-1">Số lượng đã bán: {ProductDetail.quantitySold}</div>
+                                    <div className="pb-1">Mã sản phẩm: {prod.prod_id}</div>
+                                    <div className="pb-1">Tên sản phẩm:  {prod.prod_name}</div>
+                                    <div className="pb-1">Giá: {prod.cost?.toLocaleString()}đ</div>
+                                    <div className="pb-1">Số lượng đã bán: {prod.quantity_sold}</div>
                                 </div>
                            </div>
 
@@ -138,9 +86,9 @@ const ProductDetail = ({ProductDetail, chart , onClose}) => {
                                                 <tr key={product.pro_color_size_id}
                                                 >
                                                     <td className="py-5 px-2 h-20 border-b text-sm font-semibold text-center">{getSize(product.size_id)}</td>
-                                                    <td className="py-5 px-2 h-20 border-b text-sm font-semibold text-center">{product.colorName}</td>
+                                                    <td className="py-5 px-2 h-20 border-b text-sm font-semibold text-center">{product.color_name}</td>
                                                     <td className="py-5 px-2 h-20 border-b text-sm font-semibold text-center">{product.quantity_available}</td>
-                                                    <td className="py-5 px-2 h-20 border-b text-sm font-semibold text-center">{product.quantity_available}</td>
+                                                    <td className="py-5 px-2 h-20 border-b text-sm font-semibold text-center">{product.quantity}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
