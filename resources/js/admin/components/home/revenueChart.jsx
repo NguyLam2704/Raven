@@ -24,7 +24,7 @@ ChartJS.register(
     Legend
 );
 
-const MonthlyRevenueChart = ({ year }) => {
+const MonthlyRevenueChart = () => {
     const month = [
         "Tháng 1",
         "Tháng 2",
@@ -39,8 +39,13 @@ const MonthlyRevenueChart = ({ year }) => {
         "Tháng 11",
         "Tháng 12",
     ];
+    
+
     const today = new Date();
+    const years = [today.getFullYear() -2, today.getFullYear() - 1, today.getFullYear()]; // Danh sách các năm
+    
     //Tạo trạng thái tháng đang được chọn, giá trị mặc định là tháng đầu tiên
+    const [selectedYear, setSelectedYear] = useState(today.getFullYear());
     const [selectedMonth, setSelectedMonth] = useState(month[today.getMonth()]);
     const [data, setData] = useState({});
     const [isLoading, setIsLoading] = useState(true);
@@ -56,32 +61,39 @@ const MonthlyRevenueChart = ({ year }) => {
         return daysObject;
     }
 
-    const fetchData = async (month) => {
+    const fetchData = async (month, year) => {
         let daysInMonth = createDaysObject(year, month);
-        const res = await axios.get("/api/dashboard/chitiet/2024/" + month);
+        const res = await axios.get(`/api/dashboard/chitiet/${year}/${month}`);
         const data = res.data;
         data.forEach((e) => {
             let x = new Date(e.date);
             daysInMonth[x.getDate()] = e.sum;
         });
-
         setData(daysInMonth);
         setIsLoading(false);
     };
 
-    useEffect(() => {
-        const id = new Date();
-        fetchData(id.getMonth() + 1);
-    }, []);
+    
+
+    const handleYearChange = (event) => {
+        event.preventDefault();
+        const year = parseInt(event.target.value);
+        setSelectedYear(year);
+        fetchData(month.indexOf(selectedMonth) + 1, year);
+    };
 
     //Hàm này xử lý sự kiện khi người dùng thay đổi tháng được chọn
     // Nó cập nhật selectedMonth với giá trị được chọn.
     const handleMonthChange = (event) => {
         const id = month.indexOf(event.target.value) + 1;
-        console.log(id);
-        fetchData(id);
-        setSelectedMonth(month[event.target.value]);
+        setSelectedMonth(event.target.value);
+        fetchData(id, selectedYear);
     };
+
+    useEffect(() => {
+        const id = new Date();
+        fetchData(id.getMonth() + 1, id.getFullYear());
+    }, []);
 
     //Cấu hình dữ liệu cho biểu đồ
     const chartData = {
@@ -144,24 +156,38 @@ const MonthlyRevenueChart = ({ year }) => {
             },
         },
     };
-
+ 
     return (
         <div className="px-4 mobile:h-[300px] ipad:h-[400px] desktop:h-[470px]">
             <div className="flex items-center justify-between mb-1">
                 <h2 className="desktop:text-2xl ipad:text-xl mobile:text-sm font-bold mobile:my-2 ipad:my-2 desktop:my-4">
                     Doanh thu bán hàng theo tháng
                 </h2>
-                <select
-                    value={selectedMonth}
-                    onChange={handleMonthChange}
-                    className="ipad:text-[14px] mobile:text-[11px] desktop:text-base pl-2 mr-4 border rounded"
-                >
-                    {month.map((month) => (
-                        <option key={month} value={month}>
-                            {month}
-                        </option>
-                    ))}
-                </select>
+                <div className="flex-col">
+                    <select
+                            value={selectedYear}
+                            onChange={handleYearChange}
+                            className="ipad:text-[14px] mobile:text-[11px] desktop:text-base pl-2 mr-2 border rounded"
+                        >
+                            {years.map((year) => (
+                                <option key={year} value={year}>
+                                    Năm {year}
+                                </option>
+                            ))}
+                    </select>
+                    <select
+                        value={selectedMonth}
+                        onChange={handleMonthChange}
+                        className="ipad:text-[14px] mobile:text-[11px] desktop:text-base pl-2 mr-4 border rounded"
+                    >
+                        {month.map((month) => (
+                            <option key={month} value={month}>
+                                {month}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
             </div>
 
             {isLoading ? (

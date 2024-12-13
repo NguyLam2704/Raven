@@ -64,6 +64,7 @@ const HomeUser = () => {
 
     const navigate = useNavigate() ; 
     
+    
     return(
         <div className='w-full h-screen font-Public'>
              { loading ? ( <div></div>) : (<Navigation/>) }
@@ -137,14 +138,14 @@ const HomeUser = () => {
                     )}     
                 </div>
 
-                { loading ? ( <div></div>) : (<Line/>) }                
+                    { loading ? ( <div></div>) : (<Line/>) }                
 
-                {/* Các sản phẩm nổi bật */}
-                <div className="  w-full  justify-items-center mt-20"> 
-                    {/* Tiêu đề */}
-                    <div className="h-1/5 w-10/12 ">
-                        <TitleMore type={"SẢN PHẨM NỔI BẬT"}  load={loading}/>
-                    </div>
+                    {/* Các sản phẩm nổi bật */}
+                    <div className="  w-full  justify-items-center mt-20"> 
+                        {/* Tiêu đề */}
+                        <div className="h-1/5 w-10/12 ">
+                            <TitleMore type={"SẢN PHẨM NỔI BẬT"}  load={loading}/>
+                        </div>
 
                     {/* Danh sách sản phẩm */}
                     { loading ? (
@@ -208,14 +209,14 @@ const HomeUser = () => {
                                                      
                 </div>   
 
-                { loading ? ( <div></div>) : (<Line/>) }
+                    { loading ? ( <div></div>) : (<Line/>) }
 
-                {/* Các sản phẩm sale */}
-                <div className=" w-full  justify-items-center mt-20"> 
-                    {/* Tiêu đề */}
-                    <div className="h-1/5 w-10/12 ">
-                        <TitleMore type={"SALE"}  load={loading}/>
-                    </div>
+                    {/* Các sản phẩm sale */}
+                    <div className=" w-full  justify-items-center mt-20"> 
+                        {/* Tiêu đề */}
+                        <div className="h-1/5 w-10/12 ">
+                            <TitleMore type={"SALE"}  load={loading}/>
+                        </div>
 
                     {/* Danh sách sản phẩm */}
                     { loading ? (
@@ -278,8 +279,8 @@ const HomeUser = () => {
                 </div>                    
             </main>
             <Footer/>
-            
         </div>
+
     )
 }
 

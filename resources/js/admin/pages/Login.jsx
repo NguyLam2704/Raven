@@ -92,7 +92,7 @@ const Login = () => {
                 </p> */}
 
                 <form onSubmit={handleSubmit}>
-                    <div>
+                    <div className="relative">
                         <label
                             className="block text-gray-700 mb-2"
                             htmlFor="username"
@@ -102,7 +102,9 @@ const Login = () => {
                         <input
                             type="text"
                             id="username"
-                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            className={`w-full px-3 py-2 border  rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400
+                                ${errors.account ? "border-[#E60000]" : null}    
+                            `}
                             placeholder="Username"
                             onChange={(e) =>
                                 setFormData({
@@ -114,13 +116,13 @@ const Login = () => {
                         />
                     </div>
                     {errors.account && (
-                            <p className="mobile:mb-2 desktop:mb-6 text-[12px] text-red-500">
+                            <p className="mobile:mb-2 desktop:mb-6 absolute text-[12px] text-[#E60000]">
                                 {errors.account}
                             </p>
                     )}
                     <div className="relative">
                         <label
-                            className="block text-gray-700 mb-2"
+                            className="block text-gray-700 mobile:mt-6 desktop:mt-8 mb-2"
                             htmlFor="password"
                         >
                             Mật khẩu:
@@ -128,7 +130,9 @@ const Login = () => {
                         <input
                             type={showPassword ? "text" : "password"}
                             id="password"
-                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400
+                                    ${errors.password ? "border-[#E60000]" : null }
+                                `}
                             placeholder="Password"
                             defaultValue={formData.password}
                             minLength={3}
@@ -150,18 +154,20 @@ const Login = () => {
 
                     </div>
                     {errors.password && (
-                            <p className="mobile:mb-2 desktop:mb-6 text-[12px] text-red-500">
+                            <p className="mobile:mb-2 desktop:mb-6 absolute text-[12px] text-[#E60000]">
                                 {errors.password}
                             </p>
                     )}
-                    <div className="flex items-center">
+                    <div className="flex mobile:mt-7 desktop:mt-8 items-center">
                         <input type="checkbox" />
                         <p className="text-left ml-2 text-gray-600">Remember me</p>
                     </div>
 
                     <button
                         type="submit"
-                        className="w-full bg-blue-500 text-white py-2 mt-4 rounded-md hover:bg-blue-600 transition"
+                        className="w-full bg-blue-500 text-white py-2 mt-4 rounded-md hover:bg-blue-600 hover:shadow-md
+                                outline-none ring-indigo-500/70 ring-offset-2 focus-visible:ring-2 active:scale-[0.98] 
+                                transition"
                     >
                         Đăng nhập
                     </button>

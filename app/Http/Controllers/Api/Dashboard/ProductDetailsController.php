@@ -46,7 +46,7 @@ class ProductDetailsController extends Controller
             }
         }
 
-        foreach ($request->color_size_quantity as $element) {
+        foreach ($request->pro_color_size as $element) {
             $color = Color::insert([
                 'color_code' => $element['color_code'],
                 'color_name' => $element['nameColor']
@@ -89,16 +89,16 @@ class ProductDetailsController extends Controller
 
     public function deleteProduct($id)
     {
-        // $prod = Product::find($id);
-        // if (!$prod) {
-        //     return [
-        //         'error' => 'Không tồn tại id'
-        //     ];
-        // }
-        // $prod->delete();
+        $prod = Product::find($id);
+        if (!$prod) {
+            return [
+                'error' => 'Không tồn tại id'
+            ];
+        }
+        $prod->delete();
 
-        $prod = Product::withTrashed()->where('prod_id', $id);
-        $prod->restore();
+        // $prod = Product::withTrashed()->where('prod_id', $id);
+        // $prod->restore();
     }
 
     public function getProduct($id)
@@ -121,6 +121,27 @@ class ProductDetailsController extends Controller
         return $prod;
     }
 
+    public function getProductDetails($id){
+        $product = Product::where('prod_id',$id)
+            ->first(["prod_id","prod_name","cost","discount","quantity_sold"]);
+        $color_size = ProColorSize::where('prod_id',$id)
+            ->join('colors', 'colors.color_id', '=', 'pro_color_size.color_id')
+            ->join('product_order','product_order.pro_color_size_id','=','pro_color_size.pro_color_size_id')
+            ->groupBy("pro_color_size.pro_color_size_id","size_id","color_name")
+            ->get(["pro_color_size.pro_color_size_id","size_id","color_name",DB::raw("sum(quantity_available) as quantity_available"),DB::raw("sum(quantity) as quantity ")]);
+        
+        
+        $sum = 0;
+        foreach ($color_size as $key => $value) {
+            $sum += $value->quantity;
+        }
+        $product->quantity_sold = $sum;
+        return [
+            'prod' => $product,
+            'color_size' => $color_size
+        ];
+    }
+
     public function changeProduct(Request $request, $id)
     {
 
@@ -131,17 +152,17 @@ class ProductDetailsController extends Controller
             ];
         }
 
-        // $product->prod_name = $request->prod_name;
-        // $product->cost = $request->cost;
-        // $product->description = $request->description;
-        // $product->category_type_id = $request->category_type_id;
-        // $product->discount = $request->discount;
-        // $product->save();
+        $product->prod_name = $request->prod_name;
+        $product->cost = $request->cost;
+        $product->description = $request->description;
+        $product->category_type_id = $request->category_type_id;
+        $product->discount = $request->discount;
+        $product->save();
 
-        // if (count($request->images) < 1)
-        // {
-        //     return ['error' => 'Amount of image must be greater than 1'];
-        // }
+        if (count($request->images) < 1)
+        {
+            return ['error' => 'Amount of image must be greater than 1'];
+        }
 
         $hasPrimaryImg = false;
         foreach ($product->productImage as $value) {
@@ -182,18 +203,18 @@ class ProductDetailsController extends Controller
 
         $pro_color_size = $product->proColorSize;
         $hasChange = [];
-        if (count($request->color_size_quantity) < 1)
+        if (count($request->pro_color_size) < 1)
         {
             return ['error' => 'Amount of pro_size_color must be greater than 1'];
         }
         
         foreach ($pro_color_size as $db_procolorsize) {
             $check = false;
-            foreach ($request->color_size_quantity as $key => $req_value) {
+            foreach ($request->pro_color_size as $key => $req_value) {
                 if ($db_procolorsize->color->color_code == $req_value['color_code'] && $db_procolorsize->size->size_code == $req_value['size_code']) {
-                    $db_procolorsize->color->color_name = $req_value['nameColor'];
+                    $db_procolorsize->color->color_name = $req_value['color_name'];
                     $db_procolorsize->color->save();
-                    $db_procolorsize->quantity_available = $req_value['quantity'];
+                    $db_procolorsize->quantity_available = $req_value['quantity_available'];
                     $db_procolorsize->save();
                     array_push($hasChange, $key);
                     $check = true;
@@ -204,7 +225,7 @@ class ProductDetailsController extends Controller
             }
         }
 
-        foreach ($request->color_size_quantity as $key => $req_value) {
+        foreach ($request->pro_color_size as $key => $req_value) {
             if (!in_array($key, $hasChange)) {
 
                 $size_id = 0; // Mã hoá số sang kí tự
@@ -231,10 +252,10 @@ class ProductDetailsController extends Controller
                     ProColorSize::withTrashed()->where('pro_color_size_id', $item_from_trash->pro_color_size_id)->restore();
                     $item = ProColorSize::find($item_from_trash->pro_color_size_id);
                     $item_color = Color::find($item->color->color_id);
-                    $item_color->color_name = $req_value['nameColor'];
+                    $item_color->color_name = $req_value['color_name'];
                     $item_color->updated_at = Carbon::now();
                     $item_color->save();
-                    $item->quantity_available = $req_value['quantity'];
+                    $item->quantity_available = $req_value['quantity_available'];
                     $item->save();
                 } else {
                     $color = DB::table('colors')->where('color_code', $req_value['color_code'])->exists();
@@ -242,14 +263,14 @@ class ProductDetailsController extends Controller
                     if (!$color) {
                         $color = Color::insert([
                             'color_code' => $req_value['color_code'],
-                            'color_name' => $req_value['nameColor']
+                            'color_name' => $req_value['color_name']
                         ]);
                         if (!$color) {
                             return 'Add color that bai';
                         }
                     } else {
                         Color::where('color_code', $req_value['color_code'])->update([
-                            'color_name' => $req_value['nameColor']
+                            'color_name' => $req_value['color_name']
                         ]);
                     }
 
@@ -259,7 +280,7 @@ class ProductDetailsController extends Controller
                         'prod_id' => $product->prod_id,
                         'size_id' => $size_id,
                         'color_id' => $color->color_id,
-                        'quantity_available' => $req_value['quantity']
+                        'quantity_available' => $req_value['quantity_available']
                     ]);
 
                     if (!$pro_color_size) {

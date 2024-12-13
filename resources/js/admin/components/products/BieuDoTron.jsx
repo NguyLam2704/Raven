@@ -24,7 +24,7 @@ const BieuDoTron = ({ data, title }) => {
     datasets: [
       {
         data: values,
-        backgroundColor: title === "Size" ? ['#FFCE56', '#FF5722', '#4CAF50', '#2196F3'] : backgroundColors, // Màu cho từng phần
+        backgroundColor: title === "Size" ? ['#4A90E2', '#7ED321', '#F5A623', '#D0021B'] : backgroundColors, // Màu cho từng phần
         hoverOffset: 4,
         borderWidth: 0.3, // Độ dày viền
         borderColor: '#cccccc', // Màu viền (xám nhạt)

@@ -28,11 +28,6 @@ const fetchOrder = async () => {
     return response.data;
 };
 
-const fetchTop5Product = async () => {
-    const response = await axios.get("/api/v1/product?includeImage=true");
-    return response.data;
-};
-
 const Home = () => {
     //Khai báo các biến trạng thái
     const [ThongKeData, setThongKeData] = useState();
@@ -45,13 +40,13 @@ const Home = () => {
         const LoadData = async () => {
             const thongkeData = await fetchThongke();
             const orderData = await fetchOrder();
-            const productsListData = await fetchTop5Product();
+
             setThongKeData(thongkeData);
             setOrderData(orderData.data);
-            setProductListData(productsListData.data);
+
             console.log(thongkeData);
             console.log(orderData.data);
-            console.log(productsListData.data);
+            
             setIsLoading(false);
         };
         LoadData();
@@ -99,9 +94,9 @@ const Home = () => {
             trend:
                 ThongKeData.donhang.yesterday === 0
                     ? "0%"
-                    : (ThongKeData.donhang.today /
+                    : (Math.round((ThongKeData.donhang.today /
                           ThongKeData.donhang.yesterday) *
-                          100 +
+                          100* 100) / 100) +
                       "%",
             trendColor:
                 ThongKeData.donhang.today >= ThongKeData.donhang.yesterday
@@ -119,9 +114,9 @@ const Home = () => {
             trend:
                 ThongKeData.doanhthu.yesterday === 0
                     ? "0%"
-                    : (ThongKeData.doanhthu.today /
+                    : (Math.round((ThongKeData.doanhthu.today /
                           ThongKeData.doanhthu.yesterday) *
-                          100 +
+                          100 * 100) / 100) +
                       "%",
             trendColor:
                 ThongKeData.doanhthu.today >= ThongKeData.doanhthu.yesterday
@@ -154,26 +149,26 @@ const Home = () => {
                 {/*Biểu đồ trên Desktop  */}
             <div className="mobile:hidden ipad:hidden gap-1 desktop:flex w-full mt-4">
                 <div className="mr-auto rounded-[14px] shadow-md bg-white desktop:pr-4  desktop:w-[65%]">
-                    <MonthlyRevenueChart year={2024}/>
+                    <MonthlyRevenueChart/>
                 </div>
 
                 <div className="mr-auto h-[470px] mobile:mt-2 ipad:mt-2 desktop:mt-0 py-4 pr-4 desktop:w-[35%] p-4 bg-white rounded-[14px] shadow-md">
                     <h2 className="desktop:text-2xl ipad:text-xl font-bold mb-2">
                         Top 5 sản phẩm bán chạy
                     </h2>
-                    <ProductsList data={ProductsListData} />
+                    <ProductsList data={ThongKeData.top5prod} />
                 </div>
             </div>
 
-            <div className="desktop:hidden mt-2 mobile:h-[200px] ipad:h-[420px] mr-auto rounded-[14px] border-2 border-red-600 shadow-md bg-white ">
-                    <MonthlyRevenueChart year={2024} />
+            <div className="desktop:hidden mt-2 mobile:h-[230px] ipad:h-[420px] mr-auto rounded-[14px] border-2 border-red-600 shadow-md bg-white ">
+                    <MonthlyRevenueChart/>
             </div>
 
             <div className="desktop:hidden mr-auto h-[430px] mobile:mt-2 ipad:mt-2 py-4 pr-4 desktop:w-[35%] p-4 bg-white rounded-[14px] shadow-md">
                     <h2 className="desktop:text-2xl ipad:text-xl font-bold mb-2">
                         Top 5 sản phẩm bán chạy
                     </h2>
-                    <ProductsList data={ProductsListData} />
+                    <ProductsList data={ThongKeData.top5prod} />
             </div>
 
 
