@@ -66,20 +66,20 @@ const Login = () => {
 
     return (
         <div
-            className="flex flex-col items-center justify-center h-screen bg-login"
-            style={{ backgroundImage: `url(${bg_login})` }}
+            className="flex flex-col items-center justify-center h-screen bg-[#EEEEEE]"
+            // style={{ backgroundImage: `url(${bg_login})` }}
         >
             <Helmet>
                 <title>Login</title>
             </Helmet>
             <div className="mt-2">
-                <h1 className="mobile:text-[20px] ipad:text-[25px]  desktop:text-[32px] font-bold text-white text-center mb-3">
+                <h1 className="mobile:text-[20px] ipad:text-[25px]  desktop:text-[32px] font-bold text-[#1E0342] text-center mb-3">
                     ADMIN DASHBOARD
                 </h1>
             </div>
             <div
                 className="
-                        bg-white mobile:p-4 desktop:p-8 rounded-2xl shadow-lg  border-2 border-red
+                        bg-white mobile:p-4 desktop:p-8 rounded-2xl shadow-md  border-2 border-red
                         mobile:w-[350px] mobile:h-[400px]
                         ipad:w-[400px] ipad:h-[450px]
                         desktop:w-[500px] desktop:h-[550px]

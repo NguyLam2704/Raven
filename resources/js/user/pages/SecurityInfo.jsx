@@ -1,19 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 //Chính sách bảo mặt thông tin
 const SecurityInfo = () => {
+    const [showScrollToTop, setShowScrollToTop] = useState(false);
+    
+        // Theo dõi sự kiện scroll
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight;
+            const clientHeight = document.documentElement.clientHeight;
+
+            // Hiển thị nút khi scroll gần đến cuối trang
+            setShowScrollToTop(scrollTop > clientHeight);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+        // Hàm lướt lên đầu trang
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    };
     return(
-        <div className="w-full font-Public">
+        <div className="w-full bg-white font-Public">
             <Navigation/>
             <div className="w-full justify-items-center mt-[90px] ">
                 <div className='desktop:w-8/12 ipad:w-9/12 mobile:w-11/12 justify-items-center pt-5'>
-                    <div className='w-full  text-center desktop:text-lg  ipad:text-base font-bold py-5 '>CHÍNH SÁCH</div>
-                    <div className='w-full text-center desktop:text-4xl ipad:text-3xl font-bold py-6 '>BẢO MẬT THÔNG TIN</div>
-                    <div className='w-full border-b-2 border-black text-center desktop:text-2xl ipad:text-xl font-bold py-5 '>RAVEN</div>                    
+                    <div className='w-full text-[#1E0342]  text-center desktop:text-lg  ipad:text-base font-bold py-5 '>CHÍNH SÁCH</div>
+                    <div className='w-full text-[#1E0342] text-center desktop:text-4xl ipad:text-3xl font-bold py-6 '>BẢO MẬT THÔNG TIN</div>
+                    <div className='w-full border-b-2 text-[#1E0342] border-black text-center desktop:text-2xl ipad:text-xl font-bold py-5 '>RAVEN</div>                    
                     <ol class=" w-full list-decimal list-inside">
-                        <li className="  text-black font-bold py-3 mt-10">
+                        <li className="  text-[#1E0342] font-bold py-3 mt-10">
                             Mục đích và phạm vi thu thập
                             <div  className="  text-black font-normal ml-5 py-2">Raven thu thập thông tin cá nhân bao gồm họ tên, email, số điện thoại, địa chỉ liên lạc và các thông tin khác khi khách hàng đăng ký tài khoản, đặt hàng hoặc liên hệ trên website. Mục đích thu thập nhằm:</div>
                             <ul className="list-disc list-inside ml-8   text-black font-medium py-1"> 
@@ -23,7 +52,7 @@ const SecurityInfo = () => {
                                 <li className="py-1">Đáp ứng yêu cầu từ cơ quan pháp luật khi cần thiết.</li> 
                             </ul> 
                         </li>
-                        <li className="  text-black font-bold py-3">
+                        <li className="  text-[#1E0342] font-bold py-3">
                             Phạm vi sử dụng thông tin:
                             <div  className="  text-black font-normal ml-5 py-2">Thông tin khách hàng chỉ được sử dụng trong nội bộ Raven để:</div>
                             <ul className="list-disc list-inside ml-8   text-black font-medium"> 
@@ -33,18 +62,18 @@ const SecurityInfo = () => {
                                 <li className="py-1">Hỗ trợ chăm sóc khách hàng. Raven cam kết không cung cấp thông tin khách hàng cho bên thứ ba, trừ trường hợp được khách hàng đồng ý hoặc theo yêu cầu pháp luật.</li> 
                             </ul> 
                         </li>
-                        <li className="  text-black font-bold py-5">
+                        <li className="  text-[#1E0342] font-bold py-5">
                             Thời gian lưu trữ thông tin:
                             <div  className="  text-black font-normal ml-5 py-2">Thông tin cá nhân sẽ được lưu trữ trong hệ thống đến khi khách hàng yêu cầu hủy hoặc không còn cần thiết cho mục đích sử dụng.</div>
                         </li>
-                        <li className="  text-black font-bold py-5">
+                        <li className="  text-[#1E0342] font-bold py-5">
                             Đối tượng tiếp cận thông tin:                            
                             <ul className="list-disc list-inside ml-8   text-black font-medium"> 
                                 <li className="py-1">Yêu cầu kiểm tra, chỉnh sửa hoặc hủy thông tin cá nhân.</li> 
                                 <li className="py-1">Từ chối nhận các thông báo tiếp thị qua email hoặc tin nhắn.</li> 
                             </ul>
                         </li>
-                        <li className="  text-black font-bold py-5">
+                        <li className="  text-[#1E0342] font-bold py-5">
                             Quyền của khách hàng đối với thông tin cá nhân:
                             <div  className="  text-black font-normal ml-5 py-2">Khách hàng có quyền:</div>
                             <ul className="list-disc list-inside ml-8   text-black font-medium"> 
@@ -52,7 +81,7 @@ const SecurityInfo = () => {
                                 <li className="py-1">Từ chối nhận các thông báo tiếp thị qua email hoặc tin nh</li> 
                             </ul>
                         </li>
-                        <li className="  text-black font-bold py-5">
+                        <li className="  text-[#1E0342]font-bold py-5">
                             Địa chỉ liên hệ:
                             <ul className="list-disc list-inside ml-8   text-black font-medium"> 
                                 <li className="py-1">Raven Store</li> 
@@ -61,7 +90,7 @@ const SecurityInfo = () => {
                                 <li className="py-1">Điện thoại: 0384666498</li> 
                             </ul>
                         </li>
-                        <li className="  text-black font-bold py-5">
+                        <li className="  text-[#1E0342] font-bold py-5">
                             Khiếu nại về bảo mật thông tin:
                             <div  className="  text-black font-normal ml-5 py-2">Trong trường hợp có khiếu nại, khách hàng vui lòng liên hệ qua các kênh liên lạc trên. Raven cam kết xử lý kịp thời và bảo vệ quyền lợi khách hàng.</div>
                         </li>
@@ -70,6 +99,16 @@ const SecurityInfo = () => {
                    
             </div>
             <Footer/>
+
+                        {/* Nút Lên đầu trang */}
+            {showScrollToTop && (
+                <button
+                    onClick={scrollToTop}
+                    className="fixed bottom-4 right-4 p-3 bg-[#1E0342] text-white rounded-full shadow-lg hover:bg-blue-600"
+                >
+                     <FontAwesomeIcon icon={faArrowUp} color='white' className='h-6 w-6' />  
+                </button>
+            )}
         </div>
     )
 }

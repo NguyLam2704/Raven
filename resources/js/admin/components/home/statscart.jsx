@@ -11,7 +11,7 @@ const StatsCard = ({ title, value, icontrend, icon, trend, trendColor }) => {
           {value}
         </h2>
         {title === 'Đang giao hàng' ? <div className={`mt-4 mb-8 flex text-[16px] font-semibold w-full `}></div> : 
-        <div className="mt-1 mobile:w-auto ipad:w-full justify-center items-center desktop:flex ipad:flex">
+        <div className="mt-1 mobile:w-auto ipad:w-full justify-start items-center desktop:flex ipad:flex">
           <div className={`ipad:w-auto flex mobile:flex-row ipad:flex-row desktop:flex-row desktop:text-[16px] ipad:text-[14px] mobile:text-[10px] font-semibold`}>
             <img src={icontrend} alt="Icon" className="mr-2"/>
             <span className={`${trendColor}  flex justify-center items-center `}>{trend}</span>
