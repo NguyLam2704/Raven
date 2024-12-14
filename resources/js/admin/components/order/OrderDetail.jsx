@@ -9,24 +9,10 @@ import loading from '../../asset/loading.svg'
 
 const shipfee = 50000;
 
-// const fetchProduct = async (id) => {
-//     const response = await axios.get(`/api/v1/product?proId[eq]=${id}&includeImage=true`);
-//     return response.data;
-//   }
-
-
-const fetchSize = async (id) => {
-    const response = await axios.get(`/api/v1/size/${id}`);
-    return response.data;
-}
-
-const fetchColor = async (id) => {
-    const response = await axios.get(`/api/v1/color/${id}`);
-    return response.data;
-}
-const OrderDetail = ({orderDetail, formatDate, getOrderStatus , costBill, onClose}) => {
+const OrderDetail = ({orderDetail, formatDate, getOrderStatus , onClose}) => {
     const [product, setProduct] = useState(orderDetail.products);
     const [size, setSize] = useState([]);
+    const [after_discount_cost, setAfter_discount] = useState([]);
     const [color, setColor] = useState([]);
     const [quantity, setQuantity] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -36,23 +22,12 @@ const OrderDetail = ({orderDetail, formatDate, getOrderStatus , costBill, onClos
 
     useEffect(() => {
         const LoadData = async () => {
-            const sizePromises = orderDetail.pro_color_size.map((item) =>
-                fetchSize(item.size_id)
-            );
-            const colorPromises = orderDetail.pro_color_size.map((item) =>
-                fetchColor(item.color_id)
-            );
-    
-            const sizeResults = await Promise.all(sizePromises);
-            const colorResults = await Promise.all(colorPromises);
             
-            console.log("Product in detail: " + product)
-            console.log(sizeResults);
-            console.log(colorResults);
             // Set state with the fetched data
-            setSize(sizeResults);
-            setColor(colorResults);
+            setSize(orderDetail.pro_color_size.map((item) => item.size_id));
+            setColor(orderDetail.pro_color_size.map((item) => item.color_name));
             setQuantity(orderDetail.pro_color_size.map((item) => item.quantity));
+            setAfter_discount(orderDetail.pro_color_size.map((item) => item.after_discount_cost));
             setIsLoading(false)
             setShowModal(true);
         }
@@ -109,6 +84,7 @@ const OrderDetail = ({orderDetail, formatDate, getOrderStatus , costBill, onClos
                                         sizes={size}
                                         colors={color}
                                         quantity={quantity}
+                                        after_discount_cost={after_discount_cost}
                                     />                               
                                 </div>
                            </div>
@@ -117,7 +93,7 @@ const OrderDetail = ({orderDetail, formatDate, getOrderStatus , costBill, onClos
                                 <div className='h-[1px] mt-4 mx-6 text-base font-bold bg-black'></div>
                                 <div className='flex mx-6 mt-4'>
                                     <div className='w-1/2 text-start text-lg'>Tạm tính:</div>
-                                    <div className='w-1/2 text-end text-lg text-black font-semibold'>{costBill.toLocaleString()}đ</div>
+                                    <div className='w-1/2 text-end text-lg text-black font-semibold'>{orderDetail.total_cost?.toLocaleString()}đ</div>
                                 </div>
 
                                 <div className='flex mx-6 mt-2'>
@@ -129,7 +105,7 @@ const OrderDetail = ({orderDetail, formatDate, getOrderStatus , costBill, onClos
 
                                 <div className='flex mx-6 my-4'>
                                     <div className='w-1/2 text-start text-lg font-bold'>Tổng cộng:</div>
-                                    <div className='w-1/2 text-end text-lg text-[#ef3826] font-bold'>{(costBill + shipfee).toLocaleString()}đ</div>
+                                    <div className='w-1/2 text-end text-lg text-[#ef3826] font-bold'>{(orderDetail.total_cost + shipfee).toLocaleString()}đ</div>
                                 </div>
 
                            </div>
@@ -194,6 +170,7 @@ const OrderDetail = ({orderDetail, formatDate, getOrderStatus , costBill, onClos
                                         sizes={size}
                                         colors={color}
                                         quantity={quantity}
+                                        after_discount_cost={after_discount_cost}
                                     />                               
                                 </div>
                            </div>
@@ -202,7 +179,7 @@ const OrderDetail = ({orderDetail, formatDate, getOrderStatus , costBill, onClos
                                 <div className='h-[1px] mt-4 mx-6 text-base font-bold bg-black'></div>
                                 <div className='flex mx-6 mt-4'>
                                     <div className='w-1/2 text-start text-lg'>Tạm tính:</div>
-                                    <div className='w-1/2 text-end text-lg text-black font-semibold'>{costBill.toLocaleString()}đ</div>
+                                    <div className='w-1/2 text-end text-lg text-black font-semibold'>{orderDetail.total_cost?.toLocaleString()}đ</div>
                                 </div>
 
                                 <div className='flex mx-6 mt-2'>
@@ -214,7 +191,7 @@ const OrderDetail = ({orderDetail, formatDate, getOrderStatus , costBill, onClos
 
                                 <div className='flex mx-6 my-4'>
                                     <div className='w-1/2 text-start text-lg font-bold'>Tổng cộng:</div>
-                                    <div className='w-1/2 text-end text-lg text-[#ef3826] font-bold'>{(costBill + shipfee).toLocaleString()}đ</div>
+                                    <div className='w-1/2 text-end text-lg text-[#ef3826] font-bold'>{(orderDetail.total_cost + shipfee).toLocaleString()}đ</div>
                                 </div>
 
                            </div>

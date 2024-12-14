@@ -39,7 +39,7 @@ const ProductEdit = ({products, onClose}) => {
         quantity: "",
     });
     const [mainImage, setMainImage] = useState(null);
-    const [otherImages, setOtherImages] = useState([null, null, null, null]);
+    const [otherImages, setOtherImages] = useState([]);
     const [currentMainImageUrl, setCurrentMainImageUrl] = useState(null);
     const [currentOtherImageUrls, setCurrentOtherImageUrls] = useState([null, null, null, null]);
 
@@ -288,6 +288,7 @@ const ProductEdit = ({products, onClose}) => {
             // Upload other images nếu có thay đổi
             for (let i = 0; i < otherImageFiles.length; i++) {
                 const file = otherImageFiles[i];
+                
                 if (file) {
                     const timestamp = new Date()
                         .toISOString()
@@ -308,8 +309,9 @@ const ProductEdit = ({products, onClose}) => {
                         .from("Image/ProductImage")
                         .getPublicUrl(data.path).data.publicUrl;
                     uploadedOtherImageUrls[i] = publicUrl;
-                }
+                } 
             }
+
     
             const updatedProduct = {
                 ...product,
@@ -321,16 +323,17 @@ const ProductEdit = ({products, onClose}) => {
                 })),
                 images: [
                     { img: uploadedMainImageUrl, is_primary: true },
-                    ...uploadedOtherImageUrls.map((url, index) => ({
+                    ...uploadedOtherImageUrls.filter(url => url != null).map((url, index) =>({
                         img: url,
                         is_primary: false,
                     })),
                 ],
             };
-    
+
+            
             console.log("Product saved:", updatedProduct);
             // Gửi dữ liệu sản phẩm lên server hoặc database
-            // await axios.post("api/dashboard/updateproduct", updatedProduct);
+            await axios.put(`api/dashboard/product/${updatedProduct.prod_id}`, updatedProduct);
     
             Swal.fire({
                 title: "Thành công!",
@@ -339,7 +342,7 @@ const ProductEdit = ({products, onClose}) => {
                 showConfirmButton: false,
                 timer: 4000,
             });
-            navigate("/products_admin");
+            onClose();
         } catch (error) {
             console.error("Upload error:", error);
             Swal.fire({

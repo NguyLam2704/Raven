@@ -6,6 +6,7 @@ import UserList from "../components/customer/UserList";
 import loading from "../asset/loading.svg"
 
 
+
 const fetchUser = async () => {
     const response = await axios.get('/api/v1/user');
     return response.data;
@@ -26,10 +27,10 @@ const Customer = () => {
     } ,[]) 
 
     if (isLoading) {
-        return ( null
-            // <div className="w-full h-[700px] flex justify-center items-center">
-            //     <img src={loading}/>
-            // </div>
+        return (
+            <div className="w-full h-[700px] flex justify-center items-center">
+                <img src={loading}/>
+            </div>
         )
     } 
     return (

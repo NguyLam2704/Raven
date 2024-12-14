@@ -3,7 +3,7 @@ import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import CartMini from '../components/Cart/CartMini';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronUp, faChevronDown, faPlus, faMinus, faChevronCircleRight, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { faChevronUp, faChevronDown, faPlus, faMinus, faChevronRight, faChevronLeft, faBagShopping, faArrowUp  } from "@fortawesome/free-solid-svg-icons";
 import cart from '../assets/cart_red.svg'
 import Product from '../components/Product';
 import back from '../assets/Back.svg'
@@ -22,6 +22,7 @@ const DetailProduct = () =>{
     const swiperRefMoblie = useRef(null);
     const swiperSameRef = useRef(null);
     const [currentIndex, setCurrentIndex] = useState(0); // Theo dõi slide hiện tại
+     const [showScrollToTop, setShowScrollToTop] = useState(false);
 
     // Xử lý khi nhấn nút "Up"
     const handlePrev = () => {
@@ -160,326 +161,353 @@ const DetailProduct = () =>{
             setBang(SizeAo)
         }
     }
+
+        // Theo dõi sự kiện scroll
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight;
+            const clientHeight = document.documentElement.clientHeight;
+
+            // Hiển thị nút khi scroll gần đến cuối trang
+            setShowScrollToTop(scrollTop > clientHeight);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+        // Hàm lướt lên đầu trang
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    };
+    
     return(   
-        <div>
+        <div className='bg-white'>
+            <Navigation/>
             <div className={`w-full  ${(isCartMini || isBangSise) ? 'overflow-hidden h-screen' : 'overflow-auto'}`}>
-                <Navigation/>
+                
                 { (!DetailProduct || loading) ? (
                         <div className='w-full h-screen flex justify-center items-center'>
                             <img className='w-1/12' src={img_loading} alt="loading" />
                         </div> 
                 ) :(
-                <div className='w-full max-w-[1557px] border-2 mx-auto mt-[90px] justify-items-center '>
+                <div className='w-full  max-w-[1557px] mx-auto mt-40 justify-items-center '>
                     
-                    <div className='border-2 border-red-700 w-full ipad:w-[90%] desktop:w-[70%] desktop:flex desktop:flex-row mt-10'>
-                    {/* Các hình ảnh sản phẩm */}
-                    <div className='desktop:w-3/5 border-2 border-blue-700 flex desktop:flex-row mobile:flex-col justify-center'>
-                        {/* Hình ảnh phụ desktop */}
-                        <div className='w-1/4 desktop:h-[470px] mobile:hidden desktop:flex flex-col justify-between items-center'>
-                            {/* Nút lên */}
-                            <button
-                                onClick={handlePrev}
-                                className={`text-gray-500 hover:text-black ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                disabled={currentIndex === 0}
-                            >
-                                <FontAwesomeIcon icon={faChevronUp} />
-                            </button>
-
-                            {/* Swiper */}
-                            <div className='overflow-hidden flex flex-col h-full'>
-                                <Swiper
-                                    direction={'vertical'}
-                                    slidesPerView={3} // Hiển thị 3 ảnh mỗi lần
-                                    onSwiper={(swiper) => (swiperRef.current = swiper)} // Lưu instance của Swiper
-                                    mousewheel={true} 
-                                    className='h-full'
+                    <div className='w-full ipad:w-[90%] desktop:w-[70%] desktop:flex desktop:flex-row'>
+                        {/* Các hình ảnh sản phẩm */}
+                        <div className='desktop:w-3/5 flex desktop:flex-row mobile:flex-col justify-center'>
+                            {/* Hình ảnh phụ desktop */}
+                            <div className='w-1/4 desktop:h-[470px] mobile:hidden desktop:flex flex-col justify-between items-center'>
+                                {/* Nút lên */}
+                                <button
+                                    onClick={handlePrev}
+                                    className={`text-gray-500 hover:text-black ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    disabled={currentIndex === 0}
                                 >
-                                {DetailProduct.productImage?.map((element, index) => (
-                                    <SwiperSlide key={index}>
-                                    <button
-                                        className='h-[110px] w-[100px] rounded-md my-4'
-                                        onClick={()=>setBigImg(element.image)}
+                                    <FontAwesomeIcon icon={faChevronUp} />
+                                </button>
+
+                                {/* Swiper */}
+                                <div className='overflow-hidden flex flex-col h-full'>
+                                    <Swiper
+                                        direction={'vertical'}
+                                        slidesPerView={3} // Hiển thị 3 ảnh mỗi lần
+                                        onSwiper={(swiper) => (swiperRef.current = swiper)} // Lưu instance của Swiper
+                                        mousewheel={true} 
+                                        className='h-full'
                                     >
-                                        <img
-                                        className='h-full w-full rounded-md object-cover'
-                                        src={element.image}
-                                        alt={`Thumbnail ${index + 1}`}
-                                        />
-                                    </button>
-                                    </SwiperSlide>
-                                ))}
-                                </Swiper>
-                            </div>
-
-                            {/* Nút xuống */}
-                            <button
-                                onClick={handleNext}
-                                className={`text-gray-500 hover:text-black ${
-                                currentIndex >= DetailProduct.productImage.length - 3 ? 'opacity-50 cursor-not-allowed' : ''
-                                }`}
-                                disabled={currentIndex >= DetailProduct.productImage.length - 3}
-                            >
-                                <FontAwesomeIcon icon={faChevronDown} />
-                            </button>
-                        </div>
-
-                                               
-                        {/* Hình ảnh chính */}
-                        <div className='desktop:w-3/4 border flex justify-center items-center'>
-                            {/* Hiển thị thẻ discount khi có discount */}
-                            {DetailProduct.discount  > 0 && (
-                                <div className="absolute mobile:h-[440px] mobile:w-[80%] ipad:h-[478px] ipad:w-[400px]">
-                                    <div className="w-12 h-12  content-center bg-[#a91d3a] text-center text-white text-base rounded-b-md font-normal font-['Public Sans']">
-                                        {DetailProduct.discount}%<br />OFF
-                                    </div>
-                                </div>
-                            )}
-                            {/* Hình ảnh sản phẩm */}
-                            <img className='mobile:h-[440px] mobile:w-full ipad:h-[478px] ipad:w-[400px] border border-[#1E0342] rounded-xl' src={bigImg} alt="anh" />                             
-                        </div>
-
-                        {/* Hình ảnh phụ mobile, ipad*/}
-                        <div className='border-4 mt-2 mobile:flex desktop:hidden justify-between flex-row items-center'>
-                            {/* Nút lên */}
-                            <button
-                                onClick={handlePrev}
-                                className={`w-[10%] text-gray-500 border hover:text-black ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                disabled={currentIndex === 0}
-                            >
-                                <FontAwesomeIcon icon={faChevronLeft} />
-                            </button>
-
-                            {/* Swiper */}
-                            <div className='overflow-hidden w-[80%] flex flex-row'>
-                                <Swiper
-                                    direction={'horizontal'}
-                                    //slidesPerView={4} // Hiển thị 3 ảnh mỗi lần
-                                    onSwiper={(swiper) => (swiperRefMoblie.current = swiper)} // Lưu instance của Swiper
-                                    mousewheel={true} 
-                                    className='h-full'
-                                    breakpoints={{
-                                        0: { slidesPerView: 2 },
-                                        768: { slidesPerView: 3 },
-                                        1024: { slidesPerView: 4 },
-                                    }}
-                                >
                                     {DetailProduct.productImage?.map((element, index) => (
-                                        <SwiperSlide 
-                                            key={index}
-                                            className='w-auto flex flex-row justify-center items-center border-2 border-indigo-600 '
+                                        <SwiperSlide key={index}>
+                                        <button
+                                            className='h-[110px] w-[100px] rounded-md my-4'
+                                            onClick={()=>setBigImg(element.image)}
                                         >
-                                            <button
-                                                className='h-[110px] w-[120px] ml-[5px] border border-red-600 rounded-md'
-                                                onClick={()=>setBigImg(element.image)}
-                                            >
-                                                <img
-                                                className='h-full w-full rounded-md object-cover'
-                                                src={element.image}
-                                                alt={`Thumbnail ${index + 1}`}
-                                                />
-                                            </button>
+                                            <img
+                                            className='h-full w-full rounded-md object-cover'
+                                            src={element.image}
+                                            alt={`Thumbnail ${index + 1}`}
+                                            />
+                                        </button>
                                         </SwiperSlide>
                                     ))}
-                                </Swiper>
+                                    </Swiper>
+                                </div>
+
+                                {/* Nút xuống */}
+                                <button
+                                    onClick={handleNext}
+                                    className={`text-gray-500 hover:text-black ${
+                                    currentIndex >= DetailProduct.productImage.length - 3 ? 'opacity-50 cursor-not-allowed' : ''
+                                    }`}
+                                    disabled={currentIndex >= DetailProduct.productImage.length - 3}
+                                >
+                                    <FontAwesomeIcon icon={faChevronDown} />
+                                </button>
                             </div>
 
-                            {/* Nút xuống */}
-                            <button
-                                onClick={handleNext}
-                                className={`w-[10%] text-gray-500 hover:text-black ${
-                                currentIndex >= DetailProduct.productImage.length - 3 ? 'opacity-50 cursor-not-allowed' : ''
-                                }`}
-                                disabled={currentIndex >= DetailProduct.productImage.length - 3}
-                            >
-                                <FontAwesomeIcon icon={faChevronRight} />
-                            </button>
-                        </div>
-                        
-                        
-                    </div>
-                    {/* Thông tin sản phẩm */}
-                    <div className='border-2 mobile:px-2 ipad:px-0 border-green-700 mobile:mt-5 mobile:gap-2 ipad:gap-5 desktop:mt-0 desktop:w-2/5 flex flex-col justify-between '>
-                        {/* Tên sản phẩm */}
-                        <div className='w-full content-center text-[#1E0342] desktop:text-3xl ipad:text-2xl font-bold '>{DetailProduct.productName} </div>
-                        {/* Giá sản phẩm */}
-                        <div >
-                            <div className=' flex flex-row '>
-                                <div className=' content-center text-[#a91d3a] desktop:text-3xl mobile:text-xl font-bold '>{(DetailProduct.cost - (DetailProduct.cost* DetailProduct.discount / 100)).toLocaleString('vi-VN')}đ</div>
-                                {
-                                    DetailProduct.discount > 0 && (
-                                        <div className='content-center text-[#9f9f9f] desktop:text-xl mobile:text-lg font-medium line-through desktop:ml-20 ipad:ml-16'>{DetailProduct.cost.toLocaleString('vi-VN')}đ</div>
-                                    )
-                                }
-                            </div> 
-                            <div className='h-[1px] bg-gray-300'></div>
-                        </div>
-                        {/* Màu sắc */}
-                        <div>
-                            <div className='content-cente mb-1 text-black desktop:text-base ipad:text-sm font-normal'> Màu sắc</div>
-                            <div className='flex flex-row'>
-                                {DetailProduct.proColorSize
-                                    .filter((value, index, self) => {
-                                        // Loại bỏ các màu trùng lặp (kiểm tra bằng colorCode)
-                                        return index === self.findIndex((t) => (
-                                            // findIndex tìm chỉ số của phần tử đầu tiên có colorCode trùng với phần tử hiện tại. 
-                                            // Nếu index của phần tử hiện tại bằng chỉ số của phần tử đầu tiên có colorCode trùng 
-                                            // thì phần tử đó sẽ được giữ lại.
-                                                t.color.colorCode === value.color.colorCode 
-                                            ));
-                                        })
-                                    .map((element,index) => {
-                                        const totalQuantity = DetailProduct.proColorSize .filter((item) => item.colorId === element.colorId) .reduce((sum, item) => sum + item.quantityAvailable, 0);
-                                        const quanlitySize = DetailProduct?.proColorSize .find((item) => item.colorId === element.colorId && item.size.sizeCode === selectedSize)?.quantityAvailable && 1                                            
-                                        return (
-                                                <button 
-                                                    key={index}                                          
-                                                    onClick={() => {
-                                                        if((totalQuantity && (selectedSize ? quanlitySize : 1)) || selectedColor===element.color.colorCode)
-                                                        {
-                                                            if(selectedColor===element.color.colorCode) {
-                                                                    setSelectedColor('');
-                                                                    setColorId('');
-                                                                    setSelectedColorName('');
-                                                                }
-                                                            else {
-                                                                setSelectedColor(element.color.colorCode)
-                                                                setColorId(element.colorId);
-                                                                setSelectedColorName(element.color.colorName)
-                                                            }
-                                                        }
-                                                        else alert(`Sản phẩm màu ${element.color.colorName} đã hết hàng. Vui lòng chọn màu sắc khác`)
-                                                    }}
-                                                    className={`desktop:h-8 desktop:w-8 mobile:h-7 mobile:w-7 rounded-md mr-5 ${selectedColor === element.color.colorCode ? 'ring-[#c73659] ring-2' : 'ring-[#EEEEEE] ring-1'} `} 
-                                                    style={{ backgroundColor: element.color.colorCode }} 
-                                                >
-                                                </button>
-                                    )
-                                })}
-                                    
-                                       
-                            </div>
-                        </div>
-                        {/* Size */}
-                        {
-                            categoryType !== 8 && categoryType !== 9 && categoryType !== 10 && categoryType !== 11 && 
-                            <div>
-                            <div className='mb-1 flex flex-row'>
-                                <div className='content-center text-black desktop:text-base ipad:text-sm font-normal '>Size</div>
-                                <button  onClick={()=>setBangSize(true)} className='content-center hover:text-gray-600 hover:decoration-gray-500 text-black desktop:text-sm ipad:text-xs font-light underline-offset-4 underline ml-20'>Bảng size</button>
-                            </div>
-                            {/* Ẩn/Hiện bảng size */}
-                            {
-                                isBangSise && (
-                                    <div onClick={()=>setBangSize(false)} className='h-screen w-full bg-opacity-30 bg-black right-0 absolute top-0 z-50 content-center justify-items-center'>                          
-                                        <img className='w-1/2' src={BangSize} alt="bangsize" />                                
+                                                
+                            {/* Hình ảnh chính */}
+                            <div className='desktop:w-3/4 flex justify-center items-center'>
+                                {/* Hiển thị thẻ discount khi có discount */}
+                                {DetailProduct.discount  > 0 && (
+                                    <div className="absolute mobile:h-[440px] mobile:w-[80%] ipad:h-[478px] ipad:w-[350px]">
+                                        <div className="w-12 h-12  content-center bg-[#a91d3a] text-center text-white text-base rounded-b-md font-normal font-['Public Sans']">
+                                            {DetailProduct.discount}%<br />OFF
+                                        </div>
                                     </div>
-                                )
-                            }
-                            <div className='flex flex-row'>
-                                
-                                {DetailProduct.proColorSize
-                                    .filter((value, index, self) => {
-                                        return index == self.findIndex((t) => (
-                                            t.size.sizeCode === value.size.sizeCode
-                                        ));
-                                    })
-                                    .map((element,index) => {
-                                        const totalQuantity = DetailProduct.proColorSize .filter((item) => item.sizeId === element.sizeId) .reduce((sum, item) => sum + item.quantityAvailable, 0); 
-                                        const quanlityColor = DetailProduct?.proColorSize .find((item) => item.sizeId === element.sizeId && item.color.colorCode === selectedColor)?.quantityAvailable && 1
-                                        return (
-                                        <button 
-                                            key = {index}                                             
-                                            onClick={() => {
-                                                if(totalQuantity && (selectedColor? quanlityColor : 1) || selectedSize===element.size.sizeCode)
-                                                    {
-                                                        if(selectedSize===element.size.sizeCode){
-                                                            setSelectedSize('');
-                                                            setSizeId('');
-                                                        }
-                                                        else {
-                                                            setSelectedSize(element.size.sizeCode)
-                                                            setSizeId(element.sizeId);
-                                                        }
-                                                    }
-                                                else {alert(`Sản phẩm size ${element.size.sizeCode} đã hết hàng. Vui lòng chọn size khác`)}
-                                            }}                                           
-                                            className={`desktop:h-8 desktop:w-8 mobile:h-7 mobile:w-7  content-center text-center desktop:text-xl ipad:text-lg  mr-5 ${(selectedSize === element.size.sizeCode) ? 'text-[#c73659] border-[#c73659] border-2 font-bold': (totalQuantity && (selectedColor? quanlityColor : 1) )? 'text-black border border-black font-medium': 'text-gray-400 border border-gray-400 font-medium'} `}>
-                                            {element.size.sizeCode}
-                                            
-                                        </button>
-                                        
+                                )}
+                                {/* Hình ảnh sản phẩm */}
+                                <img className='mobile:h-[440px] mobile:w-full ipad:h-[478px] ipad:w-[400px] border border-[#1E0342] rounded-xl' src={bigImg} alt="anh" />                             
+                            </div>
+
+                            {/* Hình ảnh phụ mobile, ipad*/}
+                            <div className='border-4 mt-2 mobile:flex desktop:hidden justify-between flex-row items-center'>
+                                {/* Nút lên */}
+                                <button
+                                    onClick={handlePrev}
+                                    className={`w-[10%] text-gray-500 border hover:text-black ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    disabled={currentIndex === 0}
+                                >
+                                    <FontAwesomeIcon icon={faChevronLeft} />
+                                </button>
+
+                                {/* Swiper */}
+                                <div className='overflow-hidden w-[80%] flex flex-row'>
+                                    <Swiper
+                                        direction={'horizontal'}
+                                        //slidesPerView={4} // Hiển thị 3 ảnh mỗi lần
+                                        onSwiper={(swiper) => (swiperRefMoblie.current = swiper)} // Lưu instance của Swiper
+                                        mousewheel={true} 
+                                        className='h-full'
+                                        breakpoints={{
+                                            0: { slidesPerView: 2 },
+                                            768: { slidesPerView: 4 },
+                                        }}
+                                    >
+                                        {DetailProduct.productImage?.map((element, index) => (
+                                            <SwiperSlide 
+                                                key={index}
+                                                className='w-auto flex flex-row justify-center items-center border-2 border-indigo-600 '
+                                            >
+                                                <button
+                                                    className='h-[110px] w-[120px] ml-[5px] border border-red-600 rounded-md'
+                                                    onClick={()=>setBigImg(element.image)}
+                                                >
+                                                    <img
+                                                    className='h-full w-full rounded-md object-cover'
+                                                    src={element.image}
+                                                    alt={`Thumbnail ${index + 1}`}
+                                                    />
+                                                </button>
+                                            </SwiperSlide>
+                                        ))}
+                                    </Swiper>
+                                </div>
+
+                                {/* Nút xuống */}
+                                <button
+                                    onClick={handleNext}
+                                    className={`w-[10%] text-gray-500 hover:text-black ${
+                                    currentIndex >= DetailProduct.productImage.length - 3 ? 'opacity-50 cursor-not-allowed' : ''
+                                    }`}
+                                    disabled={currentIndex >= DetailProduct.productImage.length - 3}
+                                >
+                                    <FontAwesomeIcon icon={faChevronRight} />
+                                </button>
+                            </div>
+                            
+                            
+                        </div>
+                        {/* Thông tin sản phẩm */}
+                        <div className=' mobile:px-2 ipad:px-0 mobile:mt-5 mobile:gap-2 ipad:gap-5 desktop:mt-0 desktop:w-2/5 flex flex-col justify-between '>
+                            {/* Tên sản phẩm */}
+                            <div className='w-full content-center text-[#1E0342] desktop:text-3xl ipad:text-2xl font-bold '>{DetailProduct.productName} </div>
+                            {/* Giá sản phẩm */}
+                            <div >
+                                <div className=' flex flex-row '>
+                                    <div className=' content-center text-[#a91d3a] desktop:text-3xl mobile:text-xl font-bold '>{(DetailProduct.cost - (DetailProduct.cost* DetailProduct.discount / 100)).toLocaleString('vi-VN')}đ</div>
+                                    {
+                                        DetailProduct.discount > 0 && (
+                                            <div className='content-center text-[#9f9f9f] desktop:text-xl mobile:text-lg font-medium line-through desktop:ml-20 ipad:ml-16'>{DetailProduct.cost.toLocaleString('vi-VN')}đ</div>
+                                        )
+                                    }
+                                </div> 
+                                <div className='h-[1px] bg-gray-300'></div>
+                            </div>
+                            {/* Màu sắc */}
+                            <div>
+                                <div className='content-cente mb-1 text-black desktop:text-base ipad:text-sm font-normal'> Màu sắc</div>
+                                <div className='flex flex-row'>
+                                    {DetailProduct.proColorSize
+                                        .filter((value, index, self) => {
+                                            // Loại bỏ các màu trùng lặp (kiểm tra bằng colorCode)
+                                            return index === self.findIndex((t) => (
+                                                // findIndex tìm chỉ số của phần tử đầu tiên có colorCode trùng với phần tử hiện tại. 
+                                                // Nếu index của phần tử hiện tại bằng chỉ số của phần tử đầu tiên có colorCode trùng 
+                                                // thì phần tử đó sẽ được giữ lại.
+                                                    t.color.colorCode === value.color.colorCode 
+                                                ));
+                                            })
+                                        .map((element,index) => {
+                                            const totalQuantity = DetailProduct.proColorSize .filter((item) => item.colorId === element.colorId) .reduce((sum, item) => sum + item.quantityAvailable, 0);
+                                            const quanlitySize = DetailProduct?.proColorSize .find((item) => item.colorId === element.colorId && item.size.sizeCode === selectedSize)?.quantityAvailable && 1                                            
+                                            return (
+                                                    <button 
+                                                        key={index}                                          
+                                                        onClick={() => {
+                                                            if((totalQuantity && (selectedSize ? quanlitySize : 1)) || selectedColor===element.color.colorCode)
+                                                            {
+                                                                if(selectedColor===element.color.colorCode) {
+                                                                        setSelectedColor('');
+                                                                        setColorId('');
+                                                                        setSelectedColorName('');
+                                                                    }
+                                                                else {
+                                                                    setSelectedColor(element.color.colorCode)
+                                                                    setColorId(element.colorId);
+                                                                    setSelectedColorName(element.color.colorName)
+                                                                }
+                                                            }
+                                                            else alert(`Sản phẩm màu ${element.color.colorName} đã hết hàng. Vui lòng chọn màu sắc khác`)
+                                                        }}
+                                                        className={`desktop:h-8 desktop:w-8 mobile:h-7 mobile:w-7 rounded-md mr-5 ${selectedColor === element.color.colorCode ? 'ring-[#c73659] ring-2' : 'ring-[#EEEEEE] ring-1'} `} 
+                                                        style={{ backgroundColor: element.color.colorCode }} 
+                                                    >
+                                                    </button>
                                         )
                                     })}
-                                    
-                            </div>          
-                        </div>
-                        }
-                        {/* Số lượng */}
-                        <div className='h-8 flex flex-row'>
-                            <div className='h-8 content-center text-black text-base font-normal font-Public '>Số lượng:</div>
-                            <div className="flex flex-row ml-20">
-                                {/* Giảm số lượng */}
-                                <button className={`desktop:h-8 desktop:w-8 mobile:h-7 mobile:w-7  border border-[#c4c4c4] bg-[#d9d9d9] ${(quality>1)?'opacity-100':'opacity-70 cursor-not-allowed'} `}
-                                    onClick={()=>{
-                                        if(quality > 1)
-                                            setQuality(quality-1)
-                                    }}
-                                >
-                                    <FontAwesomeIcon className='h-3' icon={faMinus} />
-                                </button>                
-                                <div className="desktop:h-8 desktop:w-8 mobile:h-7 mobile:w-7  content-center text-center text-black text-base font-normal border border-[#c4c4c4] bg-[#d9d9d9] mx-[1px] ">{quality}</div>
-                                {/* Tăng số lượng */}
-                                <button className={`desktop:h-8 desktop:w-8 mobile:h-7 mobile:w-7  border border-[#c4c4c4] bg-[#d9d9d9] ${(quality < (DetailProduct?.proColorSize .find((item) => item.color.colorCode === selectedColor  && item.size.sizeCode === selectedSize)?.quantityAvailable))?'opacity-100':'opacity-70 cursor-not-allowed'} `}
-                                    onClick={()=>setQuality(quality+1)}
-                                    disabled={!(quality<(DetailProduct?.proColorSize .find((item) => item.color.colorCode === selectedColor  && item.size.sizeCode === selectedSize)?.quantityAvailable))}
-                                >
-                                    <FontAwesomeIcon className='h-3' icon={faPlus} />
-                                </button>
-                                
+                                        
+                                        
+                                </div>
                             </div>
-                        </div>
-                        {/* Button */}
-                        <div>
-                            {/* Thêm sp vào giỏ hàng */}
-                            <button  className="w-full desktop:h-11 mobile:h-9 flex flow-row items-center justify-center rounded-md border-[3px] border-[#1E0342] border:bg-[#a91d3a] "
-                                onClick={()=> {
-                                    if(selectedColor && selectedSize)
-                                    {
-                                        handleCart()
-                                    }
-                                    else alert('Vui lòng chọn màu sắc và kích thước!')
-                                    }}
-                                title={!selectedColor || !selectedSize ? 'Vui lòng chọn màu sắc và số lượng' : ''}
-                            >
-                                <img className='desktop:h-6 ipad:h-5' src={cart} alt="cart" />
-                                <div className=' content-center text-center text-[#1E0342] desktop:text-xl mobile:text-lg font-extrabold ml-3 mt-1 active:text-[#a91d3a]'>THÊM VÀO GIỎ </div>
-                            </button>
-                            {/* Mua ngay sp */}
-                            <button className="w-full desktop:h-11 mobile:h-9 flex flow-row items-center text-white desktop:text-xl mobile:text-lg font-extrabold justify-center bg-[#1E0342] rounded-md mt-3"
-                                onClick={()=> {
-                                    if(selectedColor && selectedSize)
-                                    {
-                                    const updateCartProduct = {
-                                        ...cartProduct,
-                                        size: selectedSize,
-                                        color: selectedColor,
-                                        quantity: quality,
-                                        sizeId: selectedSizeId,
-                                        colorId: selectedColorId,
-                                        colorName: selectedColorName
-                                    };
-                                    navigate("/check_out", { state: { product: updateCartProduct} })}
-                                    else alert('Vui lòng chọn màu sắc và kích thước!')
-                                    }}>
-                                MUA NGAY
-                            </button>
-                        </div>
+                            {/* Size */}
+                            <div>
+                                <div className='mb-1 flex flex-row'>
+                                    <div className='content-center text-black desktop:text-base ipad:text-sm font-normal '>Size</div>
+                                    <button  onClick={()=>setBangSize(true)} className='content-center hover:text-gray-600 hover:decoration-gray-500 text-black desktop:text-sm ipad:text-xs font-light underline-offset-4 underline ml-20'>Bảng size</button>
+                                </div>
+                                {/* Ẩn/Hiện bảng size */}
+                                {
+                                    isBangSise && (
+                                        <div onClick={()=>setBangSize(false)} className='h-screen w-full bg-opacity-30 bg-black right-0 absolute top-0 z-50 content-center justify-items-center'>                          
+                                            <img className='w-1/2' src={BangSize} alt="bangsize" />                                
+                                        </div>
+                                    )
+                                }
+                                <div className='flex flex-row'>
+                                    
+                                    {DetailProduct.proColorSize
+                                        .filter((value, index, self) => {
+                                            return index == self.findIndex((t) => (
+                                                t.size.sizeCode === value.size.sizeCode
+                                            ));
+                                        })
+                                        .map((element,index) => {
+                                            const totalQuantity = DetailProduct.proColorSize .filter((item) => item.sizeId === element.sizeId) .reduce((sum, item) => sum + item.quantityAvailable, 0); 
+                                            const quanlityColor = DetailProduct?.proColorSize .find((item) => item.sizeId === element.sizeId && item.color.colorCode === selectedColor)?.quantityAvailable && 1
+                                            return (
+                                            <button 
+                                                key = {index}                                             
+                                                onClick={() => {
+                                                    if(totalQuantity && (selectedColor? quanlityColor : 1) || selectedSize===element.size.sizeCode)
+                                                        {
+                                                            if(selectedSize===element.size.sizeCode){
+                                                                setSelectedSize('');
+                                                                setSizeId('');
+                                                            }
+                                                            else {
+                                                                setSelectedSize(element.size.sizeCode)
+                                                                setSizeId(element.sizeId);
+                                                            }
+                                                        }
+                                                    else {alert(`Sản phẩm size ${element.size.sizeCode} đã hết hàng. Vui lòng chọn size khác`)}
+                                                }}                                           
+                                                className={`desktop:h-8 desktop:w-8 mobile:h-7 mobile:w-7  content-center text-center desktop:text-xl ipad:text-lg  mr-5 ${(selectedSize === element.size.sizeCode) ? 'text-[#c73659] border-[#c73659] border-2 font-bold': (totalQuantity && (selectedColor? quanlityColor : 1) )? 'text-black border border-black font-medium': 'text-gray-400 border border-gray-400 font-medium'} `}>
+                                                {element.size.sizeCode}
+                                                
+                                            </button>
+                                            
+                                            )
+                                        })}
+                                        
+                                </div>
 
-                    </div>
-                </div>
+                                
+                                            
+                            </div>
+                            {/* Số lượng */}
+                            <div className='h-8 flex flex-row'>
+                                <div className='h-8 content-center text-black text-base font-normal font-Public '>Số lượng:</div>
+                                <div className="flex flex-row ml-20">
+                                    {/* Giảm số lượng */}
+                                    <button className={`desktop:h-8 desktop:w-8 mobile:h-7 mobile:w-7  border border-[#c4c4c4] bg-[#d9d9d9] ${(quality>1)?'opacity-100':'opacity-70 cursor-not-allowed'} `}
+                                        onClick={()=>{
+                                            if(quality > 1)
+                                                setQuality(quality-1)
+                                        }}
+                                    >
+                                        <FontAwesomeIcon className='h-3' icon={faMinus} />
+                                    </button>                
+                                    <div className="desktop:h-8 desktop:w-8 mobile:h-7 mobile:w-7  content-center text-center text-black text-base font-normal border border-[#c4c4c4] bg-[#d9d9d9] mx-[1px] ">{quality}</div>
+                                    {/* Tăng số lượng */}
+                                    <button className={`desktop:h-8 desktop:w-8 mobile:h-7 mobile:w-7  border border-[#c4c4c4] bg-[#d9d9d9] ${(quality < (DetailProduct?.proColorSize .find((item) => item.color.colorCode === selectedColor  && item.size.sizeCode === selectedSize)?.quantityAvailable))?'opacity-100':'opacity-70 cursor-not-allowed'} `}
+                                        onClick={()=>setQuality(quality+1)}
+                                        disabled={!(quality<(DetailProduct?.proColorSize .find((item) => item.color.colorCode === selectedColor  && item.size.sizeCode === selectedSize)?.quantityAvailable))}
+                                    >
+                                        <FontAwesomeIcon className='h-3' icon={faPlus} />
+                                    </button>
+                                    
+                                </div>
+                            </div>
+                            {/* Button */}
+                            <div>
+                                {/* Thêm sp vào giỏ hàng */}
+                                <button  className="w-full desktop:h-11 mobile:h-9 flex flow-row items-center justify-center rounded-md border-[3px] border-[#1E0342] border:bg-[#a91d3a] "
+                                    onClick={()=> {
+                                        if(selectedColor && selectedSize)
+                                        {
+                                            handleCart()
+                                        }
+                                        else alert('Vui lòng chọn màu sắc và kích thước!')
+                                        }}
+                                    title={!selectedColor || !selectedSize ? 'Vui lòng chọn màu sắc và số lượng' : ''}
+                                >
+                                     <FontAwesomeIcon icon={faBagShopping} color='#1E0342' className='h-8 w-6 border-[#EEEEEE]' />
+                                    <div className=' content-center text-center text-[#1E0342] desktop:text-xl mobile:text-lg font-extrabold ml-3 mt-1 active:text-[#a91d3a]'>THÊM VÀO GIỎ </div>
+                                </button>
+                                {/* Mua ngay sp */}
+                                <button className="w-full desktop:h-11 mobile:h-9 flex flow-row items-center text-white desktop:text-xl mobile:text-lg font-extrabold justify-center bg-[#1E0342] rounded-md mt-3"
+                                    onClick={()=> {
+                                        if(selectedColor && selectedSize)
+                                        {
+                                        const updateCartProduct = {
+                                            ...cartProduct,
+                                            size: selectedSize,
+                                            color: selectedColor,
+                                            quantity: quality,
+                                            sizeId: selectedSizeId,
+                                            colorId: selectedColorId,
+                                            colorName: selectedColorName
+                                        };
+                                        navigate("/check_out", { state: { product: updateCartProduct} })}
+                                        else alert('Vui lòng chọn màu sắc và kích thước!');
+                                        }}>
+                                    MUA NGAY
+                                </button>
+                            </div>
+
+                        </div>
+                     </div>
 
                     {/* Thông tin mô tả */}
-                    <div className='w-[90%] desktop:w-[70%] border-2 mt-14 font-medium font-Public text-justify'>
+                    <div className='w-[90%] desktop:w-[70%] mt-14 font-medium font-Public text-justify'>
                     
                         {DetailProduct.description.split('\n').map((line, index) => (
                             <React.Fragment key={index} >
@@ -549,17 +577,27 @@ const DetailProduct = () =>{
                             >
                                     <img  src={forward} alt="none"/>
                             </button>
-                        </div>  
+                    </div>  
                 </div>
 
             )}  
                 {/* Ẩn/Hiện thanh giỏ hàng */}
                 { isCartMini && <CartMini handleCart={()=>setCart(!isCartMini)}/>}
                 <Footer/>
+
+                        {/* Nút Lên đầu trang */}
+            {showScrollToTop && (
+                <button
+                    onClick={scrollToTop}
+                    className="fixed bottom-4 right-4 p-3 bg-[#1E0342] text-white rounded-full shadow-lg hover:bg-blue-600"
+                >
+                     <FontAwesomeIcon icon={faArrowUp} color='white' className='h-6 w-6' />  
+                </button>
+            )}
             </div>
         </div>
 
     )
 }
 
-export default DetailProduct
+export default DetailProduct;

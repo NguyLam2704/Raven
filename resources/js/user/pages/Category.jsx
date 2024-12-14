@@ -95,9 +95,9 @@ const Category = ({ cate }) => {
       }}, [productCategories, sort]); // Call when sort and category change
 
     return (
-        <div  className='w-full h-full font-Public'>
+        <div  className='w-full h-full font-Public bg-white'>
             <Navigation />
-            <div  className='mt-[90px] justify-items-center'>
+            <div  className='mt-[90px] bg-white justify-items-center'>
 
                 {/* Slide */}
                 {
