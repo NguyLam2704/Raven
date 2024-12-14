@@ -284,7 +284,7 @@ const Navigation = () => {
                                 {/* <img src={Search} alt="search icon" className=' h-7 w-7'/> */}
                             </button>
                             {menuOpen && (
-                                <div className="absolute right-0 -top-2 bg-[#1E0342] rounded-md p-1"
+                                <div className="absolute right-0 -top-2 bg-gray-300 rounded-md p-[2px]"
                                     onMouseLeave={() => setMenuOpen(!menuOpen)}
                                 >
                                     <form onSubmit={navigateToAbout} className="flex items-center">
@@ -328,7 +328,7 @@ const Navigation = () => {
                                 className="p-2 rounded-full "
                                 onClick={() => setMenuOpen(!menuOpen)}
                             >
-                                <img src={Search} alt="search icon" className='mobile:h-5 mobile:w-5' />
+                                <FontAwesomeIcon icon={faSearch} color='#1E0342' className='h-8 w-6'/>
                             </button>
                             {menuOpen && (
                                 <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-lg p-2">
@@ -352,13 +352,9 @@ const Navigation = () => {
 
                         {/* Cart */}
                         <Link to="/cart" className="relative">
-                            <img
-                                className="w-8 h-8 mobile:h-5 mobile:w-5 "
-                                src={Cart}
-                                alt="cart"
-                            />
+                            <FontAwesomeIcon icon={faBagShopping} color='#1E0342' className='h-8 w-6 border border-[#EEEEEE]' />
                             {quantityCart > 0 && (
-                                <span className="absolute mobile:-top-1 desktop:-top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                                <span className="absolute mobile:top-1 desktop:-top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
                                     {quantityCart}
                                 </span>
                             )}

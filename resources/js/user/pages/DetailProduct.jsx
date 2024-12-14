@@ -3,7 +3,7 @@ import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import CartMini from '../components/Cart/CartMini';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronUp, faChevronDown, faPlus, faMinus, faChevronCircleRight, faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { faChevronUp, faChevronDown, faPlus, faMinus, faChevronRight, faChevronLeft, faBagShopping, faArrowUp  } from "@fortawesome/free-solid-svg-icons";
 import cart from '../assets/cart_red.svg'
 import Product from '../components/Product';
 import back from '../assets/Back.svg'
@@ -21,6 +21,7 @@ const DetailProduct = () =>{
     const swiperRef = useRef(null);
     const swiperSameRef = useRef(null);
     const [currentIndex, setCurrentIndex] = useState(0); // Theo dõi slide hiện tại
+     const [showScrollToTop, setShowScrollToTop] = useState(false);
 
     // Xử lý khi nhấn nút "Up"
     const handlePrev = () => {
@@ -157,6 +158,32 @@ const DetailProduct = () =>{
             setBang(SizeAo)
         }
     }
+
+        // Theo dõi sự kiện scroll
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight;
+            const clientHeight = document.documentElement.clientHeight;
+
+            // Hiển thị nút khi scroll gần đến cuối trang
+            setShowScrollToTop(scrollTop > clientHeight);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+        // Hàm lướt lên đầu trang
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    };
     
     return(   
         <div className='bg-white'>
@@ -449,7 +476,7 @@ const DetailProduct = () =>{
                                         }}
                                     title={!selectedColor || !selectedSize ? 'Vui lòng chọn màu sắc và số lượng' : ''}
                                 >
-                                    <img className='desktop:h-6 ipad:h-5' src={cart} alt="cart" />
+                                     <FontAwesomeIcon icon={faBagShopping} color='#1E0342' className='h-8 w-6 border-[#EEEEEE]' />
                                     <div className=' content-center text-center text-[#1E0342] desktop:text-xl mobile:text-lg font-extrabold ml-3 mt-1 active:text-[#a91d3a]'>THÊM VÀO GIỎ </div>
                                 </button>
                                 {/* Mua ngay sp */}
@@ -554,6 +581,16 @@ const DetailProduct = () =>{
                 {/* Ẩn/Hiện thanh giỏ hàng */}
                 { isCartMini && <CartMini handleCart={()=>setCart(!isCartMini)}/>}
                 <Footer/>
+
+                        {/* Nút Lên đầu trang */}
+            {showScrollToTop && (
+                <button
+                    onClick={scrollToTop}
+                    className="fixed bottom-4 right-4 p-3 bg-[#1E0342] text-white rounded-full shadow-lg hover:bg-blue-600"
+                >
+                     <FontAwesomeIcon icon={faArrowUp} color='white' className='h-6 w-6' />  
+                </button>
+            )}
             </div>
         </div>
 

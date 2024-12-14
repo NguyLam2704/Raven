@@ -1,5 +1,5 @@
 import React from 'react';
-import Logo from "../assets/Logo.svg"
+import Logo from "../assets/qua_moi.png"
 import tiktok from "../assets/tiktok.svg"
 import fb from "../assets/facebook.svg"
 import ins from "../assets/instagram.svg"

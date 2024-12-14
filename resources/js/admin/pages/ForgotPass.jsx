@@ -36,14 +36,14 @@ const ForgotPass = () => {
 
     return (
         <div
-            className="flex flex-col items-center justify-center h-screen bg-login"
-            style={{ backgroundImage: `url(${bg_login})` }}
+            className="flex flex-col items-center justify-center h-screen bg-[#EEEEEE]"
+            // style={{ backgroundImage: `url(${bg_login})` }}
         >
             <Helmet>
                 <title>Quên mật khẩu</title>
             </Helmet>
             <div className="mt-2">
-                <h1 className="text-[32px] font-bold text-white text-center mb-3">
+                <h1 className="text-[32px] font-bold text-[#1E0342] text-center mb-3">
                     ADMIN DASHBOARD
                 </h1>
             </div>
