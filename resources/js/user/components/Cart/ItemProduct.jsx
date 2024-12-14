@@ -13,19 +13,22 @@ const ItemProduct = ({ product, handlerPlus, handlerTru, removeProduct, onCheckC
 
     const fetchDetail = async () => {
         try {
-            const response = await fetch(`/api/v1/product?proId[eq]=${product.proId}&includeProColorSize=true&includeImage=true`);
+            const response = await fetch(`/api/v1/proColorSize?prodId[eq]=${product.proId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch products');
             }
             const data = await response.json();
-            const productDetail = data.data[0];
+            const productDetail = data.data;
+            console.log(productDetail);
             // Tính toán quantityAvailable
-            const filterProColorSize = productDetail?.proColorSize.filter(
+            const filterProColorSize = productDetail?.filter(
                 (item) =>
-                    item.color.colorCode === product.color &&
-                    item.size.sizeCode === product.size
+                    item.colorId === product.colorId &&
+                    item.sizeId === product.sizeId
             );
-            setQuantityAvailable(filterProColorSize?.[0]?.quantityAvailable);
+            console.log(filterProColorSize);
+            console.log(filterProColorSize[0].quantityAvailable);
+            setQuantityAvailable(filterProColorSize[0].quantityAvailable);
         } catch (err) {
             console.error(err.message);
         } finally {
@@ -99,10 +102,10 @@ const ItemProduct = ({ product, handlerPlus, handlerTru, removeProduct, onCheckC
                 </button>
             </div>
             {/* Tổng giá sản phẩm */}
-            <div className="w-2/12 text-center text-[#a91d3a] desktop:text-xl ipad:text-lg mobile:text-xs font-bold desktop:pt-14 ipad:pt-12 mobile:pt-8">
+            <div className="w-2/12 text-center text-[#1E0342] desktop:text-xl ipad:text-lg mobile:text-xs font-bold desktop:pt-14 ipad:pt-12 mobile:pt-8">
                 {(product.cost - product.cost * product.discount / 100).toLocaleString('vi-VN')}đ
             </div>
-            <div className="desktop:flex ipad:flex w-2/12 justify-center mobile:hidden text-right text-[#a91d3a] desktop:text-xl ipad:text-lg font-bold desktop:pt-14 ipad:pt-12 mobile:pt-8">
+            <div className="desktop:flex ipad:flex w-2/12 justify-center mobile:hidden text-right text-[#1E0342] desktop:text-xl ipad:text-lg font-bold desktop:pt-14 ipad:pt-12 mobile:pt-8">
                 {((product.cost - product.cost * product.discount / 100) * product.quantity).toLocaleString('vi-VN')}đ
             </div>
             {/* Checkbox chọn sản phẩm */}
