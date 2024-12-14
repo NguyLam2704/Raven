@@ -163,7 +163,7 @@ const CheckOut = () => {
     }
     return(
 
-        <div className="w-full justify-items-center font-Public">
+        <div className="w-full justify-items-center font-Public bg-white">
             <Navigation/>
                 <div className="desktop:w-10/12 ipad:w-11/12 mobile:w-10/12 mt-[150px]">
                     <div className=" text-center text-[#1E0342] desktop:text-3xl ipad:text-2xl mobile:text-xl font-extrabold">THANH TOÁN</div>

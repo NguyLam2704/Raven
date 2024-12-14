@@ -22,7 +22,7 @@ const AboutUs = () => {
     const [is2024,set2024] = useState(false)
 
     return(
-        <div>
+        <div className='bg-white'>
             <Navigation/>
             <div className='w-full justify-items-center pt-16 mt-[90px]'>
                 <div className='w-10/12 border-b-[3px] border-black text-center desktop:text-7xl ipad:text-6xl mobile:text-5xl font-extrabold py-10 '>RAVEN</div>

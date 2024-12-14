@@ -71,7 +71,7 @@ const Cart = () => {
     }
     const navigate = useNavigate()
     return(
-        <div className="w-full font-Public">
+        <div className="w-full font-Public bg-white">
             <Navigation/>
             <div className="w-full justify-items-center pt-24 mt-16 ">
                 <div className="text-black desktop:text-2xl ipad:text-xl mobile:text-lg font-bold uppercase ">Giỏ hàng của bạn</div>

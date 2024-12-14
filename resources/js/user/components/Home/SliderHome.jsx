@@ -6,6 +6,7 @@ import slider2 from '../../assets/banner1.webp';
 import slider3 from '../../assets/slider3.webp';
 import slider4 from '../../assets/banner3.jpg';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper/modules';
 import 'swiper/swiper-bundle.css';
 
 //Slider trong trang chủ
@@ -27,14 +28,11 @@ const SliderHome = () => {
   };
 
   return (
-       <div className="w-full bg-center object-cover duration-500">
+       <div className="w-full bg-center object-cover duration-500 mt-[80px]">
         <Swiper
           slidesPerView={1}
-          loop={true}
-          autoplay={{
-            delay: 3000,
-            disableOnInteraction: false,
-          }}
+          loop={true}          
+          onAutoplay={500}
           className="w-full h-full"
         >
           {arr_slide.map((image, index) => (

@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 //Chinh sách mua hàng
 const BuyInfo = () => {
     return(
-        <div className="w-full font-Public">
+        <div className="w-full font-Public bg-white">
             <Navigation/>
             <div className="w-full justify-items-center mt-[90px] ">
                 <div className='desktop:w-8/12 ipad:w-9/12 mobile:w-11/12 justify-items-center pt-5'>
