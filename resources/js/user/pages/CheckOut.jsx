@@ -145,9 +145,10 @@ const CheckOut = () => {
         console.log(storeProduct);
 
         if (!response.ok){
-            throw new Error('Failed to fetch order info')
             setError(true)
             setLoading(false)
+            throw new Error('Failed to fetch order info')
+            
         }
         const data = await response.json();
         // delete data in local storage
@@ -502,7 +503,10 @@ const CheckOut = () => {
                 }
                 {
                     error && <div className="absolute h-screen w-full  justify-items-center content-center bg-gray-300 bg-opacity-30 top-0">                        
-                        <div className="text-red-500 font-bold">Xảy ra lỗi, vui lòng thử lại sau</div>
+                        <div className="bg-white justify-items-center p-5 rounded-lg">
+                            <div className="text-red-500 font-bold py-3">Xảy ra lỗi, vui lòng thử lại sau</div>
+                            <button onClick={()=>setError(false)} className=" font-semibold bg-[#1E0342] text-white px-2 py-[6px] mt-5 rounded-lg">Đặt hàng lại</button>
+                        </div>
                     </div>
                 }
                 { loaded && <LoadingCheckout/>}

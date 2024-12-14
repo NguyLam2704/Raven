@@ -10,7 +10,7 @@ const LoadingCheckout = () => {
             navigate('/');  // Redirect to a different path
           };
     return(
-        <div className="w-full h-screen absolute top-0 z-50 justify-items-center ">
+        <div className="w-full h-screen absolute top-0 z-50 justify-items-center bg-black bg-opacity-25 ">
             <div className="bg-white justify-items-center content-center p-5 border rounded-xl shadow-xl mt-24">
                 <div className="flex flex-row content-center align-middle">
                     <div className=" h-5 w-5 mx-3 mt-[6px] rounded-full border-[3px] border-black "></div>                    
