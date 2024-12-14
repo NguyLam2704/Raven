@@ -112,7 +112,7 @@ const Cart = () => {
                  {/* Nút thanh toán */}
                 {   storeProduct.length>0 &&(
                     <div className="desktop:w-10/12 ipad:w-10/12 mobile:w-11/12 flex flex-row justify-end mt-16 desktop:pr-8 ipad:pr-7 mobile:pr-6 ease-in duration-300">
-                        <button className="desktop:w-36 ipad:w-32 mobile:w-28 desktop:h-10 ipad:h-9 mobile:h-8 bg-[#c73659] rounded-[5px] border border-[#151515] text-center text-[#eeeeee] desktop:text-base ipad:text-sm mobile:text-xs font-bold "
+                        <button className="desktop:w-36 ipad:w-32 mobile:w-28 desktop:h-10 ipad:h-9 mobile:h-8 bg-[#1E0342] rounded-[5px] border border-[#151515] text-center text-[#eeeeee] desktop:text-base ipad:text-sm mobile:text-xs font-bold "
                             onClick={() => navigate("/check_out", { state: { product: cartProduct} })} 
                             disabled={!cartProduct.length}
                         >Thanh toán</button>

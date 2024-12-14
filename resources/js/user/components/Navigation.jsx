@@ -104,7 +104,7 @@ const Navigation = () => {
     };
 
     return(
-        <div className="flex z-50 w-full border-4 border-green-500 max-w-[1557px] mx-auto bg-[#F5F6FA]">
+        <div className="flex z-50 w-full max-w-[1557px] mx-auto bg-[#F5F6FA]">
             <div className={`fixed desktop:hidden inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ease-in-out
                 ${isSidebarOpen ? "opacity-100 visible" : "opacity-0 invisible"} z-20`}
                 onClick={toggleSidebar}>

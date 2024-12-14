@@ -19,22 +19,25 @@ import 'swiper/swiper-bundle.css';
 //Chi tiết sản phẩm
 const DetailProduct = () =>{
     const swiperRef = useRef(null);
+    const swiperRefMoblie = useRef(null);
     const swiperSameRef = useRef(null);
     const [currentIndex, setCurrentIndex] = useState(0); // Theo dõi slide hiện tại
 
     // Xử lý khi nhấn nút "Up"
     const handlePrev = () => {
         if (currentIndex > 0) {
-        setCurrentIndex((prev) => prev - 1);
-        swiperRef.current?.slideTo(currentIndex - 1);
+            setCurrentIndex((prev) => prev - 1);
+            swiperRef.current?.slideTo(currentIndex - 1);
+            swiperRefMoblie.current?.slideTo(currentIndex - 1);
         }
     };
 
     // Xử lý khi nhấn nút "Down"
     const handleNext = () => {
         if (currentIndex < DetailProduct.productImage.length - 3) {
-        setCurrentIndex((prev) => prev + 1);
-        swiperRef.current?.slideTo(currentIndex + 1);
+            setCurrentIndex((prev) => prev + 1);
+            swiperRef.current?.slideTo(currentIndex + 1);
+            swiperRefMoblie.current?.slideTo(currentIndex + 1);
         }
     };
     //Kiểm soát nút qua lại
@@ -149,15 +152,14 @@ const DetailProduct = () =>{
     //Loai bang size
     const [BangSize, setBang] = useState()
     const handlerBangSize = () => {
-        if(categoryType===6){
+        if(categoryType == 6){
             setBang(SizeQuanDai)
-        }else if(categoryType===7){
+        }else if(categoryType == 7){
             setBang(SizeQuanNgan)
         }else{
             setBang(SizeAo)
         }
     }
-    
     return(   
         <div>
             <div className={`w-full  ${(isCartMini || isBangSise) ? 'overflow-hidden h-screen' : 'overflow-auto'}`}>
@@ -252,12 +254,13 @@ const DetailProduct = () =>{
                                 <Swiper
                                     direction={'horizontal'}
                                     //slidesPerView={4} // Hiển thị 3 ảnh mỗi lần
-                                    onSwiper={(swiper) => (swiperRef.current = swiper)} // Lưu instance của Swiper
+                                    onSwiper={(swiper) => (swiperRefMoblie.current = swiper)} // Lưu instance của Swiper
                                     mousewheel={true} 
                                     className='h-full'
                                     breakpoints={{
                                         0: { slidesPerView: 2 },
-                                        768: { slidesPerView: 4 },
+                                        768: { slidesPerView: 3 },
+                                        1024: { slidesPerView: 4 },
                                     }}
                                 >
                                     {DetailProduct.productImage?.map((element, index) => (
@@ -357,7 +360,9 @@ const DetailProduct = () =>{
                             </div>
                         </div>
                         {/* Size */}
-                        <div>
+                        {
+                            categoryType !== 8 && categoryType !== 9 && categoryType !== 10 && categoryType !== 11 && 
+                            <div>
                             <div className='mb-1 flex flex-row'>
                                 <div className='content-center text-black desktop:text-base ipad:text-sm font-normal '>Size</div>
                                 <button  onClick={()=>setBangSize(true)} className='content-center hover:text-gray-600 hover:decoration-gray-500 text-black desktop:text-sm ipad:text-xs font-light underline-offset-4 underline ml-20'>Bảng size</button>
@@ -406,11 +411,9 @@ const DetailProduct = () =>{
                                         )
                                     })}
                                     
-                            </div>
-
-                            
-                                           
+                            </div>          
                         </div>
+                        }
                         {/* Số lượng */}
                         <div className='h-8 flex flex-row'>
                             <div className='h-8 content-center text-black text-base font-normal font-Public '>Số lượng:</div>
@@ -466,7 +469,7 @@ const DetailProduct = () =>{
                                         colorName: selectedColorName
                                     };
                                     navigate("/check_out", { state: { product: updateCartProduct} })}
-                                    else console.log("empty color and empty size");
+                                    else alert('Vui lòng chọn màu sắc và kích thước!')
                                     }}>
                                 MUA NGAY
                             </button>

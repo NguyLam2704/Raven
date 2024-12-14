@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import backbtn from '../../assets/Back.svg';
 import forwardbtn from '../../assets/Forward.svg';
-import slider1 from '../../assets/img_slider_1.svg';
-import slider2 from '../../assets/slider2.svg';
+import slider1 from '../../assets/banner2.jpg';
+import slider2 from '../../assets/banner1.webp';
+import slider3 from '../../assets/slider3.webp';
+import slider4 from '../../assets/banner3.jpg';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper-bundle.css';
 
 //Slider trong trang chủ
 const SliderHome = () => {
-  const arr_slide = [slider1,  slider2];//danh sách các ảnh trong slider
+  const arr_slide = [slider1, slider3, slider4, slider2,];//danh sách các ảnh trong slider
   const [index,setindex]=useState(0);
 
   //hàm chuyển đến ảnh slider trước đó
@@ -23,24 +27,28 @@ const SliderHome = () => {
   };
 
   return (
-    <div className='w-full mt-20 h-[520px] relative'>
-      <div style={{ backgroundImage: `url(${arr_slide[index]})` }} className='w-full h-full bg-center bg-cover duration-500'>
+       <div className="w-full bg-center object-cover duration-500">
+        <Swiper
+          slidesPerView={1}
+          loop={true}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
+          className="w-full h-full"
+        >
+          {arr_slide.map((image, index) => (
+            <SwiperSlide key={index}>
+              <img
+                src={image}
+                className="w-full h-full object-cover"
+                alt={`Slide ${index + 1}`}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
-      <div className="absolute flex h-full w-full top-0 left-0">
-        <div className="my-auto w-full flex justify-between">
-          <button  className="p-1 bg-white hover:opacity-70 bg-opacity-30 rounded-full"
-                  onClick={back} //chuyển đến ảnh slider trước đó
-          >
-            <img src={backbtn} alt="Back" />
-          </button>
-          <button className="p-1 bg-white hover:opacity-70 bg-opacity-30 rounded-full"
-                   onClick={forward} //chuyển đến ảnh slider tiếp theo
-          >
-            <img src={forwardbtn} alt="Forward" />
-          </button>
-        </div>
-      </div>
-    </div>
+      
   );
 };
 

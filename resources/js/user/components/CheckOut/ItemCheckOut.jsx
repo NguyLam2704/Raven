@@ -13,7 +13,7 @@ const ItemCheckOut = ({product}) => {
                     {/* Số lượng sản phẩm */}
                     <div className="text-black desktop:text-sm ipad:text-xs mobile:text-sm font-medium">Số lượng: {product.quantity}</div>
                     {/* Giá sản phẩm */}
-                    <div className=" text-[#c73659] desktop:text-sm ipad:text-xs mobile:text-sm font-bold ">{Number((product.cost - (product.cost * product.discount / 100))).toLocaleString()}đ</div>
+                    <div className=" text-[#1E0342] desktop:text-sm ipad:text-xs mobile:text-sm font-bold ">{Number((product.cost - (product.cost * product.discount / 100))).toLocaleString()}đ</div>
                 </div>
             </div>
 
