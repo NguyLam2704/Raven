@@ -463,7 +463,7 @@ const CheckOut = () => {
                         <button className="content-center text-center text-white desktop:text-2xl ipad:text-xl font-bold rounded-lg border border-black bg-[#c73659] px-10 py-1"
                             onClick={()=>{
                                 if(name && email && phone && selectedTinhName && selectedQuanName && selectedPhuongName && street && (COD||banking) ){
-                                    // fetchdata() 
+                                    fetchdata();
                                 }else{ 
                                     if(name=='') setStateName(true)
                                         else setStateName(false)
