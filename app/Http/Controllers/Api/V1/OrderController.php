@@ -143,6 +143,10 @@ class OrderController extends Controller
 
     public function updateOrder(Request $request){
         //check phonenumber
+            if (!is_array($request->product)) {
+        return response()->json(['error' => 'Invalid product format'], 400);
+    }
+
         $validator_user = Validator::make($request->all(),[
             'phonenumber' => 'required|unique:users,phonenumber'
         ]);
@@ -175,22 +179,24 @@ class OrderController extends Controller
         $order->save();
         $order->fresh();
         /************************************* */
-        $productOrder = new ProductOrder();
+        
         $products = $request->product;
         foreach($products as $product){
+            $productOrder = new ProductOrder();
             $proId = $product['proId'];
             $colorId = $product['colorId'];
             $sizeId = $product['sizeId'];
             // update quantity_available in pro_color_size
             $proColorSize = ProColorSize::where('prod_id',$proId)->where('color_id',$colorId)->where('size_id',$sizeId)->first();
-            $proColorSize->quantity_available = $proColorSize->quantity_available - $product['quantity'];
-            $proColorSize->save();
+            // $proColorSize->quantity_available = $proColorSize->quantity_available - $product['quantity'];
+            // $proColorSize->save();
+            // $proColorSize->fresh();
 
             /************************************************************ */
             // update quantity_sold in products
-            $updateProQuantitySold = Product::where('prod_id',$proId)->first();
-            $updateProQuantitySold->quantity_sold = $updateProQuantitySold->quantity_sold+$product['quantity'];
-            $updateProQuantitySold->save();
+            // $updateProQuantitySold = Product::where('prod_id',$proId)->first();
+            // $updateProQuantitySold->quantity_sold = $updateProQuantitySold->quantity_sold+$product['quantity'];
+            // $updateProQuantitySold->save();
             /************************************************************ */
             // insert to product_order
             $productOrder->order_id = $order->order_id;
@@ -198,6 +204,7 @@ class OrderController extends Controller
             $productOrder->quantity = $product['quantity'];
             $productOrder->after_discount_cost = $product['discount'] > 0 ? $product['cost'] - $product['cost']*$product['discount']/100 : $product['cost'] ;
             $productOrder->save();
+            $productOrder->fresh();
             // return response()->json(['message' => $proColorSize->pro_color_size_id]);
         }
         /************************************ */

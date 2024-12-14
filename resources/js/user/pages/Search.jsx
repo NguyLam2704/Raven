@@ -6,77 +6,16 @@ import img_product from '../assets/img_product.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faArrowUp} from '@fortawesome/free-solid-svg-icons'
 import Footer from "../components/Footer";
-import {  useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 //Trang tiềm kiếm
-const ListProduct = [
-    {
-      key: 1,
-      name: "Cao Quốc Kiệt",
-      price: 1000000,
-      img: img_product,
-      sale: 0,
-    },
-    {
-        key: 2,
-        name: "Cao Quốc Kiệt",
-        price: 1000000,
-        img: img_product,
-        sale: 0,
-      },
-      {
-        key: 3,
-        name: "Cao Quốc Kiệt",
-        price: 1000000,
-        img: img_product,
-        sale: 0,
-      },
-      {
-        key: 4,
-        name: "Cao Quốc Kiệt",
-        price: 1000000,
-        img: img_product,
-        sale: 70,
-      },
-      {
-        key: 5,
-        name: "Cao Quốc Kiệt",
-        price: 1000000,
-        img: img_product,
-        sale: 0,
-      },
-      {
-        key: 6,
-        name: "Cao Quốc Kiệt",
-        price: 1000000,
-        img: img_product,
-        sale: 30,
-      },
-      {
-        key: 7,
-        name: "Cao Quốc Kiệt",
-        price: 1000000,
-        img: img_product,
-        sale: 40,
-      },
-      {
-        key: 7,
-        name: "Cao Quốc Kiệt",
-        price: 1000000,
-        img: img_product,
-        sale: 0,
-      },
-
-  ];
 
 const Search = () => {
   
-   
     //Giá trị của bộ lọc sắp xếp
     const [sort, setSort] = useState('Giá giảm dần');
     // Ẩn/hiện các giá trị của bộ lọc tìm kiếm
     const [isOpen, setOpen] = useState(false);
-    
+    const [loading, setLoading] = useState(false); // Trạng thái tải dữ liệu
     //Hàm set giá trị cho bộ lọc
     const setValue = (value) => {
       setSort(value);
@@ -98,12 +37,15 @@ const Search = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setLoading(true);
         const response = await fetch('/api/v1/product?includeImage=true'); // Gọi API
         const data = await response.json(); // Chuyển đổi JSON
         setProducts(data.data || []); // Lưu danh sách sản phẩm vào state
         setFilteredProducts(data.data || []); // Hiển thị toàn bộ sản phẩm ban đầu
       } catch (error) {
         console.error("Lỗi khi lấy dữ liệu:", error);
+      } finally {
+        setLoading(false); // Kết thúc trạng thái tải
       }
     };
     fetchProducts();
@@ -164,7 +106,7 @@ const Search = () => {
                 <div className='w-full desktop:h-8 ipad:h-7 mobile:h-6 justify-items-end '
                       onMouseLeave={()=>setOpen(false)} //ẩn các giá trị bộ lọc
                 >
-                    <div  className='flex  '>                            
+                    <div className='flex  '>                            
                         <button className='flex mr-3'
                                 onClick={()=>setOpen(true)} // hiện các giá trị bộ lọc
                         >
