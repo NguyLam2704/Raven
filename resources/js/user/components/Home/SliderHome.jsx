@@ -4,8 +4,8 @@ import slider2 from '../../assets/banner1.webp';
 import slider3 from '../../assets/slider3.webp';
 import slider4 from '../../assets/banner3.jpg';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay } from 'swiper/modules'; // Correct import for Autoplay module
-import 'swiper/swiper-bundle.css'; // Import core Swiper CSS
+import { Autoplay } from 'swiper/modules'; 
+import 'swiper/swiper-bundle.css';
 
 // Slider trong trang chủ
 const SliderHome = () => {
@@ -14,10 +14,10 @@ const SliderHome = () => {
   return (
     <div className="w-full bg-center object-cover duration-500 mt-[80px]">
       <Swiper
-        modules={[Autoplay]} // Register the Autoplay module
+        modules={[Autoplay]}
         slidesPerView={1}
         loop={true}
-        autoplay={{ delay: 3000, disableOnInteraction: false }} // Configure autoplay
+        autoplay={{ delay: 3000, disableOnInteraction: false }} 
         className=""
       >
         {arr_slide.map((image, index) => (

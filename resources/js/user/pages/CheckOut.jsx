@@ -6,6 +6,8 @@ import axios from 'axios';
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import LoadingCheckout from "../components/CheckOut/LoadingCheckout";
+import img_loading from '../assets/loading.gif'
 
 //Thanh toán
 const CheckOut = () => {
@@ -111,10 +113,13 @@ const CheckOut = () => {
         const selectedPhuongObj = phuong.find((item) => item.id === idphuong);
         setSelectedPhuongName(selectedPhuongObj?.full_name || '');
     };
-
+    const [loading,setLoading] = useState(false)
+    const [error, setError] = useState(false)
+    const [loaded, setLoaded] = useState(false)
     const fetchdata = async () => {
         // const response = await axios.get("/api/v1/testroute");
         // return response.data;
+        setLoading(true)
         const response = await fetch(`/api/v1/updateOrder`,{
             method: "POST",
             headers: {
@@ -141,15 +146,20 @@ const CheckOut = () => {
 
         if (!response.ok){
             throw new Error('Failed to fetch order info')
+            setError(true)
+            setLoading(false)
         }
         const data = await response.json();
         // delete data in local storage
         if (data.message === 'Order updated successfully')
-            {
-                localStorage.removeItem('cart');
-                handleRedirect();
-            }
-
+        {
+            localStorage.removeItem('cart');
+            setLoading(false)
+            setLoaded(true)            
+        }
+        setLoading(false)
+        setLoaded(true) 
+        
         console.log(data);
         // setOrderInfo(data.data || []);
         // console.log(orderInfo);
@@ -163,14 +173,14 @@ const CheckOut = () => {
     }
     return(
 
-        <div className="w-full justify-items-center font-Public bg-white">
+        <div className={`w-full justify-items-center font-Public bg-white ${(loaded || loading || error ) ? 'overflow-hidden h-screen' : 'overflow-auto'}`}>
             <Navigation/>
-                <div className="desktop:w-10/12 ipad:w-11/12 mobile:w-10/12 mt-[150px]">
-                    <div className=" text-center text-[#1E0342] desktop:text-3xl ipad:text-2xl mobile:text-xl font-extrabold">THANH TOÁN</div>
+                <div className={`desktop:w-10/12 ipad:w-11/12 mobile:w-10/12 mt-[150px] ${(loaded || loading || error) ? 'overflow-hidden h-screen' : 'overflow-auto'} `}>
+                    <div className=" text-center text-[#1E0342] desktop:text-3xl ipad:text-2xl mobile:text-xl font-extrabold">ĐẶT HÀNG</div>
                     <div className=" desktop:grid ipad:grid mobile:hidden grid-cols-2 mt-12">
                         {/* Cột nhập Thông tin thanh toán */}
                         <div className="border-r border-black desktop:px-20 ipad:px-10">
-                            <div className=" text-center text-[#151515] text-xl font-bold ">Thông tin thanh toán</div>
+                            <div className=" text-center text-[#151515] text-xl font-bold ">Thông tin giao hàng</div>
                             {/* Nhập họ và tên */}
                             <input className="h-10 w-full border border-black px-2 mt-6 "
                                 type="text"
@@ -481,10 +491,21 @@ const CheckOut = () => {
                                         else setStateStreet(false)
                                 }
                             }}
-                        >THANH TOÁN</button>
+                        >ĐẶT HÀNG</button>
                     </div>
                     
                 </div>
+                { loading && 
+                    <div className="absolute h-screen w-full justify-items-center content-center bg-gray-300 bg-opacity-30 top-0">
+                        <img className="desKtop:w-20 desktop:h-20 ipad:w-16 ipad:h-16 mobile:h-14 mobile:w-14" src={img_loading}/>
+                    </div>
+                }
+                {
+                    error && <div className="absolute h-screen w-full  justify-items-center content-center bg-gray-300 bg-opacity-30 top-0">                        
+                        <div className="text-red-500 font-bold">Xảy ra lỗi, vui lòng thử lại sau</div>
+                    </div>
+                }
+                { loaded && <LoadingCheckout/>}
             <Footer/>
         </div>
     )

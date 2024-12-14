@@ -115,7 +115,7 @@ const Cart = () => {
                         <button className="desktop:w-36 ipad:w-32 mobile:w-28 desktop:h-10 ipad:h-9 mobile:h-8 bg-[#1E0342] rounded-[5px] border border-[#151515] text-center text-[#eeeeee] desktop:text-base ipad:text-sm mobile:text-xs font-bold "
                             onClick={() => navigate("/check_out", { state: { product: cartProduct} })} 
                             disabled={!cartProduct.length}
-                        >Thanh toán</button>
+                        >Đặt hàng</button>
                     </div>
                 )}
             </div>

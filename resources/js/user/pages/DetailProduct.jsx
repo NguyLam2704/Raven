@@ -180,7 +180,7 @@ const DetailProduct = () =>{
         };
     }, []);
 
-        // Hàm lướt lên đầu trang
+    // Hàm lướt lên đầu trang
     const scrollToTop = () => {
         window.scrollTo({
             top: 0,
