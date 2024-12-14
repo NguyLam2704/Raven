@@ -82,7 +82,7 @@ const Products = () => {
                 ) : (
                     <ProductsList data={paginatedProducts} />
                 )}
-                <div className="flex justify-center mt-4">
+                <div className="flex justify-center mt-4 z-0">
                     <Pagination
                         count={totalPages}
                         page={currentPage}
