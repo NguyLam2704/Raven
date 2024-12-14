@@ -75,6 +75,7 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/views', [ViewsController::class, 'addView']);
     Route::post('/addproduct', [ProductDetailsController::class, 'addProduct']);
     Route::get('/product/{id}', [ProductDetailsController::class, 'getProduct']);
+    Route::get('/product/details/{id}', [ProductDetailsController::class, 'getProductDetails']);
     Route::put('/product/{id}', [ProductDetailsController::class, 'changeProduct']);
     Route::delete('/product/{id}', [ProductDetailsController::class, 'deleteProduct']);
     Route::get('/product/{id}/bieudo', [ProductDetailsController::class, 'getChart']);

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('pro_color_sizes', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

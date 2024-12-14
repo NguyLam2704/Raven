@@ -166,13 +166,13 @@ const CheckOut = () => {
         <div className="w-full justify-items-center font-Public">
             <Navigation/>
                 <div className="desktop:w-10/12 ipad:w-11/12 mobile:w-10/12 mt-[150px]">
-                    <div className=" text-center text-[#a91d3a] desktop:text-3xl ipad:text-2xl mobile:text-xl font-extrabold">THANH TOÁN</div>
+                    <div className=" text-center text-[#1E0342] desktop:text-3xl ipad:text-2xl mobile:text-xl font-extrabold">THANH TOÁN</div>
                     <div className=" desktop:grid ipad:grid mobile:hidden grid-cols-2 mt-12">
                         {/* Cột nhập Thông tin thanh toán */}
                         <div className="border-r border-black desktop:px-20 ipad:px-10">
                             <div className=" text-center text-[#151515] text-xl font-bold ">Thông tin thanh toán</div>
                             {/* Nhập họ và tên */}
-                            <input className="h-10 w-full border border-black px-2 mt-6"
+                            <input className="h-10 w-full border border-black px-2 mt-6 "
                                 type="text"
                                 placeholder="Họ và tên"
                                 value={name}
@@ -182,10 +182,10 @@ const CheckOut = () => {
                                 stateName && <div className="mt-[1px] ml-[2px] text-xs text-red-600">
                                 <FontAwesomeIcon icon={faCircleExclamation} />  Vui lòng nhập họ tên</div>  
                             }                          
-                            <div  className="h-10 w-full ipad:hidden desktop:flex flex-row mt-6 gap-4 ">
+                            <div  className="h-10 w-full ipad:hidden desktop:flex flex-row mt-6  gap-4 ">
                                 {/* Nhập email */}
                                 <div className="w-2/3">
-                                    <input className="h-10 w-full border border-black px-2 "
+                                    <input className="h-10 w-full border border-black px-2  "
                                         type="text"
                                         placeholder="Email"
                                         value={email}
@@ -199,7 +199,7 @@ const CheckOut = () => {
                                 {/* Nhập sđt    */}
                                 <div className="">
                                     <input 
-                                        className="h-10 w-full border border-black px-2 "
+                                        className="h-10 w-full border border-black px-2  "
                                         type="text"
                                         placeholder="Số điện thoại"
                                         value={phone}
@@ -217,7 +217,7 @@ const CheckOut = () => {
                                 </div>                                                               
                             </div>
                             {/* Nhập email */}
-                            <input className="h-10 w-full desktop:hidden border border-black px-2 mt-6 "
+                            <input className="h-10 w-full desktop:hidden border border-black px-2 mt-6  "
                                     type="text"
                                     placeholder="Email"
                                     value={email}
@@ -229,7 +229,7 @@ const CheckOut = () => {
                                 } 
                                 {/* Nhập sđt    */}
                                 <input 
-                                    className="h-10 w-full desktop:hidden border border-black px-2 mt-6 "
+                                    className="h-10 w-full desktop:hidden border border-black px-2 mt-6  "
                                     type="text"
                                     placeholder="Số điện thoại"
                                     value={phone}
@@ -245,7 +245,7 @@ const CheckOut = () => {
                                     <FontAwesomeIcon icon={faCircleExclamation} />  Vui lòng nhập số điện thoại</div>  
                                 } 
                             {/* Chọn tỉnh thành */}
-                            <select className={`h-10 w-full border border-black px-2  ${stateEmail?'mt-9':'mt-6'} `} title="Chọn Tỉnh Thành" onChange={handleTinhChange}> 
+                            <select className={`h-10 w-full border border-black px-2   ${stateEmail?'mt-9':'mt-6 '} `} title="Chọn Tỉnh Thành" onChange={handleTinhChange}> 
                                 <option value={tinh} >Tỉnh Thành</option> 
                                 {tinh.map((item) => ( 
                                     <option key={item.id} value={item.id}>{item.full_name}</option>
@@ -255,7 +255,7 @@ const CheckOut = () => {
                                  stateTinh && <div className=" mt-[1px] ml-[2px] text-xs text-red-600">
                                     <FontAwesomeIcon icon={faCircleExclamation} />  Vui lòng chọn tỉnh thành</div>  
                             }  
-                            <select className="h-10 w-full border border-black px-2 mt-6" title="Chọn Quận Huyện" onChange={handleQuanChange}> 
+                            <select className="h-10 w-full border border-black px-2 mt-6 " title="Chọn Quận Huyện" onChange={handleQuanChange}> 
                                 <option value="0">Quận/Huyện</option> 
                                 {quan.map((item) => ( <option key={item.id} value={item.id}>{item.full_name}</option> ))} 
                             </select>                            
@@ -263,7 +263,7 @@ const CheckOut = () => {
                                 stateQuan && <div className=" mt-[1px] ml-[2px] text-xs text-red-600">
                                     <FontAwesomeIcon icon={faCircleExclamation} />  Vui lòng chọn quận huyện</div>  
                             }   
-                            <select className="h-10 w-full border border-black px-2 mt-6" title="Chọn Phường Xã" onChange={handlePhuongChange}> 
+                            <select className="h-10 w-full border border-black px-2 mt-6 " title="Chọn Phường Xã" onChange={handlePhuongChange}> 
                                 <option value="0">Phường/Xã</option> {phuong.map((item) => ( <option key={item.id} value={item.id}>{item.full_name}</option> ))} 
                             </select>
                             {
@@ -271,7 +271,7 @@ const CheckOut = () => {
                                     <FontAwesomeIcon icon={faCircleExclamation} />  Vui lòng chọn phường xã</div>  
                             } 
                             {/* Nhập tên đường, số nhà */}
-                            <input className="h-10 w-full border border-black px-2 mt-6"
+                            <input className="h-10 w-full border border-black px-2 mt-6 "
                                 type="text"
                                 placeholder="Số nhà, Tên đường"
                                 value={street}
@@ -282,7 +282,7 @@ const CheckOut = () => {
                                     <FontAwesomeIcon icon={faCircleExclamation} />  Vui lòng nhập địa chỉ nhà, tên đường</div>  
                             } 
                             {/* Ghi chú */}
-                            <input className="h-16 w-full border border-black px-2 mt-6"
+                            <input className="h-16 w-full border border-black px-2 mt-6 "
                                 type="text"
                                 placeholder="Ghi chú (nếu có)"
                                 value={note}
@@ -318,7 +318,7 @@ const CheckOut = () => {
                             {/* Tạm tính giá các sản phẩm */}
                             <div className="flex flex-row justify-between mt-3">
                                 <div className=" h-6 content-center text-black desktop:text-base ipad:text-sm font-normal ">Tạm tính: </div>
-                                <div className="w-24 content-center text-right text-[#c73659] desktop:text-base ipad:text-sm font-bold ">{totalCost?.toLocaleString()}đ</div> {/*render có thể xảy ra trước khi dữ liệu được tải đầy đủ => use ? to check */}
+                                <div className="w-24 content-center text-right text-[#1E0342] desktop:text-base ipad:text-sm font-bold ">{totalCost?.toLocaleString()}đ</div> {/*render có thể xảy ra trước khi dữ liệu được tải đầy đủ => use ? to check */}
                             </div>
                             {/* Phí vận chuyển */}
                             <div className="flex flex-row justify-between mt-3">
@@ -344,7 +344,7 @@ const CheckOut = () => {
                             {/* Tạm tính giá các sản phẩm */}
                             <div className="flex flex-row justify-between mt-3">
                                 <div className=" h-6 content-center text-black desktop:text-base ipad:text-sm font-normal ">Tạm tính: </div>
-                                <div className="w-24 content-center text-right text-[#c73659] desktop:text-base ipad:text-sm font-bold ">{totalCost?.toLocaleString()}đ</div> {/*render có thể xảy ra trước khi dữ liệu được tải đầy đủ => use ? to check */}
+                                <div className="w-24 content-center text-right text-[#1E0342] desktop:text-base ipad:text-sm font-bold ">{totalCost?.toLocaleString()}đ</div> {/*render có thể xảy ra trước khi dữ liệu được tải đầy đủ => use ? to check */}
                             </div>
                             {/* Phí vận chuyển */}
                             <div className="flex flex-row justify-between mt-3">
@@ -362,14 +362,14 @@ const CheckOut = () => {
                         <div className="mt-16">
                             <div className=" text-center text-[#151515] text-xl font-bold ">Thông tin thanh toán</div>
                             {/* Nhập họ và tên */}
-                            <input className="h-10 w-full border border-black px-2 mt-6"
+                            <input className="h-10 w-full border border-black px-2 mt-6 "
                                 type="text"
                                 placeholder="Họ và tên"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                             />                            
                                 {/* Nhập email */}
-                                <input className="h-10 w-full col-span-2 border border-black px-2 mt-6 "
+                                <input className="h-10 w-full col-span-2 border border-black px-2 mt-6  "
                                     type="text"
                                     placeholder="Email"
                                     value={email}
@@ -377,7 +377,7 @@ const CheckOut = () => {
                                 />  
                                 {/* Nhập sđt    */}
                                 <input 
-                                    className="h-10 w-full border border-black px-2 mt-6 "
+                                    className="h-10 w-full border border-black px-2 mt-6  "
                                     type="text"
                                     placeholder="Số điện thoại"
                                     value={phone}
@@ -389,7 +389,7 @@ const CheckOut = () => {
                                     }}
                                 />          
                             {/* Nhập email */}
-                            <input className="h-10 w-full desktop:hidden border border-black px-2 mt-6 "
+                            <input className="h-10 w-full desktop:hidden border border-black px-2 mt-6  "
                                     type="text"
                                     placeholder="Email"
                                     value={email}
@@ -397,7 +397,7 @@ const CheckOut = () => {
                                 />  
                                 {/* Nhập sđt    */}
                                 <input 
-                                    className="h-10 w-full desktop:hidden border border-black px-2 mt-6 "
+                                    className="h-10 w-full desktop:hidden border border-black px-2 mt-6  "
                                     type="text"
                                     placeholder="Số điện thoại"
                                     value={phone}
@@ -409,28 +409,28 @@ const CheckOut = () => {
                                     }}
                                 /> 
                             {/* Chọn tỉnh thành */}
-                            <select className="h-10 w-full border border-black px-2 mt-6" title="Chọn Tỉnh Thành" onChange={handleTinhChange}> 
+                            <select className="h-10 w-full border border-black px-2 mt-6 " title="Chọn Tỉnh Thành" onChange={handleTinhChange}> 
                                 <option value={tinh} >Tỉnh Thành</option> 
                                 {tinh.map((item) => ( 
                                     <option key={item.id} value={item.id}>{item.full_name}</option>
                                 ))} 
                             </select> 
-                            <select className="h-10 w-full border border-black px-2 mt-6" title="Chọn Quận Huyện" onChange={handleQuanChange}> 
+                            <select className="h-10 w-full border border-black px-2 mt-6 " title="Chọn Quận Huyện" onChange={handleQuanChange}> 
                                 <option value="0">Quận/Huyện</option> 
                                 {quan.map((item) => ( <option key={item.id} value={item.id}>{item.full_name}</option> ))} 
                             </select> 
-                            <select className="h-10 w-full border border-black px-2 mt-6" title="Chọn Phường Xã" onChange={handlePhuongChange}> 
+                            <select className="h-10 w-full border border-black px-2 mt-6 " title="Chọn Phường Xã" onChange={handlePhuongChange}> 
                                 <option value="0">Phường/Xã</option> {phuong.map((item) => ( <option key={item.id} value={item.id}>{item.full_name}</option> ))} 
                             </select>
                             {/* Nhập tên đường, số nhà */}
-                            <input className="h-10 w-full border border-black px-2 mt-6"
+                            <input className="h-10 w-full border border-black px-2 mt-6 "
                                 type="text"
                                 placeholder="Số nhà, Tên đường"
                                 value={street}
                                 onChange={(e) => setStreet(e.target.value)}
                             />
                             {/* Ghi chú */}
-                            <input className="h-16 w-full border border-black px-2 mt-6"
+                            <input className="h-16 w-full border border-black px-2 mt-6 "
                                 type="text"
                                 placeholder="Ghi chú (nếu có)"
                                 value={note}
@@ -460,7 +460,7 @@ const CheckOut = () => {
                     </div>
                     {/* Nút thanh toán */}
                     <div className="w-fulf flex items-center justify-center mt-14">
-                        <button className="content-center text-center text-white desktop:text-2xl ipad:text-xl font-bold rounded-lg border border-black bg-[#c73659] px-10 py-1"
+                        <button className="content-center text-center text-white desktop:text-2xl ipad:text-xl font-bold rounded-lg border border-black bg-[#1E0342] px-10 py-1"
                             onClick={()=>{
                                 if(name && email && phone && selectedTinhName && selectedQuanName && selectedPhuongName && street && (COD||banking) ){
                                     fetchdata() 

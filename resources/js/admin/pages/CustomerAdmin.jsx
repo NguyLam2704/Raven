@@ -3,6 +3,7 @@ import NavigationAdmin from "../components/NavigationAdmin";
 import { Helmet } from "react-helmet";
 import axios from "axios";
 import UserList from "../components/customer/UserList";
+import loading from "../asset/loading.svg"
 import { Skeleton, Pagination } from "@mui/material";
 // import Box from '@mui/material/Box';
 
@@ -11,10 +12,10 @@ const Customer = () => {
     const [isLoading, setIsLoading] = useState(true); // Trạng thái loading
     const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
     const [totalItems, setTotalItems] = useState(0); // Tổng số item
-
+    const itemsPerPage = 5;
     // Hàm lấy dữ liệu từ API
     const fetchUser = async () => {
-        const response = await axios.get(`/api/v1/user?page=${currentPage}`);
+        const response = await axios.get(`/api/v1/user`);
         return response.data;
     };
 
@@ -25,21 +26,33 @@ const Customer = () => {
             const userData = await fetchUser();
             setTimeout(() => {
                 setUsersData(userData.data);
-                setTotalItems(userData.meta.total);
+                // setTotalItems(userData.meta.total);
                 setIsLoading(false); 
             }, 1000); // Độ trễ 500ms để Skeleton hiển thị
         };
         LoadData();
-    }, [currentPage]);
+    }, []);
 
     // Tổng số trang
-    const totalPages = Math.ceil(totalItems / 10); // Giả định mỗi trang 2 user
-
+    const paginatedCustomer = UsersData.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+    // const totalPages = Math.ceil(totalItems / 5); // Giả định mỗi trang 2 user
+    const totalPages = Math.ceil(UsersData.length / itemsPerPage);
     // Hàm thay đổi trang
     const handlePageChange = (event, page) => {
         setCurrentPage(page);
     };
+ 
 
+    // if (isLoading) {
+    //     return (
+    //         <div className="w-full h-[700px] flex justify-center items-center">
+    //             <img src={loading}/>
+    //         </div>
+    //     )
+    // } 
     return (
         <NavigationAdmin>
             <Helmet>
@@ -54,24 +67,24 @@ const Customer = () => {
                         {<Skeleton
                                 // key={index}
                                 variant="rectangular"
-                                height={40}
+                                height={50}
                                 animation="wave"
-                                className="ipad:w-[700px] desktop:w-[1200px] mobile:w-[400px] shadow-md" style={{
-                                    backgroundColor: "#f0f0f0",}}
+                                // className="ipad:w-[700px] desktop:w-[1200px] mobile:w-[400px] shadow-md" 
+                                style={{backgroundColor: "#f0f0f0",}}
                                 />}
-                        {Array.from({ length: 6 }).map((_, index) => (
+                        {Array.from({ length: 5 }).map((_, index) => (
                                 <Skeleton
                                 key={index}
                                 variant="rectangular"
-                                height={60}
+                                height={78}
                                 animation="wave"
-                                className="ipad:w-[700px] desktop:w-[1200px] mobile:w-[400px] shadow-md" style={{
-                                    backgroundColor: "#f0f0f0",}}
+                                // className="ipad:w-[700px] desktop:w-[1200px] mobile:w-[400px] shadow-md" 
+                                style={{backgroundColor: "#f0f0f0",}}
                                 />
                             ))}
                     </div>
                 ) : (
-                    <UserList data={UsersData} />
+                    <UserList data={paginatedCustomer} />
                 )}
                 {/* Phân trang */}
                 <div className="flex justify-center mt-4">

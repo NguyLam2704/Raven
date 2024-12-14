@@ -19,12 +19,14 @@ class UserController extends Controller
         $queryItems = $filter->transform($request); //chuyển đổi các tham số  trong $request thành một mảng [['column','operator','value']]
         if (count($queryItems) == 0)// Nếu không có điều kiện lọc
         {
-            return new UserCollection(User::paginate(10));//paginate chia nhỏ danh sách dữ liệu
+            // return new UserCollection(User::paginate(5));//paginate chia nhỏ danh sách dữ liệu
+            return new UserCollection((User::get()));
         }
         else
         {
-            $user = User::where($queryItems)->paginate(10);//truy vấn dựa trên $queryItems thông qua where()
-            return new UserCollection($user->appends($request->query()));
+            $user = User::where($queryItems)->paginate(5);//truy vấn dựa trên $queryItems thông qua where()
+            // return new UserCollection($user->appends($request->query()));
+            return new UserCollection($user->get());
         }
     }
 

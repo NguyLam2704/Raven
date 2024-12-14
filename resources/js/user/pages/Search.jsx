@@ -4,7 +4,7 @@ import Navigation from "../components/Navigation";
 import Product from "../components/Product";
 import img_product from '../assets/img_product.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown} from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown, faArrowUp} from '@fortawesome/free-solid-svg-icons'
 import Footer from "../components/Footer";
 import { useLocation } from "react-router-dom";
 //Trang tiềm kiếm
@@ -64,8 +64,36 @@ const Search = () => {
       }
     }, [text, products]);
 
+         const [showScrollToTop, setShowScrollToTop] = useState(false);
+    
+            // Theo dõi sự kiện scroll
+        useEffect(() => {
+            const handleScroll = () => {
+                const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                const scrollHeight = document.documentElement.scrollHeight;
+                const clientHeight = document.documentElement.clientHeight;
+    
+                // Hiển thị nút khi scroll gần đến cuối trang
+                setShowScrollToTop(scrollTop > clientHeight);
+            };
+    
+            window.addEventListener('scroll', handleScroll);
+    
+            return () => {
+                window.removeEventListener('scroll', handleScroll);
+            };
+        }, []);
+    
+            // Hàm lướt lên đầu trang
+        const scrollToTop = () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+        };
+
     return(
-        <div className='w-full h-full font-Public'> 
+        <div className='w-full bg-white h-full font-Public'> 
             <Navigation/>
 
             {/* Tiêu đề */}
@@ -98,7 +126,8 @@ const Search = () => {
                 {/* Danh sách các sản phẩm */}
                 <div className="mt-10 grid desktop:grid-cols-4 ipad:grid-cols-3 mobile:grid-cols-2 gap-12 z-10">
                   {
-                    filteredProducts.sort((a,b) => {
+                    filteredProducts 
+                    .sort((a,b) => {
                         if (sort === 'Giá giảm dần') {
                           return (b.cost - b.cost*b.discount/100) - (a.cost - a.cost*a.discount/100);
                         }
@@ -125,6 +154,16 @@ const Search = () => {
             </div>
                       
             <Footer/>
+
+                        {/* Nút Lên đầu trang */}
+            {showScrollToTop && (
+                <button
+                    onClick={scrollToTop}
+                    className="fixed bottom-4 right-4 p-3 bg-[#1E0342] text-white rounded-full shadow-lg hover:bg-blue-600"
+                >
+                     <FontAwesomeIcon icon={faArrowUp} color='white' className='h-6 w-6' />  
+                </button>
+            )}           
             
         </div>
     )

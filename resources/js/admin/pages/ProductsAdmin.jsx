@@ -3,14 +3,15 @@ import { Helmet } from "react-helmet";
 import NavigationAdmin from "../components/NavigationAdmin";
 import axios from "axios";
 import ProductsList from "../components/products/ProductsList";
-import loading from '../asset/loading.svg'
+import loading from '../asset/loading.gif'
 import { Pagination } from "@mui/material";
 import {Skeleton} from "@mui/material";
+
 const Products = () => {
     const [ProductsData, setProductsData] = useState([]);
     const [isLoading, setIsLoading] = useState(true)
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10; // Số đơn hàng mỗi trang
+    const itemsPerPage = 5; // Số đơn hàng mỗi trang
 
     const fetchProducts = async () => {
         // fetch api get product include procolorsize
@@ -30,7 +31,7 @@ const Products = () => {
           },1000);
         }
         LoadData();
-    } ,[]) 
+    } ,[currentPage]) 
 
     const paginatedProducts = ProductsData.length > 0 ? ProductsData.slice(
         (currentPage - 1) * itemsPerPage,
@@ -42,6 +43,15 @@ const Products = () => {
     const handlePageChange = (event, page) => {
         setCurrentPage(page);
     };
+    // if (isLoading) {
+    //     return (
+    //         <div className="w-full h-[700px] flex justify-center items-center">
+    //             <img src={loading}/>
+    //         </div>
+
+    //         // <h1 className='w-full text-2xl font-semibold text-center mt-16'>Loading...</h1>
+    //     )
+    // } 
     return (
         <NavigationAdmin>
             <Helmet>
@@ -55,19 +65,17 @@ const Products = () => {
                         {<Skeleton
                                 // key={index}
                                 variant="rectangular"
-                                height={40}
+                                height={50}
                                 animation="wave"
-                                className="ipad:w-[700px] desktop:w-[1200px] mobile:w-[400px] shadow-md" style={{
-                                    backgroundColor: "#f0f0f0",}}
+                                style={{backgroundColor: "#f0f0f0",}}
                                 />}
-                        {Array.from({ length: 6 }).map((_, index) => (
+                        {Array.from({ length: 5 }).map((_, index) => (
                                 <Skeleton
                                 key={index}
                                 variant="rectangular"
-                                height={60}
+                                height={78}
                                 animation="wave"
-                                className="ipad:w-[700px] desktop:w-[1200px] mobile:w-[400px] shadow-md" style={{
-                                    backgroundColor: "#f0f0f0",}}
+                                    style={{backgroundColor: "#f0f0f0",}}
                                 />
                             ))}
                     </div>

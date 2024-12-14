@@ -204,7 +204,7 @@ class OrderController extends Controller
             $productOrder->quantity = $product['quantity'];
             $productOrder->after_discount_cost = $product['discount'] > 0 ? $product['cost'] - $product['cost']*$product['discount']/100 : $product['cost'] ;
             $productOrder->save();
-            // $productOrder->fresh();
+            $productOrder->fresh();
             // return response()->json(['message' => $proColorSize->pro_color_size_id]);
         }
         /************************************ */

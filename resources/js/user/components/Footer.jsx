@@ -1,5 +1,5 @@
 import React from 'react';
-import Logo from "../assets/Logo.svg"
+import Logo from "../assets/qua_moi.png"
 import tiktok from "../assets/tiktok.svg"
 import fb from "../assets/facebook.svg"
 import ins from "../assets/instagram.svg"
@@ -7,8 +7,9 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
     return(
-        <div className=" mt-16 flex desktop:flex-row mobile:flex-col mobile:pl-4 justify-items-center justify-between bg-[#151515] w-full pb-10 font-Public ">
-            <div className="mt-9">
+        <div className=" mt-16 flex desktop:flex-row ipad:flex-row mobile:flex-col mobile:pl-4 justify-items-center justify-between bg-[#151515] w-full pb-10 font-Public ">
+            <div className=' w-1/12 '></div>
+            <div className="basis-5/12 mt-9">
                 <ul className=" ">
                     <li className=" text-white desktop:text-3xl ipad:text-2xl mobile:text-xl  font-bold font-Public my-2">RAVEN</li>
                     <li className=" text-white desktop:text-base ipad:text-sm font-light my-1">Công ty TNHH bốn thành viên UIT</li>
@@ -18,7 +19,7 @@ const Footer = () => {
                     <li className=" text-white desktop:text-base ipad:text-sm font-light font-Public my-1">Email: 22520736@gm.uit.edu.vn</li>
                 </ul>            
             </div>
-            <div  className=" desktop:justify-items-center  mt-9 ">
+            <div  className="basis-3/12 desktop:justify-items-center  mt-9 ">
                 <div className="">
                     <ul className="w-[300]">
                         <li className=" w-[300] text-white desktop:text-2xl ipad:text-xl font-bold font-Public my-2 ">HỖ TRỢ</li>
@@ -34,18 +35,18 @@ const Footer = () => {
                     </ul>
                 </div>       
             </div>
-            <div className="desktop:justify-items-center desktop:ml-6 ipad:ml-6 mt-8">
+            <div className="basis-2/12 desktop:justify-items-center ipad:justify-items-center desktop:ml-6 ipad:ml-6 mt-8">
                 <div className=" desktop:flex ipad:flex mobile:hidden mb-3">
-                    <img className='desktop:h-32 ipad:h-28 ' src={Logo} alt="Logo"/>
+                    <img className='desktop:h-32 ipad:h-24 ' src={Logo} alt="Logo"/>
                 </div>
-                <div className="desktop:text-center  text-white desktop:text-2xl ipad:text-xl font-bold font-Public mt-6 mb-2">KẾT NỐI</div>
+                <div className="desktop:text-center ipad:text-center text-white desktop:text-2xl ipad:text-xl font-bold font-Public desktop:mt-6 ipad:mt-6 mb-2">KẾT NỐI</div>
                 <div className="flex flex-row ">                
-                    <img className="mx-2 desktop:h-14 ipad:h-12 mobile:h-9" src={fb} alt="Logo"/>
-                    <img className="mx-2 desktop:h-14 ipad:h-12 mobile:h-9" src={ins} alt="Logo"/>
-                    <img className="mx-2 desktop:h-14 ipad:h-12 mobile:h-9" src={tiktok} alt="Logo"/>
+                    <img className="mx-2 desktop:h-14 ipad:h-10 mobile:h-9" src={fb} alt="Logo"/>
+                    <img className="mx-2 desktop:h-14 ipad:h-10 mobile:h-9" src={ins} alt="Logo"/>
+                    <img className="mx-2 desktop:h-14 ipad:h-10 mobile:h-9" src={tiktok} alt="Logo"/>
                 </div>
             </div>
-
+            <div className=' basis-1/12'></div>
         </div>
     )
 }

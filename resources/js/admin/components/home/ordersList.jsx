@@ -9,14 +9,9 @@ const fetchOrderDetail = async (id) => {
     return response.data;
   };
 
-const fetchOrderBill = async (id) => {
-    const response = await axios.get(`/api/v1/bill/${id}`);
-    return response.data;
-};
 
 const OrderList = ({data}) => {
     const [selectedOrder, setSelectedOrder] = useState(null);
-    const [costBill, setCostBill] = useState(0);
     const [isLoading, setIsLoading] = useState();
 
     //Lấy background tùy vào trạng thái
@@ -68,10 +63,8 @@ const OrderList = ({data}) => {
         setIsLoading(true);
         try {
             const orderDetail = await fetchOrderDetail(orderId);
-            const orderBill = await fetchOrderBill(orderId);
             console.log(orderDetail.user)
             setSelectedOrder(orderDetail);
-            setCostBill(orderBill.data.totalCost);
         } catch (error) {
             console.error('Error fetching order details:', error);
         } finally {
@@ -132,7 +125,6 @@ const OrderList = ({data}) => {
             {selectedOrder && !isLoading && (
                 <OrderDetail
                     orderDetail={selectedOrder}
-                    costBill={costBill}
                     formatDate={formatDate}
                     onClose={closeDetail}
                 />
