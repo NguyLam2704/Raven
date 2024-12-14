@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import TitleSearch from '../components/Search/Titile_Search';
 import Navigation from "../components/Navigation";
 import Product from "../components/Product";
-import img_product from '../assets/img_product.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faArrowUp} from '@fortawesome/free-solid-svg-icons'
 import Footer from "../components/Footer";
+import img_loading from '../assets/loading.gif'
 import { useLocation } from "react-router-dom";
 //Trang tiềm kiếm
 
@@ -149,7 +149,7 @@ const Search = () => {
                 
               </div>
         
-            ) : (<div className="desktop:text-xl ipad:text-lg mobile:text-base">Không tìm thấy sản phẩm nào phù hợp với yêu cầu</div>)}
+            ) : ( loading ? <img className="desKtop:w-20 desktop:h-20 ipad:w-16 ipad:h-16 mobile:h-14 mobile:w-14" src={img_loading}/> : <div className="desktop:text-xl ipad:text-lg mobile:text-base">Không tìm thấy sản phẩm nào phù hợp với yêu cầu</div>)}
               
             </div>
                       

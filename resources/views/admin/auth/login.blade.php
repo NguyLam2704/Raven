@@ -13,7 +13,7 @@
         href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
     <link rel="icon" type="image/x-icon"
-        href="https://tpuxfltiiajorbixwyff.supabase.co/storage/v1/object/public/Image/Logo/raven1.svg?t=2024-12-05T04%3A26%3A08.834Z">
+        href="https://tpuxfltiiajorbixwyff.supabase.co/storage/v1/object/public/Image/Logo/qua_moi.png">
 </head>
 
 <body style=" background-color: #F5F6FA">

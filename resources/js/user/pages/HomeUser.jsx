@@ -139,7 +139,7 @@ const HomeUser = () => {
                                         }, [])
                                         .map((group, index) => (
                                             <SwiperSlide key={index}>
-                                                <div className="grid grid-row-2 gap-5 justify-items-center my-4">
+                                                <div className="grid grid-row-2 gap-10 justify-items-center my-4">
                                                     {group.map((product, subIndex) => (
                                                         <div key={subIndex} className="flex flex-col items-center">
                                                             <Product
