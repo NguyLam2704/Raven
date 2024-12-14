@@ -184,7 +184,7 @@ const Search = () => {
                 {/* Danh sách các sản phẩm */}
                 <div className="mt-10 grid desktop:grid-cols-4 ipad:grid-cols-3 mobile:grid-cols-2 gap-12 z-10">
                   {
-                    filteredProducts.filter((product) => product.discount > 0) //filter product have discount
+                    filteredProducts 
                     .sort((a,b) => {
                         if (sort === 'Giá giảm dần') {
                           return (b.cost - b.cost*b.discount/100) - (a.cost - a.cost*a.discount/100);

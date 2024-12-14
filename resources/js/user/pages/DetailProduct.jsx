@@ -19,6 +19,7 @@ import 'swiper/swiper-bundle.css';
 //Chi tiết sản phẩm
 const DetailProduct = () =>{
     const swiperRef = useRef(null);
+    const swiperRefMoblie = useRef(null);
     const swiperSameRef = useRef(null);
     const [currentIndex, setCurrentIndex] = useState(0); // Theo dõi slide hiện tại
      const [showScrollToTop, setShowScrollToTop] = useState(false);
@@ -26,16 +27,18 @@ const DetailProduct = () =>{
     // Xử lý khi nhấn nút "Up"
     const handlePrev = () => {
         if (currentIndex > 0) {
-        setCurrentIndex((prev) => prev - 1);
-        swiperRef.current?.slideTo(currentIndex - 1);
+            setCurrentIndex((prev) => prev - 1);
+            swiperRef.current?.slideTo(currentIndex - 1);
+            swiperRefMoblie.current?.slideTo(currentIndex - 1);
         }
     };
 
     // Xử lý khi nhấn nút "Down"
     const handleNext = () => {
         if (currentIndex < DetailProduct.productImage.length - 3) {
-        setCurrentIndex((prev) => prev + 1);
-        swiperRef.current?.slideTo(currentIndex + 1);
+            setCurrentIndex((prev) => prev + 1);
+            swiperRef.current?.slideTo(currentIndex + 1);
+            swiperRefMoblie.current?.slideTo(currentIndex + 1);
         }
     };
     //Kiểm soát nút qua lại
@@ -150,9 +153,9 @@ const DetailProduct = () =>{
     //Loai bang size
     const [BangSize, setBang] = useState()
     const handlerBangSize = () => {
-        if(categoryType===6){
+        if(categoryType == 6){
             setBang(SizeQuanDai)
-        }else if(categoryType===7){
+        }else if(categoryType == 7){
             setBang(SizeQuanNgan)
         }else{
             setBang(SizeAo)
@@ -280,7 +283,7 @@ const DetailProduct = () =>{
                                     <Swiper
                                         direction={'horizontal'}
                                         //slidesPerView={4} // Hiển thị 3 ảnh mỗi lần
-                                        onSwiper={(swiper) => (swiperRef.current = swiper)} // Lưu instance của Swiper
+                                        onSwiper={(swiper) => (swiperRefMoblie.current = swiper)} // Lưu instance của Swiper
                                         mousewheel={true} 
                                         className='h-full'
                                         breakpoints={{

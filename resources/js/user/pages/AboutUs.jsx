@@ -58,36 +58,83 @@ const AboutUs = () => {
             </div>
             <div className='w-full h-96  justify-items-center pt-16 mb-30'>
                 <div className='w-10/12 text-center desktop:text-3xl ipad:text-2xl mobile:text-xl font-bold py-10 '>LỊCH SỬ PHÁT TRIỂN</div>
-                <div className=' w-10/12 pb-1 flex flow-row justify-between desktop:text-xl ipad:text-lg mobile:text-base font-bold text-[#a91d3a]'>
+                <div className=' w-10/12 pb-1 flex flow-row justify-between desktop:text-xl ipad:text-lg mobile:text-sm font-bold text-[#1E0342]'>
                     <div></div>
                     <div >2021</div>
                     <div></div>
                     <div >2023</div>
                     <div></div>
                 </div>
-                <div className=' w-10/12 h-[6px] items-center bg-[#C73659] rounded-3xl flex flow-row justify-between'>
-                    <FontAwesomeIcon className=' w-5 h-5 bg-white rounded-3xl border-[3px] border-white hover:border-[#C73659]' color='#C73659' icon={faCircle} 
+                <div className=' w-10/12 h-[6px] items-center bg-[#1E0342] rounded-3xl desktop:flex ipad:hidden mobile:hidden flow-row justify-between'>
+                    <FontAwesomeIcon className=' w-5 h-5 bg-white rounded-3xl border-[3px] border-white hover:border-[#1E0342]' color='#1E0342' icon={faCircle} 
                         onMouseEnter={()=>set2020(true)} //hiện 2020
                         onMouseLeave={()=>set2020(false)} //ẩn 2020
                      />
-                    <FontAwesomeIcon  className=' w-5 h-5 bg-white rounded-3xl border-[3px] border-white hover:border-[#C73659]' color='#C73659'icon={faCircle} 
+                    <FontAwesomeIcon  className=' w-5 h-5 bg-white rounded-3xl border-[3px] border-white hover:border-[#1E0342]' color='#1E0342'icon={faCircle} 
                         onMouseEnter={()=>set2021(true)}  //hiện 2021
                         onMouseLeave={()=>set2021(false)} //ẩn 2021
                     />
-                    <FontAwesomeIcon className=' w-5 h-5 bg-white rounded-3xl border-[3px] border-white hover:border-[#C73659]' color='#C73659' icon={faCircle} 
+                    <FontAwesomeIcon className=' w-5 h-5 bg-white rounded-3xl border-[3px] border-white hover:border-[#1E0342]' color='#1E0342' icon={faCircle} 
                          onMouseEnter={()=>set2022(true)} //hiện 2022
                          onMouseLeave={()=>set2022(false)} //ẩn 2022
                     />
-                    <FontAwesomeIcon  className=' w-5 h-5 bg-white rounded-3xl border-[3px] border-white hover:border-[#C73659]' color='#C73659' icon={faCircle}
+                    <FontAwesomeIcon  className=' w-5 h-5 bg-white rounded-3xl border-[3px] border-white hover:border-[#1E0342]' color='#1E0342' icon={faCircle}
                         onMouseEnter={()=>set2023(true)} //hiện 2023
                         onMouseLeave={()=>set2023(false)} //ẩn 2023
                     />
-                    <FontAwesomeIcon  className=' w-5 h-5 bg-white rounded-3xl border-[3px] border-white hover:border-[#C73659]' color='#C73659' icon={faCircle} 
+                    <FontAwesomeIcon  className=' w-5 h-5 bg-white rounded-3xl border-[3px] border-white hover:border-[#1E0342]' color='#1E0342' icon={faCircle} 
                         onMouseEnter={()=>set2024(true)}  //hiện 2024
                         onMouseLeave={()=>set2024(false)} //ẩn 2024
                     />
                 </div>
-                <div className=' w-10/12 pt-1 flex flow-row justify-between desktop:text-xl ipad:text-lg mobile:text-base font-bold text-[#a91d3a]'>
+                <div className='desktop:hidden w-10/12 h-[5px] items-center bg-[#1E0342] rounded-3xl flex flow-row justify-between'>
+                    <FontAwesomeIcon className=' w-4 h-4 bg-white rounded-3xl border-[2px] border-white hover:border-[#1E0342]' color='#1E0342' icon={faCircle} 
+                        onClick={()=>{
+                            set2020(true)
+                            set2021(false)
+                            set2022(false)
+                            set2023(false)
+                            set2024(false)
+                        }}
+                     />
+                    <FontAwesomeIcon  className=' w-4 h-4 bg-white rounded-3xl border-[2px] border-white hover:border-[#1E0342]' color='#1E0342'icon={faCircle} 
+                        onClick={()=>{
+                            set2020(false)
+                            set2021(true)
+                            set2022(false)
+                            set2023(false)
+                            set2024(false)
+                        }}
+                    />
+                    <FontAwesomeIcon className=' w-4 h-4 bg-white rounded-3xl border-[2px] border-white hover:border-[#1E0342]' color='#1E0342' icon={faCircle} 
+                         onClick={()=>{
+                            set2020(false)
+                            set2021(false)
+                            set2022(true)
+                            set2023(false)
+                            set2024(false)
+                        }}
+                    />
+                    <FontAwesomeIcon  className=' w-4 h-4 bg-white rounded-3xl border-[2px] border-white hover:border-[#1E0342]' color='#1E0342' icon={faCircle}
+                        onClick={()=>{
+                            set2020(false)
+                            set2021(false)
+                            set2022(false)
+                            set2023(true)
+                            set2024(false)
+                        }}
+                    />
+                    <FontAwesomeIcon  className=' w-4 h-4 bg-white rounded-3xl border-[2px] border-white hover:border-[#1E0342]' color='#1E0342' icon={faCircle} 
+                        onClick={()=>{
+                            set2020(false)
+                            set2021(false)
+                            set2022(false)
+                            set2023(false)
+                            set2024(true)
+                        }}
+                    />
+                </div>
+                <div className=' w-10/12 pt-1 flex flow-row justify-between desktop:text-xl ipad:text-lg mobile:text-sm font-bold text-[#1E0342]'>
                     <div>2020</div>
                     <div ></div>
                     <div>2022</div>
@@ -96,31 +143,31 @@ const AboutUs = () => {
                 </div>
                     { is2020 && (
                         <div className='w-10/12 text-justify desktop:text-xl ipad:text-lg mobile:text-base font-medium pt-5 pb-5 '>
-                        <div className='desktop:text-2xl ipad:text-xl mobile:text-lg font-bold text-[#a91d3a]'> 2020 - Khởi Đầu:</div>
+                        <div className='desktop:text-2xl ipad:text-xl mobile:text-lg font-bold text-[#1E0342]'> 2020 - Khởi Đầu:</div>
                             Raven được thành lập vào năm 2016 bởi bốn nhà sáng lập đầy nhiệt huyết: Đoàn Nguyễn Lâm, Thạch Minh Luân, Cao Quốc Kiệt, và Đỗ Nguyên Phương. Với tầm nhìn mang đến phong cách thời trang trẻ trung, mới mẻ và độc đáo, Raven nhanh chóng thu hút sự chú ý của giới trẻ.
                         </div>
                     )}
                     { is2021 && (
                         <div className='w-10/12 text-justify desktop:text-xl ipad:text-lg mobile:text-base font-semibold pt-5 pb-5 '>
-                        <div className='desktop:text-2xl ipad:text-xl mobile:text-lg font-bold text-[#a91d3a]'> 2021 - Mở Rộng Quy Mô</div>
+                        <div className='desktop:text-2xl ipad:text-xl mobile:text-lg font-bold text-[#1E0342]'> 2021 - Mở Rộng Quy Mô</div>
                             Với sự thành công ban đầu, Raven mở rộng quy mô sản xuất và khai trương cửa hàng đầu tiên tại TP. Hồ Chí Minh. Đây là bước ngoặt quan trọng, giúp Raven tiếp cận được nhiều khách hàng hơn và tăng cường sự hiện diện của thương hiệu.
                         </div>
                     )}
                     { is2022 && (
                         <div className='w-10/12 text-justify desktop:text-xl ipad:text-lg mobile:text-base font-semibold pt-5 pb-5 '>
-                        <div className='desktop:text-2xl ipad:text-xl mobile:text-lg font-bold text-[#a91d3a]'> 2022 - Đa Dạng Hóa Sản Phẩm</div>
+                        <div className='desktop:text-2xl ipad:text-xl mobile:text-lg font-bold text-[#1E0342]'> 2022 - Đa Dạng Hóa Sản Phẩm</div>
                         Raven tiếp tục đa dạng hóa sản phẩm với các dòng thời trang mới như phụ kiện, cặp, nón và túi xách. Sự đa dạng này không chỉ đáp ứng nhu cầu của khách hàng mà còn giúp Raven mở rộng thị trường.
                     </div>
                     )}
                     { is2023 && (
                         <div className='w-10/12 text-justify desktop:text-xl ipad:text-lg mobile:text-base font-semibold pt-5 pb-5 '>
-                        <div className='desktop:text-2xl ipad:text-xl mobile:text-lg  font-bold text-[#a91d3a]'> 2023 - Hợp Tác Chiến Lược: </div>
+                        <div className='desktop:text-2xl ipad:text-xl mobile:text-lg  font-bold text-[#1E0342]'> 2023 - Hợp Tác Chiến Lược: </div>
                         Raven ký kết nhiều hợp tác chiến lược với các nhà thiết kế và thương hiệu nổi tiếng, mang đến những bộ sưu tập độc đáo và đẳng cấp. Những hợp tác này không chỉ nâng cao giá trị thương hiệu mà còn mở ra nhiều cơ hội phát triển mới, giúp Raven tiếp cận được nhiều khách hàng hơn.
                     </div>
                     )}
                     { is2024 && (
                         <div className='w-10/12 text-justify desktop:text-xl ipad:text-lg mobile:text-base font-semibold pt-5 pb-5 '>
-                        <div className='desktop:text-2xl ipad:text-xl mobile:text-lg font-bold text-[#a91d3a]'> 2024 - Tiếp Tục Sáng Tạo</div>
+                        <div className='desktop:text-2xl ipad:text-xl mobile:text-lg font-bold text-[#1E0342]'> 2024 - Tiếp Tục Sáng Tạo</div>
                         Raven không ngừng sáng tạo và đổi mới để mang đến những sản phẩm thời trang độc đáo và chất lượng cao. Với tầm nhìn dài hạn và chiến lược phát triển bền vững, Raven tiếp tục khẳng định vị thế của mình trong ngành công nghiệp thời trang.
                     </div>
                     )}
