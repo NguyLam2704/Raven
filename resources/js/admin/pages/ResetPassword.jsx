@@ -70,8 +70,8 @@ const ResetPassword = () => {
                 </div>
             ) : (
                 <div
-                    className="flex flex-col items-center justify-center h-screen bg-login"
-                    style={{ backgroundImage: `url(${bg_login})` }}
+                    className="flex flex-col items-center justify-center h-screen bg-[#EEEEEE]"
+                    // style={{ backgroundImage: `url(${bg_login})` }}
                 >
                     <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-[500px] h-[550px] border-2 border-red">
                         <h2 className="text-2xl font-medium text-center mb-4 mt-9">

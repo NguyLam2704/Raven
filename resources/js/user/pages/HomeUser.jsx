@@ -12,12 +12,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 // Trang chủ
 const HomeUser = () => {
     const swiperNewRef = useRef(null); // Swiper cho sản phẩm mới
     const swiperHighlightRef = useRef(null); // Swiper cho sản phẩm nổi bật
     const swiperSaleRef = useRef(null); // Swiper cho sản phẩm sale
+    const [showScrollToTop, setShowScrollToTop] = useState(false);
 
     // State để lưu danh sách sản phẩm
     const [products, setProducts] = useState([]);
@@ -62,14 +65,40 @@ const HomeUser = () => {
         fetchAddView();
     }, []); // [] đảm bảo chỉ gọi API một lần khi component mount
 
+        // Theo dõi sự kiện scroll
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight;
+            const clientHeight = document.documentElement.clientHeight;
+
+            // Hiển thị nút khi scroll gần đến cuối trang
+            setShowScrollToTop(scrollTop > clientHeight);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+        // Hàm lướt lên đầu trang
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    };
+
     const navigate = useNavigate() ; 
     
     
     return(
-        <div>
+        <div className='bg-white'>
              { loading ? ( <div></div>) : (<Navigation/>) }
-             <div className='w-full  border-2 mx-auto max-w-[1557px] '>
-                <main className="items-center justify-center mx-auto w-full">
+             <div className='w-full bg-white mx-auto max-w-[1557px]'>
+                <main className="items-center justify-center mx-auto bg-white  w-full">
                     { loading ? ( <div></div>) : (<SliderHome/>) }
                     {/* Các sản phẩm mới */}
                     <div className="justify-items-center mt-20 "> 
@@ -79,7 +108,7 @@ const HomeUser = () => {
                         </div>
                         { loading ? (
                             <div>
-                                <img className='w-10 h-10 mt-10' src={img_loading} alt="loading" />
+                                <img className='w-20 h-20 mt-10' src={img_loading} alt="loading" />
                             </div>
                         ) : (
                             <div className="w-full flex flex-row justify-center items-center">
@@ -151,7 +180,7 @@ const HomeUser = () => {
                         {/* Danh sách sản phẩm */}
                         { loading ? (
                             <div>
-                                <img className='w-10 h-10 mt-10' src={img_loading} alt="loading" />
+                                <img className='w-20 h-20 mt-10' src={img_loading} alt="loading" />
                             </div>
                         ) : (
                             <div className='w-full flex flex-row justify-center'>                       
@@ -166,7 +195,7 @@ const HomeUser = () => {
                                         slidesPerView={4} // Hiển thị 1 slide mỗi lần (vì mỗi slide sẽ chứa 6 sản phẩm chia làm 2 hàng)
                                         mousewheel={true} // Cuộn bằng chuột
                                         onSwiper={(swiper) => (swiperHighlightRef.current = swiper)} // Lưu instance của Swiper
-                                        speed={1000}
+                                        speed={500}
                                         breakpoints={{
                                             0: { slidesPerView: 2, spaceBetween: 10 },
                                             768: { slidesPerView: 2, spaceBetween: 10 },
@@ -174,7 +203,7 @@ const HomeUser = () => {
                                         }}
                                     >
                                         {products
-                                            .filter((product) => product.quantitySold > 10) // Sắp xếp sản phẩm theo ngày
+                                            .sort((a, b) => {b.quantitySold - a.quantitySold})
                                             .reduce((acc, product, index) => {
                                                 const groupIndex = Math.floor(index / 2); // Nhóm mỗi 8 sản phẩm thành một slide
                                                 if (!acc[groupIndex]) acc[groupIndex] = [];
@@ -222,7 +251,7 @@ const HomeUser = () => {
                         {/* Danh sách sản phẩm */}
                         { loading ? (
                             <div>
-                                <img className='w-10 h-10 mt-10'  src={img_loading} alt="loading" />
+                                <img className='w-20 h-20 mt-10'  src={img_loading} alt="loading" />
                             </div>
                         ) : (
                             <div className='w-full flex flex-row justify-center'>                       
@@ -282,6 +311,16 @@ const HomeUser = () => {
              </div>
 
             <Footer/>
+
+                        {/* Nút Lên đầu trang */}
+            {showScrollToTop && (
+                <button
+                    onClick={scrollToTop}
+                    className="fixed bottom-4 right-4 p-3 bg-[#1E0342] text-white rounded-full shadow-lg hover:bg-blue-600"
+                >
+                     <FontAwesomeIcon icon={faArrowUp} color='white' className='h-6 w-6' />  
+                </button>
+            )}
         </div>
 
     )

@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import loading from '../../asset/loading.svg'
 import ChartUser from './Chart';
 import OrderCart from './OrderCard';
 

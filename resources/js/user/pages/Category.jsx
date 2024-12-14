@@ -95,9 +95,9 @@ const Category = ({ cate }) => {
       }}, [productCategories, sort]); // Call when sort and category change
 
     return (
-        <div  className='w-full h-full font-Public'>
+        <div  className='w-full h-full font-Public bg-white'>
             <Navigation />
-            <div  className='mt-[90px] justify-items-center'>
+            <div  className='mt-[90px] bg-white justify-items-center'>
 
                 {/* Slide */}
                 {
@@ -115,7 +115,7 @@ const Category = ({ cate }) => {
                 {
                   loading ? (
                     <div>
-                      <img className='desKtop:w-10 desktop:h-10 ipad:w-8 ipad:h-8 mobile:h-6 mobile:w-6 mt-10' src={img_loading} alt="loading" />
+                      <img className='desktop:w-10 desktop:h-10 ipad:w-8 ipad:h-8 mobile:h-6 mobile:w-6 mt-10' src={img_loading} alt="loading" />
                     </div>
                   ) : (
                     <div className='w-10/12 h-full mt-16'>                    

@@ -15,6 +15,7 @@ import shipIcon from "../asset/home/ship.svg";
 import trendupIcon from "../asset/home/trending_up.svg";
 import trenddownIcon from "../asset/home/trending_down.svg";
 import loadingVideo from "../asset/Loading_Video.mp4";
+import loading from "../asset/loading.svg"
 import axios from "axios";
 
 // lấy dữ liệu từ api
@@ -64,9 +65,7 @@ const Home = () => {
     if (isLoading) {
         return (
             <div className="w-full h-[700px] flex justify-center items-center">
-                <video autoPlay muted loop>
-                    <source src={loadingVideo} type="video/mp4" />
-                </video>
+                    <img src={loading} />
             </div>
         );
     }
