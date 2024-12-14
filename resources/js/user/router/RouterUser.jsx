@@ -18,11 +18,13 @@ import BankingInfo from "../pages/BankingInfo";
 import SizeInfo from "../pages/SizeInfo";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+
 const ScrollToTopOnRouteChange = () => { const { pathname } = useLocation(); useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [pathname]); return null; };
 const RouterUser = () => {
     return (
         <div>
             <ScrollToTopOnRouteChange/>
+            {/* <Chatbot /> */}
             <Routes>               
                 <Route path="/" element={<HomeUser/>}/>
                 <Route path="/T_shirt" element={<Category cate={"Áo thun"}/>}/>

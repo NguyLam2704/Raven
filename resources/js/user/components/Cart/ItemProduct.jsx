@@ -13,19 +13,22 @@ const ItemProduct = ({ product, handlerPlus, handlerTru, removeProduct, onCheckC
 
     const fetchDetail = async () => {
         try {
-            const response = await fetch(`/api/v1/product?proId[eq]=${product.proId}&includeProColorSize=true&includeImage=true`);
+            const response = await fetch(`/api/v1/proColorSize?prodId[eq]=${product.proId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch products');
             }
             const data = await response.json();
-            const productDetail = data.data[0];
+            const productDetail = data.data;
+            console.log(productDetail);
             // Tính toán quantityAvailable
-            const filterProColorSize = productDetail?.proColorSize.filter(
+            const filterProColorSize = productDetail?.filter(
                 (item) =>
-                    item.color.colorCode === product.color &&
-                    item.size.sizeCode === product.size
+                    item.colorId === product.colorId &&
+                    item.sizeId === product.sizeId
             );
-            setQuantityAvailable(filterProColorSize?.[0]?.quantityAvailable);
+            console.log(filterProColorSize);
+            console.log(filterProColorSize[0].quantityAvailable);
+            setQuantityAvailable(filterProColorSize[0].quantityAvailable);
         } catch (err) {
             console.error(err.message);
         } finally {

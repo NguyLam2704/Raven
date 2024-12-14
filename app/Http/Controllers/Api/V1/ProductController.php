@@ -30,7 +30,8 @@ class ProductController extends Controller
         {
             $product = $product->with(['proColorSize.color','proColorSize.size']); //return relationship proColorSize and relationship color of it
         }
-        return new ProductCollection($product->paginate()->appends($request->query()));
+        // return new ProductCollection($product->paginate(10)->appends($request->query()));
+        return new ProductCollection($product->get());
     }
 
     /**

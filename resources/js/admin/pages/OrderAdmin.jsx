@@ -7,7 +7,8 @@ import OrderFilter from "../components/order/OrderFilter";
 import axios from 'axios';
 import Modal from 'react-modal';
 import loading from '../asset/loading.svg'
-import Pagination from "../components/Pagination";
+// import Pagination from "../components/Pagination";
+import { Pagination } from "@mui/material";
 
 const Order = () => {
     const [OrdersData, setOrderData] = useState([]);
@@ -89,14 +90,18 @@ const Order = () => {
         setStatusFilters(statuses);
     };
 
-    const handlePrevPage = () => {
-        if (currentPage > 1) setCurrentPage(currentPage - 1);
-    };
-    const handleNextPage = () => {
-        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-    };
+    // const handlePrevPage = () => {
+    //     if (currentPage > 1) setCurrentPage(currentPage - 1);
+    // };
+    // const handleNextPage = () => {
+    //     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    // };
 
-    const handlePageClick = (page) => {
+    // const handlePageClick = (page) => {
+    //     setCurrentPage(page);
+    // };
+
+    const handlePageChange = (event, page) => {
         setCurrentPage(page);
     };
 
@@ -128,13 +133,25 @@ const Order = () => {
                     ? <OrderList data={paginatedOrders}/> 
                     : <div className="text-black ml-4 font-bold text-2xl mt-4">Không có dữ liệu</div>
                 }
-                <Pagination
+                {/* <Pagination
                     currentPage={currentPage}
                     totalPages={totalPages}
                     handlePrevPage={handlePrevPage}
                     handleNextPage={handleNextPage}
                     handlePageClick={handlePageClick}
-                />
+                /> */}
+                <div className="flex justify-center mt-4">
+                    <Pagination
+                        count={totalPages} // Tổng số trang
+                        page={currentPage} // Trang hiện tại
+                        onChange={handlePageChange} // Hàm xử lý khi thay đổi trang
+                        color="primary"
+                        variant="outlined"
+                        shape="rounded"
+                        siblingCount={1}
+                        boundaryCount={1}
+                    />
+                </div>
             </div>
         </NavigationAdmin>
     );

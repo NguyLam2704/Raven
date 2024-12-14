@@ -23,6 +23,8 @@ const HomeUser = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false); // Trạng thái tải dữ liệu
 
+
+    
     //Kiểm soát mũi tên sản phẩm
     const handleBack = (swiperRef) => {
         if (swiperRef.current) swiperRef.current.slidePrev();
@@ -173,8 +175,7 @@ const HomeUser = () => {
                                             1200: { slidesPerView: 4, spaceBetween: 20 },
                                         }}
                                     >
-                                        {products
-                                            .filter((product) => product.quantitySold > 10) // Sắp xếp sản phẩm theo ngày
+                                        {products.sort((a,b) => {b.quantitySold - a.quantitySold}).slice(0,10)
                                             .reduce((acc, product, index) => {
                                                 const groupIndex = Math.floor(index / 2); // Nhóm mỗi 8 sản phẩm thành một slide
                                                 if (!acc[groupIndex]) acc[groupIndex] = [];
