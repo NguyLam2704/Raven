@@ -7,8 +7,9 @@ import OrderFilter from "../components/order/OrderFilter";
 import axios from 'axios';
 import Modal from 'react-modal';
 import loading from '../asset/loading.svg'
-import Pagination from "../components/Pagination";
-
+// import Pagination from "../components/Pagination";
+import { Pagination } from "@mui/material";
+import {Skeleton} from "@mui/material";
 const Order = () => {
     const [OrdersData, setOrderData] = useState([]);
     const [filteredOrders, setFilteredOrders] = useState([]);  // State cho danh sách đã lọc
@@ -18,7 +19,7 @@ const Order = () => {
     ]); // Mặc định tất cả trạng thái được chọn
     const [isLoading, setIsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10; // Số đơn hàng mỗi trang
+    const itemsPerPage = 5; // Số đơn hàng mỗi trang
 
     // Lấy dữ liệu từ db
     useEffect(() => {
@@ -27,8 +28,10 @@ const Order = () => {
                 setIsLoading(true); // Đặt loading trước khi gọi API
                 const response = await axios.get(`/api/v1/order`);
                 console.log('Response Data:', response.data);
-                setOrderData(response.data.data);
-                setFilteredOrders(response.data.data);  // Cập nhật danh sách đã lọc ban đầu là tất cả
+                setTimeout(()=>{
+                    setOrderData(response.data.data);
+                    setFilteredOrders(response.data.data);  // Cập nhật danh sách đã lọc ban đầu là tất cả
+                },1000);
             } catch (error) {
                 console.error('Error fetching orders:', error);
             } finally {
@@ -89,24 +92,28 @@ const Order = () => {
         setStatusFilters(statuses);
     };
 
-    const handlePrevPage = () => {
-        if (currentPage > 1) setCurrentPage(currentPage - 1);
-    };
-    const handleNextPage = () => {
-        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-    };
+    // const handlePrevPage = () => {
+    //     if (currentPage > 1) setCurrentPage(currentPage - 1);
+    // };
+    // const handleNextPage = () => {
+    //     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    // };
 
-    const handlePageClick = (page) => {
+    // const handlePageClick = (page) => {
+    //     setCurrentPage(page);
+    // };
+
+    const handlePageChange = (event, page) => {
         setCurrentPage(page);
     };
 
-    if (isLoading) {
-        return (
-            <div className="w-full h-[800px] flex justify-center items-center">
-                <img src={loading} alt="Loading" />
-            </div>
-        );
-    }
+    // if (isLoading) {
+    //     return (
+    //         <div className="w-full h-[800px] flex justify-center items-center">
+    //             <img src={loading} alt="Loading" />
+    //         </div>
+    //     );
+    // }
 
     return (
         <NavigationAdmin>
@@ -124,17 +131,51 @@ const Order = () => {
 
             {/* Order List */}
             <div className='overflow-x-auto'>
-                {paginatedOrders.length > 0 
+            {isLoading ? (
+                    <div className="space-y-0.5 ipad:w-[700px] desktop:w-[1200px] mobile:w-[400px] shadow-md">
+                        {<Skeleton
+                                // key={index}
+                                variant="rectangular"
+                                height={50}
+                                animation="wave"
+                                style={{backgroundColor: "#f0f0f0",}}
+                                />}
+                        {Array.from({ length: 5 }).map((_, index) => (
+                                <Skeleton
+                                key={index}
+                                variant="rectangular"
+                                height={78}
+                                animation="wave"
+                                    style={{backgroundColor: "#f0f0f0",}}
+                                />
+                            ))}
+                    </div>
+                ) : (
+                    <OrderList data={paginatedOrders}/>
+                )}
+                {/* {paginatedOrders.length > 0 
                     ? <OrderList data={paginatedOrders}/> 
                     : <div className="text-black ml-4 font-bold text-2xl mt-4">Không có dữ liệu</div>
-                }
-                <Pagination
+                } */}
+                {/* <Pagination
                     currentPage={currentPage}
                     totalPages={totalPages}
                     handlePrevPage={handlePrevPage}
                     handleNextPage={handleNextPage}
                     handlePageClick={handlePageClick}
-                />
+                /> */}
+                <div className="flex justify-center mt-4">
+                    <Pagination
+                        count={totalPages} // Tổng số trang
+                        page={currentPage} // Trang hiện tại
+                        onChange={handlePageChange} // Hàm xử lý khi thay đổi trang
+                        color="primary"
+                        variant="outlined"
+                        shape="rounded"
+                        siblingCount={1}
+                        boundaryCount={1}
+                    />
+                </div>
             </div>
         </NavigationAdmin>
     );
