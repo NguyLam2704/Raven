@@ -4,10 +4,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus} from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router-dom";
 import { findIconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { Pagination } from "@mui/material";
+import {Skeleton, Box} from "@mui/material";
 
-const ItemProduct = ({ product, handlerPlus, handlerTru, removeProduct, onCheckChange }) => {   
+
+const ItemProduct = ({ products, handlerPlus, handlerTru, removeProduct, onCheckChange }) => {  
+    const [product, setProduct] = useState(products); 
     const [check, setCheck] = useState(true);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [quantityAvailable, setQuantityAvailable] = useState(0); // Thêm trạng thái cho quantityAvailable
     const navigate = useNavigate();
 
@@ -50,6 +54,83 @@ const ItemProduct = ({ product, handlerPlus, handlerTru, removeProduct, onCheckC
         onCheckChange(product, newCheckState, quantityAvailable);
     };
     console.log(quantityAvailable)
+
+    if (loading) {
+        return(
+            <div className="space-y-0.5 my-2 desktop:w-[70%] ipad:w-10/12 mobile:w-11/12">
+                <Box display="flex" alignItems="center" justifyContent="space-between">
+                        {/* Hình chữ nhật bo góc */}
+                        <Box width="10%">
+                            <Skeleton
+                                variant="rectangular"
+                                width={150}
+                                height={150}
+                                animation="wave"
+                                style={{
+                                borderRadius: "8px",
+                                backgroundColor: "#f0f0f0",
+                                }}
+                            />
+                        </Box>
+
+
+                        {/* Ba thanh ngang */}
+                        <Box width="20%">
+                            <Skeleton
+                                variant="rectangular"
+                                height={15}
+                                animation="wave"
+                                style={{ backgroundColor: "#f0f0f0", marginBottom: 8 }}
+                            />
+                            <Skeleton
+                                variant="rectangular"
+                                height={15}
+                                width="80%"
+                                animation="wave"
+                                style={{ backgroundColor: "#f0f0f0", marginBottom: 8 }}
+                            />
+                            <Skeleton
+                                variant="rectangular"
+                                height={15}
+                                width="60%"
+                                animation="wave"
+                                style={{ backgroundColor: "#f0f0f0" }}
+                            />
+                        </Box>
+
+                        {/* Một thanh ngang */}
+                        <Box  width="10%">
+                            <Skeleton
+                                variant="rectangular"
+                                height={15}
+                                animation="wave"
+                                style={{ backgroundColor: "#f0f0f0", marginBottom: 8 }}
+                            />
+                        </Box>
+
+                        {/* Một thanh ngang */}
+                        <Box width="10%">
+                            <Skeleton
+                                variant="rectangular"
+                                height={15}
+                                animation="wave"
+                                style={{ backgroundColor: "#f0f0f0", marginBottom: 8 }}
+                            />
+                        </Box>
+
+                        {/* Một thanh ngang */}
+                        <Box width="10%">
+                            <Skeleton
+                                variant="rectangular"
+                                height={15}
+                                animation="wave"
+                                style={{ backgroundColor: "#f0f0f0", marginBottom: 8 }}
+                            />
+                        </Box>
+                    </Box>
+            </div>          
+        )
+    }
     return (
         <div className="desktop:w-10/12 ipad:w-10/12 mobile:w-11/12 flex flex-row border-b-[1px] border-[#C4C4C4] font-Public ">
             <div className="desktop:w-5/12 ipad:w-5/12 mobile:w-7/12">

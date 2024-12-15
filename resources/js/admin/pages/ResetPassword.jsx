@@ -79,7 +79,7 @@ const ResetPassword = () => {
                         </h2>
 
                         <form onSubmit={handleSubmit}>
-                            <div className="mb-4 w-1/2 mx-auto">
+                            <div className="mb-4 w-[90%] mx-auto">
                                 <label
                                     className="block text-gray-700 mb-2"
                                     htmlFor="password_new"
@@ -110,7 +110,7 @@ const ResetPassword = () => {
                                     </p>
                                 )}
                             </div>
-                            <div className="mb-4 w-1/2 mx-auto">
+                            <div className="mb-4 w-[90%] mx-auto">
                                 <label
                                     className="block text-gray-700 mb-2"
                                     htmlFor="confirm_password"
@@ -144,7 +144,7 @@ const ResetPassword = () => {
                             </div>
                             <button
                                 type="submit"
-                                className="w-full bg-blue-500 text-white py-2 mt-4 rounded-md hover:bg-blue-600 transition"
+                                className="w-full bg-blue-500 text-white py-2 mt-4 rounded-md hover:bg-blue-600 active:scale-[0.98]  transition"
                             >
                                 Xác nhận
                             </button>

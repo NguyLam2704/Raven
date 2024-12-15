@@ -4,9 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark} from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router-dom";
 
+
 //Thanh giỏ hàng 
 const CartMini = ({handleCart}) => {
     const [storeProduct, setStoreProduct] = useState([]);
+    const [isLoading, setIsLoading] = useState(true); // State kiểm tra dữ liệu
 
     useEffect(() => {
         const savedProduct = localStorage.getItem('cart'); // Lấy product từ localStorage
@@ -84,9 +86,9 @@ const CartMini = ({handleCart}) => {
                         <FontAwesomeIcon icon={faXmark} />
                     </button>
                 </div>   
-                <div className=" h-3/4 w-11/12 overflow-y-auto">
+                <div className=" h-3/4 w-11/12 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                     {storeProduct.map((product) => (
-                        <ItemMini product={product} removeProduct={()=>removeProduct(product)} handlerPlus={()=>handlePlus(product)} handlerTru={()=>handleTru(product)} handler={handleCheckChange}/>                            
+                        <ItemMini products={product} removeProduct={()=>removeProduct(product)} handlerPlus={()=>handlePlus(product)} handlerTru={()=>handleTru(product)} handler={handleCheckChange}/>                            
                     ))}
                 </div>              
                 

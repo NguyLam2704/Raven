@@ -125,7 +125,7 @@ const HomeUser = () => {
                                     onSwiper={(swiper) => (swiperNewRef.current = swiper)} // Lưu instance của Swiper                              
                                     breakpoints={{
                                         0: { slidesPerView: 2, spaceBetween: 10 },
-                                        800: { slidesPerView: 3, spaceBetween: 10 },
+                                        768: { slidesPerView: 2, spaceBetween: 10 },
                                         1200: { slidesPerView: 4, spaceBetween: 20 },
                                     }}
                                 >
@@ -272,7 +272,7 @@ const HomeUser = () => {
                                     }}
                                 >
                                     {products
-                                        .filter((product) => product.discount > 0) // Sắp xếp sản phẩm theo ngày
+                                        .filter((product) => product.discount > 0) 
                                         .reduce((acc, product, index) => {
                                             const groupIndex = Math.floor(index / 2); // Nhóm mỗi 8 sản phẩm thành một slide
                                             if (!acc[groupIndex]) acc[groupIndex] = [];
