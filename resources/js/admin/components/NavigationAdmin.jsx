@@ -20,7 +20,7 @@ const NavigationAdmin = ({ children }) => {
         </div>
 
         <div className={`
-                mobile:z-30 ipad:z-30 desktop:z-0 
+                mobile:z-30 ipad:z-30 desktop:z-0 desktop:relative
                 mobile:absolute ipad:absolute desktop:block
                 transition-transform duration-300 ease-in-out
                 

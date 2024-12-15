@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import bg_login from "../asset/bg_login.png";
+import Swal from "sweetalert2";
 
 const ForgotPass = () => {
     const [formData, setFormData] = useState({
@@ -29,7 +30,13 @@ const ForgotPass = () => {
         if (data.errors) {
             setErrors(data.errors);
         } else {
-            
+                        Swal.fire({
+                            title: 'Đã gửi email thiết lập lại mật khẩu!',
+                            text: 'Vui lòng kiểm tra email để thiết lập lại mật khẩu.',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 4000,
+                        });
         }
 
     };

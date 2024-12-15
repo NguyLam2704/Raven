@@ -61,7 +61,7 @@ const Products = () => {
 
             <div className='overflow-x-auto'>
             {isLoading ? (
-                    <div className="space-y-0.5 ipad:w-[700px] desktop:w-[1200px] mobile:w-[400px] shadow-md">
+                    <div className="space-y-0.5 w-[95%] mx-2 shadow-md">
                         {<Skeleton
                                 // key={index}
                                 variant="rectangular"

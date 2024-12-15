@@ -180,7 +180,7 @@ const DetailProduct = () =>{
         };
     }, []);
 
-        // Hàm lướt lên đầu trang
+    // Hàm lướt lên đầu trang
     const scrollToTop = () => {
         window.scrollTo({
             top: 0,
@@ -268,11 +268,11 @@ const DetailProduct = () =>{
                             </div>
 
                             {/* Hình ảnh phụ mobile, ipad*/}
-                            <div className='border-4 mt-2 mobile:flex desktop:hidden justify-between flex-row items-center'>
+                            <div className=' mt-2 mobile:flex desktop:hidden justify-between flex-row items-center'>
                                 {/* Nút lên */}
                                 <button
                                     onClick={handlePrev}
-                                    className={`w-[10%] text-gray-500 border hover:text-black ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    className={`w-[10%] text-gray-500 hover:text-black ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
                                     disabled={currentIndex === 0}
                                 >
                                     <FontAwesomeIcon icon={faChevronLeft} />
@@ -294,10 +294,10 @@ const DetailProduct = () =>{
                                         {DetailProduct.productImage?.map((element, index) => (
                                             <SwiperSlide 
                                                 key={index}
-                                                className='w-auto flex flex-row justify-center items-center border-2 border-indigo-600 '
+                                                className='w-auto flex flex-row justify-center items-center'
                                             >
                                                 <button
-                                                    className='h-[110px] w-[120px] ml-[5px] border border-red-600 rounded-md'
+                                                    className='h-[110px] w-[120px] ml-[5px] rounded-md'
                                                     onClick={()=>setBigImg(element.image)}
                                                 >
                                                     <img
@@ -536,7 +536,7 @@ const DetailProduct = () =>{
                                     onSwiper={(swiper) => (swiperSameRef.current = swiper)} // Lưu instance của Swiper
                                     speed={500}
                                     breakpoints={{
-                                        640: { slidesPerView: 2, spaceBetween: 10 },
+                                        0: { slidesPerView: 2, spaceBetween: 10 },
                                         768: { slidesPerView: 2, spaceBetween: 10 },
                                         1200: { slidesPerView: 4, spaceBetween: 20 },
                                     }}

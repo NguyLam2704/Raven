@@ -43,14 +43,14 @@ const CheckOrder = () => {
     }
     console.log(orderInfo)
     return(
-        <div className="w-full font-Public">
+        <div className="w-full font-Public bg-white">
             <Navigation/>
             <div className="w-full justify-items-center pt-24 mt-24 ">
                 <div className="text-black desktop:text-2xl ipad:text-xl font-bold uppercase ">kiểm tra đơn hàng</div>
                 {/* Text input email hoặc sdt để kiểm tra đơn hàng */}
                 <form onSubmit={fetchOrderInfo} className="desktop:w-1/3 ipad:w-2/3 mobile:w-3/4 justify-items-center ">
                     <div className="flex w-full h-10 border border-black desktop:mt-16 ipad:mt-14 mobile:mt-10">
-                           <input className=" w-full px-2 focus:outline-none bg-[#F5F6FA]" 
+                           <input className=" w-full px-2 focus:outline-none bg-white" 
                                 type="text" 
                                 placeholder="Nhập số điện thoại hoặc email" 
                                 value={input}

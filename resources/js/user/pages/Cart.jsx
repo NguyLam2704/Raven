@@ -3,6 +3,8 @@ import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import ItemProduct from "../components/Cart/ItemProduct";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle, faArrowUp} from "@fortawesome/free-solid-svg-icons"
 
 //Giỏ hàng
 const Cart = () => {
@@ -70,8 +72,36 @@ const Cart = () => {
             {cartProduct[id].quantity -= 1;}
     }
     const navigate = useNavigate()
+
+
+   const [showScrollToTop, setShowScrollToTop] = useState(false);
+            // Theo dõi sự kiện scroll
+        useEffect(() => {
+            const handleScroll = () => {
+                const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                const scrollHeight = document.documentElement.scrollHeight;
+                const clientHeight = document.documentElement.clientHeight;
+    
+                // Hiển thị nút khi scroll gần đến cuối trang
+                setShowScrollToTop(scrollTop > clientHeight);
+            };
+    
+            window.addEventListener('scroll', handleScroll);
+    
+            return () => {
+                window.removeEventListener('scroll', handleScroll);
+            };
+        }, []);
+    
+            // Hàm lướt lên đầu trang
+        const scrollToTop = () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+        };
     return(
-        <div className="w-full font-Public">
+        <div className="w-full font-Public bg-white">
             <Navigation/>
             <div className="w-full justify-items-center pt-24 mt-16 ">
                 <div className="text-black desktop:text-2xl ipad:text-xl mobile:text-lg font-bold uppercase ">Giỏ hàng của bạn</div>
@@ -95,7 +125,7 @@ const Cart = () => {
                 )}
                 {/* Danh sách các sản phẩm */}
                 {storeProduct.map((product, index) => (
-                    <ItemProduct key={index} product={product} removeProduct={()=>removeProduct(product)} handlerPlus={()=>handlePlus(product)} handlerTru={()=>handleTru(product )} onCheckChange={handleCheckChange}/>                            
+                    <ItemProduct key={index} products={product} removeProduct={()=>removeProduct(product)} handlerPlus={()=>handlePlus(product)} handlerTru={()=>handleTru(product )} onCheckChange={handleCheckChange}/>                            
                 ))}
                 
                 {/* {
@@ -115,11 +145,20 @@ const Cart = () => {
                         <button className="desktop:w-36 ipad:w-32 mobile:w-28 desktop:h-10 ipad:h-9 mobile:h-8 bg-[#1E0342] rounded-[5px] border border-[#151515] text-center text-[#eeeeee] desktop:text-base ipad:text-sm mobile:text-xs font-bold "
                             onClick={() => navigate("/check_out", { state: { product: cartProduct} })} 
                             disabled={!cartProduct.length}
-                        >Thanh toán</button>
+                        >Đặt hàng</button>
                     </div>
                 )}
             </div>
             <Footer/>
+                        {/* Nút Lên đầu trang */}
+            {showScrollToTop && (
+                <button
+                    onClick={scrollToTop}
+                    className="fixed bottom-4 right-4 p-3 bg-[#1E0342] text-white rounded-full shadow-lg hover:bg-blue-600"
+                >
+                     <FontAwesomeIcon icon={faArrowUp} color='white' className='h-6 w-6' />  
+                </button>
+            )}             
         </div>
     )
 }

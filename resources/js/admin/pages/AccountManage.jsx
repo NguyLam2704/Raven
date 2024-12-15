@@ -36,6 +36,16 @@ const AccountManage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const loadingSwal = Swal.fire({
+            title: "Loading...!",
+            text: "Đang cập nhật tài khoản.",
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading(); // Hiển thị spinner loading
+            },
+        });
+
         //Dữ liệu không thay đổi thì không thực hiện hàm dưới...
         if (name == admin.name && email == admin.email && phoneNum == admin.phoneNumber){
             return;
