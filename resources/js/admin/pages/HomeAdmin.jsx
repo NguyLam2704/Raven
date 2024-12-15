@@ -226,7 +226,7 @@ const Home = () => {
                 </div>
             </div>
 
-            <div className="desktop:hidden mt-2 mobile:h-[230px] ipad:h-[420px] mr-auto rounded-[14px] border-2 border-red-600 shadow-md bg-white ">
+            <div className="desktop:hidden mt-2 mobile:h-[230px] ipad:h-[420px] mr-auto rounded-[14px] shadow-md bg-white ">
                     <MonthlyRevenueChart/>
             </div>
 

@@ -5,7 +5,7 @@ import ItemCheckOut from "../components/CheckOut/ItemCheckOut";
 import axios from 'axios';
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { faCircleExclamation, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import LoadingCheckout from "../components/CheckOut/LoadingCheckout";
 import img_loading from '../assets/loading.gif'
 
@@ -172,6 +172,33 @@ const CheckOut = () => {
     const updateOrder = () =>{
         fetchMail();
     }
+
+   const [showScrollToTop, setShowScrollToTop] = useState(false);
+            // Theo dõi sự kiện scroll
+        useEffect(() => {
+            const handleScroll = () => {
+                const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                const scrollHeight = document.documentElement.scrollHeight;
+                const clientHeight = document.documentElement.clientHeight;
+    
+                // Hiển thị nút khi scroll gần đến cuối trang
+                setShowScrollToTop(scrollTop > clientHeight);
+            };
+    
+            window.addEventListener('scroll', handleScroll);
+    
+            return () => {
+                window.removeEventListener('scroll', handleScroll);
+            };
+        }, []);
+    
+            // Hàm lướt lên đầu trang
+        const scrollToTop = () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+        };
     return(
 
         <div className={`w-full justify-items-center font-Public bg-white ${(loaded || loading || error ) ? 'overflow-hidden h-screen' : 'overflow-auto'}`}>
@@ -511,6 +538,15 @@ const CheckOut = () => {
                 }
                 { loaded && <LoadingCheckout/>}
             <Footer/>
+                        {/* Nút Lên đầu trang */}
+            {showScrollToTop && (
+                <button
+                    onClick={scrollToTop}
+                    className="fixed bottom-4 right-4 p-3 bg-[#1E0342] text-white rounded-full shadow-lg hover:bg-blue-600"
+                >
+                     <FontAwesomeIcon icon={faArrowUp} color='white' className='h-6 w-6' />  
+                </button>
+            )} 
         </div>
     )
 }

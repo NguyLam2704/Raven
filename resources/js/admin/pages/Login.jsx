@@ -4,6 +4,8 @@ import { Helmet } from "react-helmet";
 import bg_login from "../asset/bg_login.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import loading_svg from "../asset/loading.svg"
+
 const Login = () => {
     // Khởi tạo các biến
     const [formData, setFormData] = useState({
@@ -14,6 +16,7 @@ const Login = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [isRemember, setRemember] = useState(false);
+    const [loading, setLoading] = useState(false); 
 
     // Nếu chưa đăng xuất thì tự động điền các thông tin
     useEffect(() => {
@@ -34,7 +37,7 @@ const Login = () => {
     // Kiểm tra xác thực
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
         console.log(formData);
         const res = await fetch("/api/admin/auth/login", {
             method: "post",
@@ -46,6 +49,8 @@ const Login = () => {
         });
 
         const data = await res.json();
+        setLoading(false); 
+
         if (data.errors) {
             setErrors(data.errors);
         } else {
@@ -182,11 +187,19 @@ const Login = () => {
 
                     <button
                         type="submit"
-                        className="w-full bg-blue-500 text-white py-2 mt-4 rounded-md hover:bg-blue-600 hover:shadow-md
+                        className={`w-full bg-blue-500 text-white py-2 mt-4 rounded-md hover:bg-blue-600 hover:shadow-md
                                 outline-none ring-indigo-500/70 ring-offset-2 focus-visible:ring-2 active:scale-[0.98] 
-                                transition"
+                                transition  ${loading ? "bg-gray-300 hover:bg-gray-300" : null}`}
+                        disabled={loading} 
                     >
-                        Đăng nhập
+                        {loading ? (
+                            <span className="flex justify-center items-center">
+                                <img src={loading_svg} className="w-7 h-7 mr-2" />
+                                Đăng nhập...
+                            </span>
+                        ) : (
+                            "Đăng nhập"
+                        )}
                     </button>
                 </form>
 

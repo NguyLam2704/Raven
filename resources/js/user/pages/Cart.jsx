@@ -3,6 +3,8 @@ import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import ItemProduct from "../components/Cart/ItemProduct";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle, faArrowUp} from "@fortawesome/free-solid-svg-icons"
 
 //Giỏ hàng
 const Cart = () => {
@@ -70,6 +72,34 @@ const Cart = () => {
             {cartProduct[id].quantity -= 1;}
     }
     const navigate = useNavigate()
+
+
+   const [showScrollToTop, setShowScrollToTop] = useState(false);
+            // Theo dõi sự kiện scroll
+        useEffect(() => {
+            const handleScroll = () => {
+                const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                const scrollHeight = document.documentElement.scrollHeight;
+                const clientHeight = document.documentElement.clientHeight;
+    
+                // Hiển thị nút khi scroll gần đến cuối trang
+                setShowScrollToTop(scrollTop > clientHeight);
+            };
+    
+            window.addEventListener('scroll', handleScroll);
+    
+            return () => {
+                window.removeEventListener('scroll', handleScroll);
+            };
+        }, []);
+    
+            // Hàm lướt lên đầu trang
+        const scrollToTop = () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+        };
     return(
         <div className="w-full font-Public bg-white">
             <Navigation/>
@@ -120,6 +150,15 @@ const Cart = () => {
                 )}
             </div>
             <Footer/>
+                        {/* Nút Lên đầu trang */}
+            {showScrollToTop && (
+                <button
+                    onClick={scrollToTop}
+                    className="fixed bottom-4 right-4 p-3 bg-[#1E0342] text-white rounded-full shadow-lg hover:bg-blue-600"
+                >
+                     <FontAwesomeIcon icon={faArrowUp} color='white' className='h-6 w-6' />  
+                </button>
+            )}             
         </div>
     )
 }

@@ -5,9 +5,10 @@ import Navigation from '../components/Navigation';
 import img_product from '../assets/img_product.svg';
 import Footer from '../components/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown} from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown, faArrowUp} from '@fortawesome/free-solid-svg-icons'
 import TitleCategory from '../components/Category/TitleCategory';
 import img_loading from '../assets/loading.gif'
+
 
 const mapCategory = new Map([
     ["Áo thun", 1],
@@ -28,6 +29,7 @@ const Category = ({ cate }) => {
   // State để lưu danh sách sản phẩm
   const [productCategories, setProductCategories] = useState([]);
   const [loading, setLoading] = useState(true); // Trạng thái tải dữ liệu
+   const [showScrollToTop, setShowScrollToTop] = useState(false);
 
   let id = mapCategory.get(cate); // map category with category_id
 // Hàm fetch API
@@ -94,6 +96,32 @@ const Category = ({ cate }) => {
           sortProducts(sort); // Sắp xếp ngay khi có dữ liệu hoặc khi sort thay đổi
       }}, [productCategories, sort]); // Call when sort and category change
 
+        // Theo dõi sự kiện scroll
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight;
+            const clientHeight = document.documentElement.clientHeight;
+
+            // Hiển thị nút khi scroll gần đến cuối trang
+            setShowScrollToTop(scrollTop > clientHeight);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+        // Hàm lướt lên đầu trang
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    };
+
     return (
         <div  className='w-full h-full font-Public bg-white'>
             <Navigation />
@@ -155,6 +183,16 @@ const Category = ({ cate }) => {
                 }
             </div>
             <Footer />
+
+                        {/* Nút Lên đầu trang */}
+            {showScrollToTop && (
+                <button
+                    onClick={scrollToTop}
+                    className="fixed bottom-4 right-4 p-3 bg-[#1E0342] text-white rounded-full shadow-lg hover:bg-blue-600"
+                >
+                     <FontAwesomeIcon icon={faArrowUp} color='white' className='h-6 w-6' />  
+                </button>
+            )}           
         </div>
     );
 };

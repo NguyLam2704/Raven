@@ -272,7 +272,7 @@ const HomeUser = () => {
                                     }}
                                 >
                                     {products
-                                        .filter((product) => product.discount > 0) // Sắp xếp sản phẩm theo ngày
+                                        .filter((product) => product.discount > 0) 
                                         .reduce((acc, product, index) => {
                                             const groupIndex = Math.floor(index / 2); // Nhóm mỗi 8 sản phẩm thành một slide
                                             if (!acc[groupIndex]) acc[groupIndex] = [];
