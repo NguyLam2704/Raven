@@ -125,7 +125,7 @@ const HomeUser = () => {
                                     onSwiper={(swiper) => (swiperNewRef.current = swiper)} // Lưu instance của Swiper                              
                                     breakpoints={{
                                         0: { slidesPerView: 2, spaceBetween: 10 },
-                                        800: { slidesPerView: 3, spaceBetween: 10 },
+                                        768: { slidesPerView: 2, spaceBetween: 10 },
                                         1200: { slidesPerView: 4, spaceBetween: 20 },
                                     }}
                                 >

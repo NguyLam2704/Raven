@@ -95,7 +95,7 @@ const Cart = () => {
                 )}
                 {/* Danh sách các sản phẩm */}
                 {storeProduct.map((product, index) => (
-                    <ItemProduct key={index} product={product} removeProduct={()=>removeProduct(product)} handlerPlus={()=>handlePlus(product)} handlerTru={()=>handleTru(product )} onCheckChange={handleCheckChange}/>                            
+                    <ItemProduct key={index} products={product} removeProduct={()=>removeProduct(product)} handlerPlus={()=>handlePlus(product)} handlerTru={()=>handleTru(product )} onCheckChange={handleCheckChange}/>                            
                 ))}
                 
                 {/* {

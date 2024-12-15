@@ -11,7 +11,7 @@ const NavigationAdmin = ({ children }) => {
 
 
   return (
-    <div className="flex w-full max-w-[1557px] mx-auto bg-[#F5F6FA]">
+    <div className="flex z-50 w-full max-w-[1557px] mx-auto bg-[#F5F6FA]">
       <div className='flex w-full'>  
         {/* Overlay */}
         <div className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ease-in-out
@@ -20,7 +20,7 @@ const NavigationAdmin = ({ children }) => {
         </div>
 
         <div className={`
-                mobile:z-30 ipad:z-30 desktop:z-0 
+                mobile:z-30 ipad:z-30 desktop:z-10 desktop:relative
                 mobile:absolute ipad:absolute desktop:block
                 transition-transform duration-300 ease-in-out
                 
@@ -29,14 +29,14 @@ const NavigationAdmin = ({ children }) => {
           <Sidebar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen}/>
         </div>
 
-        <div className='z-0'>
+        <div className='z-20 relative'>
           <Header toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen}/>
         </div>
 
 
 
         
-        <main className={`w-full mobile:mt-12 ipad:mt-17 desktop:mt-20 p-5 desktop:ml-60 overflow-y-auto h-full bg-[#F5F6FA]
+        <main className={`w-full relative z-0 mobile:mt-12 ipad:mt-17 desktop:mt-20 p-5 desktop:ml-60 overflow-y-auto h-full bg-[#F5F6FA]
                         mobile:${isSidebarOpen ? null : "ml-0" }
                         ipad:${isSidebarOpen ? null : "ml-0" }
                       `}

@@ -14,9 +14,11 @@ import revenueIcon from "../asset/home/revenue.svg";
 import shipIcon from "../asset/home/ship.svg";
 import trendupIcon from "../asset/home/trending_up.svg";
 import trenddownIcon from "../asset/home/trending_down.svg";
-import loadingVideo from "../asset/Loading_Video.mp4";
 import loading from "../asset/loading.svg"
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { Pagination } from "@mui/material";
+import {Skeleton} from "@mui/material";
 
 // lấy dữ liệu từ api
 const fetchThongke = async () => {
@@ -35,6 +37,7 @@ const Home = () => {
     const [OrdersData, setOrderData] = useState();
     const [ProductsListData, setProductListData] = useState();
     const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
 
     let calPercent = (today, yesterday) => {
         let x = ((today - yesterday) / yesterday) * 100;
@@ -61,14 +64,74 @@ const Home = () => {
         LoadData();
     }, []);
 
-    //loading khi chưa lấy dữ liệu xong
-    if (isLoading) {
+    // //loading khi chưa lấy dữ liệu xong
+    // if (isLoading) {
+    //     return (
+    //         <div className="w-full h-[700px] flex justify-center items-center">
+    //                 <img src={loading} />
+    //         </div>
+    //     );
+    // }
+    if (isLoading)  {
         return (
-            <div className="w-full h-[700px] flex justify-center items-center">
-                    <img src={loading} />
-            </div>
-        );
-    }
+            <NavigationAdmin>
+                <h1 className="mobile:text-[20px] ipad:text-[25px] desktop:text-[32px] font-bold">
+                    Thống kê
+                </h1>
+                {/* Tổng quan thống kê */}
+                <div className="grid grid-cols-1 gap-4 ipad:grid-cols-2 desktop:grid-cols-4 mobile:w-[400px] ipad:w-[700px] desktop:w-[1200px] shadow-md">
+                    {Array.from({ length: 4 }).map((_, index) => (
+                        <Skeleton
+                            key={index}
+                            variant="rectangular"
+                            height={100}
+                            animation="wave"
+                            style={{ backgroundColor: "#f0f0f0" }}
+                        />
+                    ))}
+                </div>
+
+                <div className="flex gap-4">
+                    {/* Doanh thu bán hàng theo tháng */}
+                    <div className="mt-4 shadow-md ipad:w-[700px] desktop:w-[1200px] mobile:w-[400px]">
+                        <Skeleton
+                            variant="rectangular"
+                            height={420}
+                            animation="wave"
+                            style={{ backgroundColor: "#f0f0f0" }}
+                        />
+                    </div>
+                    {/* Top 5 sản phẩm bán chạy */}
+                    <div className="mt-4 grid gap-2 shadow-md ipad:w-[700px] desktop:w-[400px] mobile:w-[400px]">
+                        {Array.from({ length: 5 }).map((_, index) => (
+                            <Skeleton
+                                key={index}
+                                variant="rectangular"
+                                height={78}
+                                animation="wave"
+                                style={{ backgroundColor: "#f0f0f0" }}
+                            />
+                        ))}
+                    </div>
+                </div>
+
+                <h1 className="mobile:text-[20px] ipad:text-[25px]  desktop:text-[32px]  font-bold mt-4">Đơn hàng</h1>
+                {/* Bảng đơn hàng */}
+                <div className="mt-4 grid gap-2 shadow-md ipad:w-[700px] desktop:w-[1200px] mobile:w-[400px]">
+                    {Array.from({ length: 3 }).map((_, index) => (
+                        <Skeleton
+                            key={index}
+                            variant="rectangular"
+                            height={100}
+                            animation="wave"
+                            style={{ backgroundColor: "#f0f0f0" }}
+                        />
+                    ))}
+                </div>
+            </NavigationAdmin>
+
+        )
+     }
     
     //Tạo 4 mục thống kê
     const stats = [
@@ -180,6 +243,10 @@ const Home = () => {
             <div className="overflow-x-auto">
                 <OrderList data={OrdersData.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated)).slice(0,10)} />
             </div>
+
+            <Link to="/order_admin" className="w-full cursor-pointer mt-2">
+                <p className="text-center text-xl underline text-blue-700 font-bold">Xem thêm</p>
+            </Link>
 
 
         </NavigationAdmin>
