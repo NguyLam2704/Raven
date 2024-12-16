@@ -18,7 +18,7 @@ import BankingInfo from "../pages/BankingInfo";
 import SizeInfo from "../pages/SizeInfo";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-
+import ChatBox from "../components/ChatBox";
 const ScrollToTopOnRouteChange = () => { const { pathname } = useLocation(); useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [pathname]); return null; };
 const RouterUser = () => {
     return (
@@ -54,6 +54,7 @@ const RouterUser = () => {
                 <Route path="/banking_info" element={<BankingInfo />}/>
                 <Route path="/size_info" element={<SizeInfo />}/>
             </Routes>
+            <ChatBox />
         </div>
     )
 }
