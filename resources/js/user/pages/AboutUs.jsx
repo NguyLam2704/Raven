@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import about1 from '../assets/about1.jpg'
@@ -7,7 +7,7 @@ import founder2 from '../assets/founder2.jpg'
 import founder3 from '../assets/founder3.jpg'
 import founder4 from '../assets/founder4.jpg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircle} from "@fortawesome/free-solid-svg-icons"
+import { faCircle, faArrowUp} from "@fortawesome/free-solid-svg-icons"
 
 const AboutUs = () => {
     //Giá trị để kiểm soát trạng thái ẩn/hiện của năm 2020
@@ -21,8 +21,35 @@ const AboutUs = () => {
     //Giá trị để kiểm soát trạng thái ẩn/hiện của năm 2024
     const [is2024,set2024] = useState(false)
 
+   const [showScrollToTop, setShowScrollToTop] = useState(false);
+            // Theo dõi sự kiện scroll
+        useEffect(() => {
+            const handleScroll = () => {
+                const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                const scrollHeight = document.documentElement.scrollHeight;
+                const clientHeight = document.documentElement.clientHeight;
+    
+                // Hiển thị nút khi scroll gần đến cuối trang
+                setShowScrollToTop(scrollTop > clientHeight);
+            };
+    
+            window.addEventListener('scroll', handleScroll);
+    
+            return () => {
+                window.removeEventListener('scroll', handleScroll);
+            };
+        }, []);
+    
+            // Hàm lướt lên đầu trang
+        const scrollToTop = () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+        };
+
     return(
-        <div>
+        <div className='bg-white'>
             <Navigation/>
             <div className='w-full justify-items-center pt-16 mt-[90px]'>
                 <div className='w-10/12 border-b-[3px] border-black text-center desktop:text-7xl ipad:text-6xl mobile:text-5xl font-extrabold py-10 '>RAVEN</div>
@@ -173,6 +200,15 @@ const AboutUs = () => {
                     )}
             </div>
             <Footer/>
+                        {/* Nút Lên đầu trang */}
+            {showScrollToTop && (
+                <button
+                    onClick={scrollToTop}
+                    className="fixed bottom-4 right-4 p-3 bg-[#1E0342] text-white rounded-full shadow-lg hover:bg-blue-600"
+                >
+                     <FontAwesomeIcon icon={faArrowUp} color='white' className='h-6 w-6' />  
+                </button>
+            )}                
         </div>
 
     )

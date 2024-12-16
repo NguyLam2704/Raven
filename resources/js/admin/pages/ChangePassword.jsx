@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import NavigationAdmin from "../components/NavigationAdmin";
+import Swal from "sweetalert2";
+import { Link, useNavigate } from "react-router-dom";
 
 const ChangePassword = () => {
     const [formData, setFormData] = useState({
@@ -15,10 +17,21 @@ const ChangePassword = () => {
     const data = JSON.parse(localStorage.getItem("admin"));
     const id = data.id;
     const url = "/api/admin/" + id + "/changepassword";
+    const navigate = useNavigate();
 
     // Bấm xác nhận
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const loadingSwal = Swal.fire({
+            title: "Loading...!",
+            text: "Đang thay đổi mật khẩu.",
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading(); // Hiển thị spinner loading
+            },
+        });
+
 
         // Đẩy form data lên api
         const res = await fetch(url, {
@@ -37,11 +50,28 @@ const ChangePassword = () => {
         if (data.errors) {
             // Nếu lỗi thì xuất lên màn hình
             setErrors(data.errors);
+            Swal.fire({
+                title: 'Cập nhật không thành công!',
+                text: 'Cập nhật mật khẩu không thành công.',
+                icon: 'error',
+                showConfirmButton: false,
+                timer: 4000,
+            });
         } else {
             // Nếu không có lỗi thì lưu thông tin vô local storage
             data.password = formData.new_password;
             localStorage.setItem("admin", JSON.stringify(data));
             console.log("Thay đổi mk thành công");
+            Swal.fire({
+                title: 'Cập nhật thành công!',
+                text: 'Cập nhật mật khẩu thành công.',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 4000,
+            });
+
+            navigate("/login_admin")
+
         }
     };
 

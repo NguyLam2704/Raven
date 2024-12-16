@@ -3,9 +3,12 @@ import remove from '../../assets/remove.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus} from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from "react";
+import { Pagination } from "@mui/material";
+import {Skeleton, Box} from "@mui/material";
 
 //Item sản phẩm trong thanh giỏ hàng
-const ItemMini = ({product, handlerPlus, handlerTru, removeProduct, handler}) => {
+const ItemMini = ({products, handlerPlus, handlerTru, removeProduct, handler}) => {
+    const [product, setProduct] = useState(products)
     const [loading, setLoading] = useState(false);
     const [quantityAvailable, setQuantityAvailable] = useState(0);
     const fetchDetail = async () => {
@@ -36,6 +39,52 @@ const ItemMini = ({product, handlerPlus, handlerTru, removeProduct, handler}) =>
     useEffect(() => {
         handler(product,quantityAvailable)
     }, [quantityAvailable]);    
+
+
+    if (loading) {
+        return(
+            <div className="space-y-0.5 mb-2 w-full">
+                <Box display="flex" alignItems="center">
+                        {/* Hình chữ nhật bo góc */}
+                        <Skeleton
+                            variant="rectangular"
+                            width={80}
+                            height={80}
+                            animation="wave"
+                            style={{
+                            borderRadius: "8px",
+                            backgroundColor: "#f0f0f0",
+                            }}
+                        />
+
+                        {/* Hai thanh ngang */}
+                        <Box ml={2} width="100%">
+                            <Skeleton
+                                variant="rectangular"
+                                height={15}
+                                animation="wave"
+                                style={{ backgroundColor: "#f0f0f0", marginBottom: 8 }}
+                            />
+                            <Skeleton
+                                variant="rectangular"
+                                height={15}
+                                width="80%"
+                                animation="wave"
+                                style={{ backgroundColor: "#f0f0f0", marginBottom: 8 }}
+                            />
+                            <Skeleton
+                                variant="rectangular"
+                                height={15}
+                                width="60%"
+                                animation="wave"
+                                style={{ backgroundColor: "#f0f0f0" }}
+                            />
+                        </Box>
+                    </Box>
+            </div>          
+        )
+    }
+
     return(        
         <div className="w-full flex flex-row border-b-[1px] border-[#C4C4C4] pb-2 pt-4">
             <img className="w-[80px] h-[90px] self-center rounded-lg object-cover border-black border" src={product.productImage} alt="img" />

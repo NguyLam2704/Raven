@@ -6,6 +6,8 @@ use App\Models\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\ProColorSize;
+use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -123,7 +125,7 @@ class DashboardController extends Controller
 
         $total_cost = 0;
         foreach ($prod_color_size as $value) {
-            $total_cost += $value->after_discount_cost;
+            $total_cost += $value->after_discount_cost * $value->quantity;
         }
 
         // Lấy prod_id
@@ -169,7 +171,26 @@ class DashboardController extends Controller
         }
         // Chuyển trạng thái
         $order->status = $status;
+        if ($status == 3){
+           $prod_orders = $order->productOrder;
+           foreach ($prod_orders as $key => $prod_order) {
+            $quantity_had_sold = $prod_order->quantity;
+            $prod_color_size = ProColorSize::find($prod_order->pro_color_size_id);
+            $prod = Product::find($prod_color_size->prod_id);
+            $prod->quantity_sold += $quantity_had_sold;
+            $prod->save();
+           }
+
         $order->datepaid = Carbon::now();
+        } else if ($status == 2){
+            $prod_orders = $order->productOrder;
+           foreach ($prod_orders as $key => $prod_order) {
+            $quantity_had_sold = $prod_order->quantity;
+            $prod_color_size = ProColorSize::find($prod_order->pro_color_size_id);
+            $prod_color_size->quantity_available -= $quantity_had_sold;
+            $prod_color_size->save();
+           }
+        }
         $order->save();
 
         return $order;

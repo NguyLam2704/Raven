@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const ProductCardInOrderDetail = ({ products, sizes, colors, quantity , after_discount_cost}) => {
+const ProductCardInOrderDetail = ({ products, pro_color_size}) => {
     const getSize = (e) => {
         switch (e) {
             case 1:
@@ -15,9 +15,18 @@ const ProductCardInOrderDetail = ({ products, sizes, colors, quantity , after_di
         }
     };
 
+    const getProduct = (id) => {
+        const product = products.find(e => e.prod_id === id)
+        return product;
+    }
+
     return (
         <div>
-            {products.map((product, index) => (
+            {pro_color_size.map((item, index) => {
+                
+                const product = getProduct(item.prod_id);
+                console.log('test',item);
+                return (
                 <div
                     key={index}
                     className="flex my-2 h-20 rounded-[5px] border-2 border-[#1E0342]/50"
@@ -37,28 +46,30 @@ const ProductCardInOrderDetail = ({ products, sizes, colors, quantity , after_di
                             </div>
                             <div className="ipad:w-48 desktop:h-5 text-sm font-medium">
                                 {" "}
-                                {colors[index]} / {getSize(sizes[index])}
+                                {item.color_name} / {getSize(item.size_id)}
                             </div>
                             <div className="text-black text-sm font-medium mobile:block ipad:hidden">
-                                Số lượng: {quantity[index]}{" "}
+                                Số lượng: {item.quantity}{" "}
                             </div>
                         </div>
 
                         {/* mobile không hiện phần này  */}
                         <div className="h-full mx-2 flex justify-center items-center mobile:hidden ipad:flex">
                             <div className="text-black text-sm font-medium px-4">
-                                Số lượng: {quantity[index]}{" "}
+                                Số lượng: {item.quantity}{" "}
                             </div>
                         </div>
 
                         <div className="h-full mobile:mx-1 ipad:mx-4 flex justify-center items-center ">
                             <div className="text-[#A91D3A] text-sm font-semibold ipad:px-4">
-                                {after_discount_cost[index]?.toLocaleString("vi-VN")}đ
+                                {item.after_discount_cost?.toLocaleString("vi-VN")}đ
                             </div>
                         </div>
                     </div>
                 </div>
-            ))}
+            )}
+        )
+            }
         </div>
     );
 };

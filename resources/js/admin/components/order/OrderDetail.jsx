@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import Modal from 'react-modal';
 import axios from 'axios';
 import ProductCardInOrderDetail from './ProductCard';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faCaretDown} from '@fortawesome/free-solid-svg-icons'
 import loading from '../../asset/loading.svg'
 
 
 const shipfee = 50000;
 
-const OrderDetail = ({orderDetail, formatDate, getOrderStatus , onClose}) => {
+const OrderDetail = ({orderDetail, formatDate , onClose}) => {
     const [product, setProduct] = useState(orderDetail.products);
-    const [size, setSize] = useState([]);
-    const [after_discount_cost, setAfter_discount] = useState([]);
-    const [color, setColor] = useState([]);
-    const [quantity, setQuantity] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
 
@@ -24,10 +17,6 @@ const OrderDetail = ({orderDetail, formatDate, getOrderStatus , onClose}) => {
         const LoadData = async () => {
             
             // Set state with the fetched data
-            setSize(orderDetail.pro_color_size.map((item) => item.size_id));
-            setColor(orderDetail.pro_color_size.map((item) => item.color_name));
-            setQuantity(orderDetail.pro_color_size.map((item) => item.quantity));
-            setAfter_discount(orderDetail.pro_color_size.map((item) => item.after_discount_cost));
             setIsLoading(false)
             setShowModal(true);
         }
@@ -65,7 +54,7 @@ const OrderDetail = ({orderDetail, formatDate, getOrderStatus , onClose}) => {
 
      
     return (
-        <div className={`fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center transition-opacity duration-300 ${showModal ? 'opacity-100' : 'opacity-0'}`}>
+        <div className={`fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center transition-opacity duration-300 ${showModal ? 'opacity-100' : 'opacity-0'} z-10`}>
             <div className={`mobile:p-4 mobile:mx-2 desktop:mx-0 desktop:p-6 bg-white w-[70rem] max-h-[90vh] overflow-y-auto p-6 rounded shadow-lg transform transition-transform duration-300 ${showModal ? 'translate-y-0' : 'translate-y-full'}`}>
     
                 <div className="border bg-white rounded-lg border-[#0E46A3]">     
@@ -81,10 +70,7 @@ const OrderDetail = ({orderDetail, formatDate, getOrderStatus , onClose}) => {
                                 <div className='flex flex-col mt-4 items-center justify-center'>
                                     <ProductCardInOrderDetail 
                                         products={product}
-                                        sizes={size}
-                                        colors={color}
-                                        quantity={quantity}
-                                        after_discount_cost={after_discount_cost}
+                                        pro_color_size={orderDetail.pro_color_size}
                                     />                               
                                 </div>
                            </div>
@@ -167,10 +153,7 @@ const OrderDetail = ({orderDetail, formatDate, getOrderStatus , onClose}) => {
                                 <div className='flex flex-col mt-4 items-center justify-center'>
                                     <ProductCardInOrderDetail 
                                         products={product}
-                                        sizes={size}
-                                        colors={color}
-                                        quantity={quantity}
-                                        after_discount_cost={after_discount_cost}
+                                        pro_color_size={orderDetail.pro_color_size}
                                     />                               
                                 </div>
                            </div>
