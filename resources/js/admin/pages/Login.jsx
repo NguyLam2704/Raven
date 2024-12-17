@@ -22,8 +22,7 @@ const Login = () => {
     useEffect(() => {
         const admin = JSON.parse(localStorage.getItem("admin"));
         setRemember(JSON.parse(localStorage.getItem("isRemember")));
-        console.log(admin);
-        if (admin) {
+        if (JSON.parse(localStorage.getItem("isRemember"))) {
             setFormData({
                 account: admin.account,
                 password: admin.password,
@@ -38,6 +37,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+        localStorage.setItem("isRemember", isRemember);
         console.log(formData);
         const res = await fetch("/api/admin/auth/login", {
             method: "post",
@@ -58,12 +58,12 @@ const Login = () => {
             const admin = data.admin;
             admin.account = formData.account;
             admin.password = formData.password;
-            console.log(admin);
+            console.log('admin',admin);
 
             // Lưu các giá trị trả về
             localStorage.setItem("admin", JSON.stringify(admin));
             localStorage.setItem("token", data.token);
-            localStorage.setItem("isRemember", isRemember);
+            
             // Điều hướng về trang chủ admin
             navigate("/home_admin");
         }

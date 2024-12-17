@@ -127,6 +127,8 @@ class ProductDetailsController extends Controller
         $color_size = ProColorSize::where('prod_id',$id)
             ->join('colors', 'colors.color_id', '=', 'pro_color_size.color_id')
             ->join('product_order','product_order.pro_color_size_id','=','pro_color_size.pro_color_size_id')
+            ->join('orders','orders.order_id','=','product_order.order_id')
+            ->where('status',3)
             ->groupBy("pro_color_size.pro_color_size_id","size_id","color_name")
             ->get(["pro_color_size.pro_color_size_id","size_id","color_name",DB::raw("sum(quantity_available) as quantity_available"),DB::raw("sum(quantity) as quantity ")]);
         
