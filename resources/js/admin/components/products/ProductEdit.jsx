@@ -356,7 +356,7 @@ const ProductEdit = ({products, onClose}) => {
     };
     
     return (
-        <div className={`fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center transition-opacity duration-300 ${showModal ? 'opacity-100' : 'opacity-0'}`}>
+        <div className={`fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center transition-opacity duration-300 ${showModal ? 'opacity-100' : 'opacity-0'} z-10`}>
             <div className="p-4 border-3 h-[90%] w-[90%] overflow-x-hidden bg-white rounded-lg px-10 border-[#0E46A3]">
                 <div className="items-center rounded-tl-lg rounded-tr-lg flex w-full desktop:h-12 justify-center bg-[#1E0342]">
                     <h2 className='mobile:text-[20px] ipad:text-[25px]  desktop:text-[32px] font-bold text-white'>Chỉnh sửa sản phẩm </h2>

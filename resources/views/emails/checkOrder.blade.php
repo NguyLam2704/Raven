@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,13 +27,14 @@
         .email-header {
             text-align: center;
             padding: 20px;
-            background-color: #c73659;
+            background-color: #1E0342;
             color: #fff;
             border-radius: 8px 8px 0 0;
         }
 
         .email-header img {
-            max-width: 150px;  /* Chỉnh kích thước logo */
+            max-width: 150px;
+            /* Chỉnh kích thước logo */
             margin-bottom: 10px;
         }
 
@@ -63,7 +65,8 @@
             margin-top: 20px;
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px;
             border: 1px solid #ddd;
             text-align: left;
@@ -120,6 +123,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="email-container">
         <!-- Email Header -->
@@ -130,7 +134,8 @@
         <!-- Email Content -->
         <div class="email-content">
             <p>Chào {{ $CustomerName }},</p>
-            <p>Cảm ơn bạn đã mua sắm tại <strong>Raven</strong>! Chúng tôi đã nhận được đơn hàng của bạn và dưới đây là thông tin chi tiết về đơn hàng của bạn:</p>
+            <p>Cảm ơn bạn đã mua sắm tại <strong>Raven</strong>! Chúng tôi đã nhận được đơn hàng của bạn và dưới đây là
+                thông tin chi tiết về đơn hàng của bạn:</p>
 
             <h3>Thông tin đơn hàng</h3>
             <p><strong>Mã đơn hàng:</strong> {{ $OrderId }}</p>
@@ -143,11 +148,12 @@
                     <th>Số lượng</th>
                     <th>Giá</th>
                 </tr>
-                @foreach($Product as $product)
+                @foreach ($Product as $product)
                     <tr>
                         <td>{{ $product['productName'] }}</td>
                         <td>{{ $product['quantity'] }}</td>
-                        <td>{{ number_format($product['discount'] > 0 ? $product['cost'] - $product['cost']*$product['discount']/100 : $product['cost'], 0, ',', '.') }} VND</td>
+                        <td>{{ number_format($product['discount'] > 0 ? $product['cost'] - ($product['cost'] * $product['discount']) / 100 : $product['cost'], 0, ',', '.') }}
+                            VND</td>
                     </tr>
                 @endforeach
             </table>
@@ -164,7 +170,7 @@
 
             <!-- Điều kiện hiển thị QR Code hoặc Ship Code -->
             <div class="payment-method">
-                @if($PaymentMethod === true)
+                @if ($PaymentMethod === true)
                     <p>Vui lòng chuyển khoản theo mã QR bên dưới để hoàn tất đơn hàng:</p>
                     <div class="qr-code">
                         <img src="{{ $message->embed(public_path('storage/asset/QR.png')) }}" alt="QR Code" />
@@ -174,14 +180,18 @@
                 @endif
             </div>
 
-            <p><strong>Lưu ý:</strong> Đơn hàng của bạn sẽ được giao trong vòng 3-5 ngày làm việc (tùy theo khu vực).</p>
+            <p><strong>Lưu ý:</strong> Đơn hàng của bạn sẽ được giao trong vòng 3-5 ngày làm việc (tùy theo khu vực).
+            </p>
         </div>
 
         <!-- Footer -->
         <div class="footer">
             <p>Cảm ơn bạn đã chọn mua sắm tại <strong>Raven</strong>.</p>
-            <p>Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi qua email <a href="mailto:22520827@gm.uit.edu.vn">22520827@gm.uit.edu.vn</a> hoặc gọi đến số <a href="tel:01234567891">01234567891</a>.</p>
+            <p>Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi qua email <a
+                    href="mailto:22520827@gm.uit.edu.vn">22520827@gm.uit.edu.vn</a> hoặc gọi đến số <a
+                    href="tel:0384666498">0384666498</a>.</p>
         </div>
     </div>
 </body>
+
 </html>
