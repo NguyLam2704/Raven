@@ -143,7 +143,7 @@ const Category = ({ cate }) => {
                 {
                   loading ? (
                     <div>
-                      <img className='desKtop:w-20 desktop:h-20 ipad:w-16 ipad:h-16 mobile:h-14 mobile:w-14 mt-10' src={img_loading} alt="loading" />
+                      <img className='ipad:w-16 ipad:h-16 mobile:h-14 mobile:w-14 mt-10' src={img_loading} alt="loading" />
                     </div>
                   ) : (
                     <div className='w-10/12 h-full mt-16'>                    
