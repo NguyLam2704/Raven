@@ -116,9 +116,6 @@ const AccountManage = () => {
                         alt="User Avatar"
                         className="mobile:w-12 mobile:h-12  ipad:w-24 ipad:h-24 rounded-full mb-2 border-2"
                     />
-                    <a href="#" className="text-blue-500 text-sm">
-                        Edit Photo
-                    </a>
                 </div>
 
                 <form
