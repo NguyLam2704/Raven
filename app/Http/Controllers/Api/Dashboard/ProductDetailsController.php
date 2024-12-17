@@ -46,7 +46,7 @@ class ProductDetailsController extends Controller
             }
         }
 
-        foreach ($request->pro_color_size as $element) {
+        foreach ($request->color_size_quantity as $element) {
             $color = Color::insert([
                 'color_code' => $element['color_code'],
                 'color_name' => $element['nameColor']
