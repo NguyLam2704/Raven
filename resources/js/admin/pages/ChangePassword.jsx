@@ -46,10 +46,10 @@ const ChangePassword = () => {
 
         // Handle kết quả trả về
         setErrors("");
-        const data = await res.json();
-        if (data.errors) {
+        const response = await res.json();
+        if (response.errors) {
             // Nếu lỗi thì xuất lên màn hình
-            setErrors(data.errors);
+            setErrors(response.errors);
             Swal.fire({
                 title: 'Cập nhật không thành công!',
                 text: 'Cập nhật mật khẩu không thành công.',
@@ -60,9 +60,11 @@ const ChangePassword = () => {
         } else {
             // Nếu không có lỗi thì lưu thông tin vô local storage
             data.password = formData.new_password;
+            console.log(data);
+            
             localStorage.setItem("admin", JSON.stringify(data));
             console.log("Thay đổi mk thành công");
-            Swal.fire({
+            const success = Swal.fire({
                 title: 'Cập nhật thành công!',
                 text: 'Cập nhật mật khẩu thành công.',
                 icon: 'success',
